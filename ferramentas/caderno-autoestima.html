@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caderno de Autoestima | Bruno de Souza</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00b894;
+            --accent: #fdcb6e;
+            --bg: #dfe6e9;
+            --sidebar: #2d3436;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* SIDEBAR (MENU) */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--accent);
+            border-bottom: 2px solid #636e72;
+            padding-bottom: 15px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: #b2bec3;
+            padding: 12px 15px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
+        }
+
+        .menu-btn:hover { background-color: rgba(255,255,255,0.1); color: white; }
+        .menu-btn.active { background-color: var(--primary); color: white; font-weight: bold; }
+
+        /* ÁREA DE CONTEÚDO */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background-color: #f5f6fa;
+        }
+
+        .page { display: none; max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .page.active { display: block; animation: fadeIn 0.4s; }
+
+        h2 { color: var(--primary); border-bottom: 3px solid var(--accent); display: inline-block; padding-bottom: 5px; margin-top: 0; }
+        h3 { color: #636e72; margin-top: 25px; }
+
+        /* ESTILOS DE FORMULÁRIO */
+        label { display: block; margin-top: 15px; font-weight: bold; color: #2d3436; }
+        input[type="text"], textarea, select {
+            width: 100%; padding: 10px; margin-top: 5px;
+            border: 2px solid #dfe6e9; border-radius: 8px;
+            font-size: 1rem; font-family: inherit;
+            background: #fafafa;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* CHECKBOXES (FORÇAS) */
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .check-item { background: #f1f2f6; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .check-item:hover { background: #e1e2e6; }
+
+        /* ZONA DE CONFORTO */
+        .zone-container { position: relative; width: 100%; height: 400px; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
+        .circle-outer {
+            width: 380px; height: 380px; border-radius: 50%;
+            background-color: #ffeaa7; border: 3px dashed #fdcb6e;
+            display: flex; flex-direction: column; align-items: center; padding: 20px;
+            text-align: center; position: relative;
+        }
+        .circle-inner {
+            width: 200px; height: 200px; border-radius: 50%;
+            background-color: #55efc4; border: 3px solid #00b894;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10; padding: 10px;
+        }
+        .zone-input { background: transparent; border: none; border-bottom: 1px solid #666; text-align: center; width: 90%; margin: 2px; font-size: 0.9rem; }
+
+        /* BOTÕES */
+        .btn-action {
+            background-color: var(--primary); color: white; padding: 12px 25px;
+            border: none; border-radius: 50px; font-weight: bold; cursor: pointer;
+            margin-top: 30px; display: inline-flex; align-items: center; gap: 10px;
+            transition: transform 0.2s;
+        }
+        .btn-action:hover { transform: translateY(-2px); background-color: #5f27cd; }
+        
+        .btn-suggest { background: var(--secondary); font-size: 0.8rem; padding: 5px 10px; border-radius: 5px; margin-left: 10px; cursor: pointer; color: white; border: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media print {
+            .sidebar { display: none; }
+            .main-content { padding: 0; background: white; }
+            .page { box-shadow: none; border: none; display: block !important; margin-bottom: 50px; page-break-after: always; }
+            .btn-action, .btn-suggest { display: none; }
+        }
+        
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; }
+            .sidebar { width: 100%; padding: 10px; flex-direction: row; overflow-x: auto; box-sizing: border-box; height: auto;}
+            .menu-btn { white-space: nowrap; margin-right: 10px; }
+            .zone-container { transform: scale(0.8); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">📒 Caderno Digital</div>
+        <button class="menu-btn active" onclick="showPage('p1')">1. Quem é Você?</button>
+        <button class="menu-btn" onclick="showPage('p2')">2. Eu Sou Alguém Que...</button>
+        <button class="menu-btn" onclick="showPage('p3')">3. Afirmações A-Z</button>
+        <button class="menu-btn" onclick="showPage('p4')">4. Minhas Forças</button>
+        <button class="menu-btn" onclick="showPage('p5')">5. Super-Herói</button>
+        <button class="menu-btn" onclick="showPage('p6')">6. Eu Sou! (Qualidades)</button>
+        <button class="menu-btn" onclick="showPage('p7')">7. Zona de Conforto</button>
+        <button class="menu-btn" onclick="showPage('p8')">8. Minha Autoestima</button>
+    </div>
+
+    <div class="main-content">
+
+        <div id="p1" class="page active">
+            <h2>Quem é você?</h2>
+            <p>Preencha com a primeira coisa que vier à mente. Descubra sua essência! ✨</p>
+            
+            <label>Eu amo...</label>
+            <input type="text" placeholder="Ex: Meus amigos, desenhar...">
+            
+            <label>Eu quero...</label>
+            <input type="text" placeholder="Ex: Viajar, aprender a tocar violão...">
+            
+            <label>Tenho como objetivo...</label>
+            <input type="text">
+            
+            <label>Antes tinha medo de...</label>
+            <input type="text">
+            
+            <label>Sou inspirado(a) por...</label>
+            <input type="text">
+            
+            <label>Fico mais feliz quando...</label>
+            <input type="text">
+            
+            <label>Acredito em...</label>
+            <input type="text">
+            
+            <label>Um dia eu vou...</label>
+            <input type="text">
+        </div>
+
+        <div id="p2" class="page">
+            <h2>Eu sou alguém que...</h2>
+            <p>Complete as frases para compartilhar mais sobre quem você é.</p>
+
+            <label>Eu sou alguém que ama...</label>
+            <input type="text">
+
+            <label>Eu sou alguém que odeia...</label>
+            <input type="text">
+
+            <label>Eu sou alguém que consegue...</label>
+            <input type="text">
+
+            <label>Eu sou alguém que deseja...</label>
+            <input type="text">
+
+            <label>Eu sou alguém que nunca esquece de...</label>
+            <input type="text">
+
+            <label>Eu sou alguém que é grato(a) por...</label>
+            <input type="text">
+        </div>
+
+        <div id="p3" class="page">
+            <h2>Minhas Afirmações A a Z</h2>
+            <p>Escreva uma qualidade sua para cada letra! Se travar, clique no botão de ajuda.</p>
+            
+            <div id="az-container"></div> </div>
+
+        <div id="p4" class="page">
+            <h2>Minhas Forças</h2>
+            <p>Marque tudo o que você sente que tem um pouquinho em você!</p>
+            
+            <div class="checkbox-grid">
+                <label class="check-item"><input type="checkbox"> Gentil</label>
+                <label class="check-item"><input type="checkbox"> Honesto</label>
+                <label class="check-item"><input type="checkbox"> Leal</label>
+                <label class="check-item"><input type="checkbox"> Criativo</label>
+                <label class="check-item"><input type="checkbox"> Corajoso</label>
+                <label class="check-item"><input type="checkbox"> Paciente</label>
+                <label class="check-item"><input type="checkbox"> Engraçado</label>
+                <label class="check-item"><input type="checkbox"> Bom Amigo</label>
+                <label class="check-item"><input type="checkbox"> Inteligente</label>
+                <label class="check-item"><input type="checkbox"> Curioso</label>
+                <label class="check-item"><input type="checkbox"> Resiliente</label>
+                <label class="check-item"><input type="checkbox"> Otimista</label>
+                <label class="check-item"><input type="checkbox"> Trabalhador</label>
+                <label class="check-item"><input type="checkbox"> Grato</label>
+            </div>
+
+            <h3>Minhas 3 principais forças são:</h3>
+            <input type="text" placeholder="1. Eu sou...">
+            <input type="text" placeholder="2. Eu sou...">
+            <input type="text" placeholder="3. Eu sou...">
+        </div>
+
+        <div id="p5" class="page">
+            <h2>Se eu fosse um Super-Herói 🦸‍♂️</h2>
+            
+            <label>Meu nome de herói seria:</label>
+            <input type="text">
+
+            <label>Meus Superpoderes:</label>
+            <div class="checkbox-grid">
+                <label class="check-item"><input type="checkbox"> Voar</label>
+                <label class="check-item"><input type="checkbox"> Invisibilidade</label>
+                <label class="check-item"><input type="checkbox"> Ler Mentes</label>
+                <label class="check-item"><input type="checkbox"> Super Força</label>
+                <label class="check-item"><input type="checkbox"> Curar Pessoas</label>
+                <label class="check-item"><input type="checkbox"> Viajar no Tempo</label>
+            </div>
+
+            <label>Minha missão principal é ajudar as pessoas sendo...</label>
+            <textarea placeholder="Ex: Corajoso, justo, rápido..."></textarea>
+        </div>
+
+        <div id="p6" class="page">
+            <h2>Eu Sou! (Reconhecendo Qualidades)</h2>
+            <p>Identifique uma qualidade e escreva a "prova" de que você a tem.</p>
+
+            <div style="background: #eccc68; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <strong>Exemplo:</strong><br>
+                Eu sou: <em>Corajoso</em><br>
+                Eu sei disso porque: <em>Falei na frente da turma mesmo com vergonha.</em>
+            </div>
+
+            <label>1. Eu sou:</label>
+            <input type="text">
+            <label>Eu sei disso porque:</label>
+            <input type="text">
+            <hr>
+            <label>2. Eu sou:</label>
+            <input type="text">
+            <label>Eu sei disso porque:</label>
+            <input type="text">
+            <hr>
+            <label>3. Eu sou:</label>
+            <input type="text">
+            <label>Eu sei disso porque:</label>
+            <input type="text">
+        </div>
+
+        <div id="p7" class="page">
+            <h2>Saindo da Zona de Conforto</h2>
+            <p><strong>Círculo Verde:</strong> Coisas que eu já faço e me sinto seguro.<br>
+            <strong>Círculo Amarelo:</strong> Coisas novas que quero tentar (coragem!).</p>
+
+            <div class="zone-container">
+                <div class="circle-outer">
+                    <strong>FORA DA ZONA (Novos Desafios)</strong>
+                    <input class="zone-input" placeholder="Novo desafio 1">
+                    <input class="zone-input" placeholder="Novo desafio 2">
+                    <input class="zone-input" placeholder="Novo desafio 3">
+                    
+                    <div class="circle-inner">
+                        <strong>ZONA DE CONFORTO</strong>
+                        <input class="zone-input" placeholder="O que já faço bem">
+                        <input class="zone-input" placeholder="Onde me sinto seguro">
+                    </div>
+                </div>
+            </div>
+            
+            <label>Como eu me sinto quando tento algo novo?</label>
+            <textarea></textarea>
+        </div>
+
+        <div id="p8" class="page">
+            <h2>Minha Autoestima</h2>
+            
+            <label>O que é único em mim?</label>
+            <textarea></textarea>
+
+            <label>O que eu amo em mim?</label>
+            <textarea></textarea>
+
+            <label>5 coisas que me fazem sentir orgulho de mim:</label>
+            <textarea placeholder="1... 2... 3... 4... 5..."></textarea>
+
+            <label>5 boas qualidades que estou desenvolvendo:</label>
+            <textarea placeholder="Estou aprendendo a ser..."></textarea>
+        </div>
+
+        <button class="btn-action" onclick="window.print()">🖨️ Salvar Caderno (PDF)</button>
+
+    </div>
+
+    <script>
+        // Lógica de Abas
+        function showPage(pageId) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Remover classe ativa dos botões
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            
+            // Mostrar página selecionada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Ativar botão clicado
+            event.target.classList.add('active');
+        }
+
+        // Gerador de Afirmações A-Z (Página 3)
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        const suggestions = {
+            'A': 'Amigável, Amoroso', 'B': 'Bondoso, Brilhante', 'C': 'Corajoso, Criativo',
+            'D': 'Dedicado, Divertido', 'E': 'Especial, Empático', 'F': 'Forte, Feliz',
+            'G': 'Gentil, Generoso', 'H': 'Honesto, Habilidoso', 'I': 'Inteligente, Incrível',
+            'J': 'Justo, Jovial', 'K': 'Kawaii (Fofo)', 'L': 'Leal, Livre',
+            'M': 'Maravilhoso, Melhor', 'N': 'Notável, Nobre', 'O': 'Otimista, Original',
+            'P': 'Paciente, Positivo', 'Q': 'Querido', 'R': 'Resiliente, Rápido',
+            'S': 'Sincero, Sábio', 'T': 'Talentoso, Tranquilo', 'U': 'Único, Útil',
+            'V': 'Valente, Vencedor', 'W': 'Wow (Surpreendente)', 'X': 'Xodó',
+            'Y': 'Yes (Positivo)', 'Z': 'Zeloso'
+        };
+
+        const azContainer = document.getElementById('az-container');
+        
+        alphabet.forEach(letter => {
+            const div = document.createElement('div');
+            div.style.marginBottom = "10px";
+            div.innerHTML = `
+                <div style="display:flex; align-items:center;">
+                    <strong style="width:30px; font-size:1.2rem; color:var(--primary);">${letter}</strong>
+                    <input type="text" id="input-${letter}" placeholder="Eu sou...">
+                    <button class="btn-suggest" onclick="fillSuggestion('${letter}')">💡</button>
+                </div>
+            `;
+            azContainer.appendChild(div);
+        });
+
+        function fillSuggestion(letter) {
+            const input = document.getElementById(`input-${letter}`);
+            if(input.value === "") {
+                input.value = suggestions[letter] || "";
+            } else {
+                alert("Sugestões para " + letter + ": " + suggestions[letter]);
+            }
+        }
+    </script>
+
+</body>
+</html>
