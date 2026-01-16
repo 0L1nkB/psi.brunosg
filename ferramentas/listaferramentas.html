@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Ferramentas | Psicologia</title>
+    <title>Painel de Ferramentas | Caderno Incrível</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
+            /* Paleta Caderno Incrível */
             --bg-color: #f0f8ff;
             --paper: #ffffff;
-            --primary: #6c5ce7;
-            --secondary: #00b894;
-            --accent: #fdcb6e;
+            --primary: #6c5ce7; /* Roxo */
+            --secondary: #00b894; /* Verde */
+            --accent: #fdcb6e; /* Amarelo */
+            --risk: #ff7675; /* Vermelho Suave */
             --text: #2d3436;
+            --shadow: rgba(0,0,0,0.1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
             margin: 0;
             padding: 40px;
             color: var(--text);
@@ -27,88 +32,121 @@
 
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
         }
 
+        /* CABEÇALHO LÚDICO */
         header {
             text-align: center;
             margin-bottom: 50px;
+            position: relative;
+        }
+
+        header::before {
+            content: ""; position: absolute; top: -45px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 350px; height: 45px; background-color: rgba(108, 92, 231, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: -1;
         }
 
         h1 {
             color: var(--primary);
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 #fff;
         }
 
-        .category-title {
-            font-size: 1.2rem;
-            font-weight: 800;
+        .subtitle {
+            font-size: 1.1rem;
             color: #636e72;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* SEPARADORES DE CATEGORIA */
+        .category-badge {
+            display: inline-block;
+            background: var(--text);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
             text-transform: uppercase;
             margin: 40px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #dfe6e9;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
         }
 
+        /* GRID DE FERRAMENTAS */
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
         }
 
+        /* CARTÃO DE FERRAMENTA (ESTILO POST-IT/CADERNO) */
         .tool-card {
             background: var(--paper);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 25px;
+            border-radius: 20px;
             text-decoration: none;
             color: var(--text);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
+            border: 3px solid var(--text);
             transition: transform 0.2s, box-shadow 0.2s;
-            border: 2px solid transparent;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
             border-color: var(--primary);
         }
 
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            background: #f1f2f6;
+        /* CÍRCULO DO ÍCONE */
+        .icon-circle {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
-            color: var(--primary);
+            font-size: 2rem;
             margin-bottom: 15px;
+            border: 2px dashed;
         }
 
         .tool-name {
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
+            font-weight: 800;
             margin-bottom: 5px;
+            line-height: 1.2;
         }
 
         .tool-desc {
-            font-size: 0.85rem;
-            color: #b2bec3;
+            font-size: 0.9rem;
+            color: #636e72;
+            font-style: italic;
         }
 
-        /* Cores específicas para ícones */
-        .tcc .icon-box { color: #6c5ce7; background: #e0dcfc; }
-        .te .icon-box { color: #e17055; background: #fadbd3; }
-        .aval .icon-box { color: #00b894; background: #dbfbf4; }
+        /* CORES ESPECÍFICAS POR TIPO */
+        .card-tcc .icon-circle { background: #e0dcfc; color: var(--primary); border-color: var(--primary); }
+        .card-te .icon-circle { background: #fadbd3; color: #e17055; border-color: #e17055; }
+        .card-aval .icon-circle { background: #dbfbf4; color: var(--secondary); border-color: var(--secondary); }
+
+        /* FITA ADESIVA (Detalhe visual) */
+        .tape {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 30px; background: rgba(255,255,255,0.6);
+            border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
 
     </style>
 </head>
@@ -116,74 +154,75 @@
 
     <div class="container">
         <header>
-            <h1><i class="fa-solid fa-shapes"></i> Painel de Ferramentas</h1>
-            <p>Selecione o recurso clínico abaixo:</p>
+            <h1>Painel de Ferramentas</h1>
+            <div class="subtitle">Psicologia Clínica & TCC</div>
         </header>
 
-        <div class="category-title"><i class="fa-solid fa-brain"></i> Terapia Cognitivo-Comportamental</div>
+        <div class="category-badge" style="background:var(--primary);">
+            <i class="fa-solid fa-brain"></i> Ferramentas TCC
+        </div>
         <div class="tools-grid">
             
-            <a href="caderno-tcc-v4.html" class="tool-card tcc">
-                <div class="icon-box"><i class="fa-solid fa-book-journal-whills"></i></div>
-                <div class="tool-name">Caderno TCC Completo</div>
-                <div class="tool-desc">16 Ferramentas (RPD, Distorções, Ação, Gratidão)</div>
+            <a href="caderno-tcc-v4.html" class="tool-card card-tcc">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-book-journal-whills"></i></div>
+                <div class="tool-name">Caderno TCC</div>
+                <div class="tool-desc">O "Super App": RPD, Distorções, Ação, Gratidão (v4.0)</div>
             </a>
 
-            <a href="conceituacao-ludica-ia.html" class="tool-card tcc">
-                <div class="icon-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <div class="tool-name">Conceituação TCC + IA</div>
-                <div class="tool-desc">Formulação de caso com reescrita inteligente</div>
-            </a>
-
-            <a href="caderno-autoestima.html" class="tool-card tcc">
-                <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
-                <div class="tool-name">Caderno de Autoestima</div>
-                <div class="tool-desc">Carta de amor próprio, Pote da gratidão</div>
+            <a href="caderno-autoestima.html" class="tool-card card-tcc">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-heart"></i></div>
+                <div class="tool-name">Caderno Autoestima</div>
+                <div class="tool-desc">Carta de Amor, Pote da Gratidão e Forças</div>
             </a>
 
         </div>
 
-        <div class="category-title"><i class="fa-solid fa-puzzle-piece"></i> Terapia do Esquema</div>
+        <div class="category-badge" style="background:#e17055;">
+            <i class="fa-solid fa-puzzle-piece"></i> Terapia do Esquema
+        </div>
         <div class="tools-grid">
 
-            <a href="conceituacao-esquema-ia.html" class="tool-card te">
-                <div class="icon-box"><i class="fa-solid fa-masks-theater"></i></div>
-                <div class="tool-name">Mapa dos Modos + IA</div>
-                <div class="tool-desc">Conceituação visual com suporte de IA</div>
-            </a>
-
-            <a href="smi.html" class="tool-card te">
-                <div class="icon-box"><i class="fa-solid fa-chart-simple"></i></div>
+            <a href="smi.html" class="tool-card card-te">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-chart-simple"></i></div>
                 <div class="tool-name">SMI (Modos)</div>
-                <div class="tool-desc">Inventário de Modos Esquemáticos (1.1)</div>
+                <div class="tool-desc">Inventário de Modos Esquemáticos</div>
             </a>
 
-            <a href="yci.html" class="tool-card te">
-                <div class="icon-box"><i class="fa-solid fa-shield-cat"></i></div>
+            <a href="yci.html" class="tool-card card-te">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-shield-cat"></i></div>
                 <div class="tool-name">YCI (Compensação)</div>
-                <div class="tool-desc">Inventário de Compensação de Young</div>
+                <div class="tool-desc">Inventário de Estratégias de Compensação</div>
             </a>
 
-            <a href="yrai.html" class="tool-card te">
-                <div class="icon-box"><i class="fa-solid fa-person-running"></i></div>
+            <a href="yrai.html" class="tool-card card-te">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-person-running"></i></div>
                 <div class="tool-name">YRAI (Evitação)</div>
-                <div class="tool-desc">Inventário de Evitação Young-Rygh</div>
+                <div class="tool-desc">Inventário de Estratégias de Evitação</div>
             </a>
 
-            <a href="ypi.html" class="tool-card te">
-                <div class="icon-box"><i class="fa-solid fa-children"></i></div>
+            <a href="ypi.html" class="tool-card card-te">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-children"></i></div>
                 <div class="tool-name">YPI (Pais)</div>
-                <div class="tool-desc">Questionário de Estilos Parentais</div>
+                <div class="tool-desc">Estilos Parentais (Mãe e Pai)</div>
             </a>
 
         </div>
 
-        <div class="category-title"><i class="fa-solid fa-clipboard-check"></i> Avaliação & Outros</div>
+        <div class="category-badge" style="background:var(--secondary);">
+            <i class="fa-solid fa-clipboard-check"></i> Avaliação & Outros
+        </div>
         <div class="tools-grid">
 
-            <a href="bes.html" class="tool-card aval">
-                <div class="icon-box"><i class="fa-solid fa-utensils"></i></div>
-                <div class="tool-name">BES (Compulsão)</div>
+            <a href="bes.html" class="tool-card card-aval">
+                <div class="tape"></div>
+                <div class="icon-circle"><i class="fa-solid fa-utensils"></i></div>
+                <div class="tool-name">BES (Alimentar)</div>
                 <div class="tool-desc">Escala de Compulsão Alimentar Periódica</div>
             </a>
 
