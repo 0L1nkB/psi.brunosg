@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Ferramentas | Psicologia</title>
+    <title>Minhas Ferramentas | Bruno de Souza</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             /* Paleta Lúdica */
             --bg-color: #f0f8ff;
             --paper: #ffffff;
-            --primary: #6c5ce7; /* Roxo */
-            --secondary: #00b894; /* Verde */
-            --accent: #fdcb6e; /* Amarelo */
+            --primary: #6c5ce7;
+            --secondary: #00b894;
+            --accent: #fdcb6e;
             --text: #2d3436;
             --te-color: #e17055; /* Cor Terapia Esquema */
             --aval-color: #0984e3; /* Cor Avaliação */
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
         body {
@@ -24,208 +25,409 @@
             background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
             background-size: 20px 20px;
             margin: 0;
-            padding: 40px;
+            padding: 20px;
             color: var(--text);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .container {
+        /* --- TELA DE LOGIN (Mantida Original) --- */
+        #login-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(108, 92, 231, 0.95);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
+            width: 320px;
+            border: 4px solid var(--text);
+            position: relative;
+        }
+
+        .login-box::before {
+            content: "🔒";
+            font-size: 3rem;
+            position: absolute;
+            top: -30px; left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+            border: 4px solid var(--text);
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px dashed #b2bec3;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            box-sizing: border-box;
+            font-family: inherit;
+            color: var(--primary);
+        }
+
+        .login-input:focus { outline: none; border-color: var(--primary); background: #fdf5e6; }
+
+        .btn-login {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-family: inherit;
+            font-weight: bold;
+            box-shadow: 0 5px 0 #00896f;
+            transition: transform 0.1s;
+            width: 100%;
+        }
+
+        .btn-login:active { transform: translateY(5px); box-shadow: none; }
+        .error-msg { color: #d63031; display: none; margin-top: 15px; font-weight: bold; }
+
+
+        /* --- ÁREA PRINCIPAL --- */
+        #dashboard {
+            display: none;
             width: 100%;
             max-width: 1100px;
         }
 
-        /* CABEÇALHO ESTILO CADERNO */
         header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid var(--text);
+            box-shadow: 8px 8px 0 var(--shadow);
             position: relative;
         }
 
-        header::before {
-            content: ""; position: absolute; top: -45px; left: 50%; transform: translateX(-50%) rotate(-1deg);
-            width: 380px; height: 50px; background-color: rgba(108, 92, 231, 0.8);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: -1;
-            border-radius: 2px;
+        header::after {
+            content: "";
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 30px;
+            background-color: rgba(255, 234, 167, 0.8);
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            color: var(--primary);
-            font-size: 3rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 0 #fff;
-        }
+        h1 { margin: 0; color: var(--primary); font-size: 2.2rem; }
+        .crp { display: inline-block; background: #dfe6e9; padding: 5px 15px; border-radius: 15px; font-size: 0.9rem; margin-top: 10px; font-weight: bold; color: #636e72; }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: #636e72;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        /* SEÇÃO DE CATEGORIA */
-        .category-section { margin-bottom: 50px; }
-
-        .category-title {
+        /* TÍTULOS DAS SEÇÕES */
+        .section-label {
             font-size: 1.5rem;
             color: var(--text);
-            background: #fff;
-            display: inline-block;
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: 3px solid var(--text);
-            box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
-            margin-bottom: 25px;
-            transform: rotate(-1deg);
+            margin: 50px 0 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 10px;
         }
-
+        
+        /* GRID DE CARTÕES */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 25px;
         }
 
-        /* CARD DA FERRAMENTA */
-        .tool-card {
-            background: var(--paper);
-            padding: 25px;
+        /* ESTILO DO CARTÃO */
+        .card {
+            background: white;
             border-radius: 20px;
+            padding: 20px;
             text-decoration: none;
             color: var(--text);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             border: 3px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
             overflow: hidden;
         }
 
-        .tool-card:hover {
-            transform: translateY(-8px) rotate(1deg);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border-color: currentColor;
+        .card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+            border-color: currentColor; /* Pega a cor da categoria */
         }
 
-        /* FITA ADESIVA NO CARD */
-        .tape {
-            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-            width: 80px; height: 35px; background: rgba(255,255,255,0.4);
-            border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .icon-box {
-            width: 80px; height: 80px;
-            border-radius: 50%;
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: white;
+            width: 65px; height: 65px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; margin-bottom: 15px;
-            border: 3px dashed currentColor;
+            border-radius: 50%;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            border: 2px solid transparent;
         }
 
-        .tool-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
-        .tool-desc { font-size: 0.95rem; color: #666; font-style: italic; }
+        .card-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; line-height: 1.2; }
+        .card-desc { font-size: 0.85rem; opacity: 0.8; line-height: 1.4; }
 
-        /* ESTILOS ESPECÍFICOS */
-        /* TCC */
-        .tcc .category-title { border-color: var(--primary); color: var(--primary); }
-        .card-tcc { color: var(--primary); }
-        .card-tcc .icon-box { background: #efeaff; }
+        /* --- CATEGORIAS & CORES --- */
+        
+        /* Jogos & Lúdico */
+        .cat-ludico { background: #f0f3ff; border-bottom: 6px solid var(--primary); color: var(--primary); }
+        .cat-ludico .card-icon { color: var(--primary); border-color: #e0dcfc; }
 
-        /* Esquema */
-        .te .category-title { border-color: var(--te-color); color: var(--te-color); }
-        .card-te { color: var(--te-color); }
-        .card-te .icon-box { background: #ffedea; }
+        /* Baralhos */
+        .cat-baralho { background: #fffce0; border-bottom: 6px solid var(--accent); color: #d35400; }
+        .cat-baralho .card-icon { color: #f39c12; border-color: #fceeb5; }
+
+        /* Ferramentas TCC */
+        .cat-ferramenta { background: #eafff8; border-bottom: 6px solid var(--secondary); color: #006266; }
+        .cat-ferramenta .card-icon { color: var(--secondary); border-color: #c7ece4; }
+
+        /* Terapia do Esquema */
+        .cat-te { background: #fff0f0; border-bottom: 6px solid var(--te-color); color: #c0392b; }
+        .cat-te .card-icon { color: var(--te-color); border-color: #fadbd3; }
 
         /* Avaliação */
-        .aval .category-title { border-color: var(--aval-color); color: var(--aval-color); }
-        .card-aval { color: var(--aval-color); }
-        .card-aval .icon-box { background: #e0f0ff; }
+        .cat-aval { background: #e0f7fa; border-bottom: 6px solid var(--aval-color); color: #006064; }
+        .cat-aval .card-icon { color: var(--aval-color); border-color: #b2ebf2; }
+
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            padding-bottom: 20px;
+        }
 
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div id="login-screen">
+        <div class="login-box">
+            <h2 style="margin-top: 20px;">Olá! 👋</h2>
+            <p>Qual é a palavra-chave?</p>
+            <input type="password" id="password" class="login-input" placeholder="Digite aqui...">
+            <button type="button" class="btn-login" onclick="checkLogin()">ABRIR BAÚ 🔓</button>
+            <p class="error-msg" id="error">Ops! Tente de novo.</p>
+        </div>
+    </div>
+
+    <div id="dashboard">
         <header>
-            <h1>Painel de Ferramentas</h1>
-            <div class="subtitle">Recursos Clínicos Digitais</div>
+            <h1>🧩 Minha Caixa de Ferramentas</h1>
+            <div class="crp">Psicólogo Bruno de Souza • CRP 07/44472</div>
         </header>
 
-        <div class="category-section tcc">
-            <div class="category-title"><i class="fa-solid fa-brain"></i> Terapia Cognitiva</div>
-            <div class="grid">
-                
-                <a href="caderno-tcc-v4.html" class="tool-card card-tcc">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-book-journal-whills"></i></div>
-                    <div class="tool-name">Caderno TCC</div>
-                    <div class="tool-desc">16 Ferramentas: RPD, Distorções, Ação, Ansiedade (v4.0)</div>
-                </a>
-
-                <a href="caderno-autoestima.html" class="tool-card card-tcc">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
-                    <div class="tool-name">Caderno Autoestima</div>
-                    <div class="tool-desc">Carta de Amor, Pote da Gratidão e Forças</div>
-                </a>
-
-            </div>
+        <div class="section-label" style="color:var(--primary)"><i class="fa-solid fa-gamepad"></i> Jogos e Lúdico</div>
+        <div class="grid">
+            <a href="jogo-memoria-emocoes.html" class="card cat-ludico">
+                <div class="card-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                <div class="card-title">Memória das Emoções</div>
+                <div class="card-desc">Jogo divertido com os personagens.</div>
+            </a>
+            <a href="roleta-afirmacoes.html" class="card cat-ludico">
+                <div class="card-icon"><i class="fa-solid fa-dharmachakra"></i></div>
+                <div class="card-title">Roleta de Elogios</div>
+                <div class="card-desc">Gire a roda e descubra uma qualidade!</div>
+            </a>
+            <a href="baralho-emocoes.html" class="card cat-ludico">
+                <div class="card-icon"><i class="fa-solid fa-face-smile-wink"></i></div>
+                <div class="card-title">O que são Emoções?</div>
+                <div class="card-desc">Cartas educativas sobre o sentir.</div>
+            </a>
+            <a href="baralhotdah.html" class="card cat-ludico">
+                <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="card-title">Cartas TDAH</div>
+                <div class="card-desc">Psicoeducação visual sobre atenção.</div>
+            </a>
         </div>
 
-        <div class="category-section te">
-            <div class="category-title"><i class="fa-solid fa-puzzle-piece"></i> Terapia do Esquema</div>
-            <div class="grid">
-
-                <a href="smi.html" class="tool-card card-te">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-chart-simple"></i></div>
-                    <div class="tool-name">SMI (Modos)</div>
-                    <div class="tool-desc">Inventário de Modos Esquemáticos (1.1)</div>
-                </a>
-
-                <a href="yci.html" class="tool-card card-te">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-shield-cat"></i></div>
-                    <div class="tool-name">YCI (Compensação)</div>
-                    <div class="tool-desc">Inventário de Compensação de Young</div>
-                </a>
-
-                <a href="yrai.html" class="tool-card card-te">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-person-running"></i></div>
-                    <div class="tool-name">YRAI (Evitação)</div>
-                    <div class="tool-desc">Inventário de Evitação Young-Rygh</div>
-                </a>
-
-                <a href="ypi.html" class="tool-card card-te">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-children"></i></div>
-                    <div class="tool-name">YPI (Pais)</div>
-                    <div class="tool-desc">Questionário de Estilos Parentais</div>
-                </a>
-
-            </div>
+        <div class="section-label" style="color:#d35400"><i class="fa-solid fa-layer-group"></i> Baralhos de Conversa</div>
+        <div class="grid">
+            <a href="autoestima-teen.html" class="card cat-baralho">
+                <div class="card-icon"><i class="fa-solid fa-gem"></i></div>
+                <div class="card-title">Autoestima Teen</div>
+                <div class="card-desc">Perguntas para adolescentes.</div>
+            </a>
+            <a href="baralho-puxa-conversa.html" class="card cat-baralho">
+                <div class="card-icon"><i class="fa-solid fa-comments"></i></div>
+                <div class="card-title">Puxa Conversa</div>
+                <div class="card-desc">Quebra-gelo para iniciar sessões.</div>
+            </a>
+            <a href="baralho-autoconhecimento.html" class="card cat-baralho">
+                <div class="card-icon"><i class="fa-solid fa-mirror"></i></div>
+                <div class="card-title">Autoconhecimento</div>
+                <div class="card-desc">Reflexões profundas sobre a vida.</div>
+            </a>
+            <a href="baralho-enfrentamento.html" class="card cat-baralho">
+                <div class="card-icon"><i class="fa-solid fa-shield-heart"></i></div>
+                <div class="card-title">Escudo da Autoestima</div>
+                <div class="card-desc">Cartões de enfrentamento.</div>
+            </a>
         </div>
 
-        <div class="category-section aval">
-            <div class="category-title"><i class="fa-solid fa-clipboard-check"></i> Avaliação & Outros</div>
-            <div class="grid">
-
-                <a href="bes.html" class="tool-card card-aval">
-                    <div class="tape"></div>
-                    <div class="icon-box"><i class="fa-solid fa-utensils"></i></div>
-                    <div class="tool-name">BES (Alimentar)</div>
-                    <div class="tool-desc">Escala de Compulsão Alimentar Periódica</div>
-                </a>
-
-            </div>
+        <div class="section-label" style="color:var(--secondary)"><i class="fa-solid fa-brain"></i> Ferramentas TCC</div>
+        <div class="grid">
+            <a href="caderno-tcc-v4.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-book-journal-whills"></i></div>
+                <div class="card-title">Caderno TCC (Super App)</div>
+                <div class="card-desc">RPD, Distorções, Ação e Gratidão (v4.0).</div>
+            </a>
+            <a href="caderno-autoestima.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-heart"></i></div>
+                <div class="card-title">Caderno Autoestima</div>
+                <div class="card-desc">Atividades de escrita terapêutica.</div>
+            </a>
+            <a href="baralhodistorcoescognitivas.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-glasses"></i></div>
+                <div class="card-title">Baralho das Distorções</div>
+                <div class="card-desc">Identifique erros de pensamento.</div>
+            </a>
+            <a href="rpd.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                <div class="card-title">RPD Simples</div>
+                <div class="card-desc">Registro rápido de pensamentos.</div>
+            </a>
+            <a href="diario-gratidao.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-sun"></i></div>
+                <div class="card-title">Diário de Conquistas</div>
+                <div class="card-desc">Foco no positivo do dia.</div>
+            </a>
+            <a href="termometro-autoestima.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-temperature-half"></i></div>
+                <div class="card-title">Termômetro</div>
+                <div class="card-desc">Monitoramento de humor/autoestima.</div>
+            </a>
+            <a href="minhas-conquistas.html" class="card cat-ferramenta">
+                <div class="card-icon"><i class="fa-solid fa-medal"></i></div>
+                <div class="card-title">Minhas Conquistas</div>
+                <div class="card-desc">Celebração de vitórias.</div>
+            </a>
         </div>
 
+        <div class="section-label" style="color:var(--te-color)"><i class="fa-solid fa-puzzle-piece"></i> Terapia do Esquema</div>
+        <div class="grid">
+            <a href="smi.html" class="card cat-te">
+                <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <div class="card-title">SMI (Modos)</div>
+                <div class="card-desc">Inventário de Modos Esquemáticos.</div>
+            </a>
+            <a href="ysqs3.html" class="card cat-te">
+                <div class="card-icon"><i class="fa-solid fa-list-check"></i></div>
+                <div class="card-title">YSQ (Esquemas)</div>
+                <div class="card-desc">Questionário de Esquemas de Young.</div>
+            </a>
+            <a href="yci.html" class="card cat-te">
+                <div class="card-icon"><i class="fa-solid fa-shield-cat"></i></div>
+                <div class="card-title">YCI (Compensação)</div>
+                <div class="card-desc">Estratégias de compensação.</div>
+            </a>
+            <a href="yrai.html" class="card cat-te">
+                <div class="card-icon"><i class="fa-solid fa-person-running"></i></div>
+                <div class="card-title">YRAI (Evitação)</div>
+                <div class="card-desc">Estratégias de evitação.</div>
+            </a>
+            <a href="ypi.html" class="card cat-te">
+                <div class="card-icon"><i class="fa-solid fa-children"></i></div>
+                <div class="card-title">YPI (Pais)</div>
+                <div class="card-desc">Estilos Parentais (Origem).</div>
+            </a>
+        </div>
+
+        <div class="section-label" style="color:var(--aval-color)"><i class="fa-solid fa-clipboard-check"></i> Avaliação & Escalas</div>
+        <div class="grid">
+            <a href="bes.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
+                <div class="card-title">BES (Alimentar)</div>
+                <div class="card-desc">Escala de Compulsão Alimentar.</div>
+            </a>
+            <a href="asrs18.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <div class="card-title">ASRS (TDAH)</div>
+                <div class="card-desc">Rastreio de TDAH Adulto.</div>
+            </a>
+            <a href="bai.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="card-title">BAI (Ansiedade)</div>
+                <div class="card-desc">Inventário de Ansiedade Beck.</div>
+            </a>
+            <a href="bdi.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-cloud-rain"></i></div>
+                <div class="card-title">BDI (Depressão)</div>
+                <div class="card-desc">Inventário de Depressão Beck.</div>
+            </a>
+            <a href="bhs.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                <div class="card-title">BHS (Desesperança)</div>
+                <div class="card-desc">Escala de Desesperança.</div>
+            </a>
+            <a href="masc.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-child-reaching"></i></div>
+                <div class="card-title">MASC</div>
+                <div class="card-desc">Escala de Ansiedade Infantil.</div>
+            </a>
+            <a href="spin.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-users-slash"></i></div>
+                <div class="card-title">SPIN (Social)</div>
+                <div class="card-desc">Fobia Social.</div>
+            </a>
+            <a href="snap-iv.html" class="card cat-aval">
+                <div class="card-icon"><i class="fa-solid fa-pencil"></i></div>
+                <div class="card-title">SNAP-IV</div>
+                <div class="card-desc">Rastreio TDAH Infantil.</div>
+            </a>
+        </div>
+
+        <footer>
+            Feito com carinho ❤️ • Uso exclusivo do Psi Bruno
+        </footer>
     </div>
+
+    <script>
+        const SENHA_CORRETA = "psi123"; // SENHA AQUI
+
+        function checkLogin() {
+            var input = document.getElementById('password');
+            var error = document.getElementById('error');
+            
+            if (input.value === SENHA_CORRETA) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            } else {
+                error.style.display = 'block';
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        document.getElementById('password').addEventListener("keypress", function(e) {
+            if (e.key === "Enter") checkLogin();
+        });
+    </script>
 
 </body>
 </html>
