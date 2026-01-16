@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicoeducação das Emoções | Completo</title>
+    <style>
+        :root {
+            /* Cores dos Personagens (Divertida Mente 1 e 2) */
+            --joy: #ffeaa7;      /* Alegria (Amarelo) */
+            --joy-text: #d35400;
+            
+            --sadness: #74b9ff;  /* Tristeza (Azul) */
+            --sadness-text: #0984e3;
+            
+            --anger: #ff7675;    /* Raiva (Vermelho) */
+            --anger-text: #d63031;
+            
+            --fear: #a29bfe;     /* Medo (Roxo Claro) */
+            --fear-text: #6c5ce7;
+            
+            --disgust: #55efc4;  /* Nojo (Verde) */
+            --disgust-text: #00b894;
+            
+            --love: #fd79a8;     /* Amor (Rosa Bebê) */
+            --love-text: #e84393;
+
+            /* NOVAS EMOÇÕES */
+            --anxiety: #fab1a0;  /* Ansiedade (Laranja) */
+            --anxiety-text: #e17055;
+
+            --ennui: #4834d4;    /* Tédio (Índigo/Roxo Escuro) */
+            --ennui-text: #ffffff; /* Texto branco para contraste */
+
+            --embarrassment: #ff9ff3; /* Vergonha (Rosa Choque) */
+            --embarrassment-text: #f368e0;
+
+            --envy: #00cec9;     /* Inveja (Turquesa/Ciano) */
+            --envy-text: #008985;
+
+            --bg: #f7f1e3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 { color: #2d3436; margin: 0; font-size: 1.8rem; text-transform: uppercase; }
+        .subtitle { color: #636e72; font-size: 1rem; margin-top: 5px; }
+
+        /* ÁREA DO BARALHO */
+        .deck-container {
+            position: relative;
+            width: 320px;
+            height: 480px;
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* FACES DA CARTA */
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            box-sizing: border-box;
+            border: 8px solid white;
+            text-align: center;
+        }
+
+        /* FRENTE (Nome + Ícone) */
+        .face-front {
+            background: white;
+            transform: rotateY(0deg);
+        }
+
+        /* Classes de cores dinâmicas */
+        .face-front.joy { background: var(--joy); color: var(--joy-text); }
+        .face-front.sadness { background: var(--sadness); color: var(--sadness-text); }
+        .face-front.anger { background: var(--anger); color: var(--anger-text); }
+        .face-front.fear { background: var(--fear); color: var(--fear-text); }
+        .face-front.disgust { background: var(--disgust); color: var(--disgust-text); }
+        .face-front.love { background: var(--love); color: var(--love-text); }
+        
+        .face-front.anxiety { background: var(--anxiety); color: var(--anxiety-text); }
+        .face-front.ennui { background: var(--ennui); color: var(--ennui-text); }
+        .face-front.embarrassment { background: var(--embarrassment); color: var(--embarrassment-text); }
+        .face-front.envy { background: var(--envy); color: var(--envy-text); }
+
+
+        .emoji-big { font-size: 6rem; margin-bottom: 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .emotion-name { font-size: 2.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
+        .tap-hint { margin-top: 30px; font-size: 0.9rem; opacity: 0.7; font-weight: bold; }
+
+        /* VERSO (Definição) */
+        .face-back {
+            background: white;
+            color: #2d3436;
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+            padding-top: 40px;
+        }
+
+        .def-title { font-size: 1.1rem; color: #b2bec3; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+        
+        .definition { 
+            font-size: 1rem; 
+            line-height: 1.5; 
+            margin-bottom: 25px; 
+            background: #f1f2f6; 
+            padding: 15px; 
+            border-radius: 10px; 
+            width: 100%;
+        }
+
+        .prompt-box {
+            border: 2px dashed #ccc;
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+            background: #fff;
+        }
+
+        .prompt-label { font-weight: bold; color: #636e72; display: block; margin-bottom: 5px; }
+        .prompt-text { font-size: 1.1rem; font-weight: bold; color: #2d3436; }
+
+        /* CONTROLES */
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            background: white;
+            color: #2d3436;
+        }
+
+        button:hover { transform: scale(1.05); }
+        .btn-next { background: #2d3436; color: white; }
+
+        /* Indicador de progresso */
+        .counter {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Psicoeducação Emoções</h1>
+        <div class="subtitle">Baralho Completo</div>
+    </header>
+
+    <div class="deck-container">
+        <div class="card" id="card" onclick="flipCard()">
+            
+            <div class="card-face face-front" id="front-face">
+                <div class="emoji-big" id="icon">😊</div>
+                <div class="emotion-name" id="title">Alegria</div>
+                <div class="tap-hint">Toque para saber mais</div>
+            </div>
+
+            <div class="card-face face-back">
+                <span class="def-title">O que isso quer dizer?</span>
+                <div class="definition" id="def-text">
+                    ...
+                </div>
+
+                <div class="prompt-box">
+                    <span class="prompt-label">COMPLETE A FRASE:</span>
+                    <div class="prompt-text" id="prompt-text">...</div>
+                </div>
+
+                <div style="margin-top: auto; font-size: 0.8rem; color: #999;">Toque para voltar</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="prevCard()">❮ Voltar</button>
+        <button class="btn-next" onclick="nextCard()">Próxima ❯</button>
+    </div>
+    <div class="counter" id="counter-display">1 / 10</div>
+
+    <script>
+        // BANCO DE DADOS COMPLETO
+        const emotions = [
+            {
+                id: "joy",
+                name: "Alegria",
+                icon: "😁",
+                def: "Quer dizer que me sinto satisfeito, valorizado e aceito. É a energia que nos motiva a continuar.",
+                prompt: "Sinto alegria quando...",
+                style: "joy"
+            },
+            {
+                id: "sadness",
+                name: "Tristeza",
+                icon: "😢",
+                def: "Quer dizer que sinto que perdi algo importante ou fui deixado de lado. Ela nos ajuda a parar e processar perdas.",
+                prompt: "Fico triste quando...",
+                style: "sadness"
+            },
+            {
+                id: "anger",
+                name: "Raiva",
+                icon: "😡",
+                def: "Sinto-me ofendido, injustiçado ou desrespeitado. É uma defesa quando algo bloqueia nossos objetivos.",
+                prompt: "Sinto raiva quando...",
+                style: "anger"
+            },
+            {
+                id: "fear",
+                name: "Medo",
+                icon: "😱",
+                def: "Sinto-me desprotegido, frágil ou em perigo. É um alerta importante para nos mantermos seguros.",
+                prompt: "Sinto medo quando...",
+                style: "fear"
+            },
+            {
+                id: "anxiety",
+                name: "Ansiedade",
+                icon: "😬",
+                def: "É uma preocupação com o futuro. Sinto um 'frio na barriga' tentando prever e controlar o que vai acontecer.",
+                prompt: "Fico ansioso quando tenho que...",
+                style: "anxiety"
+            },
+            {
+                id: "ennui",
+                name: "Tédio",
+                icon: "😑",
+                def: "Sinto desinteresse, falta de energia ou que nada parece divertido no momento. É como se tudo ficasse cinza.",
+                prompt: "Fico entediado quando...",
+                style: "ennui"
+            },
+            {
+                id: "embarrassment",
+                name: "Vergonha",
+                icon: "🫣",
+                def: "Sinto que fiz algo errado na frente dos outros, que estou exposto ou inadequado. Dá vontade de se esconder.",
+                prompt: "Sinto vergonha se...",
+                style: "embarrassment"
+            },
+            {
+                id: "envy",
+                name: "Inveja",
+                icon: "😒",
+                def: "Sinto um desconforto ao ver alguém ter algo que eu queria ter. É o desejo de possuir a qualidade ou conquista do outro.",
+                prompt: "Sinto inveja quando vejo...",
+                style: "envy"
+            },
+            {
+                id: "disgust",
+                name: "Nojo",
+                icon: "🤢",
+                def: "Sinto recusa ou enjoo. É uma defesa do corpo para nos afastar de coisas (ou atitudes) que podem ser tóxicas.",
+                prompt: "Sinto nojo quando...",
+                style: "disgust"
+            },
+            {
+                id: "love",
+                name: "Amor",
+                icon: "🥰",
+                def: "Sinto-me protegido, acolhido e conectado. É o sentimento profundo de cuidado por alguém ou algo.",
+                prompt: "Sinto amor por...",
+                style: "love"
+            }
+        ];
+
+        let currentIndex = 0;
+        const card = document.getElementById('card');
+        const counterDisplay = document.getElementById('counter-display');
+        
+        // Elementos para atualizar
+        const elFront = document.getElementById('front-face');
+        const elIcon = document.getElementById('icon');
+        const elTitle = document.getElementById('title');
+        const elDef = document.getElementById('def-text');
+        const elPrompt = document.getElementById('prompt-text');
+
+        function updateCard(index) {
+            const data = emotions[index];
+
+            // 1. Limpar classes de cor anteriores
+            elFront.className = "card-face face-front"; 
+            // 2. Adicionar nova cor
+            elFront.classList.add(data.style);
+
+            // 3. Atualizar Texto
+            elIcon.innerText = data.icon;
+            elTitle.innerText = data.name;
+            elDef.innerText = data.def;
+            elPrompt.innerText = `"${data.prompt}"`;
+            
+            // 4. Atualizar contador
+            counterDisplay.innerText = `${index + 1} / ${emotions.length}`;
+        }
+
+        function flipCard() {
+            card.classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % emotions.length;
+                    updateCard(currentIndex);
+                }, 400); 
+            } else {
+                currentIndex = (currentIndex + 1) % emotions.length;
+                updateCard(currentIndex);
+            }
+        }
+
+        function prevCard() {
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+                setTimeout(() => {
+                    currentIndex = (currentIndex - 1 + emotions.length) % emotions.length;
+                    updateCard(currentIndex);
+                }, 400);
+            } else {
+                currentIndex = (currentIndex - 1 + emotions.length) % emotions.length;
+                updateCard(currentIndex);
+            }
+        }
+
+        // Iniciar
+        updateCard(0);
+
+    </script>
+
+</body>
+</html>
