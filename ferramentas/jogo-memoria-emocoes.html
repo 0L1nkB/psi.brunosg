@@ -31,36 +31,42 @@
             text-align: center;
             margin-bottom: 30px;
             background: white;
-            padding: 20px 40px;
+            padding: 20px 60px;
             border-radius: 25px;
             border: 3px dashed var(--primary);
             box-shadow: 0 8px 0 rgba(0,0,0,0.1);
         }
 
-        h1 { margin: 0; color: var(--primary); font-size: 2rem; text-transform: uppercase; }
-        .subtitle { margin-top: 5px; color: #636e72; font-weight: bold; }
+        h1 { margin: 0; color: var(--primary); font-size: 2.2rem; text-transform: uppercase; }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: bold; font-size: 1.1rem; }
 
         /* PLACAR */
         .game-info {
-            display: flex; gap: 20px; margin-bottom: 20px;
-            font-size: 1.2rem; font-weight: bold; color: white;
-            background: var(--secondary); padding: 10px 30px;
+            display: flex; gap: 30px; margin-bottom: 30px;
+            font-size: 1.3rem; font-weight: bold; color: white;
+            background: var(--secondary); padding: 12px 40px;
             border-radius: 50px; box-shadow: 0 5px 0 #00896f;
         }
 
-        /* TABULEIRO */
+        /* --- TABULEIRO CORRIGIDO --- */
         .game-board {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            width: 100%; max-width: 800px;
+            /* Aumentei o tamanho mínimo da carta para 140px para não ficarem espremidas */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            /* Aumentei o espaço entre as cartas */
+            gap: 25px; 
+            width: 100%; 
+            /* Aumentei a largura máxima para usar melhor a tela */
+            max-width: 1100px; 
             perspective: 1000px;
+            margin-bottom: 40px;
+            justify-content: center; /* Centraliza o grid */
         }
 
         /* CARTA */
         .card {
             background-color: transparent;
-            height: 150px; /* Altura para caber a imagem */
+            height: 180px; /* Cartas mais altas para a imagem caber bem */
             cursor: pointer;
             position: relative;
             transform-style: preserve-3d;
@@ -71,7 +77,7 @@
 
         .card.match .front-face {
             border-color: #fdcb6e;
-            box-shadow: 0 0 15px #fdcb6e;
+            box-shadow: 0 0 20px #fdcb6e;
             animation: pulse 0.5s;
         }
 
@@ -82,7 +88,7 @@
             justify-content: center; align-items: center;
             backface-visibility: hidden;
             border: 4px solid white;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Sombra mais suave */
             background: white;
         }
 
@@ -90,53 +96,63 @@
         .back-face {
             background: var(--card-back);
             color: white;
-            font-size: 2.5rem;
+            font-size: 3rem;
         }
 
         /* FRENTE (CONTEÚDO) */
         .front-face {
             transform: rotateY(180deg);
-            padding: 5px;
+            padding: 10px;
+            justify-content: space-between;
         }
 
         /* Imagem */
         .card-img {
-            max-width: 90%;
-            max-height: 80%;
-            object-fit: contain;
+            width: 100%;
+            height: 110px; /* Altura fixa para a imagem não estourar */
+            object-fit: contain; /* A imagem se ajusta sem cortar */
             filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
         }
 
         /* Emoji (Caso falte imagem) */
-        .card-emoji { font-size: 3.5rem; }
+        .card-emoji { font-size: 4rem; }
 
         .card-label {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             font-weight: bold;
             color: #555;
-            margin-top: 5px;
             background: #fffce0;
-            padding: 2px 8px;
-            border-radius: 10px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            width: 100%;
+            text-align: center;
         }
 
         /* BOTÃO */
         .btn-restart {
-            margin-top: 30px; padding: 15px 40px;
+            padding: 15px 50px;
             background-color: var(--primary); color: white;
             border: none; border-radius: 50px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            font-size: 1.3rem; font-weight: bold; cursor: pointer;
             box-shadow: 0 6px 0 #4834d4; transition: 0.2s;
+            font-family: inherit;
         }
         .btn-restart:active { transform: translateY(4px); box-shadow: none; }
 
-        @keyframes pulse { 50% { transform: scale(1.1); } }
+        @keyframes pulse { 50% { transform: scale(1.05); } }
 
         /* Ajuste Mobile */
         @media (max-width: 600px) {
-            .game-board { grid-template-columns: repeat(3, 1fr); }
-            .card { height: 110px; }
+            .game-board { 
+                grid-template-columns: repeat(3, 1fr); /* 3 colunas no celular */
+                gap: 10px;
+            }
+            .card { height: 130px; }
+            .card-img { height: 70px; }
+            .card-label { font-size: 0.7rem; padding: 2px 5px; }
+            header { padding: 15px; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -154,22 +170,23 @@
 
     <div class="game-board" id="board"></div>
 
-    <button class="btn-restart" onclick="restartGame()">🔄 Reiniciar</button>
+    <button class="btn-restart" onclick="restartGame()">🔄 Reiniciar Jogo</button>
 
     <script>
-        // CONFIGURAÇÃO DAS IMAGENS
-        // O caminho "../img/" sobe um nível (sai de 'ferramentas') e entra em 'img'
+        // --- CONFIGURAÇÃO DAS IMAGENS ---
+        // CORREÇÃO: Como a pasta 'img' está DENTRO da pasta 'ferramentas' (onde este arquivo está),
+        // o caminho é 'img/Nome.png' e não '../img/'.
         const emotions = [
-            { name: "ALEGRIA", img: "../img/Poster-Alegria-PNG.png", emoji: "😁" },
-            { name: "TRISTEZA", img: "../img/Poster-Tristeza-PNG.png", emoji: "😢" },
-            { name: "RAIVA", img: "../img/Poster-Raiva-PNG.png", emoji: "😡" },
-            { name: "MEDO", img: "../img/Poster-Medo-PNG.png", emoji: "😱" },
-            { name: "NOJO", img: "../img/Poster-Nojinho-PNG.png", emoji: "🤢" },
-            { name: "ANSIEDADE", img: "../img/Poster-Ansiedade-PNG.png", emoji: "😬" },
-            { name: "TÉDIO", img: "../img/Poster-Tedio-PNG.png", emoji: "😑" },
-            { name: "VERGONHA", img: "../img/Poster-Vergonha-PNG.png", emoji: "🫣" },
-            { name: "INVEJA", img: "../img/Poster-Inveja-PNG.png", emoji: "😒" },
-            { name: "AMOR", img: "../img/Bing-Bong-Divertidamente-2-PNG.png", emoji: "🥰" } // Sem imagem no print, usa emoji
+            { name: "ALEGRIA", img: "img/Poster-Alegria-PNG.png", emoji: "😁" },
+            { name: "TRISTEZA", img: "img/Poster-Tristeza-PNG.png", emoji: "😢" },
+            { name: "RAIVA", img: "img/Poster-Raiva-PNG.png", emoji: "😡" },
+            { name: "MEDO", img: "img/Poster-Medo-PNG.png", emoji: "😱" },
+            { name: "NOJO", img: "img/Poster-Nojinho-PNG.png", emoji: "🤢" },
+            { name: "ANSIEDADE", img: "img/Poster-Ansiedade-PNG.png", emoji: "😬" },
+            { name: "TÉDIO", img: "img/Poster-Tedio-PNG.png", emoji: "😑" },
+            { name: "VERGONHA", img: "img/Poster-Vergonha-PNG.png", emoji: "🫣" },
+            { name: "INVEJA", img: "img/Poster-Inveja-PNG.png", emoji: "😒" },
+            { name: "AMOR", img: null, emoji: "🥰" } // Amor usa Emoji pois não tem imagem na pasta
         ];
 
         const board = document.getElementById('board');
@@ -195,8 +212,9 @@
                 card.dataset.name = item.name;
 
                 // Verifica se tem imagem ou usa emoji
+                // A classe onError ajuda caso a imagem não carregue, mostrando o emoji
                 const contentHtml = item.img 
-                    ? `<img src="${item.img}" class="card-img" alt="${item.name}">` 
+                    ? `<img src="${item.img}" class="card-img" alt="${item.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"> <span class="card-emoji" style="display:none">${item.emoji}</span>` 
                     : `<span class="card-emoji">${item.emoji}</span>`;
 
                 card.innerHTML = `
