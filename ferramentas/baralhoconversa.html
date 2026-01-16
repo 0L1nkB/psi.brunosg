@@ -3,129 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baralho Puxa Conversa | Versão Completa</title>
+    <title>Baralho Puxa Conversa | Edição Completa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4a90e2; /* Azul Principal */
-            --secondary: #f5a623; /* Laranja Destaque */
-            --accent: #e74c3c; /* Vermelho para temas intensos */
-            --green: #2ecc71; /* Verde para temas de crescimento */
-            --purple: #9b59b6; /* Roxo para temas profundos */
-            --bg-body: #f0f2f5;
-            --card-front: #ffffff;
-            --text: #2c3e50;
+            /* Paleta Lúdica (Consistente com o Caderno) */
+            --bg-color: #f0f8ff;
+            --sidebar-bg: #fffce0;
+            --paper: #ffffff;
+            --primary: #6c5ce7; /* Roxo */
+            --secondary: #00b894; /* Verde */
+            --accent: #fdcb6e; /* Amarelo */
+            --text: #2d3436;
+            --border-color: #dfe6e9;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-body);
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
             margin: 0;
-            padding: 20px;
+            display: flex;
+            height: 100vh;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* --- MENU LATERAL (TEMAS) --- */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 4px dashed #ffeaa7;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.05);
         }
 
-        header {
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
             text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h1 { 
-            color: var(--primary); 
-            margin: 0; 
-            font-size: 2rem; 
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .subtitle { color: #666; font-size: 1rem; margin-top: 5px; }
-
-        /* --- TELA 1: SELEÇÃO DE TEMAS (GRID) --- */
-        #selection-screen {
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .category-group {
-            margin-bottom: 25px;
         }
 
         .category-title {
-            font-size: 1.1rem;
-            color: #7f8c8d;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #b2bec3;
+            text-transform: uppercase;
             font-weight: bold;
-        }
-
-        .grid-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
+            margin: 15px 0 5px 0;
         }
 
         .theme-btn {
             background: white;
-            border: none;
+            border: 2px solid var(--border-color);
             color: var(--text);
-            padding: 15px 10px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            padding: 10px 15px;
+            text-align: left;
             cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-family: inherit;
+            font-weight: bold;
             transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-btn:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .theme-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 0 #4834d4;
+        }
+
+        /* --- ÁREA PRINCIPAL --- */
+        .main-content {
+            flex: 1;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            border-bottom: 4px solid transparent;
+            justify-content: center;
+            position: relative;
         }
 
-        /* Cores das bordas por categoria (visual) */
-        .cat-emocional .theme-btn { border-bottom-color: var(--primary); }
-        .cat-comportamental .theme-btn { border-bottom-color: var(--secondary); }
-        .cat-relacional .theme-btn { border-bottom-color: var(--purple); }
-        .cat-especifico .theme-btn { border-bottom-color: var(--green); }
-
-        .theme-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            background-color: #fafafa;
-        }
-
-        .btn-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
-
-        /* --- TELA 2: O BARALHO --- */
-        #deck-screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
+        /* CARD (ESTILO POST-IT / CADERNO) */
+        .card-container {
             width: 100%;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .active-theme-badge {
-            background: var(--primary);
-            color: white;
-            padding: 8px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
-        }
-
-        .scene {
-            width: 320px;
-            height: 480px;
+            max-width: 500px;
+            height: 350px;
             perspective: 1000px;
-            margin-bottom: 30px;
             cursor: pointer;
         }
 
@@ -133,196 +117,168 @@
             width: 100%;
             height: 100%;
             position: relative;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
             transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 20px;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
         }
 
-        .card.is-flipped {
-            transform: rotateY(180deg);
-        }
+        .card.flipped { transform: rotateY(180deg); }
 
-        .card-face {
+        /* LADOS DA CARTA */
+        .face {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             backface-visibility: hidden;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             padding: 30px;
             box-sizing: border-box;
-            border: 10px solid white;
+            text-align: center;
+            border: 4px solid var(--text);
+            background: white;
         }
 
-        /* VERSO (Capa do Baralho) */
+        /* VERSO (CAPA) */
         .face-back {
-            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
             color: white;
             transform: rotateY(0deg);
-        }
-
-        /* Design da Capa */
-        .deck-logo {
-            border: 2px solid rgba(255,255,255,0.3);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        /* FRENTE (Pergunta) */
-        .face-front {
-            background-color: var(--card-front);
-            color: var(--text);
-            transform: rotateY(180deg);
-            text-align: center;
-            background-image: radial-gradient(#f0f0f0 1px, transparent 1px);
+            /* Padrão de bolinhas */
+            background-image: radial-gradient(rgba(255,255,255,0.2) 2px, transparent 2px);
             background-size: 20px 20px;
         }
 
+        .icon-box { font-size: 5rem; margin-bottom: 10px; filter: drop-shadow(0 4px 0 rgba(0,0,0,0.2)); }
+        .deck-title { font-size: 2rem; font-weight: 800; text-transform: uppercase; }
+        .tap-hint { margin-top: 20px; font-size: 0.9rem; background: rgba(0,0,0,0.2); padding: 5px 15px; border-radius: 20px; }
+
+        /* FRENTE (PERGUNTA) */
+        .face-front {
+            transform: rotateY(180deg);
+            background-color: #fff;
+            /* Padrão de linhas de caderno */
+            background-image: linear-gradient(#e1e1e1 1px, transparent 1px);
+            background-size: 100% 30px;
+        }
+
+        /* Fita Adesiva na Carta */
+        .tape {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            width: 120px; height: 35px; background-color: rgba(255, 118, 117, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .theme-badge {
+            background: var(--accent); color: var(--text);
+            padding: 5px 15px; border-radius: 10px;
+            font-size: 0.8rem; font-weight: bold; text-transform: uppercase;
+            margin-bottom: 20px; display: inline-block;
+            transform: rotate(-1deg);
+            border: 2px dashed var(--text);
+        }
+
         .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
-            line-height: 1.5;
-            color: #2c3e50;
+            font-size: 1.6rem; font-weight: bold;
+            color: #2d3436; line-height: 1.4;
+            margin-top: 10px;
         }
 
-        .card-number {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 0.8rem;
-            color: #ccc;
+        .card-counter {
+            position: absolute; bottom: 15px; right: 20px;
+            font-size: 0.9rem; color: #b2bec3; font-weight: bold;
         }
 
-        .hint {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            color: #999;
-            font-style: italic;
-            position: absolute;
-            bottom: 20px;
+        /* BOTÃO */
+        .btn-draw {
+            margin-top: 40px;
+            background-color: var(--secondary);
+            color: white; border: none;
+            padding: 15px 50px; font-size: 1.3rem;
+            font-weight: bold; font-family: inherit;
+            border-radius: 50px; cursor: pointer;
+            box-shadow: 0 6px 0 #00896f;
+            transition: transform 0.1s;
+            display: flex; align-items: center; gap: 10px;
         }
+        .btn-draw:hover { transform: translateY(-3px); }
+        .btn-draw:active { transform: translateY(4px); box-shadow: none; }
 
-        /* CONTROLES */
-        .deck-controls {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
+        /* RESPONSIVIDADE */
+        @media (max-width: 800px) {
+            body { flex-direction: column; overflow-y: auto; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 4px dashed #ffeaa7; }
+            .theme-btn { white-space: nowrap; margin-right: 10px; font-size: 0.8rem; }
+            .card-container { width: 90%; height: 350px; margin-top: 20px; }
+            .question-text { font-size: 1.3rem; }
         }
-
-        .btn-action {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s, background 0.2s;
-        }
-
-        .btn-next { background: var(--secondary); color: white; }
-        .btn-back { background: #dfe6e9; color: #636e72; }
-        
-        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.05); }
-
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Baralho Puxa Conversa</h1>
-        <div class="subtitle" id="subtitle">Ferramenta Terapêutica Digital - CRP 07/44472</div>
-    </header>
-
-    <div id="selection-screen">
+    <div class="sidebar">
+        <div class="logo">🗨️ Puxa Conversa</div>
         
-        <div class="category-group cat-emocional">
-            <div class="category-title">Saúde Emocional</div>
-            <div class="grid-buttons">
-                <button class="theme-btn" onclick="loadTheme('Ansiedade')"><span class="btn-icon">😰</span>Ansiedade</button>
-                <button class="theme-btn" onclick="loadTheme('Depressão')"><span class="btn-icon">😔</span>Depressão</button>
-                <button class="theme-btn" onclick="loadTheme('Pânico')"><span class="btn-icon">🚨</span>Pânico</button>
-                <button class="theme-btn" onclick="loadTheme('Estresse')"><span class="btn-icon">🤯</span>Estresse/Burnout</button>
-                <button class="theme-btn" onclick="loadTheme('Autoestima')"><span class="btn-icon">💎</span>Autoestima</button>
-                <button class="theme-btn" onclick="loadTheme('Luto')"><span class="btn-icon">🕊️</span>Luto e Perdas</button>
-            </div>
-        </div>
+        <div class="category-title">Emocional</div>
+        <button class="theme-btn active" onclick="loadTheme('Ansiedade')">😰 Ansiedade</button>
+        <button class="theme-btn" onclick="loadTheme('Depressao')">😔 Depressão</button>
+        <button class="theme-btn" onclick="loadTheme('Estresse')">🤯 Estresse</button>
+        <button class="theme-btn" onclick="loadTheme('Autoestima')">💎 Autoestima</button>
+        <button class="theme-btn" onclick="loadTheme('Luto')">🕊️ Luto</button>
+        <button class="theme-btn" onclick="loadTheme('Burnout')">🔥 Burnout</button>
 
-        <div class="category-group cat-relacional">
-            <div class="category-title">Relacionamentos e Social</div>
-            <div class="grid-buttons">
-                <button class="theme-btn" onclick="loadTheme('Relacionamentos')"><span class="btn-icon">❤️</span>Amoroso</button>
-                <button class="theme-btn" onclick="loadTheme('Familia')"><span class="btn-icon">👨‍👩‍👧</span>Família/Abandono</button>
-                <button class="theme-btn" onclick="loadTheme('Ciúme')"><span class="btn-icon">👀</span>Ciúme Patológico</button>
-                <button class="theme-btn" onclick="loadTheme('Timidez')"><span class="btn-icon">😶</span>Timidez/Social</button>
-                <button class="theme-btn" onclick="loadTheme('FalarEmPublico')"><span class="btn-icon">🎤</span>Falar em Público</button>
-            </div>
-        </div>
+        <div class="category-title">Comportamental</div>
+        <button class="theme-btn" onclick="loadTheme('TOC')">🔄 TOC</button>
+        <button class="theme-btn" onclick="loadTheme('Impulsividade')">⚡ Impulsividade</button>
+        <button class="theme-btn" onclick="loadTheme('VicioGames')">🎮 Vício Games</button>
+        <button class="theme-btn" onclick="loadTheme('Financeiro')">💸 Financeiro</button>
+        <button class="theme-btn" onclick="loadTheme('Sinceridade')">🔪 Sinceridade</button>
 
-        <div class="category-group cat-comportamental">
-            <div class="category-title">Comportamento e Hábitos</div>
-            <div class="grid-buttons">
-                <button class="theme-btn" onclick="loadTheme('TOC')"><span class="btn-icon">🔄</span>TOC/Manias</button>
-                <button class="theme-btn" onclick="loadTheme('Impulsividade')"><span class="btn-icon">⚡</span>Impulsividade</button>
-                <button class="theme-btn" onclick="loadTheme('Rotina')"><span class="btn-icon">📅</span>Rotina/Procrastinação</button>
-                <button class="theme-btn" onclick="loadTheme('Financeiro')"><span class="btn-icon">💸</span>Financeiro</button>
-                <button class="theme-btn" onclick="loadTheme('Vicios')"><span class="btn-icon">🎮</span>Vício (Telas/Jogos)</button>
-            </div>
-        </div>
+        <div class="category-title">Social</div>
+        <button class="theme-btn" onclick="loadTheme('Relacionamento')">💕 Amoroso</button>
+        <button class="theme-btn" onclick="loadTheme('Ciume')">👀 Ciúme</button>
+        <button class="theme-btn" onclick="loadTheme('Timidez')">😶 Timidez</button>
+        <button class="theme-btn" onclick="loadTheme('Familia')">🏠 Família</button>
 
-        <div class="category-group cat-especifico">
-            <div class="category-title">Temas Específicos</div>
-            <div class="grid-buttons">
-                <button class="theme-btn" onclick="loadTheme('Imagem')"><span class="btn-icon">⚖️</span>Imagem/Emagrecer</button>
-                <button class="theme-btn" onclick="loadTheme('Provas')"><span class="btn-icon">📝</span>Provas/Desempenho</button>
-                <button class="theme-btn" onclick="loadTheme('Medos')"><span class="btn-icon">😨</span>Medos Específicos</button>
-                <button class="theme-btn" onclick="loadTheme('Autoconhecimento')"><span class="btn-icon">🧘</span>Autoconhecimento</button>
-            </div>
-        </div>
+        <div class="category-title">Medos</div>
+        <button class="theme-btn" onclick="loadTheme('Publico')">🎤 Falar em Público</button>
+        <button class="theme-btn" onclick="loadTheme('Morrer')">⚰️ Medo da Morte</button>
+        <button class="theme-btn" onclick="loadTheme('Provas')">📝 Provas</button>
     </div>
 
-    <div id="deck-screen">
-        <div class="active-theme-badge" id="theme-label">Tema: Geral</div>
-
-        <div class="scene">
-            <div class="card" onclick="flipCard()">
-                <div class="card-face face-back">
-                    <div class="deck-logo">
-                        <div style="font-size: 3rem; margin-bottom: 10px;">💬</div>
-                        <h2 style="margin:0; font-size: 1.5rem;">PUXA<br>CONVERSA</h2>
-                        <div style="font-size: 0.8rem; margin-top: 5px; opacity: 0.8;">Bruno de Souza</div>
-                    </div>
-                    <div style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">Toque para ver a pergunta</div>
+    <div class="main-content">
+        
+        <div class="card-container" onclick="flipCard()">
+            <div class="card" id="card">
+                
+                <div class="face face-back">
+                    <div class="icon-box">🃏</div>
+                    <div class="deck-title">PUXA<br>CONVERSA</div>
+                    <div class="tap-hint">Toque para revelar</div>
                 </div>
 
-                <div class="card-face face-front">
-                    <span class="card-number" id="card-counter">1/10</span>
-                    <div style="font-size: 3rem; color: #f5a623; margin-bottom: 20px;">?</div>
-                    <div class="question-text" id="q-text">
-                        Carregando pergunta...
-                    </div>
-                    <div class="hint">Toque para virar ou use o botão para próxima</div>
+                <div class="face face-front">
+                    <div class="tape"></div>
+                    <div class="theme-badge" id="card-theme">Tema</div>
+                    <div class="question-text" id="q-text">Selecione um tema ao lado para começar!</div>
+                    <div class="card-counter" id="counter">--</div>
                 </div>
+
             </div>
         </div>
 
-        <div class="deck-controls">
-            <button class="btn-action btn-back" onclick="goBack()">❮ Escolher Tema</button>
-            <button class="btn-action btn-next" onclick="nextCard()">Próxima Carta 🎲</button>
-        </div>
+        <button class="btn-draw" onclick="drawCard(event)">
+            <i class="fa-solid fa-random"></i> PRÓXIMA CARTA
+        </button>
+
     </div>
 
     <script>
-        // === BANCO DE DADOS MASSIVO ===
+        // BANCO DE DADOS (Expandido baseado nos temas do PDF)
         const database = {
             "Ansiedade": [
-                "Em que momentos do dia você percebe que sua ansiedade aumenta?",
-                "Qual é o primeiro sinal físico que seu corpo dá quando você está ansioso?",
+                "Qual é o primeiro sinal que seu corpo dá quando a ansiedade chega?",
                 "Se a sua ansiedade pudesse falar, o que ela estaria tentando te alertar?",
                 "Quais situações você evita hoje por causa da ansiedade?",
                 "O que te ajuda a se acalmar quando sente que vai perder o controle?",
@@ -330,314 +286,287 @@
                 "Como a ansiedade interfere no seu sono ou alimentação?",
                 "Você sente que precisa estar sempre no controle? Por quê?",
                 "Qual foi a última vez que você conseguiu superar um momento ansioso?",
-                "Quais pensamentos automáticos costumam surgir antes de uma crise?"
+                "Quais pensamentos automáticos costumam surgir antes de uma crise?",
+                "O que você diria para um amigo que estivesse ansioso agora?"
             ],
-            "Depressão": [
+            "Depressao": [
                 "Quais atividades costumavam te dar prazer e hoje não dão mais?",
-                "Em que momento do dia você sente mais falta de energia?",
-                "Qual é o pensamento mais cruel que você tem sobre si mesmo?",
                 "Se a tristeza fosse um lugar, como ele seria?",
-                "O que você diria para um amigo que estivesse sentindo o mesmo que você?",
                 "Qual pequena tarefa você conseguiu realizar hoje, mesmo sendo difícil?",
+                "Você sente que está vivendo ou apenas sobrevivendo?",
                 "Existe alguém com quem você se sinta confortável para ser vulnerável?",
                 "Como você se imagina sem os sintomas da depressão?",
-                "O que te dá um mínimo de esperança, mesmo que pequena?",
-                "Você sente que está vivendo ou apenas sobrevivendo?"
-            ],
-            "Pânico": [
-                "Você lembra qual foi o gatilho do seu último ataque de pânico?",
-                "Qual é o seu maior medo durante um ataque (morrer, enlouquecer, perder o controle)?",
-                "Quais lugares você deixou de frequentar por medo de passar mal?",
-                "O que você faz para tentar 'fugir' da sensação de pânico?",
-                "Você consegue identificar a diferença entre ansiedade alta e pânico real?",
-                "Quem você gostaria que estivesse ao seu lado durante uma crise?",
-                "Como seu corpo fica depois que o pânico passa?",
-                "Você costuma monitorar seu corpo (batimentos, respiração) constantemente?",
-                "O que você faria se não tivesse medo de ter um novo ataque?",
-                "Qual frase de segurança você pode dizer a si mesmo na próxima vez?"
+                "Qual é a sua maior fonte de esperança hoje?",
+                "Quais pensamentos você tem sobre si mesmo quando está 'para baixo'?",
+                "O que te faz levantar da cama de manhã?",
+                "Se você pudesse mudar uma coisa no seu passado, o que seria?"
             ],
             "Estresse": [
                 "Qual parte da sua rotina mais drena sua energia vital?",
                 "Você consegue se desligar totalmente do trabalho quando chega em casa?",
-                "Seu corpo tem dado sinais de exaustão? Quais (dor de cabeça, tensão)?",
+                "Seu corpo tem dado sinais de exaustão? Quais?",
                 "Você sente que seu valor pessoal depende do quanto você produz?",
                 "Qual foi a última vez que você descansou sem sentir culpa?",
                 "O que você diria 'não' hoje se não tivesse medo de desagradar?",
-                "Você sente que está vivendo no 'piloto automático'?",
-                "O que precisaria mudar na sua rotina para você respirar melhor?",
-                "Você tem algum hobby que não envolva telas ou obrigações?",
-                "Quando foi a última vez que você riu de verdade?"
+                "O que te deixa mais irritado no dia a dia?",
+                "Você tem tempo para fazer nada?",
+                "Como você lida com a pressão?",
+                "O que te relaxa de verdade?"
             ],
             "Autoestima": [
-                "Quais são as 3 qualidades que você mais admira em si mesmo?",
+                "Quais são as 3 coisas que você mais admira em si mesmo?",
                 "Se você se tratasse como trata seu melhor amigo, o que mudaria?",
                 "Qual elogio você tem dificuldade de aceitar?",
                 "Em que áreas da vida você sente que é 'bom o suficiente'?",
-                "Você costuma se comparar com quem? Isso te motiva ou te paralisa?",
-                "O que você mudaria em si mesmo se pudesse? Por que isso é importante?",
-                "Qual foi a última vez que você se sentiu orgulhoso de si mesmo?",
-                "Como você lida com críticas? Elas definem quem você é?",
-                "Você sente que precisa da aprovação dos outros para se sentir bem?",
-                "O que você vê quando se olha no espelho?"
+                "O que você vê quando se olha no espelho?",
+                "Você se compara muito com os outros? Com quem?",
+                "Qual foi sua maior conquista recente?",
+                "O que você faria se não tivesse medo de falhar?",
+                "Você se permite errar?",
+                "Como você cuida de si mesmo?"
             ],
             "Luto": [
-                "Qual é a memória mais vívida que você tem da pessoa/coisa que perdeu?",
+                "Qual é a memória mais vívida que você tem da perda?",
                 "O que você gostaria de ter dito e não houve tempo?",
                 "Existe algum objeto que te traz conforto lembrar dessa perda?",
                 "Você sente culpa por alguma coisa relacionada a isso?",
                 "Em quais momentos a saudade aperta mais?",
-                "Como você imagina que seria sua vida se essa perda não tivesse ocorrido?",
-                "O que você aprendeu sobre sua própria força vivendo esse luto?",
                 "Você se permite chorar ou tenta ser 'forte' o tempo todo?",
-                "Qual tradição ou legado você gostaria de manter vivo?",
-                "Como você tem cuidado de si mesmo durante este processo?"
+                "Como a sua vida mudou depois dessa perda?",
+                "O que você aprendeu com essa experiência?",
+                "Quem tem te apoiado?",
+                "O que te traz conforto?"
             ],
-            "Relacionamentos": [
-                "Qual é a sua linguagem do amor principal?",
-                "O que você considera imperdoável em um relacionamento?",
-                "Você sente que perde sua identidade quando está em um relacionamento?",
-                "Qual padrão de parceiro(a) você percebe que repete com frequência?",
-                "Como você lida com conflitos? Você ataca, foge ou conversa?",
-                "Você sente que se doa mais do que recebe?",
-                "Qual é o maior medo que você tem em relação ao amor?",
-                "Como a relação dos seus pais influencia a sua forma de amar hoje?",
-                "O que falta para você se sentir plenamente seguro na relação?",
-                "Você tem dificuldade em impor limites?"
-            ],
-            "Familia": [
-                "Se pudesse descrever sua família em uma palavra, qual seria?",
-                "Qual é o papel que você sente que ocupa na sua família (o cuidador, o problema, o invisível)?",
-                "Você sente que foi abandonado emocionalmente por alguém?",
-                "Qual mágoa familiar você ainda carrega?",
-                "Você sente que precisa 'salvar' seus pais ou irmãos?",
-                "O que você jurou que nunca faria igual aos seus pais, mas acaba fazendo?",
-                "Você se sente confortável para ser você mesmo em casa?",
-                "Como o sentimento de abandono afeta suas relações atuais?",
-                "Qual tradição familiar você gosta e qual você detesta?",
-                "O que significaria 'perdoar' para você neste contexto?"
-            ],
-            "Ciúme": [
-                "O que passa pela sua cabeça quando sente ciúmes?",
-                "Você costuma procurar 'provas' de traição (olhar celular, redes sociais)?",
-                "O ciúme é motivado por fatos reais ou por inseguranças suas?",
-                "Como você reage fisicamente ao ciúme (calor, tremedeira, choro)?",
-                "Você acredita que o ciúme é prova de amor?",
-                "Qual foi o maior erro que você cometeu movido pelo ciúme?",
-                "Você se sente inferior às pessoas de quem tem ciúmes?",
-                "Como seria sua relação se você confiasse plenamente?",
-                "O que seu parceiro(a) faz que aciona seu gatilho de insegurança?",
-                "Você tenta controlar a vida do outro para se sentir seguro?"
-            ],
-            "Timidez": [
-                "Em quais situações sociais você se sente mais desconfortável?",
-                "O que você teme que as pessoas pensem sobre você?",
-                "Você deixa de ir a lugares por vergonha?",
-                "Você ensaia mentalmente o que vai dizer antes de falar?",
-                "Você sente que todo mundo está olhando para você e te julgando?",
-                "O que você perdeu de oportunidades por causa da timidez?",
-                "Como você se comporta quando é o centro das atenções?",
-                "Você tem dificuldade em fazer contato visual?",
-                "O que te ajuda a se soltar um pouco mais?",
-                "Você acha que as pessoas percebem sua ansiedade social?"
-            ],
-            "FalarEmPublico": [
-                "Qual é o pior cenário se você errar enquanto fala?",
-                "Você tem medo de 'dar branco'? O que faria se acontecesse?",
-                "Sua voz treme ou falha quando precisa falar para grupos?",
-                "Você evita cargos ou tarefas que exijam apresentações?",
-                "Como você se prepara antes de uma apresentação?",
-                "Você foca no conteúdo que tem a passar ou no que estão pensando de você?",
-                "Qual foi sua pior experiência falando em público?",
-                "E qual foi sua melhor experiência?",
-                "Você aceitaria falar mal para aprender a falar bem?",
-                "Quem é um comunicador que você admira?"
+            "Burnout": [
+                "Você sente que seu trabalho perdeu o sentido?",
+                "Você se sente emocionalmente exausto antes mesmo de começar o dia?",
+                "Você tem se tornado mais cínico ou crítico no trabalho?",
+                "Sua produtividade caiu recentemente, mesmo você se esforçando?",
+                "Você leva problemas do trabalho para a cama?",
+                "O que precisaria mudar no seu trabalho para você se sentir bem?",
+                "Você sente que seu trabalho é valorizado?",
+                "Você tem tempo para hobbies?",
+                "Como está seu sono?",
+                "Você pensa em mudar de carreira?"
             ],
             "TOC": [
-                "Quais são os pensamentos intrusivos que mais te incomodam?",
+                "Como você descreveria suas obsessões mais frequentes?",
                 "O que você teme que aconteça se não realizar o ritual?",
                 "Quanto tempo do seu dia é consumido por manias?",
-                "Você precisa verificar coisas (portas, gás) repetidamente?",
-                "Você tem obsessão por limpeza, simetria ou contagem?",
-                "Como isso afeta quem mora com você?",
-                "Você consegue identificar o gatilho que inicia o ciclo?",
-                "Se você resistisse à compulsão por 5 minutos, como se sentiria?",
                 "Você esconde seus rituais das outras pessoas?",
-                "O que você deixaria de fazer se não tivesse o TOC?"
+                "O que você deixaria de fazer se não tivesse o TOC?",
+                "Como isso afeta sua família?",
+                "Você sente que precisa de certeza absoluta sobre tudo?",
+                "Quais são seus gatilhos?",
+                "Como você se sente após realizar uma compulsão?",
+                "O que te ajuda a resistir?"
             ],
             "Impulsividade": [
                 "Você costuma agir e pensar depois?",
                 "Em que situações você perde a cabeça mais fácil?",
                 "Você tem dificuldade em esperar sua vez?",
                 "Você costuma interromper as pessoas quando elas falam?",
-                "Como você lida com a frustração quando algo não é do seu jeito?",
                 "Qual foi a maior consequência negativa de um ato impulsivo seu?",
-                "Você gasta dinheiro que não tem por impulso?",
+                "Você gasta dinheiro por impulso?",
                 "O que você sente segundos antes de explodir?",
-                "Você se arrepende com frequência das suas reações?",
-                "O que te ajudaria a criar um 'botão de pausa'?"
+                "Você se arrepende com frequência?",
+                "Como você lida com a frustração?",
+                "Você consegue contar até 10 antes de agir?"
             ],
-            "Rotina": [
-                "Qual é a tarefa que você está adiando há mais tempo?",
-                "O que te impede de começar: medo de falhar ou preguiça?",
-                "Você funciona melhor com prazos apertados?",
-                "Como você se sente no final de um dia improdutivo?",
-                "Você tem dificuldade em manter a constância nas coisas?",
-                "Qual hábito você gostaria de incluir na sua rotina hoje?",
-                "O celular é o maior vilão da sua rotina?",
-                "Você consegue terminar o que começa?",
-                "Como é a sua rotina de sono?",
-                "Você planeja seu dia ou deixa a vida te levar?"
+            "VicioGames": [
+                "Quanto tempo do seu dia você passa jogando?",
+                "Você deixa de comer ou dormir para jogar?",
+                "O mundo virtual parece mais interessante que o real?",
+                "Você fica irritado quando não pode jogar?",
+                "Você mente sobre quanto tempo passou jogando?",
+                "O jogo é uma forma de fugir de quais problemas?",
+                "Como seus relacionamentos foram afetados?",
+                "Você gasta dinheiro real em jogos?",
+                "O que você faria se não pudesse jogar por uma semana?",
+                "Você sente que perdeu o controle?"
             ],
             "Financeiro": [
                 "Você gasta dinheiro para compensar emoções (tristeza, alegria)?",
                 "Qual é o seu maior medo em relação ao dinheiro?",
                 "Você sabe exatamente quanto ganha e quanto gasta?",
-                "O que você aprendeu sobre dinheiro com seus pais?",
-                "Você tem dívidas que tiram seu sono?",
-                "Falar sobre dinheiro te deixa ansioso?",
                 "Você compra coisas que não precisa para impressionar pessoas?",
                 "O que significaria 'liberdade financeira' para você?",
-                "Você consegue dizer 'não' para gastos sociais quando está sem grana?",
-                "Qual é sua meta financeira para este ano?"
+                "Você esconde gastos da família?",
+                "Falar sobre dinheiro te deixa ansioso?",
+                "Você tem dívidas?",
+                "Qual foi sua última compra impulsiva?",
+                "Como você aprendeu a lidar com dinheiro?"
             ],
-            "Vicios": [
-                "Quanto tempo do seu dia você passa em telas (celular/jogos)?",
-                "Você deixa de fazer coisas importantes para jogar ou ficar na internet?",
-                "Como você se sente quando fica sem internet/bateria?",
-                "O mundo virtual parece mais interessante que o real?",
-                "Você usa o jogo/internet para fugir de problemas reais?",
-                "Seus relacionamentos foram afetados pelo seu uso de tecnologia?",
-                "Você perde horas de sono por causa disso?",
-                "Você mente sobre quanto tempo passou jogando/navegando?",
-                "O que você faria com 4 horas livres sem telas?",
-                "Você sente abstinência (irritação) quando não pode usar?"
+            "Sinceridade": [
+                "Você acha que 'ser sincero' é o mesmo que 'falar tudo que pensa'?",
+                "Sua sinceridade já magoou alguém importante?",
+                "Você usa a sinceridade como desculpa para ser agressivo?",
+                "Você aceita a sinceridade dos outros com você?",
+                "Você consegue filtrar o que fala dependendo do ambiente?",
+                "Você acha que as pessoas se afastam de você por isso?",
+                "Qual a diferença entre sinceridade e falta de educação?",
+                "Você já se arrependeu de ter falado a verdade?",
+                "Você consegue guardar segredo?",
+                "Você mente para proteger os outros?"
             ],
-            "Imagem": [
-                "Como você se sente em relação ao seu corpo hoje?",
-                "Você deixa de ir a praia ou eventos por vergonha do corpo?",
-                "Você come quando está ansioso ou triste?",
-                "Qual é a parte do seu corpo que você mais gosta?",
-                "Você se compara com corpos de internet/instagram?",
-                "A comida é uma fonte de prazer ou de culpa para você?",
-                "O que você diria para o seu corpo, como se ele fosse uma pessoa?",
-                "Você já fez dietas malucas que prejudicaram sua saúde?",
-                "Você acha que seria mais feliz se fosse mais magro/forte?",
-                "O que é 'saúde' para você, além da estética?"
+            "Relacionamento": [
+                "Qual é o seu maior medo ao se entregar a alguém?",
+                "Você sente que escolhe sempre o mesmo perfil de pessoa 'errada'?",
+                "Você tem dificuldade em demonstrar afeto?",
+                "Você acha que merece ser amado?",
+                "O que você considera imperdoável em uma relação?",
+                "Você tende a se isolar ou a se tornar dependente?",
+                "Como foi o exemplo de relacionamento dos seus pais?",
+                "O que é um relacionamento saudável para você?",
+                "Você tem medo de ficar sozinho?",
+                "O que você busca em um parceiro?"
+            ],
+            "Ciume": [
+                "O ciúme é motivado por fatos reais ou por inseguranças suas?",
+                "Você costuma procurar 'provas' de traição?",
+                "Você acredita que o ciúme é prova de amor?",
+                "Como você reage fisicamente ao ciúme?",
+                "Você se compara com os ex-parceiros do seu amor?",
+                "Você tenta controlar a vida do outro?",
+                "O que te daria mais segurança?",
+                "Você já foi traído?",
+                "O ciúme já destruiu algum relacionamento seu?",
+                "Você confia no seu parceiro?"
+            ],
+            "Timidez": [
+                "Em quais situações sociais você se sente mais desconfortável?",
+                "O que você teme que as pessoas pensem sobre você?",
+                "Você deixa de ir a lugares por vergonha?",
+                "Você ensaia mentalmente o que vai dizer antes de falar?",
+                "Você sente que todo mundo está te julgando?",
+                "O que você perdeu de oportunidades por causa da timidez?",
+                "Você acha que as pessoas percebem sua ansiedade?",
+                "Você prefere escrever ou falar?",
+                "Como você se sente em festas?",
+                "O que te ajuda a se soltar?"
+            ],
+            "Familia": [
+                "Se você pudesse descrever sua família em uma palavra, qual seria?",
+                "Você sente que foi abandonado emocionalmente por alguém?",
+                "Qual mágoa familiar você ainda carrega?",
+                "Você sente que precisa 'salvar' seus pais?",
+                "Como o ambiente familiar afeta quem você é hoje?",
+                "Com quem você tem mais afinidade na família?",
+                "Existe algum segredo de família?",
+                "Como são as reuniões familiares?",
+                "Você se sente aceito pela sua família?",
+                "O que você mudaria na sua família?"
+            ],
+            "Publico": [
+                "Qual é o pior cenário se você errar enquanto fala?",
+                "Sua voz treme ou falha quando precisa falar para grupos?",
+                "Você evita cargos que exijam apresentações?",
+                "Como você se prepara antes de uma apresentação?",
+                "Você foca no conteúdo ou no que estão pensando de você?",
+                "Qual foi sua pior experiência falando em público?",
+                "Quem é um comunicador que você admira?",
+                "Você tem medo de 'dar branco'?",
+                "Como seu corpo reage?",
+                "O que te ajudaria a ter mais confiança?"
+            ],
+            "Morrer": [
+                "Você pensa na morte com frequência?",
+                "Seu medo é da dor, do desconhecido ou de deixar as pessoas?",
+                "Esse medo te impede de viver ou te faz viver com mais intensidade?",
+                "Você evita ir a funerais ou hospitais?",
+                "Você tem medo de dormir e não acordar?",
+                "Como esse medo afeta suas decisões diárias?",
+                "O que você faria se soubesse que não vai morrer hoje?",
+                "Você acredita em vida após a morte?",
+                "Você já perdeu alguém próximo?",
+                "O que é uma 'boa morte' para você?"
             ],
             "Provas": [
                 "Você tem 'brancos' na hora da prova mesmo tendo estudado?",
                 "O medo de falhar te impede de estudar direito?",
-                "Você sente sintomas físicos (dor de barriga) antes de provas?",
+                "Você sente sintomas físicos antes de provas?",
                 "Você se compara com o desempenho dos colegas?",
                 "O que uma nota baixa diz sobre você como pessoa?",
-                "Você consegue descansar na véspera ou estuda até a exaustão?",
-                "Como você lida com a pressão da família/sociedade?",
                 "Você já pensou em desistir por achar que não é capaz?",
-                "Qual é sua estratégia para se acalmar durante a prova?",
-                "O sucesso na prova define seu valor?"
-            ],
-            "Medos": [
-                "Qual é o seu medo mais irracional?",
-                "O medo de (elevador/avião/animais) te impede de viver coisas boas?",
-                "Você sabe quando esse medo começou?",
-                "Você evita falar sobre esse medo por vergonha?",
-                "O que de pior pode acontecer se você enfrentar esse medo?",
-                "Você já deixou de aceitar um trabalho ou viagem por medo?",
-                "Como seu corpo reage quando você está perto do objeto fóbico?",
-                "Você gostaria de superar ou aprendeu a conviver com isso?",
-                "O que te daria sensação de segurança para tentar enfrentar?",
-                "Alguém na sua família tem o mesmo medo?"
-            ],
-            "Autoconhecimento": [
-                "O que é inegociável para você (seus valores)?",
-                "Qual é o seu maior sonho que ainda não realizou?",
-                "O que te faz perder a noção do tempo (flow)?",
-                "Você se considera otimista, pessimista ou realista?",
-                "Qual foi a decisão mais difícil que você já tomou?",
-                "Pelo que você gostaria de ser lembrado?",
-                "Qual hábito você gostaria de eliminar da sua vida?",
-                "O que significa 'sucesso' para você hoje?",
-                "Se dinheiro não fosse problema, o que você faria da vida?",
-                "Quem é você quando ninguém está olhando?"
+                "O sucesso na prova define seu valor?",
+                "Como você se prepara?",
+                "Você procrastina os estudos?",
+                "O que seus pais esperam de você?"
             ]
         };
 
-        // --- LÓGICA DO BARALHO ---
-        let currentDeck = [];
-        let currentIndex = 0;
-        
-        const selectionScreen = document.getElementById('selection-screen');
-        const deckScreen = document.getElementById('deck-screen');
-        const themeLabel = document.getElementById('theme-label');
-        const questionText = document.getElementById('q-text');
-        const cardCounter = document.getElementById('card-counter');
-        const cardElement = document.querySelector('.card');
-        const subtitle = document.getElementById('subtitle');
+        // Estado do Jogo
+        let currentTheme = 'Ansiedade'; // Tema padrão
+        let currentDeck = [...database['Ansiedade']];
+        const cardElement = document.getElementById('card');
+        const qText = document.getElementById('q-text');
+        const themeBadge = document.getElementById('card-theme');
+        const counter = document.getElementById('counter');
 
-        function loadTheme(themeKey) {
-            // Carrega e embaralha
-            currentDeck = [...database[themeKey]].sort(() => Math.random() - 0.5);
-            currentIndex = 0;
+        // Carregar Tema
+        function loadTheme(theme) {
+            // Atualiza botões
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
 
-            // Atualiza UI
-            themeLabel.innerText = getThemeTitle(themeKey);
-            updateCardDisplay();
+            // Atualiza Estado
+            currentTheme = theme;
+            currentDeck = [...database[theme]];
+            
+            // Reseta Carta (se estiver virada)
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
+            }
 
-            // Troca de tela
-            selectionScreen.style.display = 'none';
-            deckScreen.style.display = 'flex';
-            subtitle.style.display = 'none';
+            // Atualiza Badge
+            themeBadge.innerText = theme.replace(/([A-Z])/g, ' $1').trim(); // Espaço antes de maiúsculas
+            qText.innerText = "Embaralhando...";
+            
+            setTimeout(() => {
+                qText.innerText = "Toque no botão para tirar uma carta!";
+                counter.innerText = `${currentDeck.length} cartas`;
+            }, 500);
+        }
 
-            // Garante que a carta comece fechada (verso visível)
-            if (cardElement.classList.contains('is-flipped')) {
-                cardElement.classList.remove('is-flipped');
+        // Tirar Carta
+        function drawCard(event) {
+            if(event) event.stopPropagation();
+
+            // Se acabou, reinicia
+            if (currentDeck.length === 0) {
+                alert("Todas as cartas deste tema foram usadas! Reembaralhando...");
+                currentDeck = [...database[currentTheme]];
+            }
+
+            // Animação de troca
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
+                setTimeout(() => {
+                    updateContent();
+                    cardElement.classList.add('flipped');
+                }, 600);
+            } else {
+                updateContent();
+                cardElement.classList.add('flipped');
             }
         }
 
-        function getThemeTitle(key) {
-            // Mapeia a chave para um título bonito se necessário
-            const titles = {
-                'FalarEmPublico': 'Falar em Público',
-                'TOC': 'TOC e Manias',
-                'Vicios': 'Vícios (Telas/Jogos)',
-                // Outros usam a própria chave
-            };
-            return titles[key] || key;
-        }
+        function updateContent() {
+            const randomIndex = Math.floor(Math.random() * currentDeck.length);
+            const question = currentDeck[randomIndex];
+            
+            // Remove para não repetir
+            currentDeck.splice(randomIndex, 1);
 
-        function updateCardDisplay() {
-            questionText.innerText = currentDeck[currentIndex];
-            cardCounter.innerText = `${currentIndex + 1}/${currentDeck.length}`;
+            qText.innerText = question;
+            counter.innerText = `Restam: ${currentDeck.length}`;
         }
 
         function flipCard() {
-            cardElement.classList.toggle('is-flipped');
-        }
-
-        function nextCard() {
-            // Animação de troca
-            if (cardElement.classList.contains('is-flipped')) {
-                // Se aberta, fecha primeiro
-                cardElement.classList.remove('is-flipped');
-                setTimeout(advanceDeck, 500);
-            } else {
-                // Se fechada, troca o texto e abre
-                advanceDeck();
-                setTimeout(() => cardElement.classList.add('is-flipped'), 100);
-            }
-        }
-
-        function advanceDeck() {
-            currentIndex = (currentIndex + 1) % currentDeck.length;
-            updateCardDisplay();
-        }
-
-        function goBack() {
-            deckScreen.style.display = 'none';
-            selectionScreen.style.display = 'block'; // Volta a ser block pois tem categorias
-            subtitle.style.display = 'block';
+            cardElement.classList.toggle('flipped');
         }
 
     </script>
+
 </body>
 </html>
