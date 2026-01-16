@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta das Afirmações</title>
+    <style>
+        :root {
+            --bg: #55efc4; /* Verde Água */
+            --wheel: #ffeaa7; /* Amarelo */
+            --btn: #d63031; /* Vermelho */
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 0 #000;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* CAIXA DE RESULTADO */
+        .result-box {
+            background: white;
+            width: 300px;
+            height: 200px;
+            border-radius: 20px;
+            border: 5px solid var(--text);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+            transition: transform 0.2s;
+        }
+
+        .affirmation-text {
+            font-size: 2rem;
+            color: var(--btn);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .helper-text {
+            font-size: 1rem;
+            color: #636e72;
+            margin-top: 10px;
+        }
+
+        /* BOTÃO DE AÇÃO */
+        .btn-spin {
+            background-color: var(--btn);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b71540;
+            transition: transform 0.1s;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-spin:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #b71540;
+        }
+
+        /* ANIMAÇÃO */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .pop-in {
+            animation: pop 0.5s ease-out;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>✨ Roleta Mágica ✨<br>Quem sou eu hoje?</h1>
+
+    <div class="result-box" id="display-area">
+        <div class="helper-text">Clique no botão para descobrir!</div>
+        <div class="affirmation-text" id="result-text">???</div>
+    </div>
+
+    <button class="btn-spin" onclick="spinWheel()">GIRAR A ROLETA! 🎰</button>
+
+    <script>
+        // BANCO DE DADOS (Baseado no alfabeto do PDF)
+        const words = [
+            "Amigável", "Amoroso", "Aventureiro", "Autêntico", // A
+            "Bondoso", "Brilhante", "Bem-humorado", "Bravo",   // B
+            "Corajoso", "Criativo", "Calmo", "Capaz",          // C
+            "Determinado", "Divertido", "Dedicado",            // D
+            "Empático", "Esforçado", "Especial",               // E
+            "Feliz", "Forte", "Fantástico",
