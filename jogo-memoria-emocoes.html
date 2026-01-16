@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória das Emoções</title>
+    <style>
+        :root {
+            /* Cores baseadas nos personagens do PDF */
+            --joy: #ffeaa7;    /* Alegria (Amarelo) */
+            --sadness: #74b9ff; /* Tristeza (Azul) */
+            --anger: #ff7675;   /* Raiva (Vermelho) */
+            --fear: #a29bfe;    /* Medo (Roxo) */
+            --disgust: #55efc4; /* Nojo (Verde) */
+            --love: #fd79a8;    /* Amor (Rosa) */
+            --back: #6c5ce7;    /* Cor do verso da carta */
+            --bg: #f0f3f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2d3436;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #636e72;
+            margin-top: 5px;
+        }
+
+        /* INFORMAÇÕES DO JOGO */
+        .game-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        /* TABULEIRO (GRID) */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+            perspective: 1000px;
+        }
+
+        /* CARTA */
+        .card {
+            background-color: transparent;
+            height: 120px; /* Altura da carta */
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        /* CLASSE QUE GIRA A CARTA */
+        .card.flip {
+            transform: rotateY(180deg);
+        }
+
+        /* ESTADO DE PAR ENCONTRADO */
+        .card.match .front-face {
+            border: 4px solid #ffd700; /* Borda dourada */
+            filter: brightness(1.1);
+        }
+
+        .front-face, .back-face {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        /* VERSO (Visível inicialmente) */
+        .back-face {
+            background: linear-gradient(135deg, var(--back) 0%, #a29bfe 100%);
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* FRENTE (Escondida) */
+        .front-face {
+            background-color: white;
+            transform: rotateY(180deg);
+            font-size: 1rem;
+            color: #2d3436;
+            border: 2px solid white;
+        }
+
+        .emoji-icon {
+            font-size: 3rem;
+            margin-bottom: 5px;
+        }
+
+        /* CORES ESPECÍFICAS PARA CADA EMOÇÃO (Igual ao PDF) */
+        .type-alegria { background: var(--joy); }
+        .type-tristeza { background: var(--sadness); }
+        .type-raiva { background: var(--anger); }
+        .type-medo { background: var(--fear); }
+        .type-nojo { background: var(--disgust); }
+        .type-amor { background: var(--love); }
+
+        /* BOTÃO REINICIAR */
+        .btn-restart {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: var(--back);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .btn-restart:hover { transform: scale(1.05); }
+
+        /* RESPONSIVIDADE CELULAR */
+        @media (max-width: 600px) {
+            .game-board {
+                grid-template-columns: repeat(3, 1fr); /* 3 colunas no celular */
+                height: auto;
+            }
+            .card { height: 100px; }
+            .emoji-icon { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Jogo da Memória</h1>
+        <div class="subtitle">Descobrindo as Emoções</div>
+    </header>
+
+    <div class="game-info">
+        <span>Jogadas: <span id="moves">0</span></span>
+        <span>Pares: <span id="matches">0</span>/6</span>
+    </div>
+
+    <div class="game-board" id="board">
+        </div>
+
+    <button class="btn-restart" onclick="restartGame()">🔄 Reiniciar Jogo</button>
+
+    <script>
+        // --- DADOS DAS EMOÇÕES (Baseado no PDF) ---
+        // Cores e conceitos extraídos das páginas 12-14
+        const emotions = [
+            { 
+                name: "ALEGRIA", 
+                emoji: "😁", // Referência ao personagem amarelo
+                colorClass: "type-alegria",
+                desc: "Satisfeito e valorizado"
+            },
+            { 
+                name: "TRISTEZA", 
+                emoji: "😢", // Referência ao personagem azul
+                colorClass: "type-tristeza",
+                desc: "Perdendo algo"
+            },
+            { 
+                name: "RAIVA", 
+                emoji: "😡", // Referência ao personagem vermelho
+                colorClass: "type-raiva",
+                desc: "Injustiçado"
+            },
+            { 
+                name: "MEDO", 
+                emoji: "😱", // Referência ao personagem roxo
+                colorClass: "type-medo",
+                desc: "Desprotegido"
+            },
+            { 
+                name: "NOJO", 
+                emoji: "🤢", // Referência ao personagem verde
+                colorClass: "type-nojo",
+                desc: "Recusando algo"
+            },
+            { 
+                name: "AMOR", 
+                emoji: "🥰", // Referência ao personagem rosa
+                colorClass: "type-amor",
+                desc: "Acolhido e querido"
+            }
+        ];
+
+        const board = document.getElementById('board');
+        const movesDisplay = document.getElementById('moves');
+        const matchesDisplay = document.getElementById('matches');
+
+        let cards = [];
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+        let moves = 0;
+        let matches = 0;
+
+        function createBoard() {
+            // Duplicar o array para criar pares
+            let gameCards = [...emotions, ...emotions];
+            
+            // Embaralhar
+            gameCards.sort(() => 0.5 - Math.random());
+
+            board.innerHTML = '';
+            
+            gameCards.forEach(emotion => {
+                // Criar elemento HTML da carta
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.name = emotion.name; // Identificador para comparação
+
+                // HTML interno da carta (Frente e Verso)
+                // Se quiser usar IMAGEM REAL, troque o <div class="emoji"> pelo <img> aqui
+                card.innerHTML = `
+                    <div class="front-face ${emotion.colorClass}">
+                        <div class="emoji-icon">${emotion.emoji}</div>
+                        <div>${emotion.name}</div>
+                    </div>
+                    <div class="back-face">
+                        ❓
+                    </div>
+                `;
+
+                card.addEventListener('click', flipCard);
+                board.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            this.classList.add('flip');
+
+            if (!hasFlippedCard) {
+                // Primeiro clique
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
+
+            // Segundo clique
+            secondCard = this;
+            incrementMoves();
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            // Travamos as cartas viradas (Sucesso)
+            firstCard.classList.add('match');
+            secondCard.classList.add('match');
+            
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+
+            matches++;
+            matchesDisplay.innerText = matches;
+
+            if (matches === emotions.length) {
+                setTimeout(() => alert("Parabéns! Você encontrou todas as emoções!"), 500);
+            }
+
+            resetBoard();
+        }
+
+        function unflipCards() {
+            // Errou: vira de volta após um tempo
+            lockBoard = true;
+
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList.remove('flip');
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        function incrementMoves() {
+            moves++;
+            movesDisplay.innerText = moves;
+        }
+
+        function restartGame() {
+            moves = 0;
+            matches = 0;
+            movesDisplay.innerText = moves;
+            matchesDisplay.innerText = matches;
+            
+            // Remove classes antigas e recria
+            createBoard();
+        }
+
+        // Iniciar o jogo
+        createBoard();
+
+    </script>
+
+</body>
+</html>
