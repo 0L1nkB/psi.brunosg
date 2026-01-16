@@ -127,6 +127,9 @@
             border-left: 4px solid var(--high-risk);
         }
 
+        /* Loading Indicator */
+        #loading { text-align: center; padding: 20px; font-size: 1.2rem; color: #666; }
+
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; }
@@ -154,9 +157,10 @@
         <small>1 = Completamente falso | 6 = Descreve-me perfeitamente</small>
     </div>
 
-    <div id="questions-container"></div>
+    <div id="loading">Carregando as perguntas...</div>
+    <div id="questions-container" style="display:none;"></div>
 
-    <button class="btn-main" onclick="calcularResultados()">Calcular e Gerar Gráfico</button>
+    <button id="btn-calc" class="btn-main" onclick="calcularResultados()" style="display:none;">Calcular e Gerar Gráfico</button>
 
     <div id="results-area">
         <h2 style="text-align: center; color: var(--primary);">Perfil Esquemático</h2>
@@ -192,7 +196,7 @@
         "Postura Punitiva"
     ];
 
-    // Perguntas extraídas fielmente do seu PDF
+    // Perguntas Sanitizadas (Sem aspas duplas internas)
     const perguntasTexto = [
         "Não tenho tido ninguém que cuide de mim, que partilhe comigo a sua vida ou que se preocupe realmente com tudo o que me acontece.",
         "Costumo apegar-me demasiadamente às pessoas que me são mais próximas porque tenho medo que elas me abandonem.",
@@ -207,7 +211,7 @@
         "Sou sempre eu que acabo por tomar conta das pessoas que me são mais chegadas.",
         "Sou demasiado controlado(a) para revelar os meus sentimentos positivos aos outros (por ex., afecto, mostrar que me preocupo).",
         "Tenho que ser o(a) melhor em quase tudo o que faço; não aceito ficar em segundo lugar.",
-        "Tenho muita dificuldade em aceitar um \"não\" por resposta quando quero alguma coisa dos outros.",
+        "Tenho muita dificuldade em aceitar um 'não' por resposta quando quero alguma coisa dos outros.",
         "Não sou capaz de me forçar a ter disciplina suficiente para cumprir tarefas rotineiras ou entediantes.",
         "Ter dinheiro e conhecer pessoas importantes faz-me sentir uma pessoa com valor.",
         "Mesmo quando as coisas parecem estar a correr bem, sinto que isso é apenas temporário.",
@@ -252,118 +256,4 @@
         "Quando sinto que alguém de quem eu gosto se está a afastar de mim, sinto-me desesperado.",
         "Sou bastante desconfiado quanto às intenções das outras pessoas.",
         "Sinto-me afastado(a) ou desligado dos outros.",
-        "Sinto que nunca poderei ser amado por alguém.",
-        "Não sou tão talentoso(a) no trabalho como a maioria das pessoas.",
-        "Não se pode confiar no meu julgamento em situações do dia-a-dia.",
-        "Preocupa-me poder perder todo o dinheiro que tenho e ficar muito pobre ou na miséria.",
-        "Sinto frequentemente que é como se os meus pais vivessem através de mim não tenho uma vida própria.",
-        "Sempre deixei que os outros escolhessem por mim; por isso, não sei realmente aquilo que quero para mim.",
-        "Tenho sido sempre eu quem ouve os problemas dos outros.",
-        "Controlo-me tanto que as pessoas pensam que não tenho sentimentos ou que tenho um coração de pedra.",
-        "Sinto sobre mim uma pressão constante para fazer coisas e atingir objetivos.",
-        "Sinto que não devia ter que seguir as regras e convenções habituais que as outras pessoas têm que seguir.",
-        "Não me consigo obrigar a fazer coisas de que não gosto, mesmo quando sei que é para o meu bem.",
-        "Quando faço uma intervenção numa reunião ou quando sou apresentado a alguém num grupo, é importante para mim obter reconhecimento e admiração.",
-        "Por muito que trabalhe, preocupa-me poder ficar na miséria e perder quase tudo o que possuo.",
-        "Não interessa porque é que cometi um erro; quando faço algo errado, há que pagar as consequências.",
-        "Não tenho tido uma pessoa forte ou sensata para me dar bons conselhos e me dizer o que fazer quando não tenho a certeza da atitude que devo tomar.",
-        "Por vezes, a preocupação que tenho com o facto de as pessoas me poderem deixar é tão grande, que acabo por as afastar.",
-        "Estou habitualmente à procura de segundas intenções ou do verdadeiro motivo por detrás do comportamento dos outros.",
-        "Em grupo, sinto sempre que estou de fora.",
-        "Sou demasiado inaceitável para me poder mostrar tal como sou às outras pessoas ou para deixar que me conheçam bem.",
-        "No que diz respeito ao trabalho (ou à escola) não sou tão inteligente como a maior parte das pessoas.",
-        "Não tenho confiança nas minhas capacidades para resolver problemas que surjam no dia-a-dia.",
-        "Preocupa-me poder estar a desenvolver uma doença grave, ainda que não tenha sido diagnosticado nada de grave pelo médico.",
-        "Sinto frequentemente que não tenho uma identidade separada da dos meus pais ou companheiro(a).",
-        "Tenho imenso trabalho para conseguir que os meus sentimentos sejam tidos em consideração e os meus direitos sejam respeitados.",
-        "As outras pessoas consideram que faço muito pelos outros e não faço o suficiente por mim.",
-        "As pessoas acham que tenho dificuldade em exprimir o que sinto.",
-        "Não posso descuidar as minhas obrigações de forma leviana, nem desculpar-me pelos meus erros",
-        "Sinto que o que tenho para oferecer tem mais valor do que aquilo que os outros têm para dar.",
-        "Raramente tenho sido capaz de levar as minhas decisões até ao fim.",
-        "Receber muitos elogios dos outros faz-me sentir uma pessoa que tem valor.",
-        "Preocupa-me que uma decisão errada possa provocar uma catástrofe.",
-        "Sou uma pessoa má que merece ser castigada."
-    ];
-
-    // --- RENDERIZAÇÃO E CÁLCULO ---
-    const container = document.getElementById('questions-container');
-
-    perguntasTexto.forEach((texto, index) => {
-        let num = index + 1;
-        let html = `
-            <div class="question-row">
-                <div class="q-text"><strong>${num}.</strong> ${texto}</div>
-                <input type="number" id="q${num}" min="1" max="6" placeholder="-">
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    });
-
-    let myChart = null;
-
-    function calcularResultados() {
-        let scores = new Array(18).fill(0);
-        
-        for (let i = 1; i <= 90; i++) {
-            let input = document.getElementById(`q${i}`);
-            let val = parseInt(input.value) || 0; 
-            
-            // Fórmula YSQ-S3: (Questão - 1) % 18 = Índice do Esquema
-            let esquemaIndex = (i - 1) % 18;
-            scores[esquemaIndex] += val;
-        }
-
-        // 1. Lista de Texto
-        let htmlList = "";
-        scores.forEach((pt, idx) => {
-            let isHigh = pt >= 15; 
-            htmlList += `
-                <div class="schema-item ${isHigh ? 'activated' : ''}">
-                    <span>${esquemas[idx]}</span>
-                    <strong>${pt}</strong>
-                </div>
-            `;
-        });
-        document.getElementById('text-results').innerHTML = htmlList;
-
-        // 2. Gráfico Radar
-        const ctx = document.getElementById('schemaChart').getContext('2d');
-        if(myChart) myChart.destroy();
-
-        myChart = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: esquemas,
-                datasets: [{
-                    label: 'Pontuação',
-                    data: scores,
-                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                    borderColor: '#2c3e50',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#e74c3c',
-                    pointRadius: 3
-                }]
-            },
-            options: {
-                scales: {
-                    r: {
-                        angleLines: { display: true },
-                        suggestedMin: 0,
-                        suggestedMax: 30, 
-                        ticks: { stepSize: 5 }
-                    }
-                },
-                plugins: { legend: { display: false } }
-            }
-        });
-
-        document.getElementById('results-area').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-    }
-</script>
-
-</body>
-</html>
+        "Sinto que nunca poderei ser amado
