@@ -3,130 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conceituação Terapia do Esquema</title>
+    <title>Conceituação Esquema | Prontuário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Paleta Esquema */
-            --bg-color: #f0f8ff;
+            --bg-color: #f4f7f6;
             --paper: #ffffff;
-            --child-mode: #ffaf40; /* Criança (Laranja/Amarelo) */
-            --parent-mode: #ff5252; /* Pais Críticos (Vermelho) */
-            --coping-mode: #70a1ff; /* Protetores (Azul) */
-            --adult-mode: #33d9b2; /* Adulto Saudável (Verde) */
-            --text: #2d3436;
-            --shadow: rgba(0,0,0,0.1);
+            --child: #f39c12; /* Laranja */
+            --parent: #c0392b; /* Vermelho */
+            --coping: #2980b9; /* Azul */
+            --adult: #27ae60; /* Verde */
+            --text: #2c3e50;
         }
 
         body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
-            background-size: 20px 20px;
-            margin: 0;
-            padding: 20px;
-            color: var(--text);
-            display: flex;
-            justify-content: center;
+            margin: 0; padding: 40px; color: var(--text);
+            display: flex; justify-content: center;
         }
 
         .container {
-            width: 100%;
-            max-width: 1100px;
-            background: var(--paper);
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 10px 10px 0 var(--shadow);
-            border: 3px solid var(--text);
-            position: relative;
+            width: 100%; max-width: 1100px;
+            background: var(--paper); padding: 50px;
+            border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 10px solid #8e44ad; /* Roxo Esquema */
         }
 
-        /* HEADER */
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { margin: 0; color: #40407a; font-size: 2.2rem; text-transform: uppercase; }
-        .subtitle { font-size: 1.1rem; color: #636e72; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        h1 { margin: 0; font-size: 1.8rem; color: #8e44ad; }
+        .info-field { border: none; border-bottom: 1px solid #ccc; padding: 5px; width: 200px; font-size: 1rem; }
 
         /* SEÇÕES */
-        .section-box {
-            border: 2px dashed #b2bec3;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            background: #fff;
+        .section {
+            border: 2px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 25px;
+            position: relative; background: #fff;
         }
-
         .sec-title {
-            font-size: 1.2rem; font-weight: 800; color: #2c2c54; text-transform: uppercase;
-            margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+            background: #eee; padding: 5px 15px; border-radius: 20px; font-weight: bold;
+            display: inline-block; margin-bottom: 15px; color: #555;
         }
 
-        /* PARTE 1: NECESSIDADES */
-        .needs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-        .need-item {
-            background: #f1f2f6; padding: 10px; border-radius: 8px; font-size: 0.9rem; cursor: pointer;
-            border: 1px solid transparent; transition: 0.2s; text-align: center;
+        /* TAGS CLICÁVEIS E EDITÁVEIS */
+        .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        
+        .tag {
+            padding: 8px 12px; border: 1px solid #ccc; border-radius: 20px; cursor: pointer;
+            font-size: 0.9rem; transition: 0.2s; background: white; user-select: none;
         }
-        .need-item:hover { border-color: #40407a; }
-        .need-item.selected { background: #40407a; color: white; font-weight: bold; }
+        .tag:hover { background: #f0f0f0; }
+        .tag.selected { background: #8e44ad; color: white; border-color: #8e44ad; font-weight: bold; }
+        
+        /* Editável dentro da tag */
+        .tag span { outline: none; }
 
-        /* PARTE 2: ESQUEMAS (TAGS) */
-        .schema-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .schema-tag {
-            padding: 5px 12px; border: 1px solid #ccc; border-radius: 20px; font-size: 0.85rem;
-            cursor: pointer; background: white; transition: 0.2s;
-        }
-        .schema-tag:hover { border-color: var(--child-mode); }
-        .schema-tag.selected { background: var(--child-mode); color: white; border-color: var(--child-mode); font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
-        /* PARTE 3: MAPA DOS MODOS */
-        .modes-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
+        /* CARDS DE MODOS */
+        .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
         .mode-card {
-            padding: 20px; border-radius: 15px; border: 2px solid; position: relative;
-            background: rgba(255,255,255,0.7);
+            border: 2px solid; border-radius: 10px; padding: 20px; min-height: 150px;
+            background: rgba(255,255,255,0.8);
         }
+        .child { border-color: var(--child); background: #fef5e7; }
+        .parent { border-color: var(--parent); background: #f9ebea; }
+        .coping { border-color: var(--coping); background: #ebf5fb; }
+        .adult { border-color: var(--adult); background: #e9f7ef; grid-column: span 2; }
 
-        .card-child { border-color: var(--child-mode); background: #fff8e1; }
-        .card-parent { border-color: var(--parent-mode); background: #ffebee; }
-        .card-coping { border-color: var(--coping-mode); background: #e3f2fd; }
-        .card-adult { border-color: var(--adult-mode); background: #e0f2f1; grid-column: span 2; }
-
-        .mode-icon {
-            font-size: 2rem; position: absolute; top: -15px; right: 20px; background: white;
-            padding: 5px; border-radius: 50%; border: 2px solid inherit;
-        }
+        .card-header { font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .txt-child { color: var(--child); }
+        .txt-parent { color: var(--parent); }
+        .txt-coping { color: var(--coping); }
+        .txt-adult { color: var(--adult); }
 
         textarea {
-            width: 100%; border: none; background: rgba(255,255,255,0.5); border-bottom: 1px dashed #999;
-            font-family: inherit; font-size: 1rem; resize: none; margin-top: 10px; min-height: 80px;
+            width: 100%; border: none; background: transparent; font-family: inherit; font-size: 1rem;
+            resize: none; border-bottom: 1px dashed #aaa; padding: 5px;
         }
-        textarea:focus { outline: none; border-bottom: 2px solid #40407a; }
+        textarea:focus { outline: none; border-bottom: 2px solid #333; }
 
-        /* BOTÃO */
-        .btn-action {
-            display: block; width: 100%; margin-top: 30px; padding: 15px;
-            background-color: #40407a; color: white; border: none; border-radius: 50px;
-            font-size: 1.3rem; font-weight: bold; font-family: inherit; cursor: pointer;
-            box-shadow: 0 6px 0 #2c2c54; transition: transform 0.1s;
+        /* BOTÕES FLUTUANTES */
+        .action-bar { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
+        .btn {
+            border: none; width: 50px; height: 50px; border-radius: 50%; color: white; font-size: 1.2rem;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
         }
-        .btn-action:hover { transform: translateY(-3px); }
+        .btn:hover { transform: scale(1.1); }
+        .btn-print { background: #2c3e50; }
+        .btn-clear { background: #c0392b; }
 
-        @media (max-width: 768px) {
-            .modes-container { grid-template-columns: 1fr; }
-            .card-adult { grid-column: span 1; }
-        }
+        #save-status { position: fixed; bottom: 80px; right: 30px; color: #8e44ad; font-weight: bold; opacity: 0; transition: opacity 0.5s; }
 
         @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
-            .btn-action { display: none; }
-            .section-box { break-inside: avoid; }
-            .schema-tag { border: 1px solid #999; }
-            .schema-tag.selected { background: #ddd !important; color: black !important; }
+            .action-bar { display: none; }
+            .container { border: none; box-shadow: none; padding: 0; }
+            .tag { border: 1px solid #aaa; }
+            .tag.selected { background: #ddd !important; color: black !important; }
         }
     </style>
 </head>
@@ -134,111 +106,138 @@
 
     <div class="container">
         <header>
-            <h1>Conceituação: Terapia do Esquema</h1>
-            <div class="subtitle">Mapeando a História, Esquemas e Modos</div>
+            <h1>Terapia do Esquema</h1>
+            <div>
+                <input type="text" id="te-patient" class="info-field" placeholder="Paciente" oninput="autoSave()">
+                <input type="text" id="te-date" class="info-field" placeholder="Data" oninput="autoSave()">
+            </div>
         </header>
 
-        <div class="section-box">
-            <div class="sec-title"><i class="fa-solid fa-baby-carriage"></i> 1. Origem: Necessidades Emocionais Não Atendidas</div>
-            <p style="font-size:0.9rem; color:#666;">Marque o que faltou na infância/adolescência:</p>
-            <div class="needs-grid">
-                <div class="need-item" onclick="toggleSelect(this)">Segurança / Proteção</div>
-                <div class="need-item" onclick="toggleSelect(this)">Afeto / Carinho</div>
-                <div class="need-item" onclick="toggleSelect(this)">Empatia / Compreensão</div>
-                <div class="need-item" onclick="toggleSelect(this)">Limites Realistas</div>
-                <div class="need-item" onclick="toggleSelect(this)">Autonomia / Competência</div>
-                <div class="need-item" onclick="toggleSelect(this)">Liberdade de Expressão</div>
-                <div class="need-item" onclick="toggleSelect(this)">Lazer / Espontaneidade</div>
-            </div>
-            <textarea placeholder="Breve relato da infância: Clima emocional da casa, relação com pais/cuidadores..."></textarea>
+        <div class="section">
+            <div class="sec-title">1. Necessidades Não Atendidas</div>
+            <div class="tags-container" id="needs-list">
+                </div>
+            <textarea id="te-history" placeholder="Resumo da história de origem..." style="margin-top:15px; min-height:60px;" oninput="autoSave()"></textarea>
         </div>
 
-        <div class="section-box">
-            <div class="sec-title"><i class="fa-solid fa-fingerprint"></i> 2. Esquemas Ativos (Traços de Vida)</div>
-            <p style="font-size:0.9rem; color:#666;">Selecione os esquemas que identificamos no YSQ:</p>
-            
-            <div style="margin-bottom:10px; font-weight:bold; font-size:0.8rem; color:#888;">DOMÍNIO I: DESCONEXÃO E REJEIÇÃO</div>
-            <div class="schema-tags">
-                <div class="schema-tag" onclick="toggleSelect(this)">Abandono</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Desconfiança/Abuso</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Privação Emocional</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Defectividade/Vergonha</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Isolamento Social</div>
-            </div>
-
-            <div style="margin:10px 0; font-weight:bold; font-size:0.8rem; color:#888;">DOMÍNIO II: AUTONOMIA PREJUDICADA</div>
-            <div class="schema-tags">
-                <div class="schema-tag" onclick="toggleSelect(this)">Dependência</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Vulnerabilidade ao Dano</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Emaranhamento</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Fracasso</div>
-            </div>
-
-            <div style="margin:10px 0; font-weight:bold; font-size:0.8rem; color:#888;">DOMÍNIO III: LIMITES PREJUDICADOS</div>
-            <div class="schema-tags">
-                <div class="schema-tag" onclick="toggleSelect(this)">Arrogo/Grandiosidade</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Autocontrole Insuficiente</div>
-            </div>
-
-            <div style="margin:10px 0; font-weight:bold; font-size:0.8rem; color:#888;">DOMÍNIO IV: ORIENTAÇÃO PARA O OUTRO</div>
-            <div class="schema-tags">
-                <div class="schema-tag" onclick="toggleSelect(this)">Subjugação</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Auto-sacrifício</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Busca de Aprovação</div>
-            </div>
-
-            <div style="margin:10px 0; font-weight:bold; font-size:0.8rem; color:#888;">DOMÍNIO V: SUPERVIGILÂNCIA</div>
-            <div class="schema-tags">
-                <div class="schema-tag" onclick="toggleSelect(this)">Negativismo/Pessimismo</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Inibição Emocional</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Padrões Inflexíveis</div>
-                <div class="schema-tag" onclick="toggleSelect(this)">Postura Punitiva</div>
-            </div>
+        <div class="section">
+            <div class="sec-title">2. Esquemas Predominantes</div>
+            <p style="font-size:0.8rem; color:#666; margin-top:-10px;">Clique para selecionar. Clique no texto para editar o nome.</p>
+            <div class="tags-container" id="schemas-list">
+                </div>
         </div>
 
-        <div class="section-box" style="border-style: solid; border-width: 1px;">
-            <div class="sec-title"><i class="fa-solid fa-masks-theater"></i> 3. O Palco dos Modos (Conceituação Atual)</div>
-            
-            <div class="modes-container">
-                <div class="mode-card card-child">
-                    <div style="color:var(--child-mode); font-weight:800;">MODOS CRIANÇA (Vulnerável/Zangada)</div>
-                    <div style="font-size:0.8rem; margin-bottom:5px;">"O que eu sinto quando o esquema ativa?"</div>
-                    <textarea placeholder="Ex: Sinto-me pequena, sozinha, triste. Ou sinto raiva de não ser ouvida. (Necessidades não atendidas)"></textarea>
-                </div>
-
-                <div class="mode-card card-parent">
-                    <div style="color:var(--parent-mode); font-weight:800;">MODOS PAIS (Críticos/Exigentes)</div>
-                    <div style="font-size:0.8rem; margin-bottom:5px;">"O que a voz interna me diz?"</div>
-                    <textarea placeholder="Ex: 'Você é um fracasso', 'Você deveria trabalhar mais', 'Ninguém vai te querer'. (Mensagens internalizadas)"></textarea>
-                </div>
-
-                <div class="mode-card card-coping">
-                    <div style="color:var(--coping-mode); font-weight:800;">MODOS DE ENFRENTAMENTO (Protetores)</div>
-                    <div style="font-size:0.8rem; margin-bottom:5px;">"O que eu faço para não sentir dor?"</div>
-                    <textarea placeholder="Ex: Evito conflitos (rendição), me isolo/bebo (evitação), ataco antes (supercompensação)."></textarea>
-                </div>
-
-                <div class="mode-card card-adult">
-                    <div style="color:var(--adult-mode); font-weight:800; text-align:center;">
-                        <i class="fa-solid fa-scale-balanced"></i> ADULTO SAUDÁVEL
+        <div class="section">
+            <div class="sec-title">3. Mapa dos Modos</div>
+            <div class="modes-grid">
+                
+                <div class="mode-card child">
+                    <div class="card-header txt-child">
+                        <span contenteditable="true">CRIANÇA VULNERÁVEL/ZANGADA</span>
+                        <i class="fa-solid fa-face-sad-tear"></i>
                     </div>
-                    <div style="font-size:0.8rem; text-align:center; margin-bottom:5px;">"A meta da terapia"</div>
-                    <textarea placeholder="Como posso acolher minha Criança Vulnerável e colocar limites nos Pais Críticos? Que ações saudáveis posso tomar hoje?" style="min-height:100px; text-align:center;"></textarea>
+                    <textarea id="mode-child" placeholder="Sentimentos, medos, necessidades..." oninput="autoSave()"></textarea>
                 </div>
+
+                <div class="mode-card parent">
+                    <div class="card-header txt-parent">
+                        <span contenteditable="true">PAIS CRÍTICOS/EXIGENTES</span>
+                        <i class="fa-solid fa-gavel"></i>
+                    </div>
+                    <textarea id="mode-parent" placeholder="Mensagens internalizadas, cobranças..." oninput="autoSave()"></textarea>
+                </div>
+
+                <div class="mode-card coping">
+                    <div class="card-header txt-coping">
+                        <span contenteditable="true">ENFRENTAMENTO</span>
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <textarea id="mode-coping" placeholder="Rendição, Evitação ou Hipercompensação..." oninput="autoSave()"></textarea>
+                </div>
+
+                <div class="mode-card adult">
+                    <div class="card-header txt-adult">
+                        <span contenteditable="true">ADULTO SAUDÁVEL</span>
+                        <i class="fa-solid fa-spa"></i>
+                    </div>
+                    <textarea id="mode-adult" placeholder="Ações de cura, autocompaixão, limites..." oninput="autoSave()"></textarea>
+                </div>
+
             </div>
         </div>
 
-        <button class="btn-action" onclick="window.print()">
-            <i class="fa-solid fa-print"></i> IMPRIMIR MAPA DO ESQUEMA
-        </button>
+    </div>
+
+    <div id="save-status">Salvo!</div>
+    <div class="action-bar">
+        <button class="btn btn-clear" onclick="clearAll()" title="Limpar"><i class="fa-solid fa-trash"></i></button>
+        <button class="btn btn-print" onclick="window.print()" title="Imprimir"><i class="fa-solid fa-print"></i></button>
     </div>
 
     <script>
-        function toggleSelect(element) {
-            element.classList.toggle('selected');
+        // LISTAS DE DADOS
+        const defaultNeeds = ["Segurança", "Estabilidade", "Afeto", "Aceitação", "Empatia", "Limites", "Autonomia", "Lazer", "Espontaneidade"];
+        const defaultSchemas = ["Abandono", "Desconfiança", "Privação Emocional", "Defectividade", "Isolamento", "Dependência", "Fracasso", "Arrogo", "Subjugação", "Auto-sacrifício", "Padrões Inflexíveis", "Punição"];
+
+        // INICIALIZAÇÃO
+        window.onload = function() {
+            loadTags('needs-list', defaultNeeds, 'need_');
+            loadTags('schemas-list', defaultSchemas, 'schema_');
+            loadTextAreas();
+        };
+
+        // GERA E CARREGA TAGS
+        function loadTags(containerId, list, prefix) {
+            const container = document.getElementById(containerId);
+            list.forEach((item, index) => {
+                const isSelected = localStorage.getItem('te_' + prefix + index) === 'true';
+                
+                const div = document.createElement('div');
+                div.className = isSelected ? 'tag selected' : 'tag';
+                div.onclick = function() { toggleTag(this, prefix + index); };
+                
+                // Texto editável dentro da tag
+                div.innerHTML = `<span contenteditable="true" onclick="event.stopPropagation()">${item}</span>`;
+                
+                container.appendChild(div);
+            });
+        }
+
+        function toggleTag(el, key) {
+            el.classList.toggle('selected');
+            const isSelected = el.classList.contains('selected');
+            localStorage.setItem('te_' + key, isSelected);
+            showSaved();
+        }
+
+        // CARREGA TEXTOS
+        function loadTextAreas() {
+            document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+                const saved = localStorage.getItem('te_' + el.id);
+                if (saved) el.value = saved;
+            });
+        }
+
+        // SALVA TEXTOS
+        function autoSave() {
+            const el = event.target;
+            localStorage.setItem('te_' + el.id, el.value);
+            showSaved();
+        }
+
+        function showSaved() {
+            const status = document.getElementById('save-status');
+            status.style.opacity = 1;
+            setTimeout(() => status.style.opacity = 0, 1000);
+        }
+
+        function clearAll() {
+            if(confirm("Deseja limpar todos os dados?")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
     </script>
 
 </body>
 </html>
-      
