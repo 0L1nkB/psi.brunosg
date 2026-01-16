@@ -3,229 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baralho Autoestima | Adolescentes</title>
+    <title>Baralho Autoestima Teen | Caderno Incrível</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Cores baseadas no logo Livroterapia */
+            /* Paleta Lúdica */
+            --bg-color: #f0f8ff;
             --primary: #6c5ce7; /* Roxo */
-            --secondary: #ffa502; /* Laranja */
-            --bg-color: #f1f2f6;
-            --card-white: #ffffff;
-            --text-dark: #2d3436;
+            --secondary: #00b894; /* Verde */
+            --accent: #fdcb6e; /* Amarelo */
+            --card-back: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            --text: #2d3436;
+            --shadow: rgba(0,0,0,0.1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        /* CABEÇALHO */
+        /* --- CABEÇALHO --- */
         header {
             text-align: center;
             margin-bottom: 40px;
-            z-index: 10;
-        }
-
-        h1 {
-            color: var(--primary);
-            font-size: 2rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-        }
-
-        .subtitle {
-            background-color: var(--secondary);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(255, 165, 2, 0.4);
-        }
-
-        /* ÁREA DAS CARTAS */
-        .deck-area {
+            background: white;
+            padding: 20px 50px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
             position: relative;
+            max-width: 90%;
+        }
+
+        /* Fita Adesiva */
+        header::before {
+            content: ""; position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; background-color: rgba(255, 118, 117, 0.8);
+            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 1.8rem; text-transform: uppercase; }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: bold; }
+
+        /* --- ÁREA DA CARTA --- */
+        .card-container {
             width: 320px;
             height: 480px;
             perspective: 1000px;
-        }
-
-        /* O MONTE (Cartas de fundo para dar volume) */
-        .stack-card {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, #a29bfe 100%);
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 4px solid white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Posicionamento para parecer uma pilha */
-        .stack-1 { top: 10px; left: 0px; transform: scale(0.95); z-index: 1; opacity: 0.8; }
-        .stack-2 { top: 5px; left: 0px; transform: scale(0.98); z-index: 2; opacity: 0.9; }
-        
-        /* A CARTA ATIVA */
-        .card {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 30px;
             cursor: pointer;
-            z-index: 10;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
 
         .card.flipped {
             transform: rotateY(180deg);
         }
 
-        /* Animação de entrada (Sair do monte) */
-        @keyframes dealCard {
-            0% { transform: translateY(-50px) scale(0.8); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        .card.dealing {
-            animation: dealCard 0.5s ease-out forwards;
-        }
-
-        /* FACES DA CARTA */
+        /* LADOS DA CARTA */
         .card-face {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             backface-visibility: hidden;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border: 8px solid white;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            border-radius: 25px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             padding: 30px;
+            box-sizing: border-box;
             text-align: center;
+            border: 8px solid white;
+            background: white;
         }
 
-        /* VERSO (Capa Roxa) */
+        /* VERSO (CAPA) */
         .face-back {
-            background: linear-gradient(135deg, var(--primary) 0%, #8e44ad 100%);
+            background: var(--card-back);
             color: white;
-            transform: rotateY(0deg);
+            /* Estampa de bolinhas sutis */
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.2) 2px, transparent 2px);
+            background-size: 20px 20px;
         }
 
-        .logo-icon { font-size: 4rem; margin-bottom: 10px; }
-        .logo-text { font-size: 1.5rem; font-weight: bold; text-transform: uppercase; }
+        .icon-box {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+        }
 
-        /* FRENTE (Pergunta) */
+        .deck-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .tap-hint {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* FRENTE (PERGUNTA) */
         .face-front {
-            background-color: var(--card-white);
-            color: var(--text-dark);
             transform: rotateY(180deg);
-            background-image: 
-                radial-gradient(circle at 10% 10%, #f1f2f6 5%, transparent 5%),
-                radial-gradient(circle at 90% 90%, #f1f2f6 5%, transparent 5%);
+            background-color: #fffce0; /* Amarelo clarinho papel */
+            background-image: linear-gradient(#ffeaa7 1px, transparent 1px);
+            background-size: 100% 30px; /* Linhas de caderno */
+            align-items: center;
+            justify-content: center;
         }
 
         .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
-            line-height: 1.4;
+            font-size: 1.6rem;
+            font-weight: bold;
             color: #2d3436;
+            line-height: 1.4;
+            transform: rotate(-1deg); /* Leve inclinação lúdica */
         }
 
-        .decoration-icon {
-            font-size: 3rem;
-            margin-bottom: 25px;
-            color: var(--secondary);
-        }
-
-        .card-counter {
+        .card-number {
             position: absolute;
-            bottom: 20px;
-            font-size: 0.8rem;
+            top: 20px;
+            right: 20px;
+            font-size: 0.9rem;
             color: #b2bec3;
             font-weight: bold;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 1px dashed #ccc;
+        }
+
+        /* Adesivo decorativo na carta */
+        .sticker {
+            position: absolute;
+            top: -10px; left: 20px;
+            font-size: 2.5rem;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
+            transform: rotate(-10deg);
         }
 
         /* BOTÃO */
         .btn-draw {
-            margin-top: 40px;
             background-color: var(--secondary);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 15px 50px;
+            font-size: 1.3rem;
             font-weight: bold;
+            font-family: inherit;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 165, 2, 0.4);
-            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 6px 0 #00896f;
+            transition: transform 0.1s;
             display: flex;
             align-items: center;
             gap: 10px;
-            z-index: 10;
         }
 
-        .btn-draw:hover {
-            transform: translateY(-3px) scale(1.05);
-            background-color: #e1b12c;
+        .btn-draw:hover { transform: translateY(-3px); }
+        .btn-draw:active { transform: translateY(4px); box-shadow: none; }
+
+        /* Responsividade */
+        @media (max-width: 400px) {
+            .card-container { width: 90%; height: 420px; }
+            h1 { font-size: 1.5rem; }
+            .question-text { font-size: 1.4rem; }
         }
-
-        .btn-draw:active { transform: scale(0.95); }
-
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Autoestima &<br>Autoconhecimento</h1>
-        <div class="subtitle">Recurso para Adolescentes</div>
+        <h1>Autoestima Teen</h1>
+        <div class="subtitle">Perguntas para se conhecer melhor</div>
     </header>
 
-    <div class="deck-area">
-        <div class="stack-card stack-1"></div>
-        <div class="stack-card stack-2"></div>
-
-        <div class="card" id="active-card" onclick="flipCard()">
+    <div class="card-container" onclick="flipCard()">
+        <div class="card" id="card">
+            
             <div class="card-face face-back">
-                <div class="logo-icon">💡</div>
-                <div class="logo-text">Livro<br>Terapia</div>
-                <p style="font-size: 0.8rem; margin-top: 15px; opacity: 0.8;">Toque para revelar</p>
+                <div class="icon-box">💎</div>
+                <div class="deck-title">PUXA<br>CONVERSA</div>
+                <div class="tap-hint">Toque para revelar</div>
             </div>
 
             <div class="card-face face-front">
-                <div class="decoration-icon">✨</div>
+                <div class="sticker">✨</div>
+                <div class="card-number" id="counter">#</div>
                 <div class="question-text" id="q-text">
-                    Clique no botão para tirar uma carta!
+                    Clique no botão para começar!
                 </div>
-                <div class="card-counter" id="counter">Baralho Virtual</div>
             </div>
+
         </div>
     </div>
 
-    <button class="btn-draw" onclick="drawCard()">🎲 Tirar Carta</button>
+    <button class="btn-draw" onclick="drawCard(event)">
+        <i class="fa-solid fa-layer-group"></i> TIRAR CARTA
+    </button>
 
     <script>
-        // BANCO DE DADOS (Extraído do PDF)
+        // BANCO DE DADOS (Extraído do PDF baralho-autoestima-e-autoconhecimento)
         const questions = [
             "Como se sente em relação ao seu corpo?",
             "Que tipo de crítica você mais ouve?",
@@ -233,90 +233,63 @@
             "Quem mais o critica?",
             "Como lida com críticas negativas?",
             "De quem você mais busca aprovação?",
-            "Que tipo de crítica mais o incomoda?",
             "Sente dificuldades em dizer 'Não'?",
-            "Tem mais dificuldade em dizer 'não' para alguém específico?",
-            "Acha difícil aceitar limites?",
             "Quem mais o encoraja?",
             "Quem mais o desafia?",
             "Que parte do seu corpo você mais gosta?",
             "Que parte do seu corpo você menos gosta?",
-            "Pensa em mudar algo em seu corpo?",
             "Você confia no seu potencial?",
             "A opinião dos outros é importante para você?",
-            "Cite uma situação em que a opinião de outra pessoa te afetou.",
             "De quem você mais valoriza a opinião?",
-            "De quem você mais pede conselhos?",
             "Como se sente em relação ao seu desempenho escolar?",
             "Como se sente quando falha?",
-            "Em sua opinião, o que é ser vulnerável?",
+            "O que é ser vulnerável para você?",
             "Por quem você mais se sente valorizado?",
             "Que tipo de elogio você mais recebe? De quem?",
             "Você tem o hábito de se elogiar?",
             "Você sente dificuldades em aceitar elogios?",
-            "Reconhece que merece o melhor da vida?",
             "Qual foi a maior demonstração de amor que já recebeu?",
             "Sente-se ouvido e compreendido?",
-            "Como seus pais mais demonstram amor a você?",
-            "Como seus familiares mais demonstram amor a você?",
+            "Como seus pais demonstram amor a você?",
             "Sente-se feliz em seu relacionamento amoroso?",
             "Sente-se confortável com o seu corpo?",
             "Como lida com perdas? Qual foi a sua maior perda?",
             "Sente dificuldade em perdoar?",
-            "Você já precisou do perdão de alguém?",
-            "Você sente necessidade de agradar uma pessoa em específico?",
+            "Você sente necessidade de agradar alguém?",
             "Sente que seus amigos respeitam a sua opinião?",
             "Em que situações costuma sentir vergonha?",
             "Como você age quando quer agradar alguém?",
-            "Sente que precisa agradar os seus pais?",
-            "Costuma fazer coisas que não quer, apenas para agradar os outros?",
-            "Você costuma se comparar com as pessoas nas redes sociais?",
+            "Você costuma se comparar nas redes sociais?",
             "Que música mais define sua vida neste momento?",
             "Quem é o seu maior exemplo?",
             "Qual é o seu maior orgulho?",
             "Em que situação se sentiu magoado por um amigo?",
             "Que amigo não gostaria de perder?",
-            "De quem você tem mágoa? Por que?",
-            "Sente raiva de alguém?",
             "O que mais te deixa com raiva?",
-            "Como lida com a raiva?",
             "Como lida com o medo?",
             "Você tem medo de perder alguém?",
-            "Que situação mais te deixa com medo?",
             "Qual foi o seu maior medo já enfrentado?",
             "Relembre um momento em que se sentiu muito amado.",
-            "Como reage quando se sente ofendido?",
             "Você sente que precisa justificar suas decisões?",
             "Cite 03 coisas importantes para você.",
             "O que mais gostaria que seus pais fizessem por você?",
             "Como define seu relacionamento com seus pais?",
-            "Como define o seu relacionamento com seus irmãos?",
-            "Como define seu relacionamento com seus amigos?",
             "Qual é a maior exigência dos seus pais para você?",
             "O que acha que seus pais esperam do seu futuro?",
-            "O que gostaria de dizer para seus pais?",
             "Sente-se culpado por alguma coisa?",
-            "Costuma assumir a culpa pelos seus erros?",
-            "Se arrepende de ter feito algo? O que aconteceu?",
             "Qual foi a experiência mais marcante da sua vida?",
-            "Relembre um momento triste.",
-            "Relembre um momento engraçado.",
+            "Relembre um momento muito engraçado.",
             "Que momento gostaria de guardar para sempre na memória?",
-            "Sente-se responsável por suas decisões?",
             "Quem é responsável por você ser quem é hoje?",
-            "Sente-se tão importante quanto as outras pessoas?",
             "Sente-se comparado com outras pessoas?",
             "Quais são as suas maiores qualidades?",
             "Quais são os seus maiores defeitos?",
             "Sente que é capaz de alcançar seus objetivos?",
             "O que o faz sentir desvalorizado?",
             "Qual é a importância das amizades?",
-            "Qual é a importância da família?",
             "Já terminou um namoro? Como se sentiu?",
-            "Já terminou uma amizade? Como se sentiu?",
-            "Já se sentiu pressionado a fazer algo?",
             "Quem sempre está à disposição para te ajudar?",
-            "Tem dificuldade em pedir ou aceitar ajuda?",
+            "Tem dificuldade em pedir ajuda?",
             "Cite 03 coisas no que você é bom.",
             "O que seria respeitar a si mesmo?",
             "Sente que precisa ser perfeito?",
@@ -328,66 +301,65 @@
             "Como se sente ao ajudar alguém?",
             "O que precisa para se sentir completo?",
             "Qual é a lição mais importante que você aprendeu?",
-            "Quando foi a última vez que chorou? Por que?",
             "É importante se sentir bonito?",
             "Reconhece o quão valiosa a sua vida é?",
-            "Relembre 05 coisas boas que aconteceram nas últimas semanas.",
             "Que qualidade mais admira nas pessoas?",
             "Em que tipo de situação se sente ansioso?",
             "Você se sente suficiente?",
-            "O que pode melhorar em sua vida?",
             "O que precisa fazer hoje para realizar seus sonhos?",
             "Descreva as férias dos seus sonhos.",
-            "Descreva o relacionamento dos sonhos.",
             "Sente que pode dar sua opinião e ser respeitado?",
             "Qual seu objetivo para este ano?",
             "Como pode tornar sua vida mais feliz hoje?"
         ];
 
-        const cardElement = document.getElementById('active-card');
-        const qText = document.getElementById('q-text');
-        const counter = document.getElementById('counter');
-        
-        let availableQuestions = [...questions];
+        let availableCards = [...questions];
+        const cardElement = document.getElementById('card');
+        const textElement = document.getElementById('q-text');
+        const counterElement = document.getElementById('counter');
 
-        function drawCard() {
-            // Se as cartas acabaram, reinicia
-            if (availableQuestions.length === 0) {
-                availableQuestions = [...questions];
-                alert("Todas as cartas foram usadas! O baralho foi reembaralhado.");
+        function drawCard(event) {
+            // Evita que o clique no botão vire a carta imediatamente se propagar
+            if(event) event.stopPropagation();
+
+            // Se acabou, reinicia
+            if (availableCards.length === 0) {
+                alert("Você completou todas as cartas! O baralho será reembaralhado.");
+                availableCards = [...questions];
             }
 
-            // Efeito visual: Resetar carta para a posição inicial (verso)
-            cardElement.classList.remove('dealing'); // Remove animação anterior
-            cardElement.classList.remove('flipped'); // Vira para baixo
-            
-            // Pequeno delay para a carta "voltar" pro monte antes de sair de novo
-            setTimeout(() => {
-                // Sorteia pergunta
-                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-                const question = availableQuestions[randomIndex];
+            // Se a carta estiver virada (mostrando texto), desvira primeiro
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
                 
-                // Remove a pergunta usada para não repetir
-                availableQuestions.splice(randomIndex, 1);
-
-                // Atualiza texto (enquanto está virada para baixo)
-                qText.innerText = question;
-                counter.innerText = `Restam ${availableQuestions.length} cartas`;
-
-                // Adiciona animação de "Dar as cartas"
-                void cardElement.offsetWidth; // Trigger reflow para reiniciar animação
-                cardElement.classList.add('dealing');
-
-                // Vira a carta automaticamente após sair do monte
+                // Espera a animação de fechar (600ms) para trocar o texto
                 setTimeout(() => {
+                    updateContent();
+                    // Vira de novo automaticamente
                     cardElement.classList.add('flipped');
-                }, 400);
+                }, 600);
+            } else {
+                // Se já estiver fechada, troca o texto e vira
+                updateContent();
+                cardElement.classList.add('flipped');
+            }
+        }
 
-            }, 200);
+        function updateContent() {
+            // Sorteia
+            const randomIndex = Math.floor(Math.random() * availableCards.length);
+            const question = availableCards[randomIndex];
+            
+            // Remove do monte
+            availableCards.splice(randomIndex, 1);
+
+            // Atualiza HTML
+            textElement.innerText = question;
+            counterElement.innerText = `Restam: ${availableCards.length}`;
         }
 
         function flipCard() {
-            // Permite virar manualmente se quiser esconder/revelar
+            // Permite virar manualmente ao clicar na carta
             cardElement.classList.toggle('flipped');
         }
 
