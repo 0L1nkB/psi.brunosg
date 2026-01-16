@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceituação Cognitiva | Caderno Incrível</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Paleta Lúdica */
+            --bg-color: #f0f8ff;
+            --paper: #ffffff;
+            --primary: #6c5ce7; /* Roxo */
+            --secondary: #00b894; /* Verde */
+            --accent: #fdcb6e; /* Amarelo */
+            --text: #2d3436;
+            --box-border: #b2bec3;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px; /* Mais largo para caber o diagrama */
+            background: var(--paper);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 10px 10px 0 var(--shadow);
+            border: 3px solid var(--text);
+            position: relative;
+        }
+
+        /* CABEÇALHO */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        header::before {
+            content: ""; position: absolute; top: -55px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 350px; height: 50px; background-color: rgba(108, 92, 231, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 2.2rem; text-transform: uppercase; }
+        .subtitle { font-size: 1.1rem; color: #636e72; margin-top: 10px; }
+
+        /* CAIXAS DO DIAGRAMA */
+        .flow-section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .box-container {
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .box-title {
+            position: absolute;
+            top: -15px; left: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .arrow-down {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--text);
+            margin: 10px 0;
+            opacity: 0.5;
+        }
+
+        /* ÁREAS DE TEXTO */
+        textarea {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            background-image: linear-gradient(#dfe6e9 1px, transparent 1px);
+            background-size: 100% 30px;
+            line-height: 30px;
+            min-height: 90px;
+            color: #2d3436;
+        }
+
+        /* GRID PARA CRENÇAS */
+        .beliefs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .post-it {
+            background: #fffce0;
+            padding: 15px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            transform: rotate(-1deg);
+            border: 1px solid #e6e6e6;
+        }
+        .post-it:nth-child(2) { transform: rotate(1deg); background: #e0f7fa; }
+
+        /* GRID PARA CICLO DE MANUTENÇÃO (3 COLUNAS) */
+        .cycle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .cycle-col {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed #ccc;
+        }
+        
+        .cycle-col h4 { margin: 0 0 10px 0; color: var(--primary); font-size: 0.9rem; text-align: center; }
+
+        /* RODAPÉ E BOTÃO */
+        .footer-note { font-size: 0.85rem; color: #aaa; text-align: center; margin-top: 20px; }
+
+        .btn-action {
+            display: block; width: 100%;
+            margin-top: 30px; padding: 15px;
+            background-color: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.3rem; font-weight: bold; font-family: inherit;
+            cursor: pointer; box-shadow: 0 6px 0 #000;
+            transition: transform 0.1s;
+        }
+        .btn-action:hover { transform: translateY(-3px); }
+        .btn-action:active { transform: translateY(3px); box-shadow: none; }
+
+        @media (max-width: 768px) {
+            .beliefs-grid, .cycle-grid { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
+            .btn-action { display: none; }
+            textarea { border: 1px solid #eee; } /* Borda leve para impressão */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Conceituação Cognitiva</h1>
+            <p class="subtitle">O mapa para entender como sua mente funciona.</p>
+        </header>
+
+        <div class="flow-section">
+            <div class="box-container">
+                <div class="box-title">1. Raízes (História de Vida)</div>
+                <textarea placeholder="Quais experiências marcantes da infância/adolescência podem ter contribuído para os problemas atuais? (Ex: Bullying, críticas excessivas, falta de afeto...)"></textarea>
+            </div>
+            <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
+        </div>
+
+        <div class="flow-section">
+            <div class="box-container" style="border-color: var(--accent);">
+                <div class="box-title" style="background: var(--accent); color: var(--text);">2. Crenças Centrais (O que aprendi)</div>
+                <div class="beliefs-grid">
+                    <div class="post-it">
+                        <strong>Sobre Mim Mesmo:</strong><br>
+                        <textarea placeholder="Ex: Eu sou inadequado / Eu sou fraco / Eu não mereço amor..."></textarea>
+                    </div>
+                    <div class="post-it">
+                        <strong>Sobre os Outros/Mundo:</strong><br>
+                        <textarea placeholder="Ex: As pessoas não são confiáveis / O mundo é perigoso..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
+        </div>
+
+        <div class="flow-section">
+            <div class="box-container">
+                <div class="box-title">3. Regras e Suposições (Condicionais)</div>
+                <textarea placeholder="Se eu... então... (Ex: Se eu não for perfeito, serei rejeitado. / Devo sempre agradar a todos.)"></textarea>
+            </div>
+            <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
+        </div>
+
+        <div class="flow-section">
+            <div class="box-container">
+                <div class="box-title">4. Estratégias Compensatórias (Defesa)</div>
+                <textarea placeholder="O que eu faço para lidar com essas crenças? (Ex: Evito desafios, tento ser perfeccionista, me isolo, agrido antes de ser agredido...)"></textarea>
+            </div>
+            <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
+        </div>
+
+        <div class="flow-section">
+            <div class="box-container" style="border-color: var(--secondary);">
+                <div class="box-title" style="background: var(--secondary);">5. O Ciclo Atual (Exemplo Prático)</div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Situação Gatilho:</strong>
+                    <textarea placeholder="O que aconteceu recentemente que ativou tudo isso?" style="min-height: 50px;"></textarea>
+                </div>
+
+                <div class="cycle-grid">
+                    <div class="cycle-col">
+                        <h4>💭 Pensamentos Automáticos</h4>
+                        <textarea placeholder="O que passou pela cabeça na hora?"></textarea>
+                    </div>
+                    <div class="cycle-col">
+                        <h4>❤️ Emoções</h4>
+                        <textarea placeholder="O que senti? (Tristeza, Ansiedade...)"></textarea>
+                    </div>
+                    <div class="cycle-col">
+                        <h4>🏃 Comportamento</h4>
+                        <textarea placeholder="O que eu fiz?"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">Preencha este mapa junto com seu terapeuta para entender os padrões.</p>
+
+        <button class="btn-action" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> IMPRIMIR / SALVAR PDF
+        </button>
+    </div>
+
+</body>
+</html>
