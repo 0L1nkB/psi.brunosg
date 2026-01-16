@@ -48,25 +48,24 @@
             border-radius: 50px; box-shadow: 0 5px 0 #00896f;
         }
 
-        /* --- TABULEIRO CORRIGIDO --- */
+        /* --- TABULEIRO ESPAÇOSO --- */
         .game-board {
             display: grid;
-            /* Aumentei o tamanho mínimo da carta para 140px para não ficarem espremidas */
+            /* Cartas com largura mínima confortável */
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            /* Aumentei o espaço entre as cartas */
+            /* Bom espaçamento entre elas */
             gap: 25px; 
             width: 100%; 
-            /* Aumentei a largura máxima para usar melhor a tela */
             max-width: 1100px; 
             perspective: 1000px;
             margin-bottom: 40px;
-            justify-content: center; /* Centraliza o grid */
+            justify-content: center;
         }
 
         /* CARTA */
         .card {
             background-color: transparent;
-            height: 180px; /* Cartas mais altas para a imagem caber bem */
+            height: 180px; /* Altura maior para acomodar a imagem sem espremer */
             cursor: pointer;
             position: relative;
             transform-style: preserve-3d;
@@ -88,7 +87,7 @@
             justify-content: center; align-items: center;
             backface-visibility: hidden;
             border: 4px solid white;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* Sombra mais suave */
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
             background: white;
         }
 
@@ -106,15 +105,15 @@
             justify-content: space-between;
         }
 
-        /* Imagem */
+        /* IMAGEM */
         .card-img {
             width: 100%;
-            height: 110px; /* Altura fixa para a imagem não estourar */
-            object-fit: contain; /* A imagem se ajusta sem cortar */
+            height: 110px; /* Tamanho fixo para alinhar */
+            object-fit: contain; /* Ajusta sem cortar */
             filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
         }
 
-        /* Emoji (Caso falte imagem) */
+        /* Emoji (Backup) */
         .card-emoji { font-size: 4rem; }
 
         .card-label {
@@ -142,12 +141,8 @@
 
         @keyframes pulse { 50% { transform: scale(1.05); } }
 
-        /* Ajuste Mobile */
         @media (max-width: 600px) {
-            .game-board { 
-                grid-template-columns: repeat(3, 1fr); /* 3 colunas no celular */
-                gap: 10px;
-            }
+            .game-board { grid-template-columns: repeat(3, 1fr); gap: 10px; }
             .card { height: 130px; }
             .card-img { height: 70px; }
             .card-label { font-size: 0.7rem; padding: 2px 5px; }
@@ -173,20 +168,18 @@
     <button class="btn-restart" onclick="restartGame()">🔄 Reiniciar Jogo</button>
 
     <script>
-        // --- CONFIGURAÇÃO DAS IMAGENS ---
-        // CORREÇÃO: Como a pasta 'img' está DENTRO da pasta 'ferramentas' (onde este arquivo está),
-        // o caminho é 'img/Nome.png' e não '../img/'.
+        // --- LINKS CORRIGIDOS PARA O PADRÃO ANTERIOR (../img/) ---
         const emotions = [
-            { name: "ALEGRIA", img: "img/Poster-Alegria-PNG.png", emoji: "😁" },
-            { name: "TRISTEZA", img: "img/Poster-Tristeza-PNG.png", emoji: "😢" },
-            { name: "RAIVA", img: "img/Poster-Raiva-PNG.png", emoji: "😡" },
-            { name: "MEDO", img: "img/Poster-Medo-PNG.png", emoji: "😱" },
-            { name: "NOJO", img: "img/Poster-Nojinho-PNG.png", emoji: "🤢" },
-            { name: "ANSIEDADE", img: "img/Poster-Ansiedade-PNG.png", emoji: "😬" },
-            { name: "TÉDIO", img: "img/Poster-Tedio-PNG.png", emoji: "😑" },
-            { name: "VERGONHA", img: "img/Poster-Vergonha-PNG.png", emoji: "🫣" },
-            { name: "INVEJA", img: "img/Poster-Inveja-PNG.png", emoji: "😒" },
-            { name: "AMOR", img: null, emoji: "🥰" } // Amor usa Emoji pois não tem imagem na pasta
+            { name: "ALEGRIA", img: "../img/Poster-Alegria-PNG.png", emoji: "😁" },
+            { name: "TRISTEZA", img: "../img/Poster-Tristeza-PNG.png", emoji: "😢" },
+            { name: "RAIVA", img: "../img/Poster-Raiva-PNG.png", emoji: "😡" },
+            { name: "MEDO", img: "../img/Poster-Medo-PNG.png", emoji: "😱" },
+            { name: "NOJO", img: "../img/Poster-Nojinho-PNG.png", emoji: "🤢" },
+            { name: "ANSIEDADE", img: "../img/Poster-Ansiedade-PNG.png", emoji: "😬" },
+            { name: "TÉDIO", img: "../img/Poster-Tedio-PNG.png", emoji: "😑" },
+            { name: "VERGONHA", img: "../img/Poster-Vergonha-PNG.png", emoji: "🫣" },
+            { name: "INVEJA", img: "../img/Poster-Inveja-PNG.png", emoji: "😒" },
+            { name: "AMOR", img: null, emoji: "🥰" } 
         ];
 
         const board = document.getElementById('board');
@@ -200,7 +193,6 @@
         let matches = 0;
 
         function createBoard() {
-            // Duplicar e embaralhar
             let gameCards = [...emotions, ...emotions];
             gameCards.sort(() => 0.5 - Math.random());
 
@@ -211,8 +203,6 @@
                 card.classList.add('card');
                 card.dataset.name = item.name;
 
-                // Verifica se tem imagem ou usa emoji
-                // A classe onError ajuda caso a imagem não carregue, mostrando o emoji
                 const contentHtml = item.img 
                     ? `<img src="${item.img}" class="card-img" alt="${item.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"> <span class="card-emoji" style="display:none">${item.emoji}</span>` 
                     : `<span class="card-emoji">${item.emoji}</span>`;
@@ -296,7 +286,6 @@
             createBoard();
         }
 
-        // Iniciar
         createBoard();
     </script>
 </body>
