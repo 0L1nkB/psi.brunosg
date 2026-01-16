@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YSQ-S3 | Bruno de Souza</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         :root {
-            /* CORES - Baseadas num padrão profissional (ajuste conforme seu site) */
-            --primary-color: #2c3e50; /* Azul Escuro (Cabeçalhos) */
-            --accent-color: #3498db;  /* Azul Claro (Destaques) */
-            --bg-color: #f8f9fa;      /* Fundo suave */
+            --primary-color: #2c3e50; 
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
             --text-color: #333;
             --white: #ffffff;
+            --high-risk: #e74c3c; /* Vermelho para esquemas ativados */
         }
 
         body {
@@ -20,7 +22,6 @@
             color: var(--text-color);
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
         }
 
         .container {
@@ -32,67 +33,34 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        /* Cabeçalho igual ao seu site */
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 20px;
         }
 
-        h1 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        p.subtitle {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Instruções */
-        .instructions {
-            background-color: #e8f4fd;
-            border-left: 4px solid var(--accent-color);
-            padding: 15px;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
-
-        /* Lista de Perguntas */
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.8rem; }
+        
+        /* Layout de Perguntas */
         .question-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #eee;
         }
-
-        .question-item:nth-child(even) {
-            background-color: #fafafa;
-        }
-
-        .q-text {
-            flex: 1;
-            padding-right: 15px;
-            font-size: 0.95rem;
-        }
-
-        .q-input {
-            width: 60px;
-        }
+        
+        .question-item:nth-child(even) { background-color: #fafafa; }
 
         input[type="number"] {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            width: 50px;
+            padding: 5px;
             text-align: center;
-            font-weight: bold;
-            color: var(--primary-color);
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        /* Botões */
         .btn-action {
             display: block;
             width: 100%;
@@ -103,41 +71,49 @@
             border-radius: 5px;
             font-size: 1.1rem;
             cursor: pointer;
-            margin-top: 30px;
-            transition: background 0.2s;
+            margin-top: 20px;
         }
 
-        .btn-action:hover {
-            background-color: #1a252f;
-        }
-
-        /* Área de Resultados (Escondida inicialmente) */
+        /* ÁREA DE RESULTADOS */
         #results-area {
-            display: none;
+            display: none; /* Escondido até calcular */
             margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px dashed #ccc;
         }
 
-        .schema-result {
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Metade texto, metade gráfico */
+            gap: 20px;
+        }
+
+        .schema-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px;
+            padding: 5px 10px;
             border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
         }
 
-        .schema-result.high-score {
+        .activated {
             background-color: #ffebee;
-            color: #c0392b;
+            color: var(--high-risk);
             font-weight: bold;
+            border-left: 4px solid var(--high-risk);
         }
 
-        /* Impressão */
+        /* Configuração de Impressão */
         @media print {
-            body { padding: 0; background: white; }
-            .container { box-shadow: none; border: none; width: 100%; }
-            .btn-action { display: none; }
-            input { border: none; text-align: right; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; width: 100%; max-width: 100%; }
+            .btn-action, .instructions { display: none; }
+            #questions-container { display: none; } /* Esconde as perguntas para o PDF ficar limpo só com o gráfico? Se quiser as perguntas, remova essa linha */
+            #results-area { display: block !important; margin-top: 0; }
+            .results-grid { display: block; } /* No papel, um embaixo do outro */
+            canvas { max-height: 500px; margin: 0 auto; }
+        }
+
+        @media (max-width: 768px) {
+            .results-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -145,95 +121,121 @@
 
 <div class="container">
     <header>
-        <h1>YSQ - S3</h1>
-        <p class="subtitle">Questionário de Esquemas de Young - Versão Breve</p>
-        <p style="font-size: 0.8rem; margin-top: 5px;">Bruno de Souza - CRP 07/44472</p>
+        <h1>Relatório YSQ-S3</h1>
+        <p>Bruno de Souza - CRP 07/44472</p>
     </header>
 
     <div class="instructions">
-        <strong>Instruções:</strong> Leia cada afirmação e pontue de <strong>1 a 6</strong> conforme o quanto ela descreve você.<br>
-        1 = Completamente falso | 6 = Descreve-me perfeitamente
+        Preencha os valores de 1 a 6. (Deixe em branco se for 0/Não se aplica)
     </div>
 
     <div id="questions-container"></div>
 
-    <button class="btn-action" onclick="calcularResultados()">Calcular Resultados</button>
-    
+    <button class="btn-action" onclick="calcular()">Gerar Relatório Gráfico</button>
+
     <div id="results-area">
-        <h2>Perfil de Esquemas</h2>
-        <div id="score-list"></div>
-        <button class="btn-action" style="background-color: #7f8c8d; margin-top: 20px;" onclick="window.print()">Salvar PDF / Imprimir</button>
+        <h2 style="text-align: center; color: var(--primary-color);">Perfil Esquemático</h2>
+        
+        <div class="results-grid">
+            <div id="text-results"></div>
+            
+            <div>
+                <canvas id="schemaChart"></canvas>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+            <strong>Interpretação Rápida:</strong><br>
+            Itens destacados em <span style="color:red; font-weight:bold">Vermelho</span> indicam esquemas com pontuação elevada (neste exemplo, acima de 15 pontos). A análise clínica deve considerar o contexto de vida.
+        </div>
+
+        <button class="btn-action" style="background-color: #7f8c8d;" onclick="window.print()">Salvar PDF para Prontuário</button>
     </div>
 </div>
 
 <script>
-    // --- CONFIGURAÇÃO ---
-    // Nomes dos 18 Esquemas (Na ordem oficial da pontuação)
     const esquemas = [
         "Privação Emocional", "Abandono", "Desconfiança/Abuso", "Isolamento Social",
-        "Defectividade/Vergonha", "Fracasso", "Dependência/Incompetência", 
-        "Vulnerabilidade ao Dano", "Emaranhamento", "Subjugação", "Auto-sacrifício",
-        "Inibição Emocional", "Padrões Inflexíveis", "Arrogo/Grandiosidade",
-        "Autocontrole Insuficiente", "Busca de Aprovação", "Negativismo/Pessimismo", 
+        "Defectividade/Vergonha", "Fracasso", "Dependência", 
+        "Vulnerabilidade", "Emaranhamento", "Subjugação", "Auto-sacrifício",
+        "Inibição Emocional", "Padrões Inflexíveis", "Grandiosidade",
+        "Autocontrole Insuficiente", "Busca de Aprovação", "Negativismo", 
         "Postura Punitiva"
     ];
 
-    // --- GERADOR DE PERGUNTAS ---
+    // Gerar campos de input
     const container = document.getElementById('questions-container');
-
-    // Loop para criar as 90 linhas de entrada
     for (let i = 1; i <= 90; i++) {
-        // Se você tiver o texto, pode criar um array e usar: textoPerguntas[i-1]
-        let textoPergunta = `Pergunta ${i} (Consulte o manual)`; 
-        
-        // CHTML da linha
-        let html = `
+        container.insertAdjacentHTML('beforeend', `
             <div class="question-item">
-                <div class="q-text"><strong>${i}.</strong> ${textoPergunta}</div>
-                <input type="number" min="1" max="6" id="q${i}" class="q-input" placeholder="-">
+                <span>Questão ${i}</span>
+                <input type="number" id="q${i}" min="1" max="6">
             </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
+        `);
     }
 
-    // --- LÓGICA DE CÁLCULO (YSQ-S3) ---
-    function calcularResultados() {
-        let scores = new Array(18).fill(0); // Soma dos pontos
-        let counts = new Array(18).fill(0); // Contagem para checar preenchimento (opcional)
+    let myChart = null; // Variável para guardar o gráfico
 
-        // O YSQ-S3 segue um padrão cíclico:
-        // Esquema 1: Perguntas 1, 19, 37, 55, 73
-        // Esquema 2: Perguntas 2, 20, 38, 56, 74
-        // A lógica é: (NumeroDaPergunta - 1) % 18 = Índice do Esquema
-
+    function calcular() {
+        let scores = new Array(18).fill(0);
+        
+        // Somatório (Lógica cíclica do YSQ-S3)
         for (let i = 1; i <= 90; i++) {
             let val = parseInt(document.getElementById(`q${i}`).value) || 0;
-            let esquemaIndex = (i - 1) % 18;
-            
-            scores[esquemaIndex] += val;
+            let index = (i - 1) % 18;
+            scores[index] += val;
         }
 
-        // Gerar Relatório
-        let resultHtml = "";
-        scores.forEach((soma, index) => {
-            // Nota: No YSQ-S3 alguns usam Média, outros Soma. 
-            // Aqui mostramos a Soma. (Máx 30 pts por esquema).
-            // Destaque se pontuação for alta (ex: > 15, ajuste conforme sua prática)
-            let classeExtra = (soma >= 15) ? "high-score" : "";
-            
-            resultHtml += `
-                <div class="schema-result ${classeExtra}">
-                    <span>${esquemas[index]}</span>
-                    <span>${soma} pts</span>
+        // 1. Gerar Lista de Texto
+        let htmlList = "";
+        scores.forEach((pt, idx) => {
+            // CRITÉRIO DE CORTE: Exemplo > 12. Ajuste conforme sua preferência clínica.
+            let isHigh = pt >= 15; 
+            htmlList += `
+                <div class="schema-item ${isHigh ? 'activated' : ''}">
+                    <span>${esquemas[idx]}</span>
+                    <strong>${pt}</strong>
                 </div>
             `;
         });
+        document.getElementById('text-results').innerHTML = htmlList;
 
-        document.getElementById('score-list').innerHTML = resultHtml;
+        // 2. Gerar Gráfico (Radar Chart)
+        const ctx = document.getElementById('schemaChart').getContext('2d');
+        
+        if(myChart) myChart.destroy(); // Limpa gráfico anterior se houver
+
+        myChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: esquemas,
+                datasets: [{
+                    label: 'Pontuação do Paciente',
+                    data: scores,
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(44, 62, 80, 1)'
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 30 // Pontuação máxima possível (5 perguntas x 6)
+                    }
+                }
+            }
+        });
+
+        // Mostrar resultados
         document.getElementById('results-area').style.display = 'block';
         
-        // Rola a tela até o resultado
-        document.getElementById('results-area').scrollIntoView({behavior: 'smooth'});
+        // Rolar até o resultado
+        setTimeout(() => {
+            document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
     }
 </script>
 
