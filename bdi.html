@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDI - Depressão | Bruno de Souza</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Mesmos estilos para consistência */
+        :root { --primary: #2c3e50; --green: #2ecc71; --yellow: #f1c40f; --orange: #e67e22; --red: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #333; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; }
+        header { text-align: center; border-bottom: 2px solid var(--primary); margin-bottom: 30px; padding-bottom: 20px;}
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .item-row:nth-child(even) { background: #fafafa; }
+        select { padding: 8px; border: 1px solid #ccc; width: 200px; }
+        button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; font-size: 1.1rem;}
+        
+        #result-area { display: none; margin-top: 30px; text-align: center; }
+        .score-display { font-size: 2.5rem; font-weight: bold; color: var(--primary); }
+        .classification { font-size: 1.5rem; font-weight: 500; margin-bottom: 20px; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; width: 100%; }
+            #questions-list, button, .instructions { display: none; }
+            #result-area { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>BDI - Escala de Depressão</h1>
+        <p>Bruno de Souza - CRP 07/44472</p>
+    </header>
+
+    <div class="instructions">
+        <p>Selecione a afirmação que melhor descreve como você se sentiu na <strong>última semana, incluindo hoje</strong>.</p>
+    </div>
+
+    <div id="questions-list"></div>
+
+    <button onclick="calcularBDI()">Calcular Nível de Depressão</button>
+
+    <div id="result-area">
+        <hr>
+        <h2>Resultado Clínico</h2>
+        <div class="score-display" id="final-score">0</div>
+        <div class="classification" id="final-class">-</div>
+        
+        <div style="height: 150px; width: 100%; max-width: 500px; margin: 0 auto;">
+            <canvas id="bdiChart"></canvas>
+        </div>
+        
+        <button onclick="window.print()" style="background: #95a5a6; margin-top: 30px;">Salvar PDF</button>
+    </div>
+</div>
+
+<script>
+    // NOMES DAS CATEGORIAS DO BDI (O texto completo das opções 0,1,2,3 você deve consultar no manual)
+    const itens = [
+        "1. Tristeza", "2. Pessimismo", "3. Fracasso Passado", "4. Perda de Prazer",
+        "5. Culpa", "6. Sentimento de Punição", "7. Auto-aversão", "8. Auto-acusação",
+        "9. Pensamentos Suicidas", "10. Choro", "11. Agitação", "12. Perda de Interesse",
+        "13. Indecisão", "14. Desvalorização", "15. Perda de Energia", "16. Alteração no Sono",
+        "17. Irritabilidade", "18. Alteração no Apetite", "19. Dificuldade de Concentração", 
+        "20. Cansaço/Fadiga", "21. Perda de Libido"
+    ];
+
+    const container = document.getElementById('questions-list');
+
+    itens.forEach((item, index) => {
+        let html = `
+            <div class="item-row">
+                <span>${item}</span>
+                <select id="q${index}">
+                    <option value="0">0 - Não sinto isso</option>
+                    <option value="1">1 - Sinto um pouco</option>
+                    <option value="2">2 - Sinto moderadamente</option>
+                    <option value="3">3 - Sinto intensamente</option>
+                </select>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    });
+
+    let myChart = null;
+
+    function calcularBDI() {
+        let total = 0;
+        for (let i = 0; i < 21; i++) {
+            total += parseInt(document.getElementById(`q${i}`).value);
+        }
+
+        // Classificação (Cunha, 2001 - População Clínica)
+        // Mínima: 0-13 | Leve: 14-19 | Moderada: 20-28 | Grave: 29-63
+        let classificacao = "";
+        let cor = "";
+
+        if (total <= 13) { classificacao = "Mínima"; cor = "#2ecc71"; }
+        else if (total <= 19) { classificacao = "Leve"; cor = "#f1c40f"; }
+        else if (total <= 28) { classificacao = "Moderada"; cor = "#e67e22"; }
+        else { classificacao = "Grave"; cor = "#e74c3c"; }
+
+        document.getElementById('final-score').innerText = total + " pontos";
+        const classElem = document.getElementById('final-class');
+        classElem.innerText = classificacao;
+        classElem.style.color = cor;
+        
+        document.getElementById('result-area').style.display = 'block';
+
+        const ctx = document.getElementById('bdiChart').getContext('2d');
+        if (myChart) myChart.destroy();
+
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Pontuação BDI'],
+                datasets: [{
+                    label: 'Gravidade da Depressão',
+                    data: [total],
+                    backgroundColor: cor,
+                    barThickness: 50
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: { min: 0, max: 63 }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        setTimeout(() => document.getElementById('result-area').scrollIntoView({behavior:'smooth'}), 100);
+    }
+</script>
+</body>
+</html>
