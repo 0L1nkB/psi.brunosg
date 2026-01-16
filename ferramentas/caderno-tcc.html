@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caderno TCC | Versão 3.0</title>
+    <title>Caderno TCC | Versão 4.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -47,7 +47,7 @@
 
         .sidebar.open { transform: translateX(0); }
 
-        @media (min-width: 900px) {
+        @media (min-width: 950px) {
             .sidebar { position: relative; transform: translateX(0); }
             .menu-toggle { display: none !important; }
         }
@@ -77,8 +77,8 @@
         .menu-category:first-child { border-top: none; margin-top: 0; }
 
         .menu-btn {
-            width: 100%; padding: 12px 20px; background: none; border: none;
-            color: var(--sidebar-text); text-align: left; font-family: inherit; font-size: 0.95rem;
+            width: 100%; padding: 10px 20px; background: none; border: none;
+            color: var(--sidebar-text); text-align: left; font-family: inherit; font-size: 0.9rem;
             cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px;
         }
         .menu-btn:hover { background-color: rgba(255,255,255,0.1); color: white; }
@@ -142,6 +142,11 @@
         .check-item { background: white; border: 1px solid #ccc; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
         .check-item:has(input:checked) { background: #dff9fb; border-color: var(--secondary); font-weight: bold; }
 
+        /* SETA DESCENDENTE */
+        .arrow-step { position: relative; margin-bottom: 25px; }
+        .arrow-icon { text-align: center; color: var(--primary); font-size: 1.5rem; margin: 5px 0; }
+        .arrow-input { border: 2px solid var(--primary); background: #fdfdfd; }
+
         /* PIE CHART CONTROLS */
         .pie-controls { background: #f1f2f6; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ccc; }
         .slice-row { display: flex; gap: 10px; margin-bottom: 5px; }
@@ -164,7 +169,7 @@
     <div class="overlay" onclick="toggleMenu()"></div>
 
     <div class="sidebar" id="sidebar">
-        <div class="brand"><i class="fa-solid fa-book-journal-whills"></i> Caderno TCC <span style="font-size:0.8rem; color:#aaa;">v3.0</span></div>
+        <div class="brand"><i class="fa-solid fa-book-journal-whills"></i> Caderno TCC <span style="font-size:0.8rem; color:#aaa;">v4.0</span></div>
         <div class="menu-items">
             
             <div class="menu-category">Fundamentos</div>
@@ -178,31 +183,46 @@
                 <i class="fa-solid fa-bug"></i> Distorções Cognitivas
             </button>
 
-            <div class="menu-category">Avaliação</div>
+            <div class="menu-category">Reestruturação (NOVOS)</div>
             <button class="menu-btn" onclick="showTool('tool-evidence', this)">
                 <i class="fa-solid fa-gavel"></i> Tribunal (Evidências)
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-double-standard', this)">
+                <i class="fa-solid fa-user-group"></i> Técnica do Duplo Padrão
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-arrow', this)">
+                <i class="fa-solid fa-arrow-down-long"></i> Seta Descendente
             </button>
             <button class="menu-btn" onclick="showTool('tool-cost-benefit', this)">
                 <i class="fa-solid fa-scale-balanced"></i> Custo-Benefício
             </button>
 
-            <div class="menu-category">Ação & Mudança (NOVO)</div>
-            <button class="menu-btn" onclick="showTool('tool-avoidance', this)">
-                <i class="fa-solid fa-person-running"></i> Desafio da Evitação
-            </button>
-            <button class="menu-btn" onclick="showTool('tool-coping', this)">
-                <i class="fa-solid fa-id-card"></i> Cartões de Enfrentamento
-            </button>
-
-            <div class="menu-category">Ansiedade & Regras</div>
+            <div class="menu-category">Ansiedade & Ação</div>
             <button class="menu-btn" onclick="showTool('tool-worry', this)">
                 <i class="fa-solid fa-cloud-bolt"></i> Detetive de Preocupações
             </button>
+            <button class="menu-btn" onclick="showTool('tool-probability', this)">
+                <i class="fa-solid fa-percent"></i> Cálculo de Probabilidades
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-problem-solving', this)">
+                <i class="fa-solid fa-puzzle-piece"></i> Solução de Problemas
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-avoidance', this)">
+                <i class="fa-solid fa-person-running"></i> Desafio da Evitação
+            </button>
+
+            <div class="menu-category">Autoestima & Regras</div>
             <button class="menu-btn" onclick="showTool('tool-should', this)">
                 <i class="fa-solid fa-triangle-exclamation"></i> Os "Deveria"
             </button>
             <button class="menu-btn" onclick="showTool('tool-pie', this)">
                 <i class="fa-solid fa-chart-pie"></i> Gráfico da Culpa
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-gratitude', this)">
+                <i class="fa-solid fa-star"></i> Diário de Gratidão
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-coping', this)">
+                <i class="fa-solid fa-id-card"></i> Cartões de Enfrentamento
             </button>
 
             <div class="menu-category">Diário</div>
@@ -259,8 +279,6 @@
                     <label class="check-item"><input type="checkbox"> 🎯 Personalização</label>
                     <label class="check-item"><input type="checkbox"> 👎 Filtro Negativo</label>
                 </div>
-                <h3>Análise:</h3>
-                <textarea placeholder="Como essa distorção afetou seu humor?"></textarea>
             </div>
 
             <div id="tool-evidence" class="tool-section">
@@ -274,68 +292,59 @@
                 <textarea placeholder="Conclusão realista..."></textarea>
             </div>
 
+            <div id="tool-double-standard" class="tool-section">
+                <h2>O Conselho do Amigo</h2>
+                <div class="instruction">Muitas vezes somos cruéis conosco, mas gentis com os amigos. Vamos equilibrar isso.</div>
+                
+                <div class="grid-2">
+                    <div style="border-right: 1px dashed #ccc; padding-right: 20px;">
+                        <h4 style="color:#d63031">O que eu digo para mim mesmo:</h4>
+                        <textarea placeholder="Ex: Eu sou burro por ter errado..."></textarea>
+                    </div>
+                    <div>
+                        <h4 style="color:#00b894">O que eu diria a um amigo querido na mesma situação?</h4>
+                        <textarea placeholder="Ex: Todo mundo erra, você estava cansado..."></textarea>
+                    </div>
+                </div>
+                <h3>Conclusão:</h3>
+                <p>Se eu não falaria assim com meu amigo, por que aceito falar assim comigo?</p>
+                <textarea placeholder="Nova forma de falar comigo mesmo..."></textarea>
+            </div>
+
+            <div id="tool-arrow" class="tool-section">
+                <h2>Seta Descendente</h2>
+                <div class="instruction">Pergunte "Se isso for verdade, o que significa?" até chegar na Crença Central.</div>
+                
+                <div class="arrow-step">
+                    <label>1. Pensamento Automático:</label>
+                    <input type="text" class="arrow-input" placeholder="Ex: Ele não respondeu minha mensagem.">
+                </div>
+                <div class="arrow-icon">⬇️ <em>Se isso for verdade, o que significa sobre mim?</em></div>
+                
+                <div class="arrow-step">
+                    <label>2. Significado:</label>
+                    <input type="text" class="arrow-input" placeholder="Ex: Ele não gosta mais de mim.">
+                </div>
+                <div class="arrow-icon">⬇️ <em>E se ele não gostar, o que isso diz sobre mim?</em></div>
+
+                <div class="arrow-step">
+                    <label>3. Significado mais profundo:</label>
+                    <input type="text" class="arrow-input" placeholder="Ex: Ninguém nunca vai gostar de mim.">
+                </div>
+                <div class="arrow-icon">⬇️ <em>E o que isso significa?</em></div>
+
+                <div class="arrow-step">
+                    <label style="color:#d63031; font-weight:bold;">4. Crença Central (O medo real):</label>
+                    <input type="text" class="arrow-input" placeholder="Ex: Eu sou defeituoso / Eu sou indesejável.">
+                </div>
+            </div>
+
             <div id="tool-cost-benefit" class="tool-section">
                 <h2>Custo-Benefício</h2>
                 <div class="rpd-grid">
                     <div><h3>Vantagens</h3><textarea placeholder="O que eu ganho com isso?"></textarea></div>
                     <div><h3>Desvantagens</h3><textarea placeholder="O que eu perco?"></textarea></div>
                 </div>
-            </div>
-
-            <div id="tool-avoidance" class="tool-section">
-                <h2>Fazendo o que não quero</h2>
-                <div class="instruction">
-                    Para mudar, muitas vezes precisamos fazer o oposto do que sentimos vontade. Use esta tabela para planejar ações difíceis.
-                </div>
-                
-                <table class="avoidance-table">
-                    <tr>
-                        <th>O que estou evitando?</th>
-                        <td><textarea rows="2" placeholder="Ex: Ir à academia, ligar para fulano..."></textarea></td>
-                    </tr>
-                    <tr>
-                        <th>Por que não quero?</th>
-                        <td><textarea rows="2" placeholder="Ex: É cansativo, tenho medo de ser rejeitado..."></textarea></td>
-                    </tr>
-                </table>
-
-                <div class="grid-2">
-                    <div>
-                        <h4 style="color:#d63031">Custos de Evitar</h4>
-                        <textarea placeholder="Se eu não fizer, o que acontece de ruim?"></textarea>
-                    </div>
-                    <div>
-                        <h4 style="color:#00b894">Benefícios de Enfrentar</h4>
-                        <textarea placeholder="Se eu fizer, o que posso ganhar a longo prazo?"></textarea>
-                    </div>
-                </div>
-
-                <h3>Experimento (Após realizar):</h3>
-                <textarea placeholder="O que eu senti? Foi tão ruim quanto eu esperava? O que aprendi?"></textarea>
-            </div>
-
-            <div id="tool-coping" class="tool-section">
-                <h2>🗂️ Cartões de Enfrentamento</h2>
-                <div class="instruction">
-                    Crie lembretes para ler em momentos difíceis. Eles ficam salvos aqui no seu navegador!
-                </div>
-                
-                <div class="no-print" style="background:#eee; padding:15px; border-radius:10px; margin-bottom:20px;">
-                    <input type="text" id="coping-trigger" placeholder="Situação ou Pensamento Negativo (Gatilho)">
-                    <textarea id="coping-response" placeholder="Resposta Saudável / Lembrete (O que eu preciso ouvir?)" style="height:80px;"></textarea>
-                    <button class="btn-small" onclick="addCard()" style="background:var(--primary); width:100%; padding:10px; font-size:1rem;">+ Criar Cartão</button>
-                </div>
-
-                <div id="cards-container">
-                    </div>
-            </div>
-
-            <div id="tool-should" class="tool-section">
-                <h2>Desafio das Regras Rígidas</h2>
-                <label><strong>Regra Rígida:</strong></label>
-                <input type="text" placeholder="Ex: Eu devo ser produtivo o tempo todo">
-                <label><strong>Nova Regra Flexível (Preferência):</strong></label>
-                <textarea placeholder="Ex: Eu prefiro ser produtivo, mas também preciso descansar..."></textarea>
             </div>
 
             <div id="tool-worry" class="tool-section">
@@ -354,6 +363,67 @@
                 <textarea placeholder="O que realmente aconteceu?"></textarea>
             </div>
 
+            <div id="tool-probability" class="tool-section">
+                <h2>Cálculo de Probabilidades</h2>
+                <div class="instruction">A ansiedade confunde o POSSÍVEL (pode acontecer) com o PROVÁVEL (vai acontecer).</div>
+                
+                <label><strong>O que eu temo que aconteça?</strong></label>
+                <input type="text" placeholder="Ex: Vou perder o emprego">
+
+                <div class="grid-2">
+                    <div>
+                        <h4>Pior Cenário Possível (Catástrofe)</h4>
+                        <textarea placeholder="Descreva o pior..."></textarea>
+                    </div>
+                    <div>
+                        <h4>Melhor Cenário Possível (Otimista)</h4>
+                        <textarea placeholder="Descreva o melhor..."></textarea>
+                    </div>
+                </div>
+                
+                <h4>Cenário Mais Provável (Realista)</h4>
+                <textarea placeholder="O que provavelmente vai acontecer?"></textarea>
+            </div>
+
+            <div id="tool-problem-solving" class="tool-section">
+                <h2>Resolução de Problemas (7 Passos)</h2>
+                <div class="instruction">Transforme a preocupação em um plano de ação.</div>
+                
+                <label>1. Qual é o problema? (Específico)</label>
+                <input type="text" placeholder="Ex: Estou com dívidas no cartão.">
+
+                <label>2. Brainstorming (Ideias sem julgamento)</label>
+                <textarea placeholder="- Pedir empréstimo\n- Vender algo\n- Cortar gastos..."></textarea>
+
+                <label>3. Escolha a melhor solução:</label>
+                <input type="text" placeholder="Ex: Cortar gastos supérfluos.">
+
+                <label>4. Passos Práticos (O que fazer primeiro?):</label>
+                <textarea placeholder="1. Cancelar streaming\n2. Cozinhar em casa..."></textarea>
+            </div>
+
+            <div id="tool-avoidance" class="tool-section">
+                <h2>Fazendo o que não quero</h2>
+                <table class="avoidance-table">
+                    <tr><th>Evitando o quê?</th><td><textarea rows="2" placeholder="Ex: Ir à academia..."></textarea></td></tr>
+                    <tr><th>Por que?</th><td><textarea rows="2" placeholder="Ex: Preguiça, medo..."></textarea></td></tr>
+                </table>
+                <div class="grid-2">
+                    <div><h4 style="color:#d63031">Custos de Evitar</h4><textarea></textarea></div>
+                    <div><h4 style="color:#00b894">Benefícios de Enfrentar</h4><textarea></textarea></div>
+                </div>
+                <h3>Experimento:</h3>
+                <textarea placeholder="Como foi fazer?"></textarea>
+            </div>
+
+            <div id="tool-should" class="tool-section">
+                <h2>Desafio das Regras Rígidas</h2>
+                <label><strong>Regra Rígida:</strong></label>
+                <input type="text" placeholder="Ex: Eu devo ser produtivo o tempo todo">
+                <label><strong>Nova Regra Flexível (Preferência):</strong></label>
+                <textarea placeholder="Ex: Eu prefiro ser produtivo, mas também preciso descansar..."></textarea>
+            </div>
+
             <div id="tool-pie" class="tool-section">
                 <h2>Gráfico da Responsabilidade</h2>
                 <div class="grid-2">
@@ -369,6 +439,29 @@
                     </div>
                     <div><canvas id="responsibilityChart"></canvas></div>
                 </div>
+            </div>
+
+            <div id="tool-gratitude" class="tool-section">
+                <h2>Diário de Gratidão e Conquistas</h2>
+                <div class="instruction">Treine seu cérebro para notar o positivo.</div>
+                
+                <h4>3 Coisas boas que aconteceram hoje (pequenas ou grandes):</h4>
+                <input type="text" placeholder="1.">
+                <input type="text" placeholder="2.">
+                <input type="text" placeholder="3.">
+
+                <h4>Uma coisa que fiz bem hoje (Conquista):</h4>
+                <textarea placeholder="Ex: Consegui segurar minha raiva no trânsito."></textarea>
+            </div>
+
+            <div id="tool-coping" class="tool-section">
+                <h2>🗂️ Cartões de Enfrentamento</h2>
+                <div class="no-print" style="background:#eee; padding:15px; border-radius:10px; margin-bottom:20px;">
+                    <input type="text" id="coping-trigger" placeholder="Gatilho (Pensamento/Situação)">
+                    <textarea id="coping-response" placeholder="Resposta Saudável" style="height:80px;"></textarea>
+                    <button class="btn-small" onclick="addCard()" style="background:var(--primary); width:100%; padding:10px; font-size:1rem;">+ Criar Cartão</button>
+                </div>
+                <div id="cards-container"></div>
             </div>
 
             <div id="tool-emotion" class="tool-section">
@@ -400,31 +493,24 @@
             btn.classList.add('active');
             
             document.getElementById('header-title').innerText = btn.innerText;
-            if(window.innerWidth < 900) toggleMenu();
+            if(window.innerWidth < 950) toggleMenu();
         }
 
-        // --- CARTÕES DE ENFRENTAMENTO (LOCALSTORAGE) ---
+        // CARTÕES (LocalStorage)
         let cards = JSON.parse(localStorage.getItem('copingCards')) || [];
-
         function renderCards() {
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
-            if(cards.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#aaa; font-style:italic;">Nenhum cartão criado ainda.</div>';
-                return;
-            }
+            if(cards.length === 0) { container.innerHTML = '<div style="text-align:center; color:#aaa;">Nenhum cartão criado ainda.</div>'; return; }
             cards.forEach((card, index) => {
-                const div = document.createElement('div');
-                div.className = 'coping-card';
-                div.innerHTML = `
-                    <button class="delete-btn" onclick="deleteCard(${index})"><i class="fa-solid fa-trash"></i></button>
-                    <h4>Gatilho: ${card.trigger}</h4>
-                    <div class="response">💡 ${card.response}</div>
-                `;
-                container.appendChild(div);
+                container.innerHTML += `
+                    <div class="coping-card">
+                        <button class="delete-btn" onclick="deleteCard(${index})"><i class="fa-solid fa-trash"></i></button>
+                        <h4>${card.trigger}</h4>
+                        <div class="response">💡 ${card.response}</div>
+                    </div>`;
             });
         }
-
         function addCard() {
             const trigger = document.getElementById('coping-trigger').value;
             const response = document.getElementById('coping-response').value;
@@ -436,19 +522,16 @@
                 document.getElementById('coping-response').value = '';
             }
         }
-
-        function deleteCard(index) {
-            if(confirm('Excluir este cartão?')) {
-                cards.splice(index, 1);
+        function deleteCard(i) {
+            if(confirm('Excluir?')) {
+                cards.splice(i, 1);
                 localStorage.setItem('copingCards', JSON.stringify(cards));
                 renderCards();
             }
         }
-
-        // Inicializa Cards
         renderCards();
 
-        // --- GRÁFICO DA TORTA ---
+        // GRÁFICO TORTA
         let pieChart = null;
         function addSliceInput() {
             const div = document.createElement('div');
@@ -456,33 +539,23 @@
             div.innerHTML = `<input type="text" placeholder="Causa" class="slice-label"> <input type="number" placeholder="%" class="slice-val">`;
             document.getElementById('pie-inputs').appendChild(div);
         }
-
         function drawChart() {
             const ctx = document.getElementById('responsibilityChart').getContext('2d');
             const labels = [];
             const data = [];
-            
             document.querySelectorAll('.slice-row').forEach(row => {
-                const label = row.querySelector('.slice-label').value;
-                const val = row.querySelector('.slice-val').value;
-                if(label && val) { labels.push(label); data.push(val); }
+                const l = row.querySelector('.slice-label').value;
+                const v = row.querySelector('.slice-val').value;
+                if(l && v) { labels.push(l); data.push(v); }
             });
-
             if(pieChart) pieChart.destroy();
             pieChart = new Chart(ctx, {
                 type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: ['#ff7675', '#74b9ff', '#55efc4', '#fdcb6e', '#a29bfe'],
-                        borderWidth: 2, borderColor: '#ffffff'
-                    }]
-                },
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: ['#ff7675', '#74b9ff', '#55efc4', '#fdcb6e', '#a29bfe'], borderWidth: 2, borderColor: '#fff' }] },
                 options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
             });
         }
     </script>
 
 </body>
-</html>s
+</html>
