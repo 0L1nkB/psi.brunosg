@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASRS-18 | Bruno de Souza</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22; /* Laranja para alerta/atenção */
+            --bg: #f8f9fa;
+            --text: #333;
+            --white: #ffffff;
+            --green: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+        }
+
+        h1 { color: var(--primary); margin: 0; font-size: 1.8rem; font-weight: 700; }
+        .crp { font-size: 0.9rem; color: #666; margin-top: 5px; }
+
+        .instructions {
+            background-color: #fef5e7; /* Fundo levemente laranja */
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            border-radius: 4px;
+        }
+
+        /* Seções (Parte A e B) */
+        .section-title {
+            background-color: #eee;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: var(--primary);
+        }
+
+        .question-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-row:nth-child(even) { background-color: #fafafa; }
+
+        .q-text { flex: 1; padding-right: 20px; font-size: 0.95rem; }
+
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 160px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.2s;
+        }
+
+        .btn-main:hover { background-color: #1a252f; }
+
+        /* RESULTADOS */
+        #results-area {
+            display: none;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #ccc;
+        }
+
+        .result-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .score-card {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+        }
+
+        .score-label { font-size: 0.9rem; color: #777; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; padding: 0; }
+            .btn-main, .instructions { display: none; }
+            select { appearance: none; border: none; font-weight: bold; text-align: right; }
+            #results-area { display: block !important; break-inside: avoid; }
+            .chart-container { max-height: 400px; width: 80%; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ASRS-18 (TDAH Adultos)</h1>
+        <div class="crp">Psicólogo Bruno de Souza - CRP 07/44472</div>
+    </header>
+
+    <div class="instructions">
+        <strong>Instruções:</strong> Responda às perguntas abaixo avaliando seu comportamento nos <strong>últimos 6 meses</strong>.<br>
+        Selecione a frequência que melhor descreve como você se sentiu e se comportou.
+    </div>
+
+    <div class="section-title">Parte A: Sintomas de Desatenção</div>
+    <div id="part-a-container"></div>
+
+    <div class="section-title">Parte B: Sintomas de Hiperatividade/Impulsividade</div>
+    <div id="part-b-container"></div>
+
+    <button class="btn-main" onclick="calcularResultados()">Calcular e Gerar Gráfico</button>
+
+    <div id="results-area">
+        <h2 style="text-align: center; color: var(--primary);">Resultado da Triagem</h2>
+        
+        <div class="result-box">
+            <div class="score-card">
+                <span id="score-inattention" class="score-number">-</span>
+                <span class="score-label">Sintomas Significativos<br>(Desatenção)</span>
+            </div>
+            <div class="score-card">
+                <span id="score-hyperactivity" class="score-number">-</span>
+                <span class="score-label">Sintomas Significativos<br>(Hiperatividade)</span>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="asrsChart"></canvas>
+        </div>
+
+        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 0.85rem; border: 1px solid #ddd;">
+            <strong>Interpretação:</strong> O gráfico exibe a quantidade de sintomas considerados clinicamente relevantes (que pontuaram na "zona cinza" da escala original).<br>
+            Em geral, <strong>5 ou mais sintomas</strong> em qualquer uma das categorias sugerem a necessidade de investigação clínica aprofundada.
+        </div>
+
+        <button class="btn-main" style="background-color: #7f8c8d; margin-top: 20px;" onclick="window.print()">Salvar PDF / Imprimir</button>
+    </div>
+</div>
+
+<script>
+    // --- DADOS ---
+    // Perguntas extraídas do PDF
+    const partA = [
+        "Com que frequência você comete erros por falta de atenção quando tem de trabalhar num projeto chato ou difícil?",
+        "Com que frequência você tem dificuldade para manter a atenção quando está fazendo um trabalho chato ou repetitivo?",
+        "Com que frequência você tem dificuldade para se concentrar no que as pessoas dizem, mesmo quando elas estão falando diretamente com você?",
+        "Com que frequência você deixa um projeto pela metade depois de já ter feito as partes mais difíceis?",
+        "Com que frequência você tem dificuldade para fazer um trabalho que exige organização?",
+        "Quando você precisa fazer algo que exige muita concentração, com que frequência você evita ou adia o início?",
+        "Com que frequência você coloca as coisas fora do lugar ou tem dificuldade de encontrar as coisas em casa ou no trabalho?",
+        "Com que frequência você se distrai com atividades ou barulho a sua volta?",
+        "Com que frequência você tem dificuldade para lembrar de compromissos ou obrigações?"
+    ];
+
+    const partB = [
+        "Com que frequência você fica se mexendo na cadeira ou balançando as mãos ou os pés quando precisa ficar sentado(a) por muito tempo?",
+        "Com que frequência você se levanta da cadeira em reuniões ou em outras situações onde deveria ficar sentado(a)?",
+        "Com que frequência você se sente inquieto(a) ou agitado(a)?",
+        "Com que frequência você tem dificuldade para sossegar e relaxar quando tem tempo livre para você?",
+        "Com que frequência você se sente ativo(a) demais e necessitando fazer coisas, como se estivesse 'com um motor ligado'?",
+        "Com que frequência você se pega falando demais em situações sociais?",
+        "Quando você está conversando, com que frequência você se pega terminando as frases das pessoas antes delas?",
+        "Com que frequência você tem dificuldade para esperar nas situações onde cada um tem a sua vez?",
+        "Com que frequência você interrompe os outros quando eles estão ocupados?"
+    ];
+
+    // Lógica de "Zona Cinza" (Thresholds)
+    // Se o valor selecionado for MAIOR OU IGUAL a este número, conta como sintoma.
+    // 0=Nunca, 1=Raramente, 2=Algumas vezes, 3=Frequentemente, 4=Muito Frequentemente
+    
+    // Parte A (1-9)
+    // Itens 1,2,3: >= 2 (Algumas vezes)
+    // Itens 4,5,6: >= 3 (Frequentemente)
+    // Itens 7,8: >= 3 (Frequentemente)
+    // Item 9: >= 2 (Algumas vezes)
+    const thresholdA = [2, 2, 2, 3, 3, 3, 3, 3, 2];
+
+    // Parte B (10-18)
+    // Itens 10,11,12,13,14: >= 2 (Algumas vezes)
+    // Item 15: >= 3 (Frequentemente)
+    // Item 16: >= 2 (Algumas vezes)
+    // Item 17: >= 3 (Frequentemente)
+    // Item 18: >= 2 (Algumas vezes)
+    const thresholdB = [2, 2, 2, 2, 2, 3, 2, 3, 2];
+
+    const options = [
+        {val: 0, text: "Nunca"},
+        {val: 1, text: "Raramente"},
+        {val: 2, text: "Algumas vezes"},
+        {val: 3, text: "Frequentemente"},
+        {val: 4, text: "Muito Frequentemente"}
+    ];
+
+    // Renderizar Perguntas
+    function renderQuestions(questions, elementId, prefix) {
+        const container = document.getElementById(elementId);
+        questions.forEach((q, index) => {
+            let num = prefix + (index + 1);
+            let html = `
+                <div class="question-row">
+                    <div class="q-text"><strong>${num}.</strong> ${q}</div>
+                    <select id="q${prefix}${index}">
+                        ${options.map(o => `<option value="${o.val}">${o.text}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    renderQuestions(partA, 'part-a-container', 'A');
+    renderQuestions(partB, 'part-b-container', 'B');
+
+    let myChart = null;
+
+    function calcularResultados() {
+        let countA = 0;
+        let countB = 0;
+
+        // Calcular Parte A
+        for(let i=0; i<9; i++) {
+            let val = parseInt(document.getElementById(`qA${i}`).value);
+            if (val >= thresholdA[i]) { countA++; }
+        }
+
+        // Calcular Parte B
+        for(let i=0; i<9; i++) {
+            let val = parseInt(document.getElementById(`qB${i}`).value);
+            if (val >= thresholdB[i]) { countB++; }
+        }
+
+        // Exibir Números
+        document.getElementById('score-inattention').innerText = countA + "/9";
+        document.getElementById('score-hyperactivity').innerText = countB + "/9";
+        
+        // Destacar se for alto (>=5 é um corte comum para screening)
+        if(countA >= 5) document.getElementById('score-inattention').style.color = "#e74c3c";
+        else document.getElementById('score-inattention').style.color = "#2c3e50";
+
+        if(countB >= 5) document.getElementById('score-hyperactivity').style.color = "#e74c3c";
+        else document.getElementById('score-hyperactivity').style.color = "#2c3e50";
+
+        // Gerar Gráfico
+        const ctx = document.getElementById('asrsChart').getContext('2d');
+        if(myChart) myChart.destroy();
+
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Desatenção', 'Hiperatividade/Impulsividade'],
+                datasets: [{
+                    label: 'Sintomas Significativos Detectados',
+                    data: [countA, countB],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)', // Azul
+                        'rgba(230, 126, 34, 0.7)'  // Laranja
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(230, 126, 34, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 9,
+                        title: { display: true, text: 'Nº de Sintomas' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Mostrar
+        document.getElementById('results-area').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('results-area').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+</script>
+
+</body>
+</html>
