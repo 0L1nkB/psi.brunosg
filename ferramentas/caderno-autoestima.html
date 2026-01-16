@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caderno de Autoestima</title>
+    <title>Caderno de Autoestima | Psicologia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* RESET BÁSICO */
-        * { box-sizing: border-box; }
-
         :root {
             --bg-color: #f0f8ff;
             --paper: #ffffff;
-            --primary: #6c5ce7; /* Roxo */
-            --secondary: #00b894; /* Verde */
-            --accent: #fdcb6e; /* Amarelo */
+            --primary: #6c5ce7;
+            --secondary: #00b894;
+            --accent: #fdcb6e;
             --text: #2d3436;
-            --input-border: #b2bec3;
+            --line-color: #dfe6e9;
         }
 
         body {
@@ -24,472 +22,221 @@
             background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
             background-size: 20px 20px;
             margin: 0;
-            display: flex;
-            height: 100vh;
-            color: var(--text);
-            overflow: hidden; /* Impede rolagem dupla */
-        }
-
-        /* --- MENU LATERAL --- */
-        .sidebar {
-            width: 260px;
-            min-width: 260px;
-            background-color: #fffce0;
-            border-right: 4px dashed #ffeaa7;
-            display: flex;
-            flex-direction: column;
             padding: 20px;
-            overflow-y: auto;
-            z-index: 10;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 20px;
-            border-bottom: 3px solid var(--secondary);
-            padding-bottom: 10px;
-        }
-
-        .menu-btn {
-            background: white;
-            border: 2px solid var(--input-border);
             color: var(--text);
-            padding: 10px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 0.95rem;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-family: inherit;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        .menu-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateX(5px); }
-        .menu-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
-
-        /* --- ÁREA PRINCIPAL --- */
-        .main-content {
-            flex: 1; /* Ocupa o resto da tela */
-            padding: 20px 40px;
-            overflow-y: auto; /* Rolagem apenas aqui */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .page {
-            display: none;
-            width: 100%;
-            max-width: 850px;
-            background: var(--paper);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
-            border: 2px solid var(--text);
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .page.active { display: block; animation: slideUp 0.3s ease-out; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* DECORAÇÃO DE FITA */
-        .tape {
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            width: 100px; height: 30px; background: rgba(255, 118, 117, 0.7);
-            transform: translateX(-50%) rotate(-1deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        h2 { color: var(--primary); text-align: center; margin-top: 0; }
-        p.intro { text-align: center; color: #636e72; margin-bottom: 25px; }
-
-        /* INPUTS */
-        label { display: block; margin-top: 15px; font-weight: bold; color: #d63031; }
-        
-        input[type="text"], textarea {
-            width: 100%; padding: 12px; margin-top: 5px;
-            border: 2px dashed var(--input-border);
-            border-radius: 10px; font-size: 1rem; font-family: inherit;
-            background: #fafafa;
-        }
-        
-        input:focus, textarea:focus { outline: none; border-color: var(--secondary); background: #f0fff4; }
-        textarea { min-height: 80px; resize: vertical; }
-
-        /* --- ZONA DE CONFORTO (CORRIGIDA) --- */
-        /* Usaremos um layout Flexbox para centralizar tudo perfeitamente */
-        .zone-wrapper {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
-        }
-
-        /* Círculo Maior (Desafios) */
-        .outer-circle {
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background-color: #ffeaa7; /* Amarelo */
-            border: 4px dashed #fdcb6e;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between; /* Espalha o conteúdo */
-            padding: 30px;
+        /* --- BOTÃO DE IMPRESSÃO (Só aparece na tela) --- */
+        .no-print {
+            margin-bottom: 20px;
             text-align: center;
-            position: relative;
         }
 
-        /* Área de Inputs do Círculo Maior */
-        .outer-inputs {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 2; /* Fica acima */
-        }
-
-        /* Círculo Menor (Conforto) - Posicionado Absolutamente no Centro */
-        .inner-circle {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            background-color: #55efc4; /* Verde */
-            border: 4px solid #00b894;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            z-index: 5; /* Fica acima do círculo amarelo */
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-
-        /* Estilo especial para inputs dentro dos círculos */
-        .circle-input {
-            background: rgba(255,255,255,0.6);
-            border: none;
-            border-bottom: 2px dotted #2d3436;
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-            border-radius: 0;
-            padding: 5px;
-            margin-bottom: 5px;
-        }
-        .circle-input::placeholder { color: #555; font-weight: normal; }
-
-        /* CHECKBOXES */
-        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .check-item {
-            background: #f1f2f6; padding: 10px; border-radius: 10px;
-            cursor: pointer; display: flex; align-items: center; gap: 10px;
-            transition: 0.2s; border: 2px solid transparent;
-        }
-        .check-item:hover { background: #ffeaa7; border-color: #fdcb6e; }
-        input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
-
-        /* BOTÃO DE IMPRIMIR (Agora no final da página, não na lateral) */
         .btn-print {
-            background-color: var(--secondary);
+            background-color: var(--primary);
             color: white;
-            padding: 15px 40px;
             border: none;
-            border-radius: 50px;
+            padding: 15px 40px;
             font-size: 1.2rem;
-            font-weight: bold;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 30px 0;
-            box-shadow: 0 6px 0 #00896f;
-            transition: transform 0.1s;
+            box-shadow: 0 5px 0 #4834d4;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .btn-print:hover { transform: translateY(-3px); }
+        .btn-print:active { transform: translateY(2px); box-shadow: none; }
+
+        /* --- ESTRUTURA DA PÁGINA (A4) --- */
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            background: white;
+            margin-bottom: 30px;
+            padding: 40px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
             display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+        }
+
+        /* Cabeçalho da Atividade */
+        .activity-header {
+            text-align: center;
+            border-bottom: 3px dashed var(--accent);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .activity-title {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .activity-desc {
+            color: #636e72;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* ÁREA DE ESCRITA (LINHAS DE CADERNO) */
+        .writing-area {
+            flex: 1;
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 35px;
+            line-height: 35px;
+            padding-top: 5px;
+            border: 1px solid transparent; /* Mantém estrutura */
+        }
+
+        /* --- ATIVIDADE 1: CAPA --- */
+        .cover-page {
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            text-align: center;
         }
-        .btn-print:hover { transform: translateY(-2px); }
-        .btn-print:active { transform: translateY(4px); box-shadow: none; }
+        .cover-title { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+        .cover-input {
+            background: rgba(255,255,255,0.2);
+            border: 3px solid white;
+            padding: 10px;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            border-radius: 10px;
+            width: 80%;
+            margin-top: 20px;
+        }
+        ::placeholder { color: rgba(255,255,255,0.7); }
 
-        /* RESPONSIVIDADE */
-        @media (max-width: 800px) {
-            body { flex-direction: column; overflow-y: auto; }
-            .sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 10px; border-bottom: 4px dashed #ffeaa7; border-right: none; }
-            .menu-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0; }
-            .main-content { padding: 15px; }
-            .page { padding: 20px; }
-            
-            /* Ajuste da Zona de Conforto para celular */
-            .outer-circle { width: 320px; height: 320px; }
-            .inner-circle { width: 160px; height: 160px; }
-            .circle-input { font-size: 0.8rem; padding: 2px; }
+        /* --- ATIVIDADE 2: POTE DA GRATIDÃO --- */
+        .jar-container {
+            border: 4px solid var(--secondary);
+            border-radius: 20px 20px 50px 50px;
+            height: 100%;
+            margin: 20px;
+            position: relative;
+            background: #f0fff4;
+        }
+        .jar-lid {
+            height: 30px; background: var(--secondary);
+            margin: 0 20px;
+            border-radius: 5px 5px 0 0;
         }
 
-        /* IMPRESSÃO (Limpa tudo para sair bonito no papel) */
+        /* --- ATIVIDADE 3: CHECKLIST --- */
+        .check-item {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 15px; font-size: 1.2rem;
+            padding: 10px; border-bottom: 1px solid #eee;
+        }
+        .box { width: 25px; height: 25px; border: 2px solid var(--text); border-radius: 5px; }
+
+        /* --- CSS MÁGICO PARA IMPRESSÃO --- */
         @media print {
-            body { background: white; height: auto; display: block; overflow: visible; }
-            .sidebar, .btn-print, .btn-suggest { display: none !important; }
-            .main-content { padding: 0; display: block; }
-            .page { 
-                display: block !important; /* Mostra todas as páginas */
-                box-shadow: none; 
-                border: 2px solid #000; 
-                margin-bottom: 30px; 
-                page-break-after: always; /* Uma página por folha */
+            body {
+                background: none;
+                margin: 0;
+                padding: 0;
             }
-            .outer-circle { border: 2px dashed #000; background: none; }
-            .inner-circle { border: 2px solid #000; background: none; }
+
+            .no-print { display: none !important; }
+
+            /* Força cada .page a ser uma folha separada */
+            .page {
+                margin: 0;
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                height: 100vh; /* Ocupa toda a altura */
+                page-break-after: always; /* Quebra página depois */
+                page-break-inside: avoid; /* Não corta no meio */
+                break-after: page;
+            }
+
+            /* Garante que cores de fundo saiam na impressão */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo">📒 Caderno Incrível</div>
-        <button class="menu-btn active" onclick="showPage('p1')">1. Quem é Você?</button>
-        <button class="menu-btn" onclick="showPage('p2')">2. Eu Sou Alguém...</button>
-        <button class="menu-btn" onclick="showPage('p3')">3. Afirmações A-Z</button>
-        <button class="menu-btn" onclick="showPage('p4')">4. Minhas Forças</button>
-        <button class="menu-btn" onclick="showPage('p5')">5. Super-Herói</button>
-        <button class="menu-btn" onclick="showPage('p6')">6. Eu Sou! (Provas)</button>
-        <button class="menu-btn" onclick="showPage('p7')">7. Zona de Conforto</button>
-        <button class="menu-btn" onclick="showPage('p8')">8. Minha Autoestima</button>
-    </div>
-
-    <div class="main-content">
-
-        <div id="p1" class="page active">
-            <div class="tape"></div>
-            <h2>❓ Quem é você?</h2>
-            <p class="intro">Complete as frases com a primeira coisa que vier à cabeça! 💭</p>
-            
-            <label>❤️ Eu amo...</label>
-            <input type="text" placeholder="Ex: Desenhar, meus amigos...">
-            
-            <label>🚀 Eu quero...</label>
-            <input type="text" placeholder="Ex: Viajar para a Disney...">
-            
-            <label>🎯 Tenho como objetivo...</label>
-            <input type="text">
-            
-            <label>😨 Antes tinha medo de...</label>
-            <input type="text">
-            
-            <label>🌟 Sou inspirado(a) por...</label>
-            <input type="text">
-            
-            <label>😁 Fico mais feliz quando...</label>
-            <input type="text">
-            
-            <label>🙏 Acredito em...</label>
-            <input type="text">
-            
-            <label>📅 Um dia eu vou...</label>
-            <input type="text">
-        </div>
-
-        <div id="p2" class="page">
-            <div class="tape"></div>
-            <h2>😊 Eu sou alguém que...</h2>
-            <p class="intro">Vamos descobrir mais sobre a sua personalidade!</p>
-
-            <label>Eu sou alguém que ama...</label>
-            <input type="text">
-            <label>Eu sou alguém que odeia...</label>
-            <input type="text">
-            <label>Eu sou alguém que consegue...</label>
-            <input type="text">
-            <label>Eu sou alguém que deseja...</label>
-            <input type="text">
-            <label>Eu sou alguém que nunca esquece de...</label>
-            <input type="text">
-            <label>Eu sou alguém que é grato(a) por...</label>
-            <input type="text">
-        </div>
-
-        <div id="p3" class="page">
-            <div class="tape"></div>
-            <h2>🔤 Minhas Afirmações A a Z</h2>
-            <p class="intro">Uma qualidade para cada letra! (Clique na 💡 se precisar de ajuda).</p>
-            <div id="az-container"></div>
-        </div>
-
-        <div id="p4" class="page">
-            <div class="tape"></div>
-            <h2>💪 Minhas Forças</h2>
-            <p class="intro">Marque todas as qualidades que você tem!</p>
-            
-            <div class="checkbox-grid">
-                <label class="check-item"><input type="checkbox"> Gentil</label>
-                <label class="check-item"><input type="checkbox"> Honesto</label>
-                <label class="check-item"><input type="checkbox"> Leal</label>
-                <label class="check-item"><input type="checkbox"> Criativo</label>
-                <label class="check-item"><input type="checkbox"> Corajoso</label>
-                <label class="check-item"><input type="checkbox"> Paciente</label>
-                <label class="check-item"><input type="checkbox"> Engraçado</label>
-                <label class="check-item"><input type="checkbox"> Bom Amigo</label>
-                <label class="check-item"><input type="checkbox"> Inteligente</label>
-                <label class="check-item"><input type="checkbox"> Curioso</label>
-                <label class="check-item"><input type="checkbox"> Resiliente</label>
-                <label class="check-item"><input type="checkbox"> Otimista</label>
-                <label class="check-item"><input type="checkbox"> Trabalhador</label>
-                <label class="check-item"><input type="checkbox"> Grato</label>
-            </div>
-
-            <label style="margin-top:30px">🏆 Minhas 3 principais forças são:</label>
-            <input type="text" placeholder="1.">
-            <input type="text" placeholder="2.">
-            <input type="text" placeholder="3.">
-        </div>
-
-        <div id="p5" class="page">
-            <div class="tape"></div>
-            <h2>🦸‍♂️ Se eu fosse um Super-Herói</h2>
-            
-            <label>Meu nome de herói seria:</label>
-            <input type="text">
-
-            <label>Meus Superpoderes:</label>
-            <div class="checkbox-grid">
-                <label class="check-item"><input type="checkbox"> Voar</label>
-                <label class="check-item"><input type="checkbox"> Invisibilidade</label>
-                <label class="check-item"><input type="checkbox"> Ler Mentes</label>
-                <label class="check-item"><input type="checkbox"> Super Força</label>
-                <label class="check-item"><input type="checkbox"> Curar Pessoas</label>
-                <label class="check-item"><input type="checkbox"> Viajar no Tempo</label>
-            </div>
-
-            <label>Minha missão principal é ajudar as pessoas sendo...</label>
-            <textarea placeholder="Ex: Corajoso, justo, rápido..."></textarea>
-        </div>
-
-        <div id="p6" class="page">
-            <div class="tape"></div>
-            <h2>⭐ Eu Sou! (A Prova)</h2>
-            <p class="intro">Não basta falar, vamos provar! Escreva a qualidade e uma evidência.</p>
-
-            <div style="background: #fffce0; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 2px dashed #ffeaa7; color: #555;">
-                <strong>Exemplo:</strong><br>
-                Eu sou: <em>Corajoso</em><br>
-                Eu sei disso porque: <em>Falei na frente da turma mesmo com vergonha.</em>
-            </div>
-
-            <label>1. Eu sou:</label>
-            <input type="text">
-            <label>Eu sei disso porque:</label>
-            <input type="text">
-            <hr style="border: 0; border-top: 2px dashed #eee; margin: 20px 0;">
-            
-            <label>2. Eu sou:</label>
-            <input type="text">
-            <label>Eu sei disso porque:</label>
-            <input type="text">
-        </div>
-
-        <div id="p7" class="page">
-            <div class="tape"></div>
-            <h2>🚧 Saindo da Zona de Conforto</h2>
-            <p class="intro">
-                <strong>Verde:</strong> O que eu já faço fácil (Segurança).<br>
-                <strong>Amarelo:</strong> Desafios novos que quero tentar (Crescimento)!
-            </p>
-
-            <div class="zone-wrapper">
-                <div class="outer-circle">
-                    <strong style="color: #d35400; font-size: 1.1rem;">FORA DA ZONA (Novos Desafios)</strong>
-                    
-                    <div class="outer-inputs">
-                        <input class="circle-input" placeholder="Novo desafio 1">
-                        <input class="circle-input" placeholder="Novo desafio 2">
-                    </div>
-
-                    <div class="inner-circle">
-                        <strong style="color: #2d3436;">ZONA DE CONFORTO</strong>
-                        <input class="circle-input" placeholder="O que faço bem">
-                        <input class="circle-input" placeholder="Onde me sinto seguro">
-                        <input class="circle-input" placeholder="Minha rotina">
-                    </div>
-
-                    <div class="outer-inputs" style="margin-top: auto;">
-                        <input class="circle-input" placeholder="Novo desafio 3">
-                        <input class="circle-input" placeholder="Novo desafio 4">
-                    </div>
-                </div>
-            </div>
-            
-            <label>Como eu me sinto quando tento algo novo?</label>
-            <textarea placeholder="Ex: Sinto frio na barriga, mas depois fico orgulhoso..."></textarea>
-        </div>
-
-        <div id="p8" class="page">
-            <div class="tape"></div>
-            <h2>💖 Minha Autoestima</h2>
-            
-            <label>O que é único em mim?</label>
-            <textarea></textarea>
-
-            <label>O que eu amo em mim?</label>
-            <textarea></textarea>
-
-            <label>5 coisas que me fazem sentir orgulho de mim:</label>
-            <textarea placeholder="1... 2... 3... 4... 5..."></textarea>
-        </div>
-
+    <div class="no-print">
+        <h1>📒 Caderno de Atividades</h1>
+        <p>Preencha a capa abaixo e clique para imprimir.</p>
         <button class="btn-print" onclick="window.print()">
-            <i class="fa-solid fa-print"></i> 🖨️ IMPRIMIR MEU CADERNO (PDF)
+            <i class="fa-solid fa-print"></i> IMPRIMIR CADERNO
         </button>
-
     </div>
 
-    <script>
-        // Lógica de Abas
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active');
-            event.target.classList.add('active');
-        }
+    <div class="page cover-page">
+        <div style="font-size: 5rem; margin-bottom: 20px;">💎</div>
+        <div class="cover-title">MEU CADERNO<br>DE AUTOESTIMA</div>
+        <div style="font-size: 1.5rem;">Pertence a:</div>
+        <input type="text" class="cover-input" placeholder="Digite seu nome aqui...">
+    </div>
 
-        // Gerador A-Z
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-        const suggestions = {
-            'A': 'Amigável', 'B': 'Bondoso', 'C': 'Corajoso', 'D': 'Dedicado',
-            'E': 'Especial', 'F': 'Feliz', 'G': 'Gentil', 'H': 'Honesto',
-            'I': 'Inteligente', 'J': 'Justo', 'K': 'Kawaii', 'L': 'Leal',
-            'M': 'Maravilhoso', 'N': 'Notável', 'O': 'Otimista', 'P': 'Paciente',
-            'Q': 'Querido', 'R': 'Resiliente', 'S': 'Sincero', 'T': 'Talentoso',
-            'U': 'Único', 'V': 'Valente', 'W': 'Wow', 'X': 'Xodó', 'Y': 'Yes', 'Z': 'Zeloso'
-        };
+    <div class="page">
+        <div class="activity-header">
+            <h2 class="activity-title">💌 Carta de Amor Próprio</h2>
+            <div class="activity-desc">Escreva uma carta para você mesmo, listando coisas que você admira na sua história.</div>
+        </div>
+        <div class="writing-area" contenteditable="true">
+            Querido(a) Eu,
+            <br><br>
+            Hoje eu quero te dizer que...
+        </div>
+    </div>
 
-        const azContainer = document.getElementById('az-container');
+    <div class="page">
+        <div class="activity-header">
+            <h2 class="activity-title">🍯 O Pote da Gratidão</h2>
+            <div class="activity-desc">Liste dentro do pote coisas simples que fazem a vida valer a pena.</div>
+        </div>
+        <div class="jar-lid"></div>
+        <div class="jar-container writing-area" contenteditable="true" style="padding: 20px; border:4px solid #00b894;">
+            1. <br>
+            2. <br>
+            3. <br>
+            4. <br>
+            5. <br>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="activity-header">
+            <h2 class="activity-title">🌟 Minhas Forças</h2>
+            <div class="activity-desc">Marque as qualidades que você reconhece em si mesmo (ou peça para alguém marcar).</div>
+        </div>
         
-        alphabet.forEach(letter => {
-            const div = document.createElement('div');
-            div.style.marginBottom = "10px";
-            div.innerHTML = `
-                <div style="display:flex; align-items:center;">
-                    <strong style="width:30px; font-size:1.2rem; color:var(--primary);">${letter}</strong>
-                    <input type="text" id="input-${letter}" placeholder="Eu sou...">
-                    <button style="background:var(--accent); border:none; border-radius:50%; width:30px; height:30px; margin-left:10px; cursor:pointer;" onclick="fillSuggestion('${letter}')" title="Dica">💡</button>
-                </div>
-            `;
-            azContainer.appendChild(div);
-        });
-
-        function fillSuggestion(letter) {
-            const input = document.getElementById(`input-${letter}`);
-            if(input.value === "") input.value = suggestions[letter] || "";
-            else alert("Sugestão: " + suggestions[letter]);
-        }
-    </script>
+        <div class="checklist">
+            <div class="check-item"><div class="box"></div> Sou um bom amigo(a)</div>
+            <div class="check-item"><div class="box"></div> Sou criativo(a)</div>
+            <div class="check-item"><div class="box"></div> Sou resiliente (não desisto fácil)</div>
+            <div class="check-item"><div class="box"></div> Sou honesto(a)</div>
+            <div class="check-item"><div class="box"></div> Sei ouvir as pessoas</div>
+            <div class="check-item"><div class="box"></div> Sou engraçado(a)</div>
+            <div class="check-item"><div class="box"></div> Sou corajoso(a)</div>
+            <div class="check-item"><div class="box"></div> Sou gentil</div>
+            <div class="check-item"><div class="box"></div> Sou organizado(a)</div>
+            <div class="check-item" style="border:none; margin-top:20px; font-weight:bold; color:var(--primary);">
+                Outra força que tenho: __________________________
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
