@@ -1,1 +1,1 @@
-# psi.brunosg.
+# Repositório utilizado para praticas de psicologia
