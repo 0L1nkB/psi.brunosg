@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YCI - Compensação | Caderno Incrível</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Paleta Lúdica */
+            --bg-color: #f0f8ff;
+            --paper: #ffffff;
+            --primary: #e17055; /* Terracota/Laranja Queimado */
+            --secondary: #00b894; /* Verde Água */
+            --accent: #ffeaa7; /* Amarelo Creme */
+            --text: #2d3436;
+            --highlight: #fab1a0;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--paper);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 10px 10px 0 var(--shadow);
+            border: 3px solid var(--text);
+            position: relative;
+        }
+
+        /* CABEÇALHO */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        header::before {
+            content: ""; position: absolute; top: -55px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 300px; height: 50px; background-color: rgba(225, 112, 85, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 2rem; text-transform: uppercase; }
+        .subtitle { font-size: 1.1rem; color: #636e72; font-weight: bold; margin-bottom: 10px; }
+
+        .instruction-box {
+            background: #fffce0;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed var(--primary);
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* CARTÃO DE PERGUNTA */
+        .question-card {
+            background: #fff;
+            margin-bottom: 20px;
+            padding: 25px 20px 20px 25px;
+            border-radius: 15px;
+            border: 2px dashed #b2bec3;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .question-card:hover { border-color: var(--primary); background-color: #fff0ec; }
+
+        .q-number {
+            position: absolute; top: -12px; left: -12px;
+            background: var(--primary); color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; border: 2px solid var(--text);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .q-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; line-height: 1.4; }
+
+        /* ESCALA 1-6 */
+        .scale-container {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .scale-btn {
+            flex: 1;
+            min-width: 40px;
+            padding: 10px 5px;
+            border: 1px solid #dfe6e9;
+            background: #f1f2f6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #636e72;
+            text-align: center;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .scale-btn:hover { background: #dfe6e9; border-color: #b2bec3; }
+
+        .scale-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 0 #bf381d;
+        }
+
+        /* BOTÃO CALCULAR */
+        .btn-action {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 15px;
+            background-color: var(--secondary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.3rem; font-weight: bold; font-family: inherit;
+            cursor: pointer; box-shadow: 0 6px 0 #00896f;
+            transition: transform 0.1s;
+        }
+        .btn-action:hover { transform: translateY(-3px); }
+
+        /* ÁREA DE RESULTADOS */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid var(--text);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .highlight-item {
+            background-color: #ffeaa7;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            font-size: 0.95rem;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; }
+            .btn-action { display: none; }
+            .question-card { break-inside: avoid; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>YCI</h1>
+            <div class="subtitle">Inventário de Compensação de Young</div>
+        </header>
+
+        <div class="instruction-box">
+            <i class="fa-solid fa-circle-info"></i> <strong>Instruções:</strong><br>
+            Leia cada afirmação e avalie o quanto ela descreve você.<br>
+            <strong>1</strong> = Completamente falso<br>
+            <strong>6</strong> = Me descreve perfeitamente<br>
+            (Pontuações <strong>5 ou 6</strong> indicam estratégias de compensação ativas).
+        </div>
+
+        <form id="yci-form">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-action" type="button" onclick="calculateResults()">
+            <i class="fa-solid fa-calculator"></i> CALCULAR RESULTADOS
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h2 style="text-align: center; color: var(--text); margin-bottom: 20px;">🚩 Estratégias Identificadas</h2>
+            <p style="text-align:center; margin-bottom:20px;">
+                Os itens abaixo foram marcados com nota <strong>5 ou 6</strong>, indicando áreas onde você tende a usar a supercompensação:
+            </p>
+            <div id="high-scores-list"></div>
+            
+            <div style="margin-top: 30px; text-align: center; font-weight: bold; font-size: 1.2rem;">
+                Total de Pontos: <span id="total-score" style="color: var(--primary);">0</span>
+            </div>
+
+            <button class="btn-action" style="background:var(--text); margin-top:30px;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> SALVAR RELATÓRIO
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DADOS DO YCI (Extraídos do PDF)
+        const questionsList = [
+            "Eu desconto as minhas frustrações nos outros.",
+            "Muitas vezes eu culpo os outros quando as coisas dão errado.",
+            "Eu demonstro muita raiva quando as pessoas me decepcionam ou me traem.",
+            "Eu não consigo parar de sentir raiva até me vingar.",
+            "Quando eu sou criticado, fico na defensiva.",
+            "É importante que os outros admirem minhas realizações ou conquistas.",
+            "Para mim, é importante demonstrar o meu sucesso (p. ex., com carros caros, roupas, casa).",
+            "Eu me esforço muito para ficar entre os melhores ou mais bem-sucedidos.",
+            "Eu considero importante ser popular (p. ex., fazer parte de um grupo seleto).",
+            "Eu frequentemente tenho fantasias de sucesso, fama, riqueza, poder ou popularidade.",
+            "Eu gosto de ser o centro das atenções.",
+            "Eu flerto mais ou sou mais sedutor do que as pessoas em geral.",
+            "Eu dou muita importância à ordem na minha vida (p. ex., organização, estrutura, planejamento, rotina).",
+            "Eu gasto muita energia tentando evitar que as coisas deem errado.",
+            "Eu penso muito antes de tomar decisões para que eu não cometa um erro.",
+            "Eu sou bastante controlador em relação às pessoas à minha volta.",
+            "Eu gosto de estar em posições nas quais eu tenha controle ou autoridade sobre as pessoas ao meu redor.",
+            "Eu não gosto que as pessoas deem palpites sobre a minha vida.",
+            "Para mim, é muito difícil ceder ou chegar num consenso.",
+            "Eu não gosto de ser dependente de ninguém.",
+            "Eu considero essencial que eu tome as minhas próprias decisões e seja independente.",
+            "Eu tenho dificuldade de me comprometer com uma pessoa ou me manter em uma relação estável.",
+            "Eu gosto de ser uma pessoa livre, de ter liberdade para fazer o que eu quiser.",
+            "Eu tenho dificuldade de me limitar a um emprego ou carreira; eu gosto de ter liberdade de escolha.",
+            "Eu geralmente coloco as minhas próprias necessidades na frente das dos outros.",
+            "Muitas vezes eu sou exigente com as outras pessoas - eu gosto que tudo seja \"exatamente como tem que ser\".",
+            "Eu preciso cuidar de mim primeiro, assim como fazem as outras pessoas.",
+            "Para mim, é muito importante que o meu ambiente seja confortável (p. ex., temperatura, luz, móveis).",
+            "Eu me considero uma pessoa rebelde; eu frequentemente vou contra a autoridade estabelecida.",
+            "Eu não gosto de regras e sinto satisfação quando as desrespeito.",
+            "Eu gosto de não ser convencional, mesmo que isso me faça ser pouco popular ou que eu não me encaixe por isso.",
+            "Eu não procuro sucesso seguindo os padrões da sociedade (ex., riqueza, realizações, popularidade).",
+            "Eu sempre fui diferente; nunca fui atrás da maioria.",
+            "Eu sou uma pessoa muito reservada; não gosto que as pessoas saibam muito a respeito da minha vida particular ou dos meus sentimentos.",
+            "Eu tento sempre parecer forte para as outras pessoas, mesmo que me sinta vulnerável ou inseguro.",
+            "Às vezes eu sou muito possessivo e fico muito grudado com as pessoas que eu valorizo.",
+            "Eu frequentemente manipulo os outros para atingir meus objetivos.",
+            "Em vez de pedir o que eu quero diretamente, muitas vezes prefiro conseguir as coisas por meios indiretos.",
+            "Eu mantenho as pessoas à distância para que elas só vejam as partes de mim que eu quero que elas vejam.",
+            "Eu sou uma pessoa extremamente crítica.",
+            "Eu sinto que me pressiono demais para satisfazer os meus próprios padrões e responsabilidades.",
+            "Muitas vezes eu não tenho tato ou sou insensível ao me expressar.",
+            "Eu tento ser otimista o tempo todo; não me permito dar atenção aos aspectos negativos.",
+            "Eu acho que é importante parecer feliz, independentemente de como eu me sinta por dentro.",
+            "Várias vezes eu sinto inveja ou fico frustrado quando os outros são mais bem-sucedidos ou recebem mais atenção do que eu.",
+            "Eu irei até aonde for necessário para me certificar de que eu ganhe o que é meu por direito e que eu não seja enganado ou traído.",
+            "Eu busco maneiras de ser mais esperto do que os outros para que eles não tirem vantagem de mim ou me magoem.",
+            "Eu sei exatamente o que dizer ou fazer para que os outros gostem de mim (p. ex., elogiar, dizer aquilo que eles querem ouvir)."
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        // GERAR PERGUNTAS NA TELA
+        questionsList.forEach((text, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            // Botões de 1 a 6
+            let buttonsHTML = '';
+            for(let i=1; i<=6; i++) {
+                buttonsHTML += `<div class="scale-btn" onclick="selectOption(${index}, ${i}, this)">${i}</div>`;
+            }
+
+            card.innerHTML = `
+                <div class="q-number">${index + 1}</div>
+                <div class="q-text">${text}</div>
+                <div class="scale-container">
+                    ${buttonsHTML}
+                </div>
+                <input type="hidden" id="answer-${index}" value="0">
+            `;
+            container.appendChild(card);
+        });
+
+        // SELEÇÃO VISUAL
+        function selectOption(qIndex, value, btnElement) {
+            document.getElementById(`answer-${qIndex}`).value = value;
+            const parent = btnElement.parentNode;
+            parent.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+            btnElement.classList.add('selected');
+        }
+
+        // CALCULAR RESULTADOS
+        function calculateResults() {
+            let totalScore = 0;
+            let highRiskItems = [];
+            let answeredCount = 0;
+
+            questionsList.forEach((text, index) => {
+                const val = parseInt(document.getElementById(`answer-${index}`).value);
+                if (val > 0) {
+                    totalScore += val;
+                    answeredCount++;
+                    
+                    // Identificar itens com pontuação alta (5 ou 6)
+                    if (val >= 5) {
+                        highRiskItems.push({ id: index + 1, text: text, score: val });
+                    }
+                }
+            });
+
+            if (answeredCount < questionsList.length) {
+                if(!confirm(`Você respondeu apenas ${answeredCount} de ${questionsList.length} itens. Continuar?`)) return;
+            }
+
+            // Exibir Resultados
+            const listArea = document.getElementById('high-scores-list');
+            listArea.innerHTML = '';
+
+            if (highRiskItems.length === 0) {
+                listArea.innerHTML = '<p style="text-align:center; color:#00b894; font-weight:bold;">Nenhum item marcado com frequência alta (5 ou 6).</p>';
+            } else {
+                highRiskItems.forEach(item => {
+                    listArea.innerHTML += `
+                        <div class="highlight-item">
+                            <strong>Item ${item.id} (Nota ${item.score}):</strong> ${item.text}
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('total-score').innerText = totalScore;
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
