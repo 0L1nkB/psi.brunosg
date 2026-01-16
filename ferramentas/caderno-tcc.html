@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caderno TCC</title>
+    <title>Caderno TCC | Versão 3.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -16,6 +16,7 @@
             --accent: #fdcb6e;
             --paper: #ffffff;
             --line: #dfe6e9;
+            --card-bg: #fffce0;
         }
 
         body {
@@ -46,14 +47,14 @@
 
         .sidebar.open { transform: translateX(0); }
 
-        @media (min-width: 850px) {
+        @media (min-width: 900px) {
             .sidebar { position: relative; transform: translateX(0); }
             .menu-toggle { display: none !important; }
         }
 
         .brand {
             padding: 20px;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--accent);
             text-align: center;
@@ -65,7 +66,7 @@
 
         .menu-category {
             padding: 15px 20px 5px 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             color: #b2bec3;
             font-weight: bold;
@@ -115,31 +116,46 @@
         }
         textarea:focus, input:focus { border-color: var(--primary); outline: none; background: white; }
 
-        /* GRIDS */
+        /* GRIDS & LAYOUTS */
         .rpd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        /* CARD DE ENFRENTAMENTO */
+        .coping-card {
+            background: var(--card-bg); border: 2px solid var(--accent); border-radius: 15px;
+            padding: 20px; margin-bottom: 15px; position: relative;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.1); transition: transform 0.2s;
+        }
+        .coping-card:hover { transform: translateY(-2px); }
+        .coping-card h4 { margin: 0 0 10px 0; color: #d63031; text-transform: uppercase; font-size: 0.9rem; }
+        .coping-card .response { color: var(--secondary); font-weight: bold; margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 10px; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #aaa; cursor: pointer; }
+        .delete-btn:hover { color: red; }
 
-        /* Checkbox bonito */
-        .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-        .check-item { background: white; border: 1px solid #ccc; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        /* TABELA DA EVITAÇÃO */
+        .avoidance-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .avoidance-table th { background: var(--primary); color: white; padding: 10px; text-align: left; border-radius: 5px 5px 0 0; }
+        .avoidance-table td { border: 1px solid #ddd; padding: 10px; background: rgba(255,255,255,0.8); vertical-align: top; }
+
+        /* CHECKBOX */
+        .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .check-item { background: white; border: 1px solid #ccc; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
         .check-item:has(input:checked) { background: #dff9fb; border-color: var(--secondary); font-weight: bold; }
 
         /* PIE CHART CONTROLS */
         .pie-controls { background: #f1f2f6; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ccc; }
         .slice-row { display: flex; gap: 10px; margin-bottom: 5px; }
-        .btn-add { background: var(--secondary); color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
+        .btn-small { background: var(--secondary); color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
 
         /* Overlay Mobile */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 900; display: none; }
         .overlay.active { display: block; }
 
-        /* Impressão */
         @media print {
-            .sidebar, .top-bar, .fab-print, .no-print { display: none; }
-            .workspace { margin: 0; box-shadow: none; height: auto; overflow: visible; border: none; }
+            .sidebar, .top-bar, .no-print { display: none; }
+            .workspace { margin: 0; box-shadow: none; border: none; }
             .tool-section { display: none; }
             .tool-section.active { display: block; }
-            textarea { border: 1px solid #ddd; }
         }
     </style>
 </head>
@@ -148,10 +164,10 @@
     <div class="overlay" onclick="toggleMenu()"></div>
 
     <div class="sidebar" id="sidebar">
-        <div class="brand"><i class="fa-solid fa-book-journal-whills"></i> Caderno TCC</div>
+        <div class="brand"><i class="fa-solid fa-book-journal-whills"></i> Caderno TCC <span style="font-size:0.8rem; color:#aaa;">v3.0</span></div>
         <div class="menu-items">
             
-            <div class="menu-category">Cap. 2 - Pensamentos</div>
+            <div class="menu-category">Fundamentos</div>
             <button class="menu-btn active" onclick="showTool('tool-distinction', this)">
                 <i class="fa-solid fa-magnifying-glass"></i> Fato vs. Pensamento
             </button>
@@ -162,7 +178,7 @@
                 <i class="fa-solid fa-bug"></i> Distorções Cognitivas
             </button>
 
-            <div class="menu-category">Cap. 3 - Avaliação</div>
+            <div class="menu-category">Avaliação</div>
             <button class="menu-btn" onclick="showTool('tool-evidence', this)">
                 <i class="fa-solid fa-gavel"></i> Tribunal (Evidências)
             </button>
@@ -170,20 +186,21 @@
                 <i class="fa-solid fa-scale-balanced"></i> Custo-Benefício
             </button>
 
-            <div class="menu-category">Cap. 4 - Regras (NOVO)</div>
-            <button class="menu-btn" onclick="showTool('tool-should', this)">
-                <i class="fa-solid fa-triangle-exclamation"></i> Os "Deveria"
+            <div class="menu-category">Ação & Mudança (NOVO)</div>
+            <button class="menu-btn" onclick="showTool('tool-avoidance', this)">
+                <i class="fa-solid fa-person-running"></i> Desafio da Evitação
+            </button>
+            <button class="menu-btn" onclick="showTool('tool-coping', this)">
+                <i class="fa-solid fa-id-card"></i> Cartões de Enfrentamento
             </button>
 
-            <div class="menu-category">Cap. 8 - Ansiedade (NOVO)</div>
+            <div class="menu-category">Ansiedade & Regras</div>
             <button class="menu-btn" onclick="showTool('tool-worry', this)">
                 <i class="fa-solid fa-cloud-bolt"></i> Detetive de Preocupações
             </button>
-            <button class="menu-btn" onclick="showTool('tool-arrow', this)">
-                <i class="fa-solid fa-arrow-down"></i> Seta Descendente
+            <button class="menu-btn" onclick="showTool('tool-should', this)">
+                <i class="fa-solid fa-triangle-exclamation"></i> Os "Deveria"
             </button>
-
-            <div class="menu-category">Cap. 9 - Perspectiva (NOVO)</div>
             <button class="menu-btn" onclick="showTool('tool-pie', this)">
                 <i class="fa-solid fa-chart-pie"></i> Gráfico da Culpa
             </button>
@@ -242,6 +259,8 @@
                     <label class="check-item"><input type="checkbox"> 🎯 Personalização</label>
                     <label class="check-item"><input type="checkbox"> 👎 Filtro Negativo</label>
                 </div>
+                <h3>Análise:</h3>
+                <textarea placeholder="Como essa distorção afetou seu humor?"></textarea>
             </div>
 
             <div id="tool-evidence" class="tool-section">
@@ -263,79 +282,92 @@
                 </div>
             </div>
 
-            <div id="tool-should" class="tool-section">
-                <h2>Desafio das Regras Rígidas</h2>
-                <div class="instruction">Transforme "Eu DEVO" em "Eu PREFIRO" (Form 4.2).</div>
-                <label><strong>Regra Rígida:</strong></label>
-                <input type="text" placeholder="Ex: Eu devo ser produtivo o tempo todo">
+            <div id="tool-avoidance" class="tool-section">
+                <h2>Fazendo o que não quero</h2>
+                <div class="instruction">
+                    Para mudar, muitas vezes precisamos fazer o oposto do que sentimos vontade. Use esta tabela para planejar ações difíceis.
+                </div>
+                
+                <table class="avoidance-table">
+                    <tr>
+                        <th>O que estou evitando?</th>
+                        <td><textarea rows="2" placeholder="Ex: Ir à academia, ligar para fulano..."></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Por que não quero?</th>
+                        <td><textarea rows="2" placeholder="Ex: É cansativo, tenho medo de ser rejeitado..."></textarea></td>
+                    </tr>
+                </table>
+
                 <div class="grid-2">
                     <div>
-                        <label>Quem criou essa regra?</label>
-                        <input type="text" placeholder="Pais? Sociedade?">
+                        <h4 style="color:#d63031">Custos de Evitar</h4>
+                        <textarea placeholder="Se eu não fizer, o que acontece de ruim?"></textarea>
                     </div>
                     <div>
-                        <label>Essa regra se aplica a todos?</label>
-                        <input type="text" placeholder="Você cobra isso dos amigos?">
+                        <h4 style="color:#00b894">Benefícios de Enfrentar</h4>
+                        <textarea placeholder="Se eu fizer, o que posso ganhar a longo prazo?"></textarea>
                     </div>
                 </div>
+
+                <h3>Experimento (Após realizar):</h3>
+                <textarea placeholder="O que eu senti? Foi tão ruim quanto eu esperava? O que aprendi?"></textarea>
+            </div>
+
+            <div id="tool-coping" class="tool-section">
+                <h2>🗂️ Cartões de Enfrentamento</h2>
+                <div class="instruction">
+                    Crie lembretes para ler em momentos difíceis. Eles ficam salvos aqui no seu navegador!
+                </div>
+                
+                <div class="no-print" style="background:#eee; padding:15px; border-radius:10px; margin-bottom:20px;">
+                    <input type="text" id="coping-trigger" placeholder="Situação ou Pensamento Negativo (Gatilho)">
+                    <textarea id="coping-response" placeholder="Resposta Saudável / Lembrete (O que eu preciso ouvir?)" style="height:80px;"></textarea>
+                    <button class="btn-small" onclick="addCard()" style="background:var(--primary); width:100%; padding:10px; font-size:1rem;">+ Criar Cartão</button>
+                </div>
+
+                <div id="cards-container">
+                    </div>
+            </div>
+
+            <div id="tool-should" class="tool-section">
+                <h2>Desafio das Regras Rígidas</h2>
+                <label><strong>Regra Rígida:</strong></label>
+                <input type="text" placeholder="Ex: Eu devo ser produtivo o tempo todo">
                 <label><strong>Nova Regra Flexível (Preferência):</strong></label>
                 <textarea placeholder="Ex: Eu prefiro ser produtivo, mas também preciso descansar..."></textarea>
             </div>
 
             <div id="tool-worry" class="tool-section">
                 <h2>Detetive de Preocupações</h2>
-                <div class="instruction">Transforme preocupação vaga em previsão testável (Form 8.3).</div>
                 <div class="grid-2">
                     <div>
                         <label>Preocupação Vaga:</label>
-                        <input type="text" placeholder="Ex: Vai dar tudo errado na apresentação">
+                        <input type="text" placeholder="Ex: Vai dar tudo errado">
                     </div>
                     <div>
                         <label>Previsão Específica (Testável):</label>
                         <input type="text" placeholder="Ex: Vou gaguejar e todos vão rir">
                     </div>
                 </div>
-                <label><strong>Resultado Real (Preencher depois):</strong></label>
+                <label><strong>Resultado Real:</strong></label>
                 <textarea placeholder="O que realmente aconteceu?"></textarea>
-            </div>
-
-            <div id="tool-arrow" class="tool-section">
-                <h2>Seta Descendente</h2>
-                <div class="instruction">Descubra o medo central. Pergunte: "E se isso for verdade, o que significa?"</div>
-                <input type="text" placeholder="1. Pensamento Automático: Ex: Ele não me ligou.">
-                <div style="text-align:center; color:var(--primary); font-size:1.5rem;">⬇️</div>
-                <input type="text" placeholder="2. O que isso significa? Ex: Ele não gosta de mim.">
-                <div style="text-align:center; color:var(--primary); font-size:1.5rem;">⬇️</div>
-                <input type="text" placeholder="3. E se for verdade? Ex: Eu nunca vou ser amado.">
-                <div style="text-align:center; color:var(--primary); font-size:1.5rem;">⬇️</div>
-                <input type="text" placeholder="4. Crença Central: Ex: Eu sou defeituoso.">
             </div>
 
             <div id="tool-pie" class="tool-section">
                 <h2>Gráfico da Responsabilidade</h2>
-                <div class="instruction">Divida a culpa. Você raramente é 100% responsável por um evento negativo (Form 9.1).</div>
-                
                 <div class="grid-2">
                     <div class="pie-controls no-print">
                         <label>Evento Negativo:</label>
                         <input type="text" id="pie-event" placeholder="Ex: O projeto atrasou">
-                        <label>Adicionar Causas (%):</label>
                         <div id="pie-inputs">
-                            <div class="slice-row">
-                                <input type="text" placeholder="Causa 1 (Ex: Eu)" class="slice-label">
-                                <input type="number" placeholder="%" class="slice-val">
-                            </div>
-                            <div class="slice-row">
-                                <input type="text" placeholder="Causa 2 (Ex: Colega)" class="slice-label">
-                                <input type="number" placeholder="%" class="slice-val">
-                            </div>
+                            <div class="slice-row"><input type="text" placeholder="Causa 1" class="slice-label"><input type="number" placeholder="%" class="slice-val"></div>
+                            <div class="slice-row"><input type="text" placeholder="Causa 2" class="slice-label"><input type="number" placeholder="%" class="slice-val"></div>
                         </div>
-                        <button class="btn-add" onclick="addSliceInput()">+ Adicionar Causa</button>
-                        <button class="btn-add" style="background:var(--primary)" onclick="drawChart()">Gerar Gráfico</button>
+                        <button class="btn-small" onclick="addSliceInput()">+ Causa</button>
+                        <button class="btn-small" style="background:var(--primary)" onclick="drawChart()">Gerar</button>
                     </div>
-                    <div style="display:flex; justify-content:center; align-items:center;">
-                        <canvas id="responsibilityChart" width="300" height="300"></canvas>
-                    </div>
+                    <div><canvas id="responsibilityChart"></canvas></div>
                 </div>
             </div>
 
@@ -354,37 +386,74 @@
     </div>
 
     <script>
-        // MENU MOBILE
+        // MENU
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.querySelector('.overlay').classList.toggle('active');
         }
 
-        // TROCA DE FERRAMENTAS
         function showTool(toolId, btn) {
-            // Esconde todas
             document.querySelectorAll('.tool-section').forEach(el => el.classList.remove('active'));
-            // Mostra a selecionada
             document.getElementById(toolId).classList.add('active');
             
-            // Atualiza botões
             document.querySelectorAll('.menu-btn').forEach(el => el.classList.remove('active'));
             btn.classList.add('active');
             
-            // Atualiza Título
             document.getElementById('header-title').innerText = btn.innerText;
-
-            // Fecha menu no mobile
-            if(window.innerWidth < 850) toggleMenu();
+            if(window.innerWidth < 900) toggleMenu();
         }
 
-        // GRÁFICO DA TORTA
-        let pieChart = null;
+        // --- CARTÕES DE ENFRENTAMENTO (LOCALSTORAGE) ---
+        let cards = JSON.parse(localStorage.getItem('copingCards')) || [];
 
+        function renderCards() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            if(cards.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#aaa; font-style:italic;">Nenhum cartão criado ainda.</div>';
+                return;
+            }
+            cards.forEach((card, index) => {
+                const div = document.createElement('div');
+                div.className = 'coping-card';
+                div.innerHTML = `
+                    <button class="delete-btn" onclick="deleteCard(${index})"><i class="fa-solid fa-trash"></i></button>
+                    <h4>Gatilho: ${card.trigger}</h4>
+                    <div class="response">💡 ${card.response}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addCard() {
+            const trigger = document.getElementById('coping-trigger').value;
+            const response = document.getElementById('coping-response').value;
+            if(trigger && response) {
+                cards.push({ trigger, response });
+                localStorage.setItem('copingCards', JSON.stringify(cards));
+                renderCards();
+                document.getElementById('coping-trigger').value = '';
+                document.getElementById('coping-response').value = '';
+            }
+        }
+
+        function deleteCard(index) {
+            if(confirm('Excluir este cartão?')) {
+                cards.splice(index, 1);
+                localStorage.setItem('copingCards', JSON.stringify(cards));
+                renderCards();
+            }
+        }
+
+        // Inicializa Cards
+        renderCards();
+
+        // --- GRÁFICO DA TORTA ---
+        let pieChart = null;
         function addSliceInput() {
             const div = document.createElement('div');
             div.className = 'slice-row';
-            div.innerHTML = `<input type="text" placeholder="Outra Causa" class="slice-label"> <input type="number" placeholder="%" class="slice-val">`;
+            div.innerHTML = `<input type="text" placeholder="Causa" class="slice-label"> <input type="number" placeholder="%" class="slice-val">`;
             document.getElementById('pie-inputs').appendChild(div);
         }
 
@@ -396,14 +465,10 @@
             document.querySelectorAll('.slice-row').forEach(row => {
                 const label = row.querySelector('.slice-label').value;
                 const val = row.querySelector('.slice-val').value;
-                if(label && val) {
-                    labels.push(label);
-                    data.push(val);
-                }
+                if(label && val) { labels.push(label); data.push(val); }
             });
 
             if(pieChart) pieChart.destroy();
-
             pieChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -411,8 +476,7 @@
                     datasets: [{
                         data: data,
                         backgroundColor: ['#ff7675', '#74b9ff', '#55efc4', '#fdcb6e', '#a29bfe'],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
+                        borderWidth: 2, borderColor: '#ffffff'
                     }]
                 },
                 options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
@@ -421,4 +485,4 @@
     </script>
 
 </body>
-</html>
+</html>s
