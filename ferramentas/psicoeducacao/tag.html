@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neurobiologia do TAG | Modelo Pro</title>
+    <title>Neurobiologia do TAG | Modelo 3D</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #eceff1;
-            --sidebar-width: 280px;
-            --primary: #3f51b5;
-            --accent: #ff4081;
-            --text: #263238;
-            /* Cores das Áreas do Cérebro */
-            --c-cortex: #29b6f6;    /* Azul Claro */
-            --c-amygdala: #ff5252;  /* Vermelho Alerta */
-            --c-hippo: #66bb6a;     /* Verde Memória */
+            --bg-color: #0f172a; /* Fundo Escuro Moderno */
+            --sidebar-width: 300px;
+            --text: #e2e8f0;
+            --highlight: #38bdf8;
+            --panel-bg: rgba(30, 41, 59, 0.9);
         }
 
         body {
@@ -28,270 +24,389 @@
             overflow: hidden;
         }
 
-        /* SIDEBAR */
+        /* --- SIDEBAR (Informações) --- */
         aside {
             width: var(--sidebar-width);
-            background: #fff;
+            background: #1e293b;
+            border-right: 1px solid #334155;
             display: flex;
             flex-direction: column;
             padding: 30px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
             z-index: 10;
         }
 
         .brand {
             font-size: 1.2rem;
             font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 50px;
+            color: var(--highlight);
+            margin-bottom: 40px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* INFO PANEL (Onde aparece o texto explicativo) */
         .info-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            animation: fadeIn 0.5s;
         }
 
         .info-title {
             font-size: 1.8rem;
             font-weight: 800;
             margin-bottom: 15px;
-            color: var(--text);
-            transition: color 0.3s;
+            color: #fff;
+            line-height: 1.2;
         }
 
         .info-desc {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.6;
-            color: #546e7a;
+            color: #94a3b8;
         }
 
-        .instruction {
+        .instructions {
             margin-top: auto;
-            font-size: 0.9rem;
-            color: #b0bec5;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #64748b;
         }
+        .instructions i { margin-right: 5px; color: var(--highlight); }
 
-        /* ÁREA DO CÉREBRO */
+        /* --- ÁREA 3D --- */
         main {
             flex: 1;
-            background: radial-gradient(circle at center, #ffffff 0%, #eceff1 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
             position: relative;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            cursor: move; /* Indica que pode girar */
         }
 
-        /* SVG ESTILOS */
-        .brain-svg {
-            max-width: 80%;
-            max-height: 80vh;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.1));
-            transition: transform 0.5s ease;
+        #canvas-container {
+            width: 100%;
+            height: 100%;
         }
 
-        /* Partes do Cérebro */
-        .brain-part {
-            fill: #cfd8dc; /* Cor base cinza */
-            stroke: #fff;
-            stroke-width: 2px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            opacity: 0.8;
+        /* Loading */
+        #loading {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: white; font-size: 1.5rem; pointer-events: none;
         }
 
-        /* Efeitos Hover/Active - Aqui acontece a mágica da cor */
-        .brain-part:hover, .brain-part.active {
-            opacity: 1;
-            stroke: var(--text);
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
-        }
-
-        /* Cores Específicas ao ativar */
-        #part-cortex.active, #part-cortex:hover { fill: var(--c-cortex); }
-        #part-amygdala.active, #part-amygdala:hover { fill: var(--c-amygdala); }
-        #part-hippo.active, #part-hippo:hover { fill: var(--c-hippo); }
-
-        /* LINHAS CONECTORAS (Labels) */
-        .label-line {
-            stroke: var(--text);
-            stroke-width: 1;
-            opacity: 0;
-            transition: opacity 0.3s;
+        /* Label Flutuante (Tooltip) */
+        #tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
             pointer-events: none;
-        }
-        .label-text {
-            fill: var(--text);
-            font-weight: bold;
-            font-size: 14px;
             opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            text-transform: uppercase;
+            transition: opacity 0.2s;
+            transform: translate(-50%, -150%);
+            white-space: nowrap;
         }
 
-        /* Mostra label quando o grupo pai tem a classe active/hover */
-        g:hover .label-line, g:hover .label-text,
-        g.active .label-line, g.active .label-text {
-            opacity: 1;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* RESPONSIVO */
+        /* Responsivo */
         @media (max-width: 900px) {
-            body { flex-direction: column; height: auto; overflow-y: auto; }
-            aside { width: 100%; height: auto; padding: 20px; box-sizing: border-box; }
-            main { height: 50vh; padding: 20px; }
-            .brain-svg { width: 100%; height: auto; }
+            body { flex-direction: column; height: 100vh; }
+            aside { width: 100%; height: 40%; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+            main { height: 60%; }
         }
     </style>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
 </head>
 <body>
 
     <aside>
-        <div class="brand"><i class="fa-solid fa-brain"></i> NeuroTAG 3.0</div>
+        <div class="brand"><i class="fa-solid fa-cube"></i> Neuro3D</div>
         
-        <div class="info-panel">
-            <h2 class="info-title" id="display-title">O Cérebro Ansioso</h2>
-            <p class="info-desc" id="display-desc">
-                No Transtorno de Ansiedade Generalizada (TAG), existe um desequilíbrio na comunicação entre as áreas de "alerta" e as áreas de "controle".
+        <div class="info-panel" id="panel-content">
+            <h2 class="info-title" style="color:var(--highlight)">O Cérebro no TAG</h2>
+            <p class="info-desc">
+                Bem-vindo ao modelo interativo. Aqui vemos o cérebro como um "Raio-X" para entender o que acontece lá dentro na ansiedade.
                 <br><br>
-                <strong>Passe o mouse ou clique nas áreas coloridas do cérebro ao lado</strong> para entender o papel de cada estrutura.
+                <strong>Gire o modelo</strong> e <strong>clique nas esferas coloridas</strong> para descobrir o papel de cada estrutura.
             </p>
         </div>
 
-        <div class="instruction">
-            <i class="fa-solid fa-mouse-pointer"></i> Interaja com o modelo
+        <div class="instructions">
+            <div><i class="fa-solid fa-rotate"></i> Clique e arraste para girar</div>
+            <div style="margin-top:5px;"><i class="fa-solid fa-arrow-pointer"></i> Clique nas esferas</div>
         </div>
     </aside>
 
     <main>
-        <svg class="brain-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-            
-            <path d="M150,350 
-                     C100,350 50,300 50,200 
-                     C50,80 120,20 250,20 
-                     C380,20 450,100 450,200 
-                     C450,280 400,330 350,350 
-                     C320,360 250,380 150,350 Z" 
-                  fill="#eceff1" stroke="#b0bec5" stroke-width="2" opacity="0.5" style="pointer-events:none;"/>
-
-            <path d="M300,350 Q350,400 380,380 Q420,350 350,300" fill="#cfd8dc" opacity="0.3" style="pointer-events:none;"/>
-            <path d="M200,350 Q220,450 250,450 Q280,450 300,350" fill="#cfd8dc" opacity="0.3" style="pointer-events:none;"/>
-
-            <g id="group-cortex" onclick="activate('cortex')" onmouseenter="hover('cortex')">
-                <path id="part-cortex" class="brain-part" 
-                      d="M60,200 
-                         C60,120 120,40 220,40 
-                         L220,150 
-                         C180,180 120,220 60,200 Z" />
-                <line x1="100" y1="100" x2="50" y2="50" class="label-line"/>
-                <text x="20" y="40" class="label-text">Córtex Pré-Frontal</text>
-            </g>
-
-            <g id="group-hippo" onclick="activate('hippo')" onmouseenter="hover('hippo')">
-                <path id="part-hippo" class="brain-part" 
-                      d="M260,200 
-                         C280,180 320,180 340,200 
-                         C360,240 320,280 280,260 
-                         C250,240 240,220 260,200 Z" />
-                <line x1="300" y1="230" x2="400" y2="230" class="label-line"/>
-                <text x="410" y="235" class="label-text">Hipocampo</text>
-            </g>
-
-            <g id="group-amygdala" onclick="activate('amygdala')" onmouseenter="hover('amygdala')">
-                <ellipse id="part-amygdala" class="brain-part" cx="250" cy="230" rx="20" ry="15" />
-                <line x1="250" y1="245" x2="250" y2="320" class="label-line"/>
-                <text x="220" y="340" class="label-text">Amígdala</text>
-            </g>
-
-        </svg>
+        <div id="loading">Carregando Modelo 3D...</div>
+        <div id="canvas-container"></div>
+        <div id="tooltip"></div>
     </main>
 
-    <script>
-        // DADOS DO CONTEÚDO
-        const data = {
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- CONFIGURAÇÃO BÁSICA ---
+        const container = document.getElementById('canvas-container');
+        const loading = document.getElementById('loading');
+        
+        // Cena
+        const scene = new THREE.Scene();
+        // Nevoeiro para dar profundidade
+        scene.fog = new THREE.FogExp2(0x0f172a, 0.02);
+
+        // Câmera
+        const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 2, 8);
+
+        // Renderizador
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Controles (Girar)
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 4;
+        controls.maxDistance = 12;
+
+        // --- LUZES ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0x38bdf8, 2, 20); // Luz azulada
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+        
+        const pointLight2 = new THREE.PointLight(0xff4081, 1, 20); // Luz rosa contrária
+        pointLight2.position.set(-5, -2, -5);
+        scene.add(pointLight2);
+
+        // --- OBJETOS 3D ---
+
+        // 1. O Cérebro "Fantasma" (Estrutura transparente)
+        // Usamos Icosaedro com bastante detalhe para parecer orgânico
+        const brainGeometry = new THREE.IcosahedronGeometry(2.2, 2); // Forma base
+        const brainMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x94a3b8,
+            metalness: 0.1,
+            roughness: 0.2,
+            transmission: 0.6, // Vidro
+            thickness: 1.0,
+            transparent: true,
+            opacity: 0.3,
+            wireframe: false
+        });
+        
+        // Deformar levemente para parecer um cérebro (oval)
+        brainGeometry.scale(0.85, 1, 1.2); 
+        const brainMesh = new THREE.Mesh(brainGeometry, brainMaterial);
+        scene.add(brainMesh);
+
+        // Wireframe sutil por cima para dar aspecto "tech"
+        const wireGeo = new THREE.WireframeGeometry(brainGeometry);
+        const wireMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, opacity: 0.05, transparent: true });
+        const wireframe = new THREE.LineSegments(wireGeo, wireMat);
+        brainMesh.add(wireframe);
+
+        // 2. As Estruturas Internas (Esferas Interativas)
+        const partsGroup = new THREE.Group();
+        scene.add(partsGroup);
+
+        function createOrgan(name, color, position, scale) {
+            const geo = new THREE.SphereGeometry(scale, 32, 32);
+            const mat = new THREE.MeshStandardMaterial({ 
+                color: color, 
+                emissive: color,
+                emissiveIntensity: 0.8,
+                roughness: 0.4,
+                metalness: 0.8
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(position.x, position.y, position.z);
+            mesh.userData = { name: name, originalScale: scale }; // Dados para interação
+            partsGroup.add(mesh);
+            
+            // Adiciona um brilho (PointLight) na esfera
+            const light = new THREE.PointLight(color, 1, 3);
+            mesh.add(light);
+            
+            return mesh;
+        }
+
+        // Córtex Pré-Frontal (Na frente/testa) -> Azul
+        const cortex = createOrgan('cortex', 0x29b6f6, {x: 0, y: 0.5, z: 1.6}, 0.35);
+
+        // Amígdala (No centro/fundo) -> Vermelho
+        const amygdala = createOrgan('amygdala', 0xff5252, {x: 0, y: -0.2, z: 0}, 0.25);
+
+        // Hipocampo (Um pouco atrás/lado) -> Verde
+        const hippocampus = createOrgan('hippocampus', 0x66bb6a, {x: 0.8, y: -0.3, z: -0.5}, 0.2);
+        // Cria um segundo hipocampo para simetria (apenas visual)
+        const hippocampus2 = createOrgan('hippocampus_fake', 0x66bb6a, {x: -0.8, y: -0.3, z: -0.5}, 0.2);
+
+
+        // --- DADOS DE TEXTO ---
+        const infoData = {
             cortex: {
-                title: "Córtex Pré-Frontal (O CEO)",
-                color: "var(--c-cortex)",
-                desc: "Localizado logo atrás da testa, é a parte mais evoluída do cérebro. Ele é responsável pelo planejamento, lógica e <strong>regulação das emoções</strong>.<br><br>No TAG, sua conexão com a Amígdala está enfraquecida. Ele tenta dizer 'Calma, é só um e-mail, não um leão', mas sua voz é abafada pelo alarme."
+                title: "Córtex Pré-Frontal (O Chefe)",
+                desc: "Localizado bem atrás da sua testa. É o CEO do cérebro. Ele planeja, raciocina e diz: 'Calma, está tudo bem'.<br><br>No TAG, ele perde a conexão com a Amígdala e não consegue desligar o alarme de ansiedade."
             },
             amygdala: {
                 title: "Amígdala (O Alarme)",
-                color: "var(--c-amygdala)",
-                desc: "Uma pequena estrutura em forma de amêndoa. É o centro primitivo do medo e detecção de perigo.<br><br>No TAG, ela é <strong>hiperativa</strong>. Ela funciona como um detector de fumaça quebrado que dispara o alarme de incêndio (ansiedade física) até para uma simples torrada queimada (preocupações menores)."
+                desc: "O centro primitivo do medo. No TAG, ela é <strong>hiperativa</strong> e pulsa constantemente.<br><br>Ela detecta perigos onde não existem (ex: um e-mail do chefe vira um tigre) e inunda o corpo de adrenalina.",
+                highlight: "#ff5252"
             },
-            hippo: {
-                title: "Hipocampo (O Bibliotecário)",
-                color: "var(--c-hippo)",
-                desc: "Responsável pela memória e contexto. Ele ajuda a dizer à Amígdala se uma situação é realmente perigosa com base no passado.<br><br>O estresse crônico (cortisol excessivo) pode prejudicar o hipocampo, dificultando a distinção entre um perigo real e uma lembrança ou preocupação."
+            hippocampus: {
+                title: "Hipocampo (O Arquivo)",
+                desc: "Armazena memórias e contexto. Ele deveria dizer à Amígdala: 'Isso já aconteceu antes e ficamos bem'.<br><br>O estresse crônico pode 'murchar' essa área, dificultando diferenciar uma lembrança ruim de um perigo real agora."
             },
-            default: {
-                title: "O Cérebro Ansioso",
-                color: "var(--text)",
-                desc: "No Transtorno de Ansiedade Generalizada (TAG), existe um desequilíbrio na comunicação entre as áreas de 'alerta' e as áreas de 'controle'.<br><br><strong>Passe o mouse ou clique nas áreas coloridas do cérebro ao lado</strong> para entender o papel de cada estrutura."
+            hippocampus_fake: { // Cópia do texto acima
+                title: "Hipocampo (O Arquivo)",
+                desc: "Armazena memórias e contexto. Ele deveria dizer à Amígdala: 'Isso já aconteceu antes e ficamos bem'.<br><br>O estresse crônico pode 'murchar' essa área, dificultando diferenciar uma lembrança ruim de um perigo real agora."
             }
         };
 
-        // ELEMENTOS
-        const titleEl = document.getElementById('display-title');
-        const descEl = document.getElementById('display-desc');
+        // --- INTERAÇÃO (RAYCASTER) ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const tooltip = document.getElementById('tooltip');
+        const panelTitle = document.querySelector('.info-title');
+        const panelDesc = document.querySelector('.info-desc');
 
-        function updatePanel(key) {
-            const info = data[key];
-            titleEl.style.opacity = 0;
-            descEl.style.opacity = 0;
+        // Evento de movimento do mouse (para tooltip e hover)
+        window.addEventListener('mousemove', (event) => {
+            // Normalizar coordenadas do mouse (-1 a +1)
+            const rect = renderer.domElement.getBoundingClientRect();
+            mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-            setTimeout(() => {
-                titleEl.innerHTML = info.title;
-                titleEl.style.color = info.color;
-                descEl.innerHTML = info.desc;
-                
-                titleEl.style.opacity = 1;
-                descEl.style.opacity = 1;
-            }, 200);
-        }
-
-        // INTERATIVIDADE
-        function activate(partId) {
-            // Remove active de todos
-            document.querySelectorAll('g').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.brain-part').forEach(el => el.classList.remove('active'));
-
-            // Adiciona ao atual
-            const group = document.getElementById('group-' + partId);
-            const part = document.getElementById('part-' + partId);
+            // Mover tooltip
+            tooltip.style.left = event.clientX + 'px';
+            tooltip.style.top = event.clientY + 'px';
             
-            if(group) group.classList.add('active');
-            if(part) part.classList.add('active');
+            checkIntersection();
+        });
 
-            updatePanel(partId);
-        }
-
-        function hover(partId) {
-            // Apenas para feedback visual rápido, clique fixa o texto
-            // Pode ser removido se quiser que só o clique mude o texto
-            // updatePanel(partId); 
-        }
-
-        // Resetar se clicar fora (opcional)
-        document.querySelector('main').addEventListener('click', (e) => {
-            if(e.target.tagName === 'main' || e.target.classList.contains('brain-svg')) {
-                document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
-                updatePanel('default');
+        // Evento de clique
+        window.addEventListener('click', () => {
+            if (hoveredObj) {
+                updateInfoPanel(hoveredObj.userData.name);
+                
+                // Efeito de "pulso" ao clicar
+                const scale = hoveredObj.userData.originalScale;
+                hoveredObj.scale.set(1.5, 1.5, 1.5);
+                setTimeout(() => hoveredObj.scale.set(1, 1, 1), 200);
             }
         });
 
-    </script>
+        let hoveredObj = null;
 
+        function checkIntersection() {
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(partsGroup.children);
+
+            if (intersects.length > 0) {
+                const object = intersects[0].object;
+                
+                if (hoveredObj !== object) {
+                    // Reset anterior
+                    if (hoveredObj) hoveredObj.scale.set(1, 1, 1);
+                    
+                    hoveredObj = object;
+                    document.body.style.cursor = 'pointer';
+                    
+                    // Highlight atual
+                    hoveredObj.scale.set(1.2, 1.2, 1.2);
+                    
+                    // Tooltip
+                    let key = hoveredObj.userData.name;
+                    // Tratamento para nome amigável
+                    let label = key === 'cortex' ? 'Córtex' : (key === 'amygdala' ? 'Amígdala' : 'Hipocampo');
+                    
+                    tooltip.innerText = label;
+                    tooltip.style.opacity = 1;
+                }
+            } else {
+                if (hoveredObj) {
+                    hoveredObj.scale.set(1, 1, 1);
+                    hoveredObj = null;
+                    document.body.style.cursor = 'move';
+                    tooltip.style.opacity = 0;
+                }
+            }
+        }
+
+        function updateInfoPanel(key) {
+            const data = infoData[key];
+            if(!data) return;
+
+            // Efeito de fade no texto
+            const panel = document.getElementById('panel-content');
+            panel.style.opacity = 0;
+            
+            setTimeout(() => {
+                panelTitle.innerText = data.title;
+                panelDesc.innerHTML = data.desc;
+                if(data.highlight) panelTitle.style.color = data.highlight;
+                else panelTitle.style.color = '#38bdf8'; // volta pro azul padrão
+                panel.style.opacity = 1;
+            }, 300);
+        }
+
+        // --- LOOP DE ANIMAÇÃO ---
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            controls.update();
+
+            // Pulso da Amígdala (Bater como coração)
+            const time = Date.now() * 0.005;
+            const pulse = 1 + Math.sin(time * 2) * 0.1; // Ritmo
+            amygdala.scale.set(pulse, pulse, pulse);
+
+            // Rotação leve automática do cérebro fantasma
+            brainMesh.rotation.y += 0.001;
+            // As partes internas acompanham a rotação global se estiverem dentro do mesh?
+            // Não, elas estão em grupo separado. Vamos girar o grupo todo para ficar sincronizado
+            // Se quisermos que tudo gire junto, colocamos as parts DENTRO do brainMesh.
+            // Vamos fazer isso agora para corrigir a sincronia.
+        }
+        
+        // Ajuste de hierarquia para rotação conjunta
+        brainMesh.add(partsGroup);
+
+        // Remover loading
+        loading.style.display = 'none';
+
+        animate();
+
+        // Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+    </script>
 </body>
 </html>
