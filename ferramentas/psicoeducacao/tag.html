@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desvendando o TAG | Psicoeducação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --paper: #ffffff;
+            --primary: #6c5ce7; /* Roxo Cérebro */
+            --secondary: #00b894; /* Verde Cura */
+            --accent: #fdcb6e; /* Amarelo Alerta */
+            --text: #2d3436;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background: var(--paper);
+            border-radius: 25px;
+            box-shadow: 10px 10px 0 var(--shadow);
+            border: 3px solid var(--text);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 80vh;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 { margin: 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { font-size: 1.1rem; opacity: 0.9; margin-top: 10px; }
+
+        /* NAVEGAÇÃO */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            background: #eee;
+            border-bottom: 3px solid var(--text);
+        }
+
+        .nav-btn {
+            background: none; border: none; padding: 15px 5px;
+            cursor: pointer; font-family: inherit; font-weight: bold;
+            font-size: 0.9rem; color: #636e72; border-right: 1px solid #ddd;
+            transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+        
+        .nav-btn i { font-size: 1.5rem; margin-bottom: 5px; }
+        .nav-btn:hover { background: #e0e0e0; color: var(--primary); }
+        .nav-btn.active { background: white; color: var(--primary); box-shadow: inset 0 -3px 0 var(--primary); }
+
+        /* ÁREA DE CONTEÚDO */
+        .content-area {
+            padding: 30px;
+            flex: 1;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { color: var(--primary); border-bottom: 2px dashed var(--accent); display: inline-block; margin-top: 0; }
+        p { line-height: 1.6; font-size: 1.1rem; color: #444; }
+
+        /* CARDS E GRIDS */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        
+        .card {
+            background: #fff; border: 2px solid #ddd; border-radius: 15px; padding: 20px;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05); transition: 0.2s; position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--secondary); }
+        
+        .card-icon { font-size: 2rem; color: var(--accent); margin-bottom: 10px; }
+        .card-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: var(--text); }
+
+        /* NEUROCIÊNCIA VISUAL */
+        .brain-container {
+            position: relative; width: 300px; height: 300px; margin: 0 auto;
+            background: url('https://cdn-icons-png.flaticon.com/512/1596/1596637.png') no-repeat center center;
+            background-size: contain; opacity: 0.9;
+        }
+        
+        .brain-part {
+            position: absolute; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: white; cursor: pointer;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); animation: pulse 2s infinite;
+        }
+        
+        .amygdala { top: 55%; left: 45%; background: #ff7675; }
+        .cortex { top: 20%; left: 30%; background: #74b9ff; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .neuro-box {
+            background: #f1f2f6; padding: 20px; border-radius: 15px; margin-top: 20px;
+            border-left: 5px solid var(--primary); display: none;
+        }
+
+        /* MEDICAMENTOS */
+        .med-pill {
+            background: #fff; border: 2px solid var(--text); border-radius: 50px; padding: 10px 20px;
+            display: inline-flex; align-items: center; gap: 10px; margin: 5px; font-weight: bold;
+        }
+        .pill-blue { background: #e0f7fa; color: #006064; }
+        .pill-orange { background: #fff3e0; color: #e65100; }
+
+        /* RODAPÉ */
+        .footer-note { text-align: center; margin-top: 40px; font-size: 0.9rem; color: #888; }
+
+        /* RESPONSIVO */
+        @media (max-width: 600px) {
+            .nav-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .nav-btn span { display: none; } /* Só ícones no mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Desvendando o TAG</h1>
+            <div class="subtitle">Transtorno de Ansiedade Generalizada</div>
+        </header>
+
+        <nav class="nav-grid">
+            <button class="nav-btn active" onclick="loadContent('intro')">
+                <i class="fa-solid fa-circle-question"></i> <span>O que é?</span>
+            </button>
+            <button class="nav-btn" onclick="loadContent('sintomas')">
+                <i class="fa-solid fa-heart-pulse"></i> <span>Sintomas</span>
+            </button>
+            <button class="nav-btn" onclick="loadContent('neuro')">
+                <i class="fa-solid fa-brain"></i> <span>No Cérebro</span>
+            </button>
+            <button class="nav-btn" onclick="loadContent('causas')">
+                <i class="fa-solid fa-seedling"></i> <span>Causas</span>
+            </button>
+            <button class="nav-btn" onclick="loadContent('tratamento')">
+                <i class="fa-solid fa-user-doctor"></i> <span>Tratamento</span>
+            </button>
+            <button class="nav-btn" onclick="loadContent('meds')">
+                <i class="fa-solid fa-pills"></i> <span>Remédios</span>
+            </button>
+        </nav>
+
+        <main id="content-area" class="content-area">
+            </main>
+    </div>
+
+    <script>
+        // CONTEÚDO DOS MÓDULOS
+        const contentData = {
+            intro: `
+                <h2>O que é o TAG?</h2>
+                <p>Imagine que seu cérebro tem um <strong>sistema de alarme</strong> para perigos (tipo um urso na floresta). No TAG, esse alarme está <strong>quebrado e disparando o tempo todo</strong>, mesmo quando não tem urso nenhum.</p>
+                
+                <div class="info-grid">
+                    <div class="card">
+                        <div class="card-icon">😟</div>
+                        <div class="card-title">Preocupação Excessiva</div>
+                        <p>Você se preocupa com TUDO: escola, família, dinheiro, saúde... e não consegue "desligar".</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔮</div>
+                        <div class="card-title">Adivinhação do Futuro</div>
+                        <p>A mente fica sempre no "E se der errado?", "E se eu falhar?", prevendo desastres que nunca acontecem.</p>
+                    </div>
+                </div>
+            `,
+            sintomas: `
+                <h2>O que rola no corpo e na mente?</h2>
+                <p>A ansiedade não é só "coisa da cabeça". O corpo reage como se estivesse em uma guerra.</p>
+                <div class="info-grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="card-title">Tensão Muscular</div>
+                        <p>Ombros duros, dor nas costas, maxilar travado. O corpo está pronto para "lutar".</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-bed"></i></div>
+                        <div class="card-title">Sono Ruim</div>
+                        <p>Dificuldade para dormir ou acordar cansado. A mente não para de "tagarelar" à noite.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-battery-quarter"></i></div>
+                        <div class="card-title">Cansaço Mental</div>
+                        <p>Fadiga, "branco" na hora da prova, dificuldade de concentração.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-fire"></i></div>
+                        <div class="card-title">Irritabilidade</div>
+                        <p>Pavio curto. Qualquer coisinha te tira do sério.</p>
+                    </div>
+                </div>
+            `,
+            neuro: `
+                <h2>Por dentro do Cérebro 🧠</h2>
+                <p>Clique nas partes do cérebro para entender quem manda em quem:</p>
+                
+                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:30px;">
+                    <div class="brain-container">
+                        <div class="brain-part amygdala" onclick="showNeuro('amygdala')"><i class="fa-solid fa-bell"></i></div>
+                        <div class="brain-part cortex" onclick="showNeuro('cortex')"><i class="fa-solid fa-user-tie"></i></div>
+                    </div>
+                    
+                    <div style="flex:1; min-width:250px;">
+                        <div id="desc-amygdala" class="neuro-box">
+                            <h3 style="color:#ff7675"><i class="fa-solid fa-bell"></i> A Amígdala (O Cão de Guarda)</h3>
+                            <p>É a parte primitiva. No TAG, ela é <strong>hiperativa</strong>. Ela vê perigo onde não tem e aperta o botão de pânico (liberando adrenalina) o tempo todo.</p>
+                        </div>
+                        <div id="desc-cortex" class="neuro-box">
+                            <h3 style="color:#74b9ff"><i class="fa-solid fa-user-tie"></i> O Córtex Pré-Frontal (O Chefe)</h3>
+                            <p>É a parte racional que deveria acalmar a Amígdala ("Calma, é só uma prova, não um leão"). No TAG, a conexão dele com a Amígdala está fraca. O Chefe perde o controle do Cão.</p>
+                        </div>
+                        <div id="desc-intro-neuro" class="neuro-box" style="display:block; border-color:#aaa;">
+                            <h3>Clique nas bolinhas coloridas ao lado!</h3>
+                            <p>Descubra como seu "sistema de segurança" funciona.</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            causas: `
+                <h2>Por que eu tenho isso?</h2>
+                <p>Não é culpa sua, nem fraqueza. É uma mistura de fatores (Modelo Bio-Psico-Social).</p>
+                <div class="info-grid">
+                    <div class="card">
+                        <div class="card-icon">🧬</div>
+                        <div class="card-title">Biológico (Genética)</div>
+                        <p>Seus pais têm ansiedade? É como herdar a cor dos olhos. Alguns cérebros nascem mais sensíveis.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🏠</div>
+                        <div class="card-title">Ambiente</div>
+                        <p>Crescer em um lar instável, sofrer bullying ou viver sob muita pressão.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🤯</div>
+                        <div class="card-title">Estresse</div>
+                        <p>Eventos gatilho: vestibular, mudança de cidade, perdas importantes.</p>
+                    </div>
+                </div>
+            `,
+            tratamento: `
+                <h2>Como "Hackear" a Ansiedade?</h2>
+                <p>O tratamento padrão-ouro é a combinação de <strong>Psicoterapia</strong> e, às vezes, medicação.</p>
+                
+                <div class="card" style="border-left: 5px solid var(--secondary);">
+                    <h3><i class="fa-solid fa-comments"></i> TCC (Terapia Cognitivo-Comportamental)</h3>
+                    <p>Na terapia, você não vai só "desabafar". Você vai treinar seu cérebro:</p>
+                    <ul style="text-align:left; margin-top:10px;">
+                        <li><strong>Identificar:</strong> Pegar os pensamentos "mentirosos" (catastróficos).</li>
+                        <li><strong>Questionar:</strong> "Qual a evidência de que isso vai acontecer?"</li>
+                        <li><strong>Enfrentar:</strong> Parar de evitar situações por medo.</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top:20px"><strong>Estilo de Vida (O Básico que Funciona):</strong></p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                    <span class="med-pill pill-blue"><i class="fa-solid fa-person-running"></i> Exercício Físico (Queima o cortisol)</span>
+                    <span class="med-pill pill-blue"><i class="fa-solid fa-moon"></i> Higiene do Sono</span>
+                    <span class="med-pill pill-blue"><i class="fa-solid fa-om"></i> Mindfulness</span>
+                </div>
+            `,
+            meds: `
+                <h2>E os remédios? 💊</h2>
+                <p>Remédio não cura sozinho, mas é como uma "boia" para você aprender a nadar. Eles equilibram a química (neurotransmissores) do cérebro.</p>
+                
+                <div class="info-grid">
+                    <div class="card">
+                        <div class="card-icon" style="color:#0984e3"><i class="fa-solid fa-capsules"></i></div>
+                        <div class="card-title">Antidepressivos (ISRS)</div>
+                        <p><em>Ex: Sertralina, Escitalopram.</em></p>
+                        <p style="font-size:0.9rem;">São os principais. Eles aumentam a <strong>Serotonina</strong> (mensageiro da calma). Demoram uns 15-20 dias para fazer efeito.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="color:#e17055"><i class="fa-solid fa-tablets"></i></div>
+                        <div class="card-title">Ansiolíticos (Benzos)</div>
+                        <p><em>Ex: Rivotril, Alprazolam.</em></p>
+                        <p style="font-size:0.9rem;">São o "freio de mão". Usados só em crises ou por curto prazo, pois podem viciar. Não tratam a causa, só o sintoma.</p>
+                    </div>
+                </div>
+                <p style="font-size:0.9rem; color:red; font-weight:bold; margin-top:20px;">⚠️ Atenção: Só tome remédio receitado por psiquiatra. Nunca pare por conta própria!</p>
+            `
+        };
+
+        // LÓGICA DE NAVEGAÇÃO
+        function loadContent(section) {
+            // Atualiza botões
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Injeta HTML
+            const main = document.getElementById('content-area');
+            main.style.opacity = 0;
+            
+            setTimeout(() => {
+                main.innerHTML = contentData[section];
+                main.style.opacity = 1;
+            }, 200);
+        }
+
+        // LÓGICA NEUROCIÊNCIA
+        function showNeuro(part) {
+            // Esconde todos
+            document.querySelectorAll('.neuro-box').forEach(box => box.style.display = 'none');
+            
+            // Mostra o selecionado
+            document.getElementById('desc-' + part).style.display = 'block';
+        }
+
+        // Carrega Intro ao iniciar
+        window.onload = () => {
+            const firstBtn = document.querySelector('.nav-btn');
+            firstBtn.classList.add('active');
+            document.getElementById('content-area').innerHTML = contentData['intro'];
+        };
+
+    </script>
+
+</body>
+</html>
