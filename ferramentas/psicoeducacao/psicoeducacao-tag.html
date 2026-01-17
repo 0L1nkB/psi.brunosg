@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desvendando o TAG | Guia Completo</title>
+    <title>Neurobiologia do TAG | Modelo Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #f4f6f8;
-            --sidebar-width: 260px;
-            --primary: #5c6bc0;
-            --accent: #ff7043;
-            --text: #37474f;
-            --card-bg: #ffffff;
+            --bg-color: #eceff1;
+            --sidebar-width: 280px;
+            --primary: #3f51b5;
+            --accent: #ff4081;
+            --text: #263238;
+            /* Cores das Áreas do Cérebro */
+            --c-cortex: #29b6f6;    /* Azul Claro */
+            --c-amygdala: #ff5252;  /* Vermelho Alerta */
+            --c-hippo: #66bb6a;     /* Verde Memória */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             margin: 0;
             display: flex;
@@ -25,160 +28,270 @@
             overflow: hidden;
         }
 
-        /* MENU LATERAL */
+        /* SIDEBAR */
         aside {
             width: var(--sidebar-width);
             background: #fff;
-            border-right: 1px solid #e0e0e0;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 30px;
             box-shadow: 2px 0 10px rgba(0,0,0,0.05);
             z-index: 10;
         }
 
         .brand {
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-size: 1.2rem;
+            font-weight: 900;
             color: var(--primary);
-            margin-bottom: 40px;
-            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .nav-btn {
-            background: transparent; border: none; padding: 15px;
-            text-align: left; font-size: 1rem; color: #78909c;
-            cursor: pointer; border-radius: 10px; margin-bottom: 8px;
-            transition: 0.2s; display: flex; align-items: center; gap: 12px; font-weight: 600;
+        /* INFO PANEL (Onde aparece o texto explicativo) */
+        .info-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .nav-btn:hover { background: #e8eaf6; color: var(--primary); }
-        .nav-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(92, 107, 192, 0.3); }
 
-        /* CONTEÚDO */
+        .info-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--text);
+            transition: color 0.3s;
+        }
+
+        .info-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #546e7a;
+        }
+
+        .instruction {
+            margin-top: auto;
+            font-size: 0.9rem;
+            color: #b0bec5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ÁREA DO CÉREBRO */
         main {
             flex: 1;
-            padding: 40px;
-            overflow-y: auto; /* Rolagem apenas no conteúdo */
+            background: radial-gradient(circle at center, #ffffff 0%, #eceff1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        .section-content { display: none; max-width: 800px; margin: 0 auto; animation: fadeIn 0.5s; }
-        .section-content.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1 { font-size: 2.5rem; color: var(--text); margin-bottom: 10px; }
-        h1 span { color: var(--primary); }
-        h2 { font-size: 1.5rem; color: var(--primary); margin-top: 40px; border-left: 5px solid var(--accent); padding-left: 15px; }
-        p, li { line-height: 1.8; font-size: 1.1rem; color: #546e7a; margin-bottom: 15px; text-align: justify; }
-
-        /* BOX PROMOCIONAL 3D */
-        .box-3d {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white; padding: 30px; border-radius: 20px;
-            text-align: center; margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        /* SVG ESTILOS */
+        .brain-svg {
+            max-width: 80%;
+            max-height: 80vh;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.1));
+            transition: transform 0.5s ease;
         }
-        .btn-3d {
-            background: #38bdf8; color: #0f172a; border: none; padding: 12px 30px;
-            border-radius: 50px; font-weight: bold; font-size: 1.1rem; cursor: pointer;
-            text-decoration: none; display: inline-block; margin-top: 15px;
-            transition: transform 0.2s;
-        }
-        .btn-3d:hover { transform: scale(1.05); background: white; }
 
-        /* CARDS DE INFO */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-        .card {
-            background: white; padding: 25px; border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); border-top: 4px solid var(--primary);
+        /* Partes do Cérebro */
+        .brain-part {
+            fill: #cfd8dc; /* Cor base cinza */
+            stroke: #fff;
+            stroke-width: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 0.8;
         }
-        .card h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
 
-        /* MINDFULNESS BOX (Do PDF) */
-        .mindfulness-box {
-            background: #e0f2f1; padding: 20px; border-radius: 15px; border: 2px dashed #00b894;
+        /* Efeitos Hover/Active - Aqui acontece a mágica da cor */
+        .brain-part:hover, .brain-part.active {
+            opacity: 1;
+            stroke: var(--text);
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
         }
-        .step { margin-bottom: 10px; font-weight: bold; color: #00695c; }
 
-        @media (max-width: 768px) {
-            body { flex-direction: column; height: auto; overflow: visible; }
-            aside { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 10px; }
-            .nav-btn { padding: 10px; white-space: nowrap; font-size: 0.9rem; }
-            main { padding: 20px; }
+        /* Cores Específicas ao ativar */
+        #part-cortex.active, #part-cortex:hover { fill: var(--c-cortex); }
+        #part-amygdala.active, #part-amygdala:hover { fill: var(--c-amygdala); }
+        #part-hippo.active, #part-hippo:hover { fill: var(--c-hippo); }
+
+        /* LINHAS CONECTORAS (Labels) */
+        .label-line {
+            stroke: var(--text);
+            stroke-width: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .label-text {
+            fill: var(--text);
+            font-weight: bold;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        /* Mostra label quando o grupo pai tem a classe active/hover */
+        g:hover .label-line, g:hover .label-text,
+        g.active .label-line, g.active .label-text {
+            opacity: 1;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 900px) {
+            body { flex-direction: column; height: auto; overflow-y: auto; }
+            aside { width: 100%; height: auto; padding: 20px; box-sizing: border-box; }
+            main { height: 50vh; padding: 20px; }
+            .brain-svg { width: 100%; height: auto; }
         }
     </style>
 </head>
 <body>
 
     <aside>
-        <div class="brand"><i class="fa-solid fa-brain"></i> Psicoeducação</div>
-        <button class="nav-btn active" onclick="show('intro')"><i class="fa-solid fa-circle-info"></i> O que é TAG?</button>
-        <button class="nav-btn" onclick="show('sintomas')"><i class="fa-solid fa-heart-pulse"></i> Sintomas</button>
-        <button class="nav-btn" onclick="show('neuro')"><i class="fa-solid fa-network-wired"></i> Neurociência</button>
-        <button class="nav-btn" onclick="show('tratamento')"><i class="fa-solid fa-user-doctor"></i> Tratamento</button>
+        <div class="brand"><i class="fa-solid fa-brain"></i> NeuroTAG 3.0</div>
+        
+        <div class="info-panel">
+            <h2 class="info-title" id="display-title">O Cérebro Ansioso</h2>
+            <p class="info-desc" id="display-desc">
+                No Transtorno de Ansiedade Generalizada (TAG), existe um desequilíbrio na comunicação entre as áreas de "alerta" e as áreas de "controle".
+                <br><br>
+                <strong>Passe o mouse ou clique nas áreas coloridas do cérebro ao lado</strong> para entender o papel de cada estrutura.
+            </p>
+        </div>
+
+        <div class="instruction">
+            <i class="fa-solid fa-mouse-pointer"></i> Interaja com o modelo
+        </div>
     </aside>
 
     <main>
-        <div id="intro" class="section-content active">
-            <h1>Entendendo o <span>TAG</span></h1>
-            <p>O <strong>Transtorno de Ansiedade Generalizada</strong> não é apenas estar nervoso antes de uma prova. É como ter um "alarme de incêndio" interno que dispara o tempo todo, mesmo quando não há fogo nenhum.</p>
+        <svg class="brain-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
             
-            <div class="card">
-                <h3><i class="fa-solid fa-triangle-exclamation"></i> O Ciclo da Preocupação</h3>
-                <p>No TAG, o cérebro fica preso no "E SE?".<br>
-                <em>"E se eu falhar?", "E se algo ruim acontecer com minha família?", "E se eu ficar doente?"</em><br>
-                É uma tentativa de controlar um futuro incerto.</p>
-            </div>
-        </div>
+            <path d="M150,350 
+                     C100,350 50,300 50,200 
+                     C50,80 120,20 250,20 
+                     C380,20 450,100 450,200 
+                     C450,280 400,330 350,350 
+                     C320,360 250,380 150,350 Z" 
+                  fill="#eceff1" stroke="#b0bec5" stroke-width="2" opacity="0.5" style="pointer-events:none;"/>
 
-        <div id="sintomas" class="section-content">
-            <h1>Sintomas Principais</h1>
-            <p>A ansiedade afeta o corpo todo, não apenas a mente.</p>
-            <div class="grid">
-                <div class="card" style="border-color:#ef5350">
-                    <h3 style="color:#ef5350"><i class="fa-solid fa-brain"></i> Mentais</h3>
-                    <p>Preocupação excessiva, dificuldade de concentração ("branco"), irritabilidade e sensação de estar sempre no limite.</p>
-                </div>
-                <div class="card" style="border-color:#ffa726">
-                    <h3 style="color:#ffa726"><i class="fa-solid fa-person-running"></i> Físicos</h3>
-                    <p>Tensão muscular (ombros duros), fadiga, insônia, taquicardia e suor frio.</p>
-                </div>
-            </div>
-        </div>
+            <path d="M300,350 Q350,400 380,380 Q420,350 350,300" fill="#cfd8dc" opacity="0.3" style="pointer-events:none;"/>
+            <path d="M200,350 Q220,450 250,450 Q280,450 300,350" fill="#cfd8dc" opacity="0.3" style="pointer-events:none;"/>
 
-        <div id="neuro" class="section-content">
-            <h1>Por dentro do Cérebro</h1>
-            <p>O TAG acontece devido a um desequilíbrio na comunicação entre o "Cérebro Emocional" e o "Cérebro Racional".</p>
+            <g id="group-cortex" onclick="activate('cortex')" onmouseenter="hover('cortex')">
+                <path id="part-cortex" class="brain-part" 
+                      d="M60,200 
+                         C60,120 120,40 220,40 
+                         L220,150 
+                         C180,180 120,220 60,200 Z" />
+                <line x1="100" y1="100" x2="50" y2="50" class="label-line"/>
+                <text x="20" y="40" class="label-text">Córtex Pré-Frontal</text>
+            </g>
 
-            <div class="box-3d">
-                <i class="fa-solid fa-cube" style="font-size:3rem; margin-bottom:10px; color:#38bdf8;"></i>
-                <h3>Modelo 3D Interativo</h3>
-                <p>Veja como a Amígdala e o Córtex interagem no "Raio-X" do cérebro ansioso.</p>
-                <a href="modelo-cerebro-3d-fix.html" target="_blank" class="btn-3d">ABRIR MODELO 3D <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-            </div>
+            <g id="group-hippo" onclick="activate('hippo')" onmouseenter="hover('hippo')">
+                <path id="part-hippo" class="brain-part" 
+                      d="M260,200 
+                         C280,180 320,180 340,200 
+                         C360,240 320,280 280,260 
+                         C250,240 240,220 260,200 Z" />
+                <line x1="300" y1="230" x2="400" y2="230" class="label-line"/>
+                <text x="410" y="235" class="label-text">Hipocampo</text>
+            </g>
 
-            <h2>Os Protagonistas</h2>
-            <ul>
-                <li><strong>Amígdala (O Guarda-Costas):</strong> Detecta perigos. No TAG, ela é hiperativa e vê perigo em tudo.</li>
-                <li><strong>Córtex Pré-Frontal (O Chefe):</strong> Planeja e acalma. No TAG, ele perde a força e não consegue "desligar" a Amígdala.</li>
-            </ul>
-        </div>
+            <g id="group-amygdala" onclick="activate('amygdala')" onmouseenter="hover('amygdala')">
+                <ellipse id="part-amygdala" class="brain-part" cx="250" cy="230" rx="20" ry="15" />
+                <line x1="250" y1="245" x2="250" y2="320" class="label-line"/>
+                <text x="220" y="340" class="label-text">Amígdala</text>
+            </g>
 
-        <div id="tratamento" class="section-content">
-            <h1>Como Tratar?</h1>
-            <p>O tratamento padrão-ouro combina Terapia Cognitivo-Comportamental (TCC) e mudanças de estilo de vida.</p>
+        </svg>
+    </main>
+
+    <script>
+        // DADOS DO CONTEÚDO
+        const data = {
+            cortex: {
+                title: "Córtex Pré-Frontal (O CEO)",
+                color: "var(--c-cortex)",
+                desc: "Localizado logo atrás da testa, é a parte mais evoluída do cérebro. Ele é responsável pelo planejamento, lógica e <strong>regulação das emoções</strong>.<br><br>No TAG, sua conexão com a Amígdala está enfraquecida. Ele tenta dizer 'Calma, é só um e-mail, não um leão', mas sua voz é abafada pelo alarme."
+            },
+            amygdala: {
+                title: "Amígdala (O Alarme)",
+                color: "var(--c-amygdala)",
+                desc: "Uma pequena estrutura em forma de amêndoa. É o centro primitivo do medo e detecção de perigo.<br><br>No TAG, ela é <strong>hiperativa</strong>. Ela funciona como um detector de fumaça quebrado que dispara o alarme de incêndio (ansiedade física) até para uma simples torrada queimada (preocupações menores)."
+            },
+            hippo: {
+                title: "Hipocampo (O Bibliotecário)",
+                color: "var(--c-hippo)",
+                desc: "Responsável pela memória e contexto. Ele ajuda a dizer à Amígdala se uma situação é realmente perigosa com base no passado.<br><br>O estresse crônico (cortisol excessivo) pode prejudicar o hipocampo, dificultando a distinção entre um perigo real e uma lembrança ou preocupação."
+            },
+            default: {
+                title: "O Cérebro Ansioso",
+                color: "var(--text)",
+                desc: "No Transtorno de Ansiedade Generalizada (TAG), existe um desequilíbrio na comunicação entre as áreas de 'alerta' e as áreas de 'controle'.<br><br><strong>Passe o mouse ou clique nas áreas coloridas do cérebro ao lado</strong> para entender o papel de cada estrutura."
+            }
+        };
+
+        // ELEMENTOS
+        const titleEl = document.getElementById('display-title');
+        const descEl = document.getElementById('display-desc');
+
+        function updatePanel(key) {
+            const info = data[key];
+            titleEl.style.opacity = 0;
+            descEl.style.opacity = 0;
+
+            setTimeout(() => {
+                titleEl.innerHTML = info.title;
+                titleEl.style.color = info.color;
+                descEl.innerHTML = info.desc;
+                
+                titleEl.style.opacity = 1;
+                descEl.style.opacity = 1;
+            }, 200);
+        }
+
+        // INTERATIVIDADE
+        function activate(partId) {
+            // Remove active de todos
+            document.querySelectorAll('g').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.brain-part').forEach(el => el.classList.remove('active'));
+
+            // Adiciona ao atual
+            const group = document.getElementById('group-' + partId);
+            const part = document.getElementById('part-' + partId);
             
-            <h2>1. Terapia (TCC)</h2>
-            <p>Ajuda a identificar os pensamentos catastróficos e testar se eles são reais, "recalibrando" o alarme do cérebro.</p>
+            if(group) group.classList.add('active');
+            if(part) part.classList.add('active');
 
-            <h2>2. Técnica de Mindfulness</h2>
-            <p>Para acalmar a mente agitada, usamos os sentidos para voltar ao presente.</p>
-            
-            <div class="mindfulness-box">
-                <h3 style="color:#00796b; margin-top:0;"><i class="fa-solid fa-leaf"></i> Exercício dos 5 Sentidos</h3>
-                <p>Conforme seu guia de Mindfulness:</p>
-                <div class="step">1. RESPIRE 3X</div>
-                <div class="step">2. VISÃO: Encontre algo que você VÊ e acha bom (30s).</div>
-                <div class="step">3. TATO: Encontre algo que você TOCA e acha bom (30s).</div>
-                <div class="step">4. OLFATO: Encontre algo que você CHEIRA e acha bom (30s).</div>
-                <div class="step">5. AUDIÇÃO: Encontre algo que você OUVE e acha bom (3
+            updatePanel(partId);
+        }
+
+        function hover(partId) {
+            // Apenas para feedback visual rápido, clique fixa o texto
+            // Pode ser removido se quiser que só o clique mude o texto
+            // updatePanel(partId); 
+        }
+
+        // Resetar se clicar fora (opcional)
+        document.querySelector('main').addEventListener('click', (e) => {
+            if(e.target.tagName === 'main' || e.target.classList.contains('brain-svg')) {
+                document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+                updatePanel('default');
+            }
+        });
+
+    </script>
+
+</body>
+</html>
