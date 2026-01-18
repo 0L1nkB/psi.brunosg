@@ -1,382 +1,91 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoeducação TAG | Guia Completo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #eceff1;
-            --sidebar-width: 260px;
-            --primary: #3f51b5; /* Indigo */
-            --accent: #ff4081; /* Pink */
-            --text: #263238;
-            
-            /* Cores Neuro */
-            --c-cortex: #29b6f6;
-            --c-amygdala: #ff5252;
-            --c-hippo: #66bb6a;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            color: var(--text);
-            overflow: hidden;
-        }
-
-        /* --- SIDEBAR --- */
-        aside {
-            width: var(--sidebar-width);
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-            z-index: 10;
-        }
-
-        .brand {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex; align-items: center; gap: 10px;
-        }
-
-        .nav-btn {
-            background: transparent; border: none; padding: 15px;
-            text-align: left; font-size: 1rem; color: #78909c;
-            cursor: pointer; border-radius: 8px; margin-bottom: 5px;
-            transition: all 0.2s; display: flex; align-items: center; gap: 12px; font-weight: 600;
-        }
-        .nav-btn:hover { background: #e8eaf6; color: var(--primary); }
-        .nav-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(63, 81, 181, 0.3); }
-
-        /* --- ÁREA PRINCIPAL --- */
-        main {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-            position: relative;
-            background: radial-gradient(circle at center, #ffffff 0%, #eceff1 100%);
-        }
-
-        .content-section { display: none; animation: fadeIn 0.5s ease; max-width: 950px; margin: 0 auto; }
-        .content-section.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* TIPOGRAFIA */
-        h1 { font-size: 2.2rem; font-weight: 300; margin-bottom: 20px; color: var(--text); }
-        h1 span { font-weight: 800; color: var(--primary); }
-        h2 { font-size: 1.4rem; color: var(--primary); margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
-        p, li { line-height: 1.6; font-size: 1.05rem; color: #546e7a; margin-bottom: 15px; text-align: justify; }
-
-        /* CARDS GERAIS */
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card {
-            background: white; padding: 25px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-top: 3px solid var(--primary);
-        }
-        .card h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
-
-        /* CICLO DA ANSIEDADE */
-        .cycle-box {
-            background: white; padding: 30px; border-radius: 15px; text-align: center;
-            border: 1px solid #e0e0e0; margin-top: 20px;
-        }
-        .cycle-step { font-weight: bold; color: var(--primary); margin: 10px 0; }
-        .arrow-down { color: #b0bec5; font-size: 1.2rem; margin: 5px 0; }
-
-        /* --- DIAGRAMA SVG (CÉREBRO) --- */
-        .neuro-layout { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; justify-content: center; }
-        
-        .brain-svg {
-            max-width: 450px; width: 100%; height: auto;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
-        }
-
-        .brain-part {
-            fill: #cfd8dc; stroke: #fff; stroke-width: 2px;
-            transition: all 0.3s ease; cursor: pointer; opacity: 0.8;
-        }
-        .brain-part:hover, .brain-part.active { opacity: 1; stroke: var(--text); filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
-        
-        /* Cores Ativas */
-        #part-cortex.active, #part-cortex:hover { fill: var(--c-cortex); }
-        #part-amygdala.active, #part-amygdala:hover { fill: var(--c-amygdala); }
-        #part-hippo.active, #part-hippo:hover { fill: var(--c-hippo); }
-
-        .neuro-panel {
-            flex: 1; min-width: 300px; background: white; padding: 30px;
-            border-radius: 15px; border-left: 5px solid #cfd8dc;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: border-color 0.3s;
-        }
-
-        /* Labels SVG */
-        .label-line { stroke: var(--text); stroke-width: 1; opacity: 0; pointer-events: none; transition: 0.3s; }
-        .label-text { fill: var(--text); font-weight: bold; font-size: 14px; opacity: 0; pointer-events: none; text-transform: uppercase; transition: 0.3s; }
-        g:hover .label-line, g:hover .label-text, g.active .label-line, g.active .label-text { opacity: 1; }
-
-        /* NEUROTRANSMISSORES */
-        .chem-item { display: flex; align-items: center; background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
-        .chem-circle {
-            width: 45px; height: 45px; border-radius: 50%; background: #eee; color: white;
-            display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0;
-        }
-
-        /* MINDFULNESS ESPECÍFICO */
-        .mindfulness-list {
-            background: white; padding: 25px; border-radius: 15px;
-            border-left: 5px solid #00b894;
-        }
-        .mind-step {
-            display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 15px;
-            border-bottom: 1px dashed #eee;
-        }
-        .mind-step:last-child { border-bottom: none; margin-bottom: 0; }
-        .mind-icon { font-size: 1.5rem; width: 40px; text-align: center; margin-right: 15px; color: #00b894; }
-        .mind-text { font-size: 1rem; color: #444; }
-        .breath-pause {
-            background: #e0f2f1; color: #00695c; padding: 8px 15px; border-radius: 20px;
-            font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px 0 15px 55px;
-        }
-
-        /* RESPONSIVO */
-        @media (max-width: 850px) {
-            body { flex-direction: column; height: auto; overflow: visible; }
-            aside { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 15px; box-sizing: border-box; }
-            .nav-btn { white-space: nowrap; padding: 10px; font-size: 0.9rem; }
-            main { padding: 20px; }
-        }
-    </style>
+    <title>Psicoeducação: TAG | Ecossistema de Ferramentas</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <aside>
-        <div class="brand"><i class="fa-solid fa-shapes"></i> Psicoeducação</div>
-        <button class="nav-btn active" onclick="showSection('intro')"><i class="fa-solid fa-info-circle"></i> O que é TAG?</button>
-        <button class="nav-btn" onclick="showSection('sintomas')"><i class="fa-solid fa-heart-pulse"></i> Sintomas</button>
-        <button class="nav-btn" onclick="showSection('neuro')"><i class="fa-solid fa-brain"></i> Neurobiologia</button>
-        <button class="nav-btn" onclick="showSection('tratamento')"><i class="fa-solid fa-user-doctor"></i> Tratamento</button>
-    </aside>
-
-    <main>
-        <div id="intro" class="content-section active">
-            <h1>Entendendo o <span>TAG</span></h1>
-            <p>O <strong>Transtorno de Ansiedade Generalizada (TAG)</strong> é caracterizado por uma preocupação excessiva e persistente que é difícil de controlar. Não é apenas "nervosismo"; é um estado de alerta constante.</p>
-            
-            <div class="cycle-box">
-                <h3>O Ciclo da Preocupação</h3>
-                <div class="cycle-step" style="color:#ef6c00">1. GATILHO (Incerteza)</div>
-                <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="cycle-step" style="color:#0277bd">2. PENSAMENTO ("E se der errado?")</div>
-                <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="cycle-step" style="color:#c62828">3. ANSIEDADE (Sintomas Físicos)</div>
-                <div class="arrow-down"><i class="fa-solid fa-arrow-down"></i></div>
-                <div class="cycle-step" style="color:#2e7d32">4. COMPORTAMENTO (Evitação/Controle)</div>
-                <p style="font-size:0.9rem; margin-top:15px; font-style:italic;">O comportamento de controle alivia na hora, mas reforça o medo a longo prazo.</p>
-            </div>
+    <header class="hero">
+        <div class="container" data-aos="fade-up">
+            <h1>Transtorno de Ansiedade Generalizada (TAG)</h1>
+            <p>Compreendendo o funcionamento da mente e reencontrando o equilíbrio.</p>
+            <a href="#inicio" class="btn-start">Começar Jornada</a>
         </div>
+    </header>
 
-        <div id="sintomas" class="content-section">
-            <h1>Sintomas Clínicos</h1>
-            <p>A ansiedade se manifesta em três frentes: Mental, Física e Comportamental.</p>
+    <main class="container">
+        
+        <section id="inicio" class="info-section" data-aos="fade-right">
+            <h2>O que é o TAG?</h2>
+            <p>Diferente da ansiedade comum, o TAG é como um sistema de alarme que permanece ligado mesmo quando não há perigo imediato. É a "ansiedade pela ansiedade", onde a mente se torna especialista em prever catástrofes futuras.</p>
+            <div class="quote-box">
+                "O TAG é definido por uma preocupação excessiva e persistente que ocorre na maioria dos dias por pelo menos 6 meses." (DSM-5-TR)
+            </div>
+        </section>
+
+        <section class="info-section" data-aos="fade-left">
+            <h2>O Ciclo de Manutenção</h2>
+            <p>Entender como a ansiedade se alimenta é o primeiro passo para quebrá-la.</p>
             
-            <div class="grid-cards">
-                <div class="card" style="border-color:#ef5350">
-                    <h3 style="color:#ef5350"><i class="fa-solid fa-brain"></i> Psicológicos</h3>
+            <div class="cycle-grid">
+                <div class="cycle-item"><strong>1. Gatilho:</strong> Uma incerteza ou dúvida.</div>
+                <div class="cycle-item"><strong>2. Catastrofização:</strong> "E se o pior acontecer?"</div>
+                <div class="cycle-item"><strong>3. Tensão:</strong> O corpo entra em alerta máximo.</div>
+                <div class="cycle-item"><strong>4. Esquiva:</strong> Buscar garantias ou fugir do desconforto.</div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h2>Sintomas: O que você sente?</h2>
+            <div class="symptom-cards">
+                <div class="card" data-aos="flip-up">
+                    <h3>Mente</h3>
                     <ul>
-                        <li>Preocupação excessiva.</li>
-                        <li>Sensação de "branco" na mente.</li>
-                        <li>Irritabilidade fácil.</li>
-                        <li>Dificuldade de concentração.</li>
+                        <li>Pensamentos acelerados</li>
+                        <li>Dificuldade de concentração</li>
+                        <li>Intolerância à incerteza</li>
                     </ul>
                 </div>
-                <div class="card" style="border-color:#ffa726">
-                    <h3 style="color:#ffa726"><i class="fa-solid fa-person-running"></i> Físicos</h3>
+                <div class="card" data-aos="flip-up" data-aos-delay="200">
+                    <h3>Corpo</h3>
                     <ul>
-                        <li>Tensão muscular (ombros/nuca).</li>
-                        <li>Fadiga e cansaço constante.</li>
-                        <li>Perturbação do sono (insônia).</li>
-                        <li>Taquicardia ou suor excessivo.</li>
+                        <li>Tensão muscular constante</li>
+                        <li>Cansaço inexplicável</li>
+                        <li>Inquietude ou nervos à flor da pele</li>
+                    </ul>
+                </div>
+                <div class="card" data-aos="flip-up" data-aos-delay="400">
+                    <h3>Sono</h3>
+                    <ul>
+                        <li>Dificuldade para adormecer</li>
+                        <li>Sono que não restaura</li>
+                        <li>Mente que não desliga à noite</li>
                     </ul>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="neuro" class="content-section">
-            <h1>O Cérebro no <span>TAG</span></h1>
-            <p>Existe um desequilíbrio na comunicação entre o "Cérebro Primitivo" e o "Cérebro Racional".</p>
-            
-            <div class="neuro-layout">
-                <svg class="brain-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M150,350 C100,350 50,300 50,200 C50,80 120,20 250,20 C380,20 450,100 450,200 C450,280 400,330 350,350 C320,360 250,380 150,350 Z" 
-                          fill="#eceff1" stroke="#b0bec5" stroke-width="2" opacity="0.5" style="pointer-events:none;"/>
-                    
-                    <path d="M300,350 Q350,400 380,380 Q420,350 350,300" fill="#cfd8dc" opacity="0.3" style="pointer-events:none;"/>
-                    <path d="M200,350 Q220,450 250,450 Q280,450 300,350" fill="#cfd8dc" opacity="0.3" style="pointer-events:none;"/>
-
-                    <g id="group-cortex" onclick="activate('cortex')" onmouseenter="hover('cortex')">
-                        <path id="part-cortex" class="brain-part" d="M60,200 C60,120 120,40 220,40 L220,150 C180,180 120,220 60,200 Z" />
-                        <line x1="100" y1="100" x2="50" y2="50" class="label-line"/>
-                        <text x="20" y="40" class="label-text">Córtex Pré-Frontal</text>
-                    </g>
-
-                    <g id="group-hippo" onclick="activate('hippo')" onmouseenter="hover('hippo')">
-                        <path id="part-hippo" class="brain-part" d="M260,200 C280,180 320,180 340,200 C360,240 320,280 280,260 C250,240 240,220 260,200 Z" />
-                        <line x1="300" y1="230" x2="400" y2="230" class="label-line"/>
-                        <text x="410" y="235" class="label-text">Hipocampo</text>
-                    </g>
-
-                    <g id="group-amygdala" onclick="activate('amygdala')" onmouseenter="hover('amygdala')">
-                        <ellipse id="part-amygdala" class="brain-part" cx="250" cy="230" rx="20" ry="15" />
-                        <line x1="250" y1="245" x2="250" y2="320" class="label-line"/>
-                        <text x="220" y="340" class="label-text">Amígdala</text>
-                    </g>
-                </svg>
-
-                <div class="neuro-panel" id="neuro-panel">
-                    <h3 id="neuro-title" style="margin-top:0; color:var(--text);">Selecione uma área</h3>
-                    <p id="neuro-desc">Clique nas partes coloridas do cérebro para entender sua função na ansiedade.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="tratamento" class="content-section">
-            <h1>Tratamento</h1>
-            
-            <h2>A Farmácia do Cérebro</h2>
-            <div class="chem-item">
-                <div class="chem-circle" style="background:#26c6da">5-HT</div>
-                <div><strong>Serotonina:</strong> Regula o humor e a ansiedade. Antidepressivos (ISRS) ajudam a aumentar sua disponibilidade.</div>
-            </div>
-            <div class="chem-item">
-                <div class="chem-circle" style="background:#ab47bc">GABA</div>
-                <div><strong>GABA:</strong> O "freio" do cérebro. Acalma a atividade neural. Ansiolíticos atuam aqui.</div>
-            </div>
-
-            <h2>Terapia Cognitivo-Comportamental (TCC)</h2>
-            <p>A TCC ensina o paciente a identificar pensamentos catastróficos e "recalibrar" o alarme da Amígdala.</p>
-
-            <h2><i class="fa-solid fa-leaf" style="color:#00b894;"></i> Prática: Mente Tranquila</h2>
-            <p>Exercício para fazer 2x ao dia para ancorar no presente:</p>
-            
-            <div class="mindfulness-list">
-                
-                <div class="breath-pause"><i class="fa-solid fa-wind"></i> RESPIRE 3X</div>
-
-                <div class="mind-step">
-                    <div class="mind-icon"><i class="fa-solid fa-eye"></i></div>
-                    <div class="mind-text"><strong>VISÃO:</strong> Encontre algo que você VÊ e acha bom. Preste atenção por 30s.</div>
-                </div>
-
-                <div class="breath-pause"><i class="fa-solid fa-wind"></i> RESPIRE 3X</div>
-
-                <div class="mind-step">
-                    <div class="mind-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                    <div class="mind-text"><strong>TATO:</strong> Encontre algo que você TOCA e acha bom. Preste atenção por 30s.</div>
-                </div>
-
-                <div class="breath-pause"><i class="fa-solid fa-wind"></i> RESPIRE 3X</div>
-
-                <div class="mind-step">
-                    <div class="mind-icon"><i class="fa-solid fa-lungs"></i></div>
-                    <div class="mind-text"><strong>OLFATO:</strong> Encontre algo que você CHEIRA e acha bom. Preste atenção por 30s.</div>
-                </div>
-
-                <div class="breath-pause"><i class="fa-solid fa-wind"></i> RESPIRE 3X</div>
-
-                <div class="mind-step">
-                    <div class="mind-icon"><i class="fa-solid fa-ear-listen"></i></div>
-                    <div class="mind-text"><strong>AUDIÇÃO:</strong> Encontre algo que você OUVE e acha bom. Preste atenção por 30s.</div>
-                </div>
-
-                <div class="breath-pause"><i class="fa-solid fa-wind"></i> RESPIRE 3X</div>
-
-                <div class="mind-step">
-                    <div class="mind-icon"><i class="fa-solid fa-utensils"></i></div>
-                    <div class="mind-text"><strong>PALADAR:</strong> Encontre algo que você DEGUSTA e acha bom. Preste atenção por 30s.</div>
-                </div>
-
-            </div>
-        </div>
-
+        <footer class="references" data-aos="fade-up">
+            <h3>Referências Técnicas</h3>
+            <ul>
+                <li>American Psychiatric Association. (2022). <strong>DSM-5-TR</strong>.</li>
+                <li>Leahy, R. L. (2011). <strong>Livre de Ansiedade</strong>. Artmed.</li>
+                <li>World Health Organization. (2021). <strong>CID-11</strong>.</li>
+            </ul>
+        </footer>
     </main>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- NAVEGAÇÃO ---
-        function showSection(id) {
-            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            
-            // Highlight button
-            const btns = document.querySelectorAll('.nav-btn');
-            btns.forEach(btn => {
-                if(btn.getAttribute('onclick').includes(id)) btn.classList.add('active');
-            });
-        }
-
-        // --- NEUROBIOLOGIA INTERATIVA ---
-        const neuroData = {
-            cortex: {
-                title: "Córtex Pré-Frontal (O Chefe)",
-                color: "var(--c-cortex)",
-                desc: "Localizado na testa. É a parte racional. No TAG, a conexão dele com a Amígdala está fraca; ele tenta dizer 'Calma, está tudo bem', mas sua voz é abafada pelo alarme."
-            },
-            amygdala: {
-                title: "Amígdala (O Alarme)",
-                color: "var(--c-amygdala)",
-                desc: "O centro do medo. No TAG, ela é <strong>hiperativa</strong>. Ela dispara o alarme de 'perigo de vida' (adrenalina) para situações simples, como um e-mail ou uma prova."
-            },
-            hippo: {
-                title: "Hipocampo (A Memória)",
-                color: "var(--c-hippo)",
-                desc: "Armazena o contexto. O estresse crônico (cortisol) pode prejudicar essa área, fazendo com que o cérebro confunda memórias ruins passadas com o momento presente."
-            }
-        };
-
-        const titleEl = document.getElementById('neuro-title');
-        const descEl = document.getElementById('neuro-desc');
-        const panel = document.getElementById('neuro-panel');
-
-        function activate(partId) {
-            // Limpa ativos
-            document.querySelectorAll('g').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.brain-part').forEach(el => el.classList.remove('active'));
-
-            // Ativa atual
-            const group = document.getElementById('group-' + partId);
-            const part = document.getElementById('part-' + partId);
-            if(group) group.classList.add('active');
-            if(part) part.classList.add('active');
-
-            // Atualiza Texto
-            const info = neuroData[partId];
-            panel.style.borderColor = info.color;
-            titleEl.style.opacity = 0;
-            descEl.style.opacity = 0;
-
-            setTimeout(() => {
-                titleEl.innerText = info.title;
-                titleEl.style.color = info.color;
-                descEl.innerHTML = info.desc;
-                titleEl.style.opacity = 1;
-                descEl.style.opacity = 1;
-            }, 200);
-        }
-
-        function hover(partId) { /* Opcional: feedback extra no hover */ }
-
+        AOS.init({ duration: 1000, once: true });
     </script>
-
 </body>
 </html>
