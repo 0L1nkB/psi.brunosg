@@ -326,4 +326,128 @@
                 <div class="sticker-box">
                     <span class="sticker-icon">🙇</span>
                     <h4>Incompetência</h4>
-                    <p>A sensação real
+                    <p>A sensação real de não ter as habilidades práticas ou o "bom senso" que os outros têm.</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">⚖️</span>
+                    <h4>Medo de Errar</h4>
+                    <p>Paralisia diante de decisões. O erro parece uma catástrofe, não um aprendizado.</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">🆘</span>
+                    <h4>Busca de Guia</h4>
+                    <p>A necessidade constante de ter uma "figura parental" (marido, chefe, pai) para segurar sua mão.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card" style="transform: rotate(-0.5deg);">
+            <div class="card-header">
+                <i class="fas fa-sync card-icon"></i>
+                <h2 class="card-title">Tradutor de Pensamentos</h2>
+            </div>
+            <p>A dependência diz que você não consegue. Vamos traduzir isso para a voz adulta:</p>
+            
+            <div class="translator-area">
+                <p style="margin-bottom:15px; font-weight:700;">O que sua mente diz?</p>
+                <div>
+                    <button class="btn-translate" onclick="translateNeed('decide')">"Você decide, tanto faz."</button>
+                    <button class="btn-translate" onclick="translateNeed('sozinho')">"Eu não consigo fazer isso sozinho."</button>
+                    <button class="btn-translate" onclick="translateNeed('erro')">"E se eu escolher errado?"</button>
+                </div>
+                
+                <div id="translator-bubble" class="result-bubble">
+                    Toque em um pensamento para traduzir...
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-brain card-icon"></i>
+                <h2 class="card-title">Conceitos Clínicos</h2>
+            </div>
+            
+            <details>
+                <summary>🧠 Neurobiologia: O Desamparo Aprendido <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>Seus pais provavelmente fizeram tudo por você (superproteção) ou não ensinaram como fazer (negligência). Seu cérebro não formou as vias neurais de "autoeficácia". Você aprendeu que é mais seguro ficar passivo do que tentar.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>O foco é a <strong>Autonomia Gradual</strong>. O terapeuta não vai dar as respostas (isso reforçaria o esquema). Ele vai ajudar você a confiar no seu próprio julgamento, começando com pequenas decisões.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>⚠️ A Armadilha da Passividade <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>Quanto mais você pede para os outros decidirem, mais sua ansiedade diminui na hora, mas mais sua crença de incompetência aumenta a longo prazo. A cura envolve suportar a ansiedade de decidir e ver que você sobrevive ao erro.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-adjust card-icon"></i>
+                <h2 class="card-title">Vire o Pensamento</h2>
+            </div>
+            <p>Toque no cartão quando se sentir paralisado:</p>
+            
+            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz da Criança</h3>
+                        <p style="margin-top:10px;">"É muita coisa pra mim. Não sei resolver isso. Alguém tem que vir me salvar. Eu vou estragar tudo se tentar."</p>
+                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#3b82f6; font-size:1.5rem;"></i>
+                    </div>
+                    <div class="flashcard-back">
+                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
+                        <p style="margin-top:10px;">"Eu posso tentar. Se eu errar, eu conserto. Errar faz parte de ser adulto. Eu tenho capacidade de aprender e resolver problemas um passo de cada vez."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                &copy; 2026 Bruno de Souza
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function translateNeed(type) {
+            const bubble = document.getElementById('translator-bubble');
+            let text = "";
+            
+            if (type === 'decide') {
+                text = "✨ Tradução: 'Tenho medo de assumir a responsabilidade. Vou praticar escolher algo pequeno hoje e bancar minha escolha.'";
+            } else if (type === 'sozinho') {
+                text = "✨ Tradução: 'Sinto que não tenho ferramentas, mas posso pesquisar ou aprender. Não preciso de alguém para fazer por mim, só para me ensinar.'";
+            } else if (type === 'erro') {
+                text = "✨ Tradução: 'O erro não é o fim do mundo. Errar é como eu aprendo a ser competente. Tenho permissão para falhar.'";
+            }
+            
+            bubble.style.opacity = 0;
+            setTimeout(() => {
+                bubble.innerHTML = text;
+                bubble.style.opacity = 1;
+                bubble.style.transition = "opacity 0.3s";
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
