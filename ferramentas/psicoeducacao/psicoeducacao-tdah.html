@@ -1,342 +1,238 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoeducação TDAH | Guia Completo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Psicoeducação: TDAH - Compreendendo o Funcionamento Atencional</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #fff3e0; /* Fundo Creme/Laranja Suave */
-            --sidebar-width: 260px;
-            --primary: #ff9800; /* Laranja Energia */
-            --accent: #009688; /* Verde Foco */
-            --text: #3e2723; /* Marrom Café */
-            
-            /* Cores Neuro */
-            --c-frontal: #29b6f6; /* Azul (Razão) */
-            --c-dopamine: #ffca28; /* Amarelo (Prazer/Foco) */
-            --c-basal: #ef5350; /* Vermelho (Motor/Impulso) */
+            --primary: #7DB9B6; /* Verde Água */
+            --secondary: #E9EDC9; /* Creme */
+            --accent: #E29578; /* Tom Terra */
+            --dark-green: #2D5A58;
+            --text-color: #444;
+            --bg-body: #FBFBFB;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            color: var(--text);
-            overflow: hidden;
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.8;
         }
 
-        /* --- SIDEBAR --- */
-        aside {
-            width: var(--sidebar-width);
-            background: #fff;
-            display: flex;
-            flex-direction: column;
+        h1, h2, h3 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
+
+        /* --- Hero Section --- */
+        header {
+            height: 60vh;
+            background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; border-radius: 0 0 60px 60px;
             padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-            z-index: 10;
         }
 
-        .brand {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex; align-items: center; gap: 10px;
+        header h1 { font-size: 3rem; color: white; margin-bottom: 20px; }
+        header p { font-size: 1.2rem; max-width: 650px; opacity: 0.95; }
+
+        /* --- Seções --- */
+        section { padding: 80px 0; border-bottom: 1px solid #eee; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.2rem; position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; width: 60%; height: 4px; background: var(--secondary); position: absolute; bottom: -10px; left: 20%; border-radius: 2px; }
+
+        /* --- Cards e Boxes --- */
+        .info-card {
+            background: white; padding: 35px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
         }
 
-        .nav-btn {
-            background: transparent; border: none; padding: 15px;
-            text-align: left; font-size: 1rem; color: #795548;
-            cursor: pointer; border-radius: 8px; margin-bottom: 5px;
-            transition: all 0.2s; display: flex; align-items: center; gap: 12px; font-weight: 600;
-        }
-        .nav-btn:hover { background: #ffe0b2; color: var(--primary); }
-        .nav-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3); }
-
-        /* --- ÁREA PRINCIPAL --- */
-        main {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-            position: relative;
-            background: radial-gradient(circle at center, #ffffff 0%, #fff3e0 100%);
+        .highlight-box {
+            background: var(--secondary); padding: 25px; border-left: 6px solid var(--primary);
+            border-radius: 10px; margin: 30px 0;
         }
 
-        .content-section { display: none; animation: fadeIn 0.5s ease; max-width: 950px; margin: 0 auto; }
-        .content-section.active { display: block; }
+        .grid-three { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- Neurobiologia --- */
+        .neuro-item { margin-bottom: 25px; }
+        .neuro-item strong { color: var(--primary); font-size: 1.1rem; }
 
-        /* TIPOGRAFIA */
-        h1 { font-size: 2.2rem; font-weight: 300; margin-bottom: 20px; color: var(--text); }
-        h1 span { font-weight: 800; color: var(--primary); }
-        h2 { font-size: 1.4rem; color: var(--accent); margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        p, li { line-height: 1.6; font-size: 1.05rem; color: #5d4037; margin-bottom: 15px; text-align: justify; }
+        /* --- Tabela --- */
+        .table-wrap { overflow-x: auto; margin-top: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 18px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        th { background: var(--primary); color: white; }
 
-        /* CARDS GERAIS */
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card {
-            background: white; padding: 25px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-top: 3px solid var(--primary);
-        }
-        .card h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
-
-        /* DESTAQUE METÁFORA */
-        .metaphor-box {
-            background: #fff8e1; border: 2px dashed #ffb74d; padding: 20px; border-radius: 15px;
-            text-align: center; margin: 20px 0; color: #e65100; font-weight: bold;
+        /* --- Exercício de Foco (Ajustado para TDAH) --- */
+        .focus-container {
+            background: var(--dark-green); color: white;
+            padding: 60px 20px; border-radius: 40px; text-align: center;
+            margin: 50px 0; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- DIAGRAMA SVG (CÉREBRO) --- */
-        .neuro-layout { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; justify-content: center; }
-        
-        .brain-svg {
-            max-width: 450px; width: 100%; height: auto;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        .anchor-guide {
+            width: 220px; height: 220px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; margin: 40px 0;
         }
 
-        .brain-part {
-            fill: #d7ccc8; stroke: #fff; stroke-width: 2px;
-            transition: all 0.3s ease; cursor: pointer; opacity: 0.8;
-        }
-        .brain-part:hover, .brain-part.active { opacity: 1; stroke: var(--text); filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
-        
-        /* Cores Ativas */
-        #part-frontal.active, #part-frontal:hover { fill: var(--c-frontal); }
-        #part-reward.active, #part-reward:hover { fill: var(--c-dopamine); }
-        #part-motor.active, #part-motor:hover { fill: var(--c-basal); }
-
-        .neuro-panel {
-            flex: 1; min-width: 300px; background: white; padding: 30px;
-            border-radius: 15px; border-left: 5px solid #d7ccc8;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: border-color 0.3s;
+        .focus-ball {
+            width: 20px; height: 20px; background: var(--accent);
+            border-radius: 50%; box-shadow: 0 0 20px var(--accent);
+            position: absolute;
+            offset-path: path('M 110,10 A 100,100 0 1,1 109.9,10 Z');
+            animation: moveBall 6s infinite linear;
         }
 
-        /* Labels SVG */
-        .label-line { stroke: var(--text); stroke-width: 1; opacity: 0; pointer-events: none; transition: 0.3s; }
-        .label-text { fill: var(--text); font-weight: bold; font-size: 14px; opacity: 0; pointer-events: none; text-transform: uppercase; transition: 0.3s; }
-        g:hover .label-line, g:hover .label-text, g.active .label-line, g.active .label-text { opacity: 1; }
-
-        /* NEUROTRANSMISSORES */
-        .chem-item { display: flex; align-items: center; background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
-        .chem-circle {
-            width: 45px; height: 45px; border-radius: 50%; background: #eee; color: white;
-            display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0;
+        @keyframes moveBall {
+            100% { offset-distance: 100%; }
         }
 
-        /* EXERCÍCIO PAUSE */
-        .pause-btn {
-            background: #f44336; color: white; width: 80px; height: 80px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 20px auto;
-            box-shadow: 0 5px 0 #b71c1c; cursor: pointer; transition: transform 0.1s;
-        }
-        .pause-btn:active { transform: translateY(5px); box-shadow: none; }
+        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #666; }
+        .ref-list { list-style: none; padding-top: 15px; }
+        .ref-list li { margin-bottom: 10px; }
 
-        /* RESPONSIVO */
-        @media (max-width: 850px) {
-            body { flex-direction: column; height: auto; overflow: visible; }
-            aside { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 15px; box-sizing: border-box; }
-            .nav-btn { white-space: nowrap; padding: 10px; font-size: 0.9rem; }
-            main { padding: 20px; }
-        }
+        @media (max-width: 768px) { header h1 { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
 
-    <aside>
-        <div class="brand"><i class="fa-solid fa-bolt"></i> TDAH.Edu</div>
-        <button class="nav-btn active" onclick="showSection('intro')"><i class="fa-solid fa-circle-question"></i> O que é TDAH?</button>
-        <button class="nav-btn" onclick="showSection('sintomas')"><i class="fa-solid fa-list-check"></i> A Tríade</button>
-        <button class="nav-btn" onclick="showSection('neuro')"><i class="fa-solid fa-brain"></i> Cérebro TDAH</button>
-        <button class="nav-btn" onclick="showSection('tratamento')"><i class="fa-solid fa-user-doctor"></i> Tratamento</button>
-    </aside>
-
-    <main>
-        <div id="intro" class="content-section active">
-            <h1>Entendendo o <span>TDAH</span></h1>
-            <p>O <strong>Transtorno do Déficit de Atenção com Hiperatividade (TDAH)</strong> é uma condição neurobiológica de origem genética. Não é falta de educação, preguiça ou "má vontade". É uma forma diferente de o cérebro funcionar.</p>
-            
-            <div class="metaphor-box">
-                <i class="fa-solid fa-car-side" style="font-size:2rem;"></i><br>
-                "Ter TDAH é como ter um <strong>motor de Ferrari</strong> (mente rápida, cheia de ideias),<br>
-                mas com <strong>freios de bicicleta</strong> (dificuldade de parar, focar e controlar impulsos)."
-            </div>
-
-            <p>Imagine um maestro de orquestra (seu cérebro) que às vezes sai para tomar café no meio do concerto. Os músicos (seus pensamentos e impulsos) continuam tocando, mas sem coordenação. Isso é o TDAH.</p>
+    <header>
+        <div class="container" data-aos="fade-up">
+            <h1>Desvendando o TDAH</h1>
+            <p>Uma visão científica e humana sobre o Transtorno do Déficit de Atenção com Hiperatividade.</p>
         </div>
+    </header>
 
-        <div id="sintomas" class="content-section">
-            <h1>A Tríade dos Sintomas</h1>
-            <p>O TDAH se manifesta principalmente de três formas, que podem variar de pessoa para pessoa (Predominantemente Desatento, Hiperativo ou Misto).</p>
+    <main class="container">
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>O que é o TDAH?</h2></div>
+            <p>O TDAH é um <strong>transtorno do neurodesenvolvimento</strong> caracterizado por níveis de desatenção, desorganização e/ou hiperatividade-impulsividade que são incompatíveis com o nível de desenvolvimento do indivíduo.</p>
             
-            <div class="grid-cards">
-                <div class="card" style="border-color:#29b6f6">
-                    <h3 style="color:#0288d1"><i class="fa-solid fa-cloud"></i> 1. Desatenção</h3>
-                    <ul>
-                        <li>Dificuldade em manter o foco em tarefas "chatas" (mas hiperfoco no que gosta).</li>
-                        <li>Perde objetos (chaves, celular) com frequência.</li>
-                        <li>Parece "não ouvir" quando falam com você.</li>
-                        <li>Mente divaga facilmente.</li>
-                    </ul>
+            <div class="highlight-box">
+                <strong>Origem e Genética:</strong> É um dos transtornos com maior carga genética na psiquiatria (herdabilidade em torno de 75-80%). Não é causado por má educação ou falta de força de vontade, mas por uma maturação cerebral diferenciada.
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>O Cérebro e as Funções Executivas</h2></div>
+            <p>No TDAH, o cérebro apresenta um atraso na maturação de circuitos que gerenciam o "auto-controle".</p>
+            
+            
+
+            <div class="info-card">
+                <div class="neuro-item">
+                    <strong>Córtex Pré-Frontal (CPF):</strong> É o "maestro" do cérebro. No TDAH, ele tem dificuldade em filtrar estímulos, organizar tarefas e manter a atenção sustentada.
                 </div>
-                <div class="card" style="border-color:#ef5350">
-                    <h3 style="color:#c62828"><i class="fa-solid fa-bolt"></i> 2. Hiperatividade</h3>
-                    <ul>
-                        <li>Inquietação motora (balançar pernas, mexer mãos).</li>
-                        <li>Sensação interna de "motor ligado" (em adultos).</li>
-                        <li>Falar demais ou atropelar as palavras.</li>
-                        <li>Dificuldade em relaxar.</li>
-                    </ul>
+                <div class="neuro-item">
+                    <strong>O Sistema de Recompensa (Dopamina):</strong> Existe uma menor disponibilidade de dopamina nas fendas sinápticas. Isso faz com que o cérebro do TDAH busque constantemente novidades e estímulos imediatos para "compensar" esse déficit.
                 </div>
-                <div class="card" style="border-color:#ffa726">
-                    <h3 style="color:#ef6c00"><i class="fa-solid fa-hand-stop-watch"></i> 3. Impulsividade</h3>
-                    <ul>
-                        <li>Agir sem pensar nas consequências.</li>
-                        <li>Interromper os outros.</li>
-                        <li>Impaciência (odeia filas ou esperar).</li>
-                        <li>Gastos ou decisões impulsivas.</li>
-                    </ul>
+                <div class="neuro-item">
+                    <strong>Rede de Modo Padrão (DMN):</strong> No TDAH, a rede que usamos para divagar (sonhar acordado) não desliga totalmente quando tentamos focar em uma tarefa, causando as famosas distrações internas.
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="neuro" class="content-section">
-            <h1>O Cérebro no <span>TDAH</span></h1>
-            <p>O TDAH envolve uma desregulação química e funcional, principalmente no <strong>Lobo Frontal</strong> (o "Gerente" do cérebro).</p>
-            
-            <div class="neuro-layout">
-                <svg class="brain-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M150,350 C100,350 50,300 50,200 C50,80 120,20 250,20 C380,20 450,100 450,200 C450,280 400,330 350,350 C320,360 250,380 150,350 Z" 
-                          fill="#fbe9e7" stroke="#d7ccc8" stroke-width="2" opacity="0.5" style="pointer-events:none;"/>
-                    
-                    <path d="M300,350 Q350,400 380,380 Q420,350 350,300" fill="#efebe9" opacity="0.5" style="pointer-events:none;"/>
-
-                    <g id="group-frontal" onclick="activate('frontal')" onmouseenter="hover('frontal')">
-                        <path id="part-frontal" class="brain-part" d="M60,200 C60,120 120,40 220,40 L220,150 C180,180 120,220 60,200 Z" />
-                        <line x1="100" y1="100" x2="50" y2="50" class="label-line"/>
-                        <text x="20" y="40" class="label-text">Lobo Frontal (Freio)</text>
-                    </g>
-
-                    <g id="group-reward" onclick="activate('reward')" onmouseenter="hover('reward')">
-                        <path id="part-reward" class="brain-part" d="M260,200 C280,180 320,180 340,200 C360,240 320,280 280,260 C250,240 240,220 260,200 Z" />
-                        <line x1="300" y1="230" x2="400" y2="230" class="label-line"/>
-                        <text x="410" y="235" class="label-text">Centro de Prazer</text>
-                    </g>
-
-                    <g id="group-motor" onclick="activate('motor')" onmouseenter="hover('motor')">
-                        <circle id="part-motor" class="brain-part" cx="250" cy="230" r="25" />
-                        <line x1="250" y1="255" x2="250" y2="330" class="label-line"/>
-                        <text x="210" y="350" class="label-text">Filtro Motor</text>
-                    </g>
-                </svg>
-
-                <div class="neuro-panel" id="neuro-panel">
-                    <h3 id="neuro-title" style="margin-top:0; color:var(--text);">Selecione uma área</h3>
-                    <p id="neuro-desc">Clique nas partes do cérebro para ver onde o TDAH atua.</p>
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>As Três Apresentações</h2></div>
+            <div class="grid-three">
+                <div class="card info-card">
+                    <h3>Desatento</h3>
+                    <p>Dificuldade em manter o foco, erros por descuido, parece não ouvir quando chamado e perde objetos com facilidade.</p>
+                </div>
+                <div class="card info-card">
+                    <h3>Hiperativo/Impulsivo</h3>
+                    <p>Inquietude motora, fala excessiva, dificuldade em esperar a vez e interrompe os outros com frequência.</p>
+                </div>
+                <div class="card info-card">
+                    <h3>Misto</h3>
+                    <p>Quando o indivíduo apresenta critérios significativos de ambos os grupos acima.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="tratamento" class="content-section">
-            <h1>Tratamento Multimodal</h1>
-            <p>O tratamento do TDAH é como um tripé: Educação, Terapia e, muitas vezes, Medicação.</p>
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>Caminhos para a Regulação</h2></div>
+            <p>O tratamento do TDAH é multimodal, visando dar suporte às funções que o cérebro tem dificuldade em executar sozinho.</p>
             
-            <h2>A Química da Atenção</h2>
-            <div class="chem-item">
-                <div class="chem-circle" style="background:#ffca28; color:#333;">DOPA</div>
-                <div><strong>Dopamina:</strong> O combustível do foco e motivação. No TDAH, ela é recaptada muito rápido, causando tédio e busca por novidade.</div>
-            </div>
-            <div class="chem-item">
-                <div class="chem-circle" style="background:#ff7043">NORA</div>
-                <div><strong>Noradrenalina:</strong> Ajuda na energia e atenção sustentada. Também costuma estar desregulada.</div>
-            </div>
+            
 
-            <h2>Ferramenta: O Botão de Pause</h2>
-            <p>Para combater a impulsividade, treine seu cérebro com este exercício visual:</p>
-            
-            <div class="card" style="text-align:center; background:#fff3e0; border-color:#ff5722;">
-                <div class="pause-btn"><i class="fa-solid fa-pause"></i></div>
-                <h3 style="justify-content:center; color:#bf360c;">Técnica STOP</h3>
-                <p>Antes de responder com raiva, comprar algo ou desistir de uma tarefa:</p>
-                <ul style="text-align:left; display:inline-block;">
-                    <li><strong>S (Stop):</strong> Pare tudo o que está fazendo.</li>
-                    <li><strong>T (Take a breath):</strong> Respire fundo uma vez.</li>
-                    <li><strong>O (Observe):</strong> O que estou sentindo? É impulso?</li>
-                    <li><strong>P (Proceed):</strong> Prossiga com mais consciência.</li>
+            <div class="info-card">
+                <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
+                <p>O foco no TDAH é prático e comportamental:</p>
+                <ul>
+                    <li><strong>Treinamento de Funções Executivas:</strong> Uso de agendas, listas e sistemas de recompensa.</li>
+                    <li><strong>Manejo de Emoções:</strong> Lidar com a frustração e a baixa autoestima gerada pelas dificuldades históricas.</li>
+                    <li><strong>Higiene do Sono:</strong> Essencial, pois o sono ruim agrava severamente os sintomas de desatenção.</li>
                 </ul>
             </div>
-        </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Classe Farmacológica</th>
+                            <th>Mecanismo de Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Estimulantes</strong> (ex: Metilfenidato)</td>
+                            <td>Aumentam a oferta de dopamina e noradrenalina no Córtex Pré-Frontal.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Não-Estimulantes</strong> (ex: Atomoxetina)</td>
+                            <td>Atuam especificamente na noradrenalina para melhorar o foco e controle de impulsos.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="focus-container" data-aos="zoom-in">
+            <h2>Âncora Visual: Treino de Foco</h2>
+            <p>Tente acompanhar o movimento da esfera apenas com os olhos, mantendo a cabeça parada. Isso ajuda a exercitar o controle inibitório e a atenção visual.</p>
+            
+            <div class="anchor-guide">
+                <div class="focus-ball"></div>
+                <span style="opacity: 0.5; font-size: 0.8rem;">FOCO</span>
+            </div>
+            
+            <p style="max-width: 500px; font-size: 0.9rem; opacity: 0.8;">Exercícios de rastreamento visual são usados para treinar a atenção sustentada e reduzir a impulsividade ocular.</p>
+        </section>
 
     </main>
 
+    <footer>
+        <div class="container">
+            <p style="font-weight: 700; color: var(--dark-green);">Referências Técnicas:</p>
+            <ul class="ref-list">
+                <li><strong>Barkley, R. A. (2020).</strong> TDAH: Estratégias e Práticas Eficazes. Porto Alegre: Artmed.</li>
+                <li><strong>American Psychiatric Association (2022).</strong> DSM-5-TR: Manual Diagnóstico e Estatístico.</li>
+                <li><strong>Stahl, S. M. (2014).</strong> Psicofarmacologia: Bases Neurocientíficas. Guanabara Koogan.</li>
+                <li><strong>Mattos, P. (2015).</strong> No Mundo da Lua: Perguntas e respostas sobre TDAH.</li>
+            </ul>
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
+            <p>© 2026 Guia de Psicoeducação Clínica - Bruno de Souza (CRP 07/44472)</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- NAVEGAÇÃO ---
-        function showSection(id) {
-            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            
-            const btns = document.querySelectorAll('.nav-btn');
-            btns.forEach(btn => {
-                if(btn.getAttribute('onclick').includes(id)) btn.classList.add('active');
-            });
-        }
-
-        // --- NEUROBIOLOGIA INTERATIVA ---
-        const neuroData = {
-            frontal: {
-                title: "Lobo Frontal (O Maestro)",
-                color: "var(--c-frontal)",
-                desc: "É o freio e o diretor. Responsável pelas <strong>Funções Executivas</strong>: planejar, organizar, focar e inibir impulsos.<br><br>No TDAH, essa área é 'sonolenta' (hipoativa), dificultando dizer 'não' para distrações."
-            },
-            reward: {
-                title: "Núcleo Accumbens (Recompensa)",
-                color: "var(--c-dopamine)",
-                desc: "O centro do prazer. No TDAH, ele tem 'fome de dopamina'. Por isso, é difícil fazer tarefas chatas que não dão recompensa imediata e fácil viciar em jogos ou redes sociais."
-            },
-            motor: {
-                title: "Gânglios da Base (Filtro)",
-                color: "var(--c-basal)",
-                desc: "Deveria filtrar o excesso de movimento e inquietude. No TDAH, esse filtro é 'poroso', deixando passar muita atividade motora (hiperatividade) ou pensamentos acelerados."
-            }
-        };
-
-        const titleEl = document.getElementById('neuro-title');
-        const descEl = document.getElementById('neuro-desc');
-        const panel = document.getElementById('neuro-panel');
-
-        function activate(partId) {
-            document.querySelectorAll('g').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.brain-part').forEach(el => el.classList.remove('active'));
-
-            const group = document.getElementById('group-' + partId);
-            const part = document.getElementById('part-' + partId);
-            if(group) group.classList.add('active');
-            if(part) part.classList.add('active');
-
-            const info = neuroData[partId];
-            panel.style.borderColor = info.color;
-            titleEl.style.opacity = 0;
-            descEl.style.opacity = 0;
-
-            setTimeout(() => {
-                titleEl.innerText = info.title;
-                titleEl.style.color = info.color;
-                descEl.innerHTML = info.desc;
-                titleEl.style.opacity = 1;
-                descEl.style.opacity = 1;
-            }, 200);
-        }
-
-        function hover(partId) { }
-
+        AOS.init({ duration: 1000, once: true });
     </script>
-
 </body>
 </html>
