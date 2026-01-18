@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terapia Cognitivo-Comportamental - Caderno Terapêutico</title>
+    <title>TCC - O Laboratório da Mente</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Paleta "Laboratório da Mente" */
-            --paper-line: #f0f9ff;    /* Linhas azul bem claro */
+            /* Paleta "Laboratório de Ideias" */
+            --paper-line: #f0f9ff;
             --paper-bg: #f8fcff;      
             --ink-color: #0c4a6e;
             
-            /* Cores da TCC (Lógica -> Insight) */
-            --logic: #0284c7;         /* Azul (Pensamento) */
+            /* Cores da TCC */
+            --logic: #0284c7;         /* Azul (Cognição) */
             --logic-hover: #0369a1;
-            --insight: #fbbf24;       /* Amarelo (A Descoberta) */
+            --insight: #fbbf24;       /* Amarelo (Insight/Descoberta) */
             --action: #f97316;        /* Laranja (Comportamento) */
             
             --radius: 16px;
@@ -32,11 +32,11 @@
             color: var(--ink-color);
             line-height: 1.6;
             background-color: var(--paper-bg);
-            /* Efeito Papel Quadriculado (Matemático/Lógico) */
+            /* Efeito Papel Milimetrado (Engenharia Mental) */
             background-image: 
                 linear-gradient(var(--paper-line) 1px, transparent 1px),
                 linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
-            background-size: 2rem 2rem;
+            background-size: 1.5rem 1.5rem;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -101,7 +101,7 @@
             border-radius: 2px;
             box-shadow: var(--shadow-paper);
             border: 1px solid #bae6fd;
-            padding: 2rem;
+            padding: 2.5rem;
             position: relative;
             transform: rotate(-0.5deg);
             transition: transform 0.3s;
@@ -109,9 +109,9 @@
         
         .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
         
-        /* Lâmpada (Ideia) */
+        /* Lupa (Investigação) */
         .paper-card::before {
-            content: '💡';
+            content: '🔍';
             position: absolute;
             top: -20px;
             right: 20px;
@@ -132,51 +132,55 @@
         .card-icon { font-size: 1.8rem; color: var(--logic); }
         .card-title { font-size: 1.8rem; margin: 0; }
 
-        /* --- POST-IT (DEFINIÇÃO) --- */
-        .post-it {
-            background-color: #fffbeb; /* Amarelo Post-it */
-            padding: 1.5rem;
-            border-radius: 2px 2px 16px 2px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.3rem;
-            color: #92400e;
-            transform: rotate(1deg);
-            margin: 20px 0;
-            border-left: 5px solid #f59e0b;
-        }
-
-        /* --- TRIÂNGULO COGNITIVO (VISUAL) --- */
-        .triangle-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .triangle-point {
-            background: white;
-            border: 2px dashed #bae6fd;
-            border-radius: 50%;
-            width: 140px;
-            height: 140px;
+        /* --- DIAGRAMA DO MODELO COGNITIVO --- */
+        .cognitive-model {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .trigger-box {
+            background: #e0f2fe;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #7dd3fc;
             text-align: center;
-            padding: 10px;
+            font-weight: 700;
+            color: #0369a1;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .triangle-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Linhas de conexão (SVG seria ideal, mas CSS funciona para simples) */
+        .triangle-point {
+            background: white;
+            border: 2px dashed #bae6fd;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.2s;
         }
-        .triangle-point:hover { transform: scale(1.05); border-color: var(--logic); }
         
-        .tp-icon { font-size: 2rem; margin-bottom: 5px; display: block; }
-        .tp-title { font-weight: 800; font-size: 1rem; color: #0369a1; }
+        .triangle-point:hover { transform: scale(1.03); border-color: var(--logic); }
         
-        .arrow-icon { font-size: 1.5rem; color: #cbd5e1; }
+        .point-thought { grid-column: 1 / -1; justify-self: center; border-color: var(--logic); background: #f0f9ff; }
+        .point-emotion { border-color: #fca5a5; }
+        .point-behavior { border-color: #fdba74; }
+
+        .tp-icon { font-size: 1.5rem; margin-bottom: 5px; display: block; }
+        .tp-title { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+        .tp-desc { font-size: 0.85rem; color: #475569; }
 
         /* --- STICKERS (DISTORÇÕES) --- */
         .sticker-grid {
@@ -191,32 +195,52 @@
         .sticker-box:hover { border-color: var(--logic); transform: scale(1.02); }
         .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
 
-        /* --- TRADUTOR INTERATIVO (O DETETIVE) --- */
-        .translator-area {
-            background-color: #f0f9ff; /* Azul muito claro */
+        /* --- ICEBERG (NÍVEIS DE COGNIÇÃO) --- */
+        .iceberg-container {
+            background: linear-gradient(to bottom, #e0f2fe 0%, #0ea5e9 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .iceberg-level {
+            background: rgba(255,255,255,0.9);
+            color: #0c4a6e;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            text-shadow: none;
+        }
+        .level-1 { width: 90%; margin: 0 auto 10px; }
+        .level-2 { width: 75%; margin: 0 auto 10px; opacity: 0.95; }
+        .level-3 { width: 60%; margin: 0 auto; opacity: 0.9; font-weight: 800; border: 2px solid #0369a1; }
+
+        /* --- TRIBUNAL (EVIDÊNCIAS) --- */
+        .court-area {
+            background-color: #fffbeb; /* Amarelo Pálido */
             padding: 2rem; border-radius: 20px;
-            border: 2px dashed #7dd3fc; text-align: center;
+            border: 2px dashed #fbbf24; text-align: center;
         }
 
         .btn-translate {
-            background: white; border: 2px solid #bae6fd;
+            background: white; border: 2px solid #fcd34d;
             padding: 10px 20px; margin: 5px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; font-weight: 700; color: #0284c7;
+            font-family: 'Nunito', sans-serif; font-weight: 700; color: #b45309;
             cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 0 #bae6fd;
+            box-shadow: 0 4px 0 #fcd34d;
         }
         
-        .btn-translate:active { box-shadow: 0 0 0 #bae6fd; transform: translateY(4px); }
-        .btn-translate:hover { background: #fff; border-color: var(--logic); color: var(--logic); }
+        .btn-translate:active { box-shadow: 0 0 0 #fcd34d; transform: translateY(4px); }
+        .btn-translate:hover { background: #fff; border-color: var(--insight); color: var(--insight); }
 
         .result-bubble {
             background: white; padding: 20px; border-radius: 20px;
-            margin-top: 20px; border: 2px solid #bae6fd;
-            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
-            color: #0c4a6e; min-height: 100px; display: flex; align-items: center; justify-content: center;
+            margin-top: 20px; border: 2px solid #fcd34d;
+            font-family: 'Patrick Hand', cursive; font-size: 1.1rem;
+            color: #78350f; min-height: 100px; display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- ACCORDIONS --- */
+        /* --- ACCORDIONS (TEORIA) --- */
         details {
             background: #f8fcff; border-radius: 12px; margin-bottom: 10px;
             border: 1px solid #bae6fd;
@@ -227,30 +251,6 @@
         }
         summary:hover { background: #f0f9ff; border-radius: 12px; }
         .details-content { padding: 20px; border-top: 1px dashed #bae6fd; color: #334155; }
-
-        /* --- FLASHCARD (FLIP) --- */
-        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
-        .flashcard-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.6s; transform-style: preserve-3d;
-        }
-        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
-        
-        .flashcard-front, .flashcard-back {
-            position: absolute; width: 100%; height: 100%;
-            -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 16px; padding: 2rem;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-paper); border: 2px solid;
-        }
-        
-        .flashcard-front {
-            background: #f0f9ff; border-color: #bae6fd; color: #0369a1;
-        }
-        .flashcard-back {
-            background: #fffbeb; border-color: #fcd34d; color: #92400e;
-            transform: rotateY(180deg);
-        }
 
         /* --- FOOTER PADRÃO --- */
         footer {
@@ -272,8 +272,7 @@
 
         @media (max-width: 640px) {
             .footer-container { flex-direction: column; gap: 1rem; }
-            .triangle-container { flex-direction: column; }
-            .arrow-icon { transform: rotate(90deg); }
+            .triangle-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -282,7 +281,7 @@
     <header>
         <div class="header-content">
             <h1 class="header-title">Terapia Cognitivo-Comportamental</h1>
-            <p class="header-subtitle">Caderno de Psicoeducação</p>
+            <p class="header-subtitle">Psicoeducação Clínica</p>
         </div>
     </header>
 
@@ -290,144 +289,144 @@
 
         <div class="paper-card">
             <div class="card-header">
-                <i class="fas fa-search card-icon"></i>
-                <h2 class="card-title">O Detetive da Mente</h2>
+                <i class="fas fa-project-diagram card-icon"></i>
+                <h2 class="card-title">O Que é a TCC?</h2>
             </div>
-            <p>A TCC é uma abordagem prática focada no "aqui e agora". A ideia central é simples: não são os eventos que nos perturbam, mas sim a <strong>interpretação</strong> que fazemos deles.</p>
-            
-            <div class="post-it">
-                <i class="fas fa-thumbtack" style="color:#b45309; margin-right:10px;"></i>
-                "Eu não fico triste porque choveu. Eu fico triste porque penso: 'A chuva estragou meu dia'."
-            </div>
+            <p>A TCC é uma abordagem estruturada, diretiva e focada no presente. A premissa central, inspirada no estoicismo, é que <strong>não são os fatos que nos perturbam, mas o que pensamos sobre eles</strong>.</p>
+            <p style="margin-top:10px;">Nosso objetivo não é "pensar positivo", mas sim "pensar de forma realista e adaptativa" (Reestruturação Cognitiva).</p>
         </div>
 
         <div class="paper-card" style="transform: rotate(0.5deg);">
             <div class="card-header">
-                <i class="fas fa-shapes card-icon"></i>
-                <h2 class="card-title">A Tríade Mágica</h2>
+                <i class="fas fa-cogs card-icon"></i>
+                <h2 class="card-title">A Anatomia de uma Reação</h2>
             </div>
-            <p>Tudo está conectado. Se mudarmos um ponto, mudamos os outros:</p>
+            <p>Tudo começa com um gatilho. Veja o fluxo:</p>
             
-            <div class="triangle-container">
-                <div class="triangle-point">
-                    <i class="fas fa-brain tp-icon" style="color:#0284c7;"></i>
-                    <div class="tp-title">PENSAMENTO</div>
-                    <span style="font-size:0.8rem;">"Ninguém gosta de mim"</span>
-                </div>
-                
-                <i class="fas fa-arrow-right arrow-icon"></i>
-
-                <div class="triangle-point">
-                    <i class="fas fa-heart tp-icon" style="color:#ef4444;"></i>
-                    <div class="tp-title">EMOÇÃO</div>
-                    <span style="font-size:0.8rem;">Tristeza, Solidão</span>
+            <div class="cognitive-model">
+                <div class="trigger-box">
+                    <i class="fas fa-bolt"></i> SITUAÇÃO (Gatilho)<br>
+                    <span style="font-weight:400; font-size:0.9rem;">Ex: Chefe pede para falar com você.</span>
                 </div>
 
-                <i class="fas fa-arrow-right arrow-icon"></i>
+                <div class="triangle-container">
+                    <div class="triangle-point point-thought">
+                        <i class="fas fa-comment-dots tp-icon" style="color:#0284c7;"></i>
+                        <div class="tp-title" style="color:#0284c7;">1. PENSAMENTO AUTOMÁTICO</div>
+                        <div class="tp-desc">Interpretação rápida e involuntária.<br><em>"Vou ser demitido. Fiz algo errado."</em></div>
+                    </div>
 
-                <div class="triangle-point">
-                    <i class="fas fa-walking tp-icon" style="color:#f97316;"></i>
-                    <div class="tp-title">COMPORTAMENTO</div>
-                    <span style="font-size:0.8rem;">Isolar-se em casa</span>
+                    <div class="triangle-point point-emotion">
+                        <i class="fas fa-heartbeat tp-icon" style="color:#ef4444;"></i>
+                        <div class="tp-title" style="color:#ef4444;">2. EMOÇÃO & CORPO</div>
+                        <div class="tp-desc">Ansiedade, medo.<br>Coração dispara, mãos suam.</div>
+                    </div>
+
+                    <div class="triangle-point point-behavior">
+                        <i class="fas fa-person-running tp-icon" style="color:#f97316;"></i>
+                        <div class="tp-title" style="color:#f97316;">3. COMPORTAMENTO</div>
+                        <div class="tp-desc">Evitar o chefe, procrastinar, ou perguntar "o que eu fiz?" defensivamente.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="paper-card">
             <div class="card-header">
-                <i class="fas fa-glasses card-icon"></i>
-                <h2 class="card-title">Óculos Sujos (Distorções)</h2>
+                <i class="fas fa-layer-group card-icon"></i>
+                <h2 class="card-title">O Iceberg Mental</h2>
             </div>
-            <p>Às vezes, nossa mente nos prega peças. Chamamos isso de "Distorções Cognitivas":</p>
+            <p>Nossos pensamentos têm profundidade. O que percebemos no dia a dia é apenas a ponta.</p>
             
-            <div class="sticker-grid">
-                <div class="sticker-box">
-                    <span class="sticker-icon">🔮</span>
-                    <h4>Previsão do Futuro</h4>
-                    <p>Achar que sabe o que vai acontecer e que será ruim. "Vou reprovar com certeza."</p>
+            <div class="iceberg-container">
+                <div class="iceberg-level level-1">
+                    <strong>🌊 Superfície: Pensamentos Automáticos</strong><br>
+                    <small>Frases rápidas do dia a dia. ("Isso vai dar errado")</small>
                 </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🧠</span>
-                    <h4>Leitura Mental</h4>
-                    <p>Achar que sabe o que o outro está pensando. "Ele não falou comigo porque me odeia."</p>
+                <div class="iceberg-level level-2">
+                    <strong>⚓ Meio: Crenças Intermediárias</strong><br>
+                    <small>Regras e suposições. ("Se eu falhar, serei rejeitado")</small>
                 </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🌪️</span>
-                    <h4>Catastrofização</h4>
-                    <p>Transformar um problema pequeno em um desastre terrível e sem solução.</p>
+                <div class="iceberg-level level-3">
+                    <strong>💎 Fundo: Crenças Nucleares (Centrais)</strong><br>
+                    <small>Verdades absolutas e rígidas sobre si mesmo. ("Eu sou inadequado", "O mundo é perigoso")</small>
                 </div>
             </div>
         </div>
 
         <div class="paper-card" style="transform: rotate(-0.5deg);">
             <div class="card-header">
-                <i class="fas fa-microscope card-icon"></i>
-                <h2 class="card-title">O Laboratório de Pensamentos</h2>
+                <i class="fas fa-glasses card-icon"></i>
+                <h2 class="card-title">Armadilhas do Pensamento</h2>
             </div>
-            <p>Vamos tratar o pensamento como uma <strong>Hipótese</strong>, não como um Fato. Vamos testar:</p>
+            <p>Erros sistemáticos de processamento de informação. Seu cérebro mentindo para você:</p>
             
-            <div class="translator-area">
-                <p style="margin-bottom:15px; font-weight:700;">Qual é o pensamento automático?</p>
-                <div>
-                    <button class="btn-translate" onclick="translateNeed('sempre')">"Eu SEMPRE faço tudo errado."</button>
-                    <button class="btn-translate" onclick="translateNeed('todos')">"TODOS estão olhando para minha mancha."</button>
-                    <button class="btn-translate" onclick="translateNeed('inutil')">"Se eu errei isso, sou um INÚTIL."</button>
+            <div class="sticker-grid">
+                <div class="sticker-box">
+                    <span class="sticker-icon">⚖️</span>
+                    <h4>Tudo ou Nada</h4>
+                    <p>Pensamento dicotômico. Se não foi perfeito, foi um fracasso total. Não enxerga o "meio-termo".</p>
                 </div>
-                
-                <div id="translator-bubble" class="result-bubble">
-                    Clique em um pensamento para investigar...
+                <div class="sticker-box">
+                    <span class="sticker-icon">🔮</span>
+                    <h4>Adivinhação</h4>
+                    <p>Prever o futuro (sempre negativo) ou ler mentes ("Ele está pensando que sou chato") sem provas.</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">❤️‍🔥</span>
+                    <h4>Raciocínio Emocional</h4>
+                    <p>Considerar o que se <em>sente</em> como prova da realidade. "Sinto-me culpado, logo fiz algo errado."</p>
                 </div>
             </div>
         </div>
 
         <div class="paper-card">
             <div class="card-header">
-                <i class="fas fa-book-reader card-icon"></i>
-                <h2 class="card-title">Conceitos Clínicos</h2>
+                <i class="fas fa-gavel card-icon"></i>
+                <h2 class="card-title">O Tribunal da Mente</h2>
+            </div>
+            <p>Na TCC, colocamos o pensamento no banco dos réus. Pratique o <strong>Questionamento Socrático</strong>:</p>
+            
+            <div class="court-area">
+                <p style="margin-bottom:15px; font-weight:700;">Acusação (Pensamento):</p>
+                <div>
+                    <button class="btn-translate" onclick="evidenceCheck('fracasso')">"Eu sou um fracasso total."</button>
+                    <button class="btn-translate" onclick="evidenceCheck('ninguem')">"Ninguém gosta de mim."</button>
+                    <button class="btn-translate" onclick="evidenceCheck('sempre')">"Eu sempre estrago tudo."</button>
+                </div>
+                
+                <div id="court-bubble" class="result-bubble">
+                    Selecione um pensamento para iniciar a defesa...
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card" style="transform: rotate(0.5deg);">
+            <div class="card-header">
+                <i class="fas fa-toolbox card-icon"></i>
+                <h2 class="card-title">Caixa de Ferramentas</h2>
             </div>
             
             <details>
-                <summary>💭 Pensamentos Automáticos <i class="fas fa-chevron-down"></i></summary>
+                <summary>📝 RPD (Registro de Pensamentos) <i class="fas fa-chevron-down"></i></summary>
                 <div class="details-content">
-                    <p>São frases rápidas que surgem na mente sem a gente querer. Eles parecem verdades absolutas, mas muitas vezes são exagerados ou falsos. Na TCC, aprendemos a "pescar" esses pensamentos.</p>
-                </div>
-            </details>
-
-            <details>
-                <summary>🌳 Crenças Centrais <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>São as raízes profundas (parecidas com os Esquemas). São ideias fixas sobre nós mesmos ("Sou inadequado") ou sobre o mundo ("O mundo é perigoso"). A TCC ajuda a flexibilizar essas raízes.</p>
+                    <p>É o "diário de bordo" da TCC. Você anota: Situação > Pensamento > Emoção > Resposta Racional. Escrever ajuda a sair do piloto automático e ativar o córtex pré-frontal (racionalidade).</p>
                 </div>
             </details>
 
             <details>
                 <summary>⚙️ Ativação Comportamental <i class="fas fa-chevron-down"></i></summary>
                 <div class="details-content">
-                    <p>Muitas vezes, esperamos ter vontade para fazer algo. A TCC ensina o contrário: <strong>Ação gera Motivação</strong>. Começamos a fazer (mesmo sem vontade) para mudar como nos sentimos.</p>
+                    <p>Ação gera Motivação (e não o contrário). Em depressão, quebramos o ciclo da inércia agendando atividades prazerosas ou de domínio, mesmo sem vontade inicial.</p>
                 </div>
             </details>
-        </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-adjust card-icon"></i>
-                <h2 class="card-title">Vire o Pensamento</h2>
-            </div>
-            <p>Toque no cartão para desafiar um pensamento negativo:</p>
-            
-            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Pensamento Automático</h3>
-                        <p style="margin-top:10px;">"Ele visualizou e não respondeu. Ele está bravo comigo. Eu devo ter falado alguma besteira. Ele nunca mais vai falar comigo."</p>
-                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#0284c7; font-size:1.5rem;"></i>
-                    </div>
-                    <div class="flashcard-back">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Resposta Racional</h3>
-                        <p style="margin-top:10px;">"Existem outras explicações? Talvez ele esteja ocupado, dirigindo ou sem bateria. O fato de não responder agora não prova que ele está bravo. Vou esperar antes de concluir o pior."</p>
-                    </div>
+            <details>
+                <summary>🧪 Experimentos Comportamentais <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>Testar crenças na prática. Se você acha "Se eu falar não, eles vão me odiar", o terapeuta propõe que você diga "não" para algo pequeno e observe o resultado real.</p>
                 </div>
-            </div>
+            </details>
         </div>
 
     </div>
@@ -446,16 +445,16 @@
     </footer>
 
     <script>
-        function translateNeed(type) {
-            const bubble = document.getElementById('translator-bubble');
+        function evidenceCheck(type) {
+            const bubble = document.getElementById('court-bubble');
             let text = "";
             
-            if (type === 'sempre') {
-                text = "🔍 <strong>Evidência:</strong> 'Sempre' é uma generalização. Lembre-se de 3 coisas que você fez certo essa semana. O erro de hoje não apaga os acertos.";
-            } else if (type === 'todos') {
-                text = "🔍 <strong>Evidência:</strong> Isso é 'Leitura Mental'. A maioria das pessoas está preocupada com elas mesmas, não com você.";
-            } else if (type === 'inutil') {
-                text = "🔍 <strong>Evidência:</strong> Errar uma tarefa faz de você um ser humano falível, não um inútil. Rótulos não ajudam.";
+            if (type === 'fracasso') {
+                text = "⚖️ <strong>Advogado de Defesa:</strong> 'Objeção! Fracasso total? E aquela vez que você passou na prova/ajudou alguém/conseguiu o emprego? Isso prova competência parcial. Defina fracasso.'";
+            } else if (type === 'ninguem') {
+                text = "⚖️ <strong>Advogado de Defesa:</strong> 'Exagero (Generalização). Sua mãe/melhor amigo/cachorro gostam de você. Talvez <em>alguém</em> não goste, mas 'ninguém' é matematicamente falso.'";
+            } else if (type === 'sempre') {
+                text = "⚖️ <strong>Advogado de Defesa:</strong> 'Viés de Filtro Mental. Você está focando no erro de hoje e ignorando os 300 dias que fez certo. Vamos olhar o histórico completo.'";
             }
             
             bubble.style.opacity = 0;
