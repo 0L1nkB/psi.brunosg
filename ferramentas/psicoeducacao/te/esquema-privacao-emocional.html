@@ -405,4 +405,48 @@
                     </div>
                     <div class="flashcard-back">
                         <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
-                        <p style="margin-top:10px;">"
+                        <p style="margin-top:10px;">"Minhas necessidades são válidas. As pessoas não leem mentes. Vou tentar pedir o que preciso de forma clara e vulnerável. Eu mereço ser cuidado."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                &copy; 2026 Bruno de Souza
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function translateNeed(type) {
+            const bubble = document.getElementById('translator-bubble');
+            let text = "";
+            
+            if (type === 'sozinho') {
+                text = "✨ Tradução: 'Estou me sentindo sobrecarregado. Preciso de apoio e ajuda prática hoje.'";
+            } else if (type === 'entende') {
+                text = "✨ Tradução: 'Estou triste e preciso de empatia. Só quero que me escute sem tentar resolver.'";
+            } else if (type === 'frio') {
+                text = "✨ Tradução: 'Estou carente e preciso de afeto. Podemos ficar abraçados um pouco?'";
+            }
+            
+            bubble.style.opacity = 0;
+            setTimeout(() => {
+                bubble.innerHTML = text;
+                bubble.style.opacity = 1;
+                bubble.style.transition = "opacity 0.3s";
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
