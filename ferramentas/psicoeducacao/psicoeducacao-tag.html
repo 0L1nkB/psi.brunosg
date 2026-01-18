@@ -3,89 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoeducação: TAG | Ecossistema de Ferramentas</title>
+    <title>Psicoeducação: Transtorno de Ansiedade Generalizada</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary: #7DB9B6; /* Verde Água - Calma */
+            --secondary: #E9EDC9; /* Creme - Acolhimento */
+            --accent: #E29578; /* Tom Terra - Estabilidade */
+            --text: #444;
+            --bg: #F8F9FA;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            color: #2D5A58;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header / Hero --- */
+        header {
+            height: 80vh;
+            background: linear-gradient(135deg, #7db9b6 0%, #a2d2ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            border-bottom-left-radius: 50% 10%;
+            border-bottom-right-radius: 50% 10%;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* --- Seções Gerais --- */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            width: 50%;
+            height: 4px;
+            background: var(--primary);
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            border-radius: 2px;
+        }
+
+        /* --- Cards de Sintomas --- */
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border-bottom: 5px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-bottom: 5px solid var(--primary);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        /* --- Ciclo da Ansiedade --- */
+        .cycle-box {
+            background: var(--secondary);
+            padding: 40px;
+            border-radius: 30px;
+            margin-top: 30px;
+        }
+
+        /* --- Exercício de Respiração --- */
+        .breathing-section {
+            text-align: center;
+            background-color: #2d5a58;
+            color: white;
+            border-radius: 30px;
+            padding: 60px 20px;
+            margin: 40px 0;
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.6); }
+        }
+
+        /* --- Referências --- */
+        footer {
+            background: #eee;
+            padding: 40px 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .references ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <header class="hero">
-        <div class="container" data-aos="fade-up">
-            <h1>Transtorno de Ansiedade Generalizada (TAG)</h1>
-            <p>Compreendendo o funcionamento da mente e reencontrando o equilíbrio.</p>
-            <a href="#inicio" class="btn-start">Começar Jornada</a>
+    <header>
+        <div class="container hero-content" data-aos="fade-up">
+            <h1>Transtorno de Ansiedade Generalizada</h1>
+            <p>Você não está sozinho. Compreender o que acontece em sua mente é o primeiro passo para o acolhimento e a mudança.</p>
         </div>
     </header>
 
     <main class="container">
         
-        <section id="inicio" class="info-section" data-aos="fade-right">
-            <h2>O que é o TAG?</h2>
-            <p>Diferente da ansiedade comum, o TAG é como um sistema de alarme que permanece ligado mesmo quando não há perigo imediato. É a "ansiedade pela ansiedade", onde a mente se torna especialista em prever catástrofes futuras.</p>
-            <div class="quote-box">
-                "O TAG é definido por uma preocupação excessiva e persistente que ocorre na maioria dos dias por pelo menos 6 meses." (DSM-5-TR)
+        <section id="definicao" data-aos="fade-up">
+            <div class="section-title">
+                <h2>O que é o TAG?</h2>
             </div>
+            <p>O <strong>Transtorno de Ansiedade Generalizada (TAG)</strong> não é apenas "ficar nervoso" antes de uma reunião. É um estado de prontidão constante, onde o cérebro interpreta situações cotidianas como ameaças iminentes.</p>
+            <p>Diferente de uma fobia específica, a ansiedade no TAG é "difusa": ela salta de um tema para outro — saúde, finanças, segurança dos filhos, desempenho profissional — sem que haja um motivo proporcional para tal preocupação.</p>
         </section>
 
-        <section class="info-section" data-aos="fade-left">
-            <h2>O Ciclo de Manutenção</h2>
-            <p>Entender como a ansiedade se alimenta é o primeiro passo para quebrá-la.</p>
-            
-            <div class="cycle-grid">
-                <div class="cycle-item"><strong>1. Gatilho:</strong> Uma incerteza ou dúvida.</div>
-                <div class="cycle-item"><strong>2. Catastrofização:</strong> "E se o pior acontecer?"</div>
-                <div class="cycle-item"><strong>3. Tensão:</strong> O corpo entra em alerta máximo.</div>
-                <div class="cycle-item"><strong>4. Esquiva:</strong> Buscar garantias ou fugir do desconforto.</div>
+        <section id="sintomas">
+            <div class="section-title">
+                <h2>Sinais e Sintomas</h2>
             </div>
-        </section>
-
-        <section class="info-section">
-            <h2>Sintomas: O que você sente?</h2>
-            <div class="symptom-cards">
-                <div class="card" data-aos="flip-up">
-                    <h3>Mente</h3>
-                    <ul>
-                        <li>Pensamentos acelerados</li>
-                        <li>Dificuldade de concentração</li>
-                        <li>Intolerância à incerteza</li>
-                    </ul>
+            <div class="symptom-grid">
+                <div class="card" data-aos="zoom-in" data-aos-delay="100">
+                    <h3>Cognitivos</h3>
+                    <p>Preocupação excessiva difícil de controlar, sensação de "nervos à flor da pele", dificuldade de concentração e a constante sensação de que algo ruim vai acontecer.</p>
                 </div>
-                <div class="card" data-aos="flip-up" data-aos-delay="200">
-                    <h3>Corpo</h3>
-                    <ul>
-                        <li>Tensão muscular constante</li>
-                        <li>Cansaço inexplicável</li>
-                        <li>Inquietude ou nervos à flor da pele</li>
-                    </ul>
+                <div class="card" data-aos="zoom-in" data-aos-delay="200">
+                    <h3>Físicos</h3>
+                    <p>Tensão muscular (especialmente ombros e mandíbula), fadiga crônica, dores de cabeça, sudorese, palpitações e desconforto gastrointestinal.</p>
                 </div>
-                <div class="card" data-aos="flip-up" data-aos-delay="400">
+                <div class="card" data-aos="zoom-in" data-aos-delay="300">
                     <h3>Sono</h3>
-                    <ul>
-                        <li>Dificuldade para adormecer</li>
-                        <li>Sono que não restaura</li>
-                        <li>Mente que não desliga à noite</li>
-                    </ul>
+                    <p>Dificuldade para iniciar o sono devido ao fluxo de pensamentos (ruminação) ou sono inquieto e insatisfatório, resultando em cansaço matinal.</p>
                 </div>
             </div>
         </section>
 
-        <footer class="references" data-aos="fade-up">
-            <h3>Referências Técnicas</h3>
-            <ul>
-                <li>American Psychiatric Association. (2022). <strong>DSM-5-TR</strong>.</li>
-                <li>Leahy, R. L. (2011). <strong>Livre de Ansiedade</strong>. Artmed.</li>
-                <li>World Health Organization. (2021). <strong>CID-11</strong>.</li>
-            </ul>
-        </footer>
+        <section id="ciclo" data-aos="fade-right">
+            <div class="section-title">
+                <h2>Como a Ansiedade se Mantém?</h2>
+            </div>
+            [attachment_0](attachment)
+            <div class="cycle-box">
+                <p>O TAG se mantém através da <strong>Intolerância à Incerteza</strong>. O paciente acredita que, se conseguir prever todas as catástrofes, estará seguro. Isso gera a <em>Preocupação como Estratégia de Enfrentamento</em>, o que ironicamente mantém o corpo em alerta máximo.</p>
+                <p>Biologicamente, há uma hiperatividade na amígdala (centro do medo) e uma dificuldade do córtex pré-frontal em modular essa resposta.</p>
+            </div>
+        </section>
+
+        <section class="breathing-section" data-aos="zoom-in">
+            <h2>Pausa para Calibrar</h2>
+            <p>Acompanhe o movimento do círculo: Inspire quando ele expandir, expire quando ele contrair.</p>
+            <div class="breathing-circle">
+                <span id="breathe-text">Respire</span>
+            </div>
+            <p>Focar na respiração diafragmática ajuda a sinalizar ao seu sistema nervoso que você está seguro agora.</p>
+        </section>
+
     </main>
+
+    <footer class="references">
+        <div class="container">
+            <h3>Referências Técnicas e Citações</h3>
+            <ul>
+                <li><strong>DSM-5-TR:</strong> American Psychiatric Association. Manual Diagnóstico e Estatístico de Transtornos Mentais.</li>
+                <li><strong>CID-11:</strong> Organização Mundial da Saúde (OMS). Classificação Estatística Internacional de Doenças.</li>
+                <li><strong>Leahy, R. L. (2011):</strong> <em>Livre de Ansiedade</em>. Editora Artmed.</li>
+                <li><strong>Barlow, D. H. (2016):</strong> <em>Manual de Transtornos Psicológicos: Um tratamento passo a passo</em>.</li>
+            </ul>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        // Inicializa animações ao rolar
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Alterna texto da respiração
+        const breatheText = document.getElementById('breathe-text');
+        setInterval(() => {
+            breatheText.innerText = breatheText.innerText === 'Inspire' ? 'Expire' : 'Inspire';
+        }, 4000);
     </script>
 </body>
 </html>
