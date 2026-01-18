@@ -3,259 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privação Emocional - Bruno de Souza</title>
+    <title>Privação Emocional - Caderno Terapêutico</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Cores do Sistema (Estilo SMI) */
-            --primary: #6366f1;       /* Indigo Vibrante */
-            --primary-hover: #4f46e5;
-            --bg-card: #ffffff;       /* Branco Card */
-            --text-main: #1f2937;     /* Cinza Escuro Texto */
-            --text-muted: #6b7280;    /* Cinza Médio */
-            --border-color: #e5e7eb;  /* Borda Suave */
+            /* Paleta Lúdica "Nuvem Solitária" */
+            --paper-line: #eef2ff;    /* Linhas azuladas bem claras */
+            --paper-bg: #fdfbff;      /* Fundo quase branco levemente lilás */
+            --ink-color: #4b5563;
             
-            /* Cores Específicas do Esquema (Privação) */
-            --schema-icon-bg: #e0e7ff;
-            --schema-icon-color: #4338ca;
+            /* Cores do Esquema (Privação = Frio/Vazio -> Calor/Acolhimento) */
+            --primary: #8b5cf6;       /* Roxo Suave */
+            --primary-hover: #7c3aed;
+            --secondary: #6366f1;     /* Índigo */
             
-            --radius: 12px;
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            /* Tags de Personas */
+            --tag-diego-bg: #e0e7ff; --tag-diego-text: #3730a3;
+            --tag-clara-bg: #fce7f3; --tag-clara-text: #9d174d;
+
+            --radius: 16px;
+            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
+            font-family: 'Nunito', sans-serif;
+            color: var(--ink-color);
             line-height: 1.6;
+            background-color: var(--paper-bg);
+            /* Efeito Papel Pautado */
+            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
+            background-size: 100% 2rem;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            
-            /* --- NOVO FUNDO --- */
-            background-color: #f3f4f6; /* Cor sólida de fallback */
-            /* Gradiente suave e moderno (Mesh Gradient) */
-            background-image: 
-                radial-gradient(at 80% 0%, hsla(237, 100%, 94%, 1) 0px, transparent 50%),
-                radial-gradient(at 0% 50%, hsla(260, 100%, 95%, 1) 0px, transparent 50%),
-                radial-gradient(at 80% 100%, hsla(210, 100%, 96%, 1) 0px, transparent 50%);
-            background-attachment: fixed; /* O fundo fica fixo ao rolar */
-            background-size: cover;
-            /* ------------------ */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Patrick Hand', cursive;
+            color: #1f2937;
         }
 
         /* --- HEADER --- */
         header {
-            background-color: rgba(255, 255, 255, 0.8); /* Leve transparência para o fundo aparecer */
-            backdrop-filter: blur(10px); /* Efeito de vidro fosco moderno */
-            border-bottom: 1px solid var(--border-color);
-            padding: 1.5rem 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 2px dashed #c7d2fe;
+            padding: 2rem 0;
             margin-bottom: 2rem;
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
         }
 
         .header-content {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 20px;
             text-align: center;
         }
 
         .header-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
+            font-size: 2.5rem;
+            color: var(--primary);
             margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0px #f3e8ff;
         }
 
         .header-subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 1.2rem;
+            color: #6b7280;
+            font-family: 'Patrick Hand', cursive;
         }
 
-        /* --- CONTAINER PRINCIPAL --- */
+        /* --- CONTAINER --- */
         .main-container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 20px;
             width: 100%;
             display: grid;
-            gap: 24px;
+            gap: 35px;
             margin-bottom: 60px;
         }
 
-        /* --- CARDS (Mantidos iguais) --- */
-        .card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
+        /* --- CARDS (PAPEL) --- */
+        .paper-card {
+            background-color: #ffffff;
+            border-radius: 2px;
+            box-shadow: var(--shadow-paper);
+            border: 1px solid #e5e7eb;
+            padding: 2rem;
+            position: relative;
+            transform: rotate(-0.5deg);
+            transition: transform 0.3s;
+        }
+        
+        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
+        
+        /* Fita Adesiva Decorativa */
+        .paper-card::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 30px;
+            background-color: rgba(230, 230, 250, 0.6); /* Lavanda translúcido */
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            opacity: 0.8;
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--paper-line);
+            padding-bottom: 10px;
         }
 
-        .card-icon {
-            width: 32px; height: 32px;
-            background-color: var(--schema-icon-bg);
-            color: var(--schema-icon-color);
-            border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
+        .card-icon { font-size: 1.8rem; color: var(--primary); }
+        .card-title { font-size: 1.8rem; margin: 0; }
+
+        /* --- POST-IT (DEFINIÇÃO) --- */
+        .post-it {
+            background-color: #e0e7ff; /* Azulzinho */
+            padding: 1.5rem;
+            border-radius: 2px 2px 16px 2px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.3rem;
+            color: #312e81;
+            transform: rotate(1deg);
+            margin: 20px 0;
+            border-left: 5px solid #818cf8;
         }
 
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        /* --- CONTEÚDO --- */
-        p { margin-bottom: 1rem; color: #4b5563; font-size: 0.95rem; }
-        
-        .highlight {
-            background-color: #f8fafc;
-            border-left: 3px solid var(--primary);
-            padding: 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            color: #334155;
-        }
-
-        /* --- GRIDS --- */
-        .grid-3 {
+        /* --- PERSONAS --- */
+        .persona-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
-        .info-box {
-            background-color: #f9fafb;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        .info-box h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-main); }
-        .info-box p { margin-bottom: 0; font-size: 0.85rem; }
-
-        /* --- FERRAMENTAS INTERATIVAS --- */
-        .interactive-area {
-            text-align: center;
-            padding: 1rem;
-            background-color: #f8fafc;
-            border-radius: 8px;
-            border: 1px dashed #cbd5e1;
-        }
-
-        .btn-action {
-            background-color: white;
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
-            margin: 4px;
-            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+        .persona-card {
+            background: #fff;
+            padding: 20px;
+            border: 2px dashed #c4b5fd;
+            border-radius: 12px;
         }
         
-        .btn-action:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-1px);
+        .persona-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .persona-name { font-size: 1.4rem; font-weight: 700; color: #4c1d95; }
+        .persona-tag { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
+        
+        .tag-diego { background: var(--tag-diego-bg); color: var(--tag-diego-text); }
+        .tag-clara { background: var(--tag-clara-bg); color: var(--tag-clara-text); }
+
+        /* --- STICKERS (3 DIMENSÕES) --- */
+        .sticker-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        }
+        
+        .sticker-box {
+            background: white; padding: 1.5rem; border-radius: 12px;
+            border: 2px solid #f3f4f6; text-align: center;
+            transition: all 0.3s;
+        }
+        .sticker-box:hover { border-color: var(--primary); transform: scale(1.02); }
+        .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+
+        /* --- TRADUTOR INTERATIVO --- */
+        .translator-area {
+            background-color: #faf5ff; /* Roxo ultra claro */
+            padding: 2rem; border-radius: 20px;
+            border: 2px dashed #d8b4fe; text-align: center;
         }
 
-        .result-box {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            min-height: 60px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem; color: var(--text-muted);
+        .btn-translate {
+            background: white; border: 2px solid #ddd6fe;
+            padding: 10px 20px; margin: 5px; border-radius: 30px;
+            font-family: 'Nunito', sans-serif; font-weight: 700; color: #5b21b6;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 0 #ddd6fe;
+        }
+        .btn-translate:active { box-shadow: 0 0 0 #ddd6fe; transform: translateY(4px); }
+        .btn-translate:hover { background: #fff; border-color: var(--primary); color: var(--primary); }
+
+        .result-bubble {
+            background: white; padding: 20px; border-radius: 20px;
+            margin-top: 20px; border: 2px solid #e9d5ff;
+            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
+            color: #4c1d95; min-height: 100px; display: flex; align-items: center; justify-content: center;
         }
 
         /* --- ACCORDIONS --- */
         details {
-            background-color: white;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            overflow: hidden;
+            background: #f5f3ff; border-radius: 12px; margin-bottom: 10px;
+            border: 1px solid #ddd6fe;
         }
         summary {
-            padding: 12px 16px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            background-color: #f9fafb;
-            cursor: pointer;
-            list-style: none;
-            display: flex; justify-content: space-between;
+            padding: 15px; font-weight: 700; cursor: pointer; list-style: none;
+            display: flex; justify-content: space-between; color: #5b21b6;
         }
-        summary:hover { background-color: #f3f4f6; }
-        .details-body { padding: 16px; font-size: 0.9rem; color: #4b5563; border-top: 1px solid var(--border-color); }
+        summary:hover { background: #ede9fe; border-radius: 12px; }
+        .details-content { padding: 20px; border-top: 1px dashed #ddd6fe; color: #4b5563; }
 
-        /* --- FOOTER (Obrigatório) --- */
+        /* --- FLASHCARD --- */
+        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
+        .flashcard-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.6s; transform-style: preserve-3d;
+        }
+        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 16px; padding: 2rem;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-paper); border: 2px solid;
+        }
+        
+        .flashcard-front {
+            background: #f3e8ff; border-color: #d8b4fe; color: #6b21a8;
+        }
+        .flashcard-back {
+            background: #ecfdf5; border-color: #6ee7b7; color: #047857;
+            transform: rotateY(180deg);
+        }
+
+        /* --- FOOTER PADRÃO --- */
         footer {
             background-color: #ffffff;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid #e5e7eb;
             padding: 2rem 0;
             margin-top: auto;
         }
-
         .footer-container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
-        .footer-brand {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .social-links a {
-            color: #9ca3af; 
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--primary);
-        }
+        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
+        .social-links a:hover { color: var(--primary); }
 
         @media (max-width: 640px) {
-            .footer-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .grid-3 { grid-template-columns: 1fr; }
+            .footer-container { flex-direction: column; gap: 1rem; }
+            .persona-grid, .sticker-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -264,121 +269,140 @@
     <header>
         <div class="header-content">
             <h1 class="header-title">Privação Emocional</h1>
-            <p class="header-subtitle">Compreendendo o esquema da solidão invisível.</p>
+            <p class="header-subtitle">Caderno de Psicoeducação</p>
         </div>
     </header>
 
     <div class="main-container">
 
-        <div class="card">
+        <div class="paper-card">
             <div class="card-header">
-                <div class="card-icon"><i class="fas fa-info"></i></div>
-                <div class="card-title">Definição do Esquema</div>
+                <i class="fas fa-wind card-icon"></i>
+                <h2 class="card-title">O Vazio Invisível</h2>
             </div>
-            <p>A Privação Emocional é a crença de que suas necessidades de apoio emocional não serão atendidas adequadamente pelos outros. Diferente do abandono (perda) ou do abuso (dano), a privação é caracterizada pela <strong>ausência</strong>.</p>
-            <div class="highlight">
-                <strong>Sentimento Central:</strong> "Ninguém me entende de verdade. Eu cuido de todos, mas ninguém cuida de mim."
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon"><i class="fas fa-layer-group"></i></div>
-                <div class="card-title">As 3 Dimensões da Privação</div>
-            </div>
-            <div class="grid-3">
-                <div class="info-box">
-                    <h4><i class="fas fa-heart" style="color:#f472b6;"></i> Cuidado</h4>
-                    <p>Ausência de afeto físico, calor humano, abraços ou sensação de ser "querido".</p>
-                </div>
-                <div class="info-box">
-                    <h4><i class="fas fa-comments" style="color:#60a5fa;"></i> Empatia</h4>
-                    <p>Ninguém escutava seus sentimentos ou tentava entender quem você era internamente.</p>
-                </div>
-                <div class="info-box">
-                    <h4><i class="fas fa-shield-alt" style="color:#34d399;"></i> Proteção</h4>
-                    <p>Falta de alguém para lhe guiar, dar conselhos ou direção. Sensação de "se criar sozinho".</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="card-icon"><i class="fas fa-language"></i></div>
-                <div class="card-title">Tradutor de Necessidades</div>
-            </div>
-            <p>Quem tem este esquema tende a não pedir, ou pedir reclamando. Traduza a queixa em necessidade real:</p>
+            <p>Este é o esquema da solidão. Não é sobre o que fizeram de ruim com você, mas sobre o que <strong>deixaram de fazer</strong> (o afeto, a escuta e o apoio que faltaram).</p>
             
-            <div class="interactive-area">
-                <p style="margin-bottom:10px; font-weight:500;">Escolha uma queixa comum:</p>
+            <div class="post-it">
+                <i class="fas fa-thumbtack" style="color:#4338ca; margin-right:10px;"></i>
+                "Ninguém me entende de verdade. Eu cuido de todo mundo, mas quando eu preciso... não tem ninguém lá."
+            </div>
+        </div>
+
+        <div class="paper-card" style="transform: rotate(0.5deg);">
+            <div class="card-header">
+                <i class="fas fa-user-friends card-icon"></i>
+                <h2 class="card-title">Espelhos da Vida Real</h2>
+            </div>
+            <p>Quem tem esse esquema costuma agir de duas formas principais:</p>
+            
+            <div class="persona-grid">
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-name">Diego</span>
+                        <span class="persona-tag tag-diego">O Invisível</span>
+                    </div>
+                    <p>Diego nunca pede nada. Ele é o amigo "fácil de lidar". No fundo, sente-se sozinho e acredita que seus sentimentos não importam. Escolhe parceiras frias porque a solidão lhe é familiar.</p>
+                    <p style="font-size:0.85rem; color:#4338ca;"><strong>Comportamento:</strong> Rendição (Não pede)</p>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-name">Clara</span>
+                        <span class="persona-tag tag-clara">A Ressentida</span>
+                    </div>
+                    <p>Clara faz tudo por todos, mas vive com raiva. Ela não pede ajuda, ela cobra: "Ninguém vê o que eu faço!". Ela ataca as pessoas por não adivinharem o que ela precisa.</p>
+                    <p style="font-size:0.85rem; color:#be185d;"><strong>Comportamento:</strong> Ataque (Cobra)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-layer-group card-icon"></i>
+                <h2 class="card-title">O Que Está Faltando?</h2>
+            </div>
+            <div class="sticker-grid">
+                <div class="sticker-box">
+                    <span class="sticker-icon">❤️</span>
+                    <h4>Cuidado</h4>
+                    <p>Falta de toque, abraço, carinho físico. A sensação de "colo".</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">👂</span>
+                    <h4>Empatia</h4>
+                    <p>Falta de alguém que escute e valide seus sentimentos ("Eu te entendo").</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">🛡️</span>
+                    <h4>Proteção</h4>
+                    <p>Falta de alguém para dar direção, conselhos ou segurança.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card" style="transform: rotate(-0.5deg);">
+            <div class="card-header">
+                <i class="fas fa-language card-icon"></i>
+                <h2 class="card-title">Tradutor de Necessidades</h2>
+            </div>
+            <p>Quem tem privação não pede, reclama. Transforme a "Queixa" em "Pedido":</p>
+            
+            <div class="translator-area">
+                <p style="margin-bottom:15px; font-weight:700;">Qual é a sua queixa hoje?</p>
                 <div>
-                    <button class="btn-action" onclick="translateNeed('alone')">"Faço tudo sozinho!"</button>
-                    <button class="btn-action" onclick="translateNeed('tired')">"Você não me entende!"</button>
-                    <button class="btn-action" onclick="translateNeed('cold')">"Você é muito frio."</button>
+                    <button class="btn-translate" onclick="translateNeed('sozinho')">"Eu tenho que fazer tudo sozinho!"</button>
+                    <button class="btn-translate" onclick="translateNeed('entende')">"Você nunca me entende!"</button>
+                    <button class="btn-translate" onclick="translateNeed('frio')">"Você é uma pedra de gelo!"</button>
                 </div>
-                <div id="result-box" class="result-box">
-                    O resultado aparecerá aqui.
+                
+                <div id="translator-bubble" class="result-bubble">
+                    Toque em uma queixa para traduzir...
                 </div>
             </div>
         </div>
 
-        <div class="card">
+        <div class="paper-card">
             <div class="card-header">
-                <div class="card-icon"><i class="fas fa-book-reader"></i></div>
-                <div class="card-title">Conceitos Clínicos</div>
+                <i class="fas fa-brain card-icon"></i>
+                <h2 class="card-title">Conceitos Clínicos</h2>
             </div>
             
             <details>
-                <summary>Neurobiologia da Negligência <i class="fas fa-chevron-down" style="font-size:0.8rem;"></i></summary>
-                <div class="details-body">
-                    <p><strong>Falta de Espelhamento:</strong> Quando um bebê chora e a mãe não reflete essa emoção, não ocorre a regulação límbica adequada.</p>
-                    <p><strong>Alexitimia:</strong> Muitos pacientes têm dificuldade em saber <em>o que</em> estão sentindo. Sentem um desconforto físico, mas não conseguem nomear, pois não tiveram esse aprendizado na infância.</p>
+                <summary>🧠 Neurobiologia: O Espelho Quebrado <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p><strong>Neurônios-Espelho:</strong> Quando criança, você precisava que alguém refletisse suas emoções para aprender a lidar com elas. Sem isso, o cérebro tem dificuldade em nomear o que sente (Alexitimia). Você sente um desconforto físico, mas não sabe dizer se é tristeza ou raiva.</p>
                 </div>
             </details>
 
             <details>
-                <summary>Ciclo de Manutenção (Sabotagem) <i class="fas fa-chevron-down" style="font-size:0.8rem;"></i></summary>
-                <div class="details-body">
-                    <ul style="padding-left:20px;">
-                        <li><strong>Não pedir:</strong> Esperar que o outro adivinhe (Leitura Mental). Quando não acontece, você se frustra.</li>
-                        <li><strong>Rendição:</strong> Atração química por parceiros frios ou narcisistas (o familiar).</li>
-                        <li><strong>Ataque:</strong> Explodir em críticas em vez de mostrar vulnerabilidade.</li>
-                    </ul>
+                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>O terapeuta atua como um "Espelho Corretivo". Ele valida suas necessidades e ensina você a pedir o que precisa de forma direta, sem ataques, quebrando o ciclo de isolamento.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>⚠️ A Armadilha da Autossuficiência <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>Para não sofrer com a falta, você criou uma capa de "Eu não preciso de ninguém". Isso protege você da decepção, mas também impede que o amor entre. O objetivo é baixar essa guarda com segurança.</p>
                 </div>
             </details>
         </div>
 
-    </div>
-
-    <footer>
-        <div class="footer-container">
-            <div class="footer-brand">
-                &copy; 2026 Bruno de Souza
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-sync-alt card-icon"></i>
+                <h2 class="card-title">Vire o Pensamento</h2>
             </div>
-            <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        function translateNeed(type) {
-            const display = document.getElementById('result-box');
-            let text = "";
+            <p>Toque no cartão quando sentir o vazio ou a raiva:</p>
             
-            if(type === 'alone') {
-                text = "<strong>Necessidade Real:</strong> Apoio e Proteção.<br><span style='color:#6366f1'>Diga:</span> 'Estou sobrecarregado. Preciso de ajuda com isso hoje.'";
-            } else if (type === 'tired') {
-                text = "<strong>Necessidade Real:</strong> Empatia e Escuta.<br><span style='color:#6366f1'>Diga:</span> 'Tive um dia difícil. Só preciso que me escute, sem dar soluções.'";
-            } else if (type === 'cold') {
-                text = "<strong>Necessidade Real:</strong> Afeto e Carinho.<br><span style='color:#6366f1'>Diga:</span> 'Estou me sentindo sozinho. Podemos ficar abraçados um pouco?'";
-            }
-            
-            display.innerHTML = text;
-        }
-    </script>
-
-</body>
-</html>
+            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz da Privação</h3>
+                        <p style="margin-top:10px;">"Não adianta pedir, ninguém liga pra mim. Eles deveriam saber o que eu preciso! Se eu tiver que pedir, não vale a pena."</p>
+                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#8b5cf6; font-size:1.5rem;"></i>
+                    </div>
+                    <div class="flashcard-back">
+                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
+                        <p style="margin-top:10px;">"
