@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mergulho Profundo: Privação Emocional - Bruno de Souza</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta "The Invisible Void" */
+            --bg-body: #fdfbff;      
+            --text-main: #263238;
+            --text-light: #546e7a;
+            
+            /* Cores dos Esquemas */
+            --schema-deprivation: #7986cb; /* Índigo Suave (Frio/Solidão) */
+            --mode-lonely-child: #b39ddb;  /* Lavanda */
+            --mode-protector: #90a4ae;     /* Cinza Azulado (Muro) */
+            --mode-adult: #fff59d;         /* Amarelo Pálido (Luz/Calor) */
+            
+            --radius: 8px;
+            --shadow: 0 4px 20px rgba(40, 53, 147, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Merriweather', serif;
+            color: #1a237e;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* HEADER */
+        header {
+            padding: 80px 20px 60px;
+            text-align: center;
+            background: linear-gradient(to bottom, #fff 0%, var(--bg-body) 100%);
+            border-bottom: 1px solid #e8eaf6;
+        }
+        
+        .tag {
+            background: #3949ab; color: white; padding: 4px 12px; border-radius: 4px;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+            display: inline-block; margin-bottom: 20px;
+        }
+
+        /* ACCORDION (DENSIDADE) */
+        details {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-left: 5px solid var(--schema-deprivation);
+        }
+
+        summary {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            transition: background 0.2s;
+        }
+        
+        summary:hover { background: #e8eaf6; }
+        
+        summary::after {
+            content: '+'; font-size: 1.5rem; color: var(--schema-deprivation); font-weight: 300;
+        }
+        details[open] summary::after { content: '-'; }
+        
+        .content-body {
+            padding: 0 30px 30px 30px;
+            color: var(--text-light);
+            background: white;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        /* QUOTE BOX */
+        .quote-box {
+            background: white; padding: 40px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin: 40px 0; text-align: center;
+            border: 1px solid #c5cae9; position: relative;
+        }
+        .quote-box i { font-size: 2rem; color: var(--schema-deprivation); margin-bottom: 15px; display: block; }
+        .quote-text { font-family: 'Merriweather', serif; font-size: 1.3rem; font-style: italic; color: #283593; }
+
+        /* GRID: TIPOS DE PRIVAÇÃO */
+        .types-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;
+        }
+        .type-card {
+            background: #fff; padding: 25px; border-radius: var(--radius);
+            border: 1px solid #e8eaf6; box-shadow: var(--shadow);
+            transition: transform 0.2s;
+        }
+        .type-card:hover { transform: translateY(-3px); border-color: var(--schema-deprivation); }
+        .type-icon { font-size: 1.8rem; color: var(--schema-deprivation); margin-bottom: 15px; }
+
+        /* MODOS (TABELA) */
+        .mode-table {
+            width: 100%; border-collapse: collapse; margin-top: 20px; background: white;
+            box-shadow: var(--shadow); border-radius: var(--radius); overflow: hidden;
+        }
+        .mode-table th { background: #283593; color: white; padding: 15px; text-align: left; }
+        .mode-table td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: top; }
+        .mode-icon { font-size: 1.5rem; margin-right: 10px; vertical-align: middle; }
+
+        /* TRANSLATOR TOOL */
+        .translator-widget {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            padding: 40px; border-radius: var(--radius); margin: 60px 0; text-align: center;
+        }
+        .translator-display {
+            background: white; padding: 30px; border-radius: 8px; margin-top: 20px;
+            font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); min-height: 120px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .btn-translate {
+            padding: 12px 25px; border: none; border-radius: 50px; cursor: pointer;
+            font-weight: bold; margin: 5px; transition: transform 0.2s;
+            background: #3949ab; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-translate:hover { transform: translateY(-2px); background: #283593; }
+
+        /* FOOTER */
+        footer {
+            margin-top: auto; background-color: #f8f9fa; border-top: 1px solid #e9ecef;
+            padding: 40px 0; color: #6c757d; font-size: 0.9rem;
+        }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .footer-logo { font-family: 'Merriweather', serif; font-weight: bold; font-size: 1.2rem; color: #343a40; }
+        .footer-links a { color: #6c757d; text-decoration: none; margin: 0 10px; transition: color 0.2s; }
+        .footer-links a:hover { color: #1a237e; }
+        .social-icons { display: flex; gap: 15px; }
+        .social-btn {
+            width: 35px; height: 35px; border-radius: 50%; background: white;
+            border: 1px solid #dee2e6; display: flex; align-items: center; justify-content: center;
+            color: #495057; text-decoration: none; transition: all 0.2s;
+        }
+        .social-btn:hover { background: #1a237e; color: white; border-color: #1a237e; }
+        .copyright { margin-top: 10px; font-size: 0.8rem; opacity: 0.8; }
+
+        @media (max-width: 768px) {
+            .mode-table, .mode-table tbody, .mode-table tr, .mode-table td { display: block; width: 100%; }
+            .mode-table tr { margin-bottom: 20px; border: 1px solid #eee; }
+            .mode-table td { text-align: left; padding-left: 15px; }
+            .mode-table thead { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <span class="tag">Dossiê Clínico</span>
+            <h1>Privação Emocional</h1>
+            <p style="margin-top: 15px; color: #5c6bc0; font-size: 1.1rem;">
+                A crença de que suas necessidades de amor e compreensão nunca serão atendidas.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section class="quote-box">
+            <i class="fas fa-glass-whiskey"></i>
+            <p class="quote-text">"Eu cuido de todo mundo, escuto os problemas de todos... mas quando sou eu que preciso, sinto que não tem ninguém lá. Sou invisível."</p>
+            <p style="margin-top: 20px; font-size: 1rem; color: #546e7a;">
+                Este é o esquema da <strong>Solidão Crônica</strong>. A pessoa sente que, não importa o que faça, permanecerá incompreendida e emocionalmente sozinha.
+            </p>
+        </section>
+
+        <h3 style="margin-bottom: 20px; text-align: center;">1. O Vazio Invisível</h3>
+        
+        <details open>
+            <summary>O que é a Privação Emocional?</summary>
+            <div class="content-body">
+                <p>É a expectativa de que o seu desejo por conexão emocional normal (ser ouvido, ser cuidado, ser protegido) não será adequadamente atendido pelos outros. Diferente do abandono (perda) ou do abuso (dano), a privação é a <strong>ausência</strong>.</p>
+                <p style="margin-top: 15px;">Muitas vezes, pacientes com este esquema tiveram "pais bons" que supriam necessidades físicas (comida, escola, casa), mas eram incapazes de conexão emocional profunda.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>As 3 Faces da Privação (Subtipos)</summary>
+            <div class="content-body">
+                <p>A privação pode se manifestar em três áreas específicas:</p>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="type-icon"><i class="fas fa-hands-holding-heart"></i></div>
+                        <h4>Privação de Cuidado</h4>
+                        <p>Ausência de toque físico, calor, carinho ou sensação de ser "amado" fisicamente.</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon"><i class="fas fa-comments"></i></div>
+                        <h4>Privação de Empatia</h4>
+                        <p>Ninguém escutava seus sentimentos ou tentava entender quem você era. Você não se sentia "visto".</p>
+                    </div>
+                    <div class="type-card">
+                        <div class="type-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h4>Privação de Proteção</h4>
+                        <p>Falta de alguém para lhe guiar, dar conselhos ou direção. Você teve que "se criar sozinho".</p>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div style="margin: 60px 0;">
+            <h3 style="text-align: center; margin-bottom: 20px;">2. Neurobiologia da Negligência</h3>
+            <p style="text-align: center; margin-bottom: 30px; color: #546e7a;">O cérebro que não foi "espelhado".</p>
+            
+            <details>
+                <summary>Neurônios-Espelho e Regulação</summary>
+                <div class="content-body">
+                    <p>Quando um bebê chora e a mãe reflete essa emoção e o acalma, ocorre a <strong>regulação límbica</strong>. Em casos de privação, essa "dança neural" não aconteceu o suficiente.</p>
+                    <p style="margin-top:10px;"><strong>Consequência (Alexitimia):</strong> Muitos pacientes têm dificuldade em saber <em>o que</em> estão sentindo. Eles sentem um desconforto físico ou vazio, mas não conseguem nomear (tristeza? raiva? solidão?), porque ninguém nomeou isso para eles na infância.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="translator-widget">
+            <h3 style="color: #1a237e; margin-bottom: 10px;"><i class="fas fa-language"></i> Tradutor de Necessidades</h3>
+            <p style="margin-bottom: 20px; color: #3949ab;">Quem tem esse esquema não pede, reclama. Aprenda a traduzir sua queixa em pedido real.</p>
+            
+            <div class="translator-display" id="translate-box">
+                <p style="color:#9fa8da; font-style:italic;">Clique em uma "Queixa Comum" abaixo para ver a tradução saudável.</p>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn-translate" onclick="translateNeed('alone')">"Faço tudo sozinho!"</button>
+                <button class="btn-translate" onclick="translateNeed('tired')">"Você não me entende!"</button>
+                <button class="btn-translate" onclick="translateNeed('cold')">"Você é frio comigo."</button>
+            </div>
+        </div>
+
+        <h3 style="text-align: center; margin-bottom: 20px;">4. As Vozes do Esquema</h3>
+        <p style="text-align: center; margin-bottom: 20px; color: #546e7a;">A luta entre sentir e esconder.</p>
+
+        <table class="mode-table">
+            <thead>
+                <tr>
+                    <th width="30%">Modo</th>
+                    <th width="35%">Comportamento</th>
+                    <th width="35%">Função (Por que existe?)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: #5e35b1; font-weight: bold;">
+                        <i class="fas fa-child mode-icon" style="color:#b39ddb;"></i> Criança Solitária
+                    </td>
+                    <td>
+                        Sente o vazio profundo. Chora sozinha. Sente que ninguém se importa. Pode ficar "invisível" para não incomodar.
+                    </td>
+                    <td>
+                        Carrega a dor original da negligência. É a parte que precisa ser vista.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #455a64; font-weight: bold;">
+                        <i class="fas fa-robot mode-icon" style="color:#90a4ae;"></i> Protetor Desligado
+                    </td>
+                    <td>
+                        "Não preciso de ninguém." Torna-se cínico, frio ou excessivamente racional. Se isola ou foca 100% no trabalho.
+                    </td>
+                    <td>
+                        Evita a dor da decepção. Se eu não esperar nada de ninguém, não sofro quando eles não me derem nada.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #fbc02d; font-weight: bold;">
+                        <i class="fas fa-sun mode-icon" style="color:#fff59d; text-shadow: 0 0 2px #f9a825;"></i> Adulto Saudável
+                    </td>
+                    <td>
+                        Aprende a <strong>pedir</strong> o que precisa de forma clara. Escolhe parceiros capazes de dar afeto (quebrando o ciclo).
+                    </td>
+                    <td>
+                        Valida que suas necessidades são legítimas e busca satisfazê-las no mundo real.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <details>
+            <summary>Como eu saboto o amor que desejo? (Ciclo)</summary>
+            <div class="content-body">
+                <p>Paradoxalmente, pessoas privadas agem de formas que perpetuam a privação:</p>
+                <ol style="margin-left: 20px; margin-top: 15px; line-height: 1.6;">
+                    <li><strong>Não pedir:</strong> Você espera que o outro "adivinhe" o que você precisa (Leitura Mental). Quando ele não adivinha, você se sente decepcionado e se afasta. O outro nem sabe que errou.</li>
+                    <li><strong>Escolha de Parceiros (Rendição):</strong> Você se sente atraído por pessoas frias, narcisistas ou distantes ("Química Esquemática"), pois a solidão na relação é familiar.</li>
+                    <li><strong>Ataque (Hipercompensação):</strong> Você fica tão frustrado que, quando fala, explode em críticas ("Você é egoísta!"). Isso faz o outro se defender e se afastar, aumentando sua solidão.</li>
+                </ol>
+            </div>
+        </details>
+
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">Bruno de Souza</div>
+            
+            <div class="footer-links">
+                <a href="#">Início</a>
+                <a href="#">Ferramentas Clínicas</a>
+                <a href="#">Agendamento</a>
+            </div>
+
+            <div class="social-icons">
+                <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="copyright">
+                &copy; 2026 Bruno de Souza. Psicólogo CRP 07/44472. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function translateNeed(type) {
+            const display = document.getElementById('translate-box');
+            let complaint = "", need = "", action = "";
+
+            if (type === 'alone') {
+                complaint = "\"Eu faço tudo sozinho(a) nessa casa/trabalho!\"";
+                need = "Necessidade de Proteção e Apoio.";
+                action = "Tente dizer: 'Estou me sentindo sobrecarregado. Preciso que você me ajude com X tarefa hoje.'";
+            } else if (type === 'tired') {
+                complaint = "\"Você nunca me entende / Você não liga pra mim.\"";
+                need = "Necessidade de Empatia.";
+                action = "Tente dizer: 'Não preciso que você resolva o problema, só preciso que me escute e me dê um abraço. Tive um dia difícil.'";
+            } else if (type === 'cold') {
+                complaint = "\"Você é um picolé / Você não me ama mais.\"";
+                need = "Necessidade de Afeto/Cuidado.";
+                action = "Tente dizer: 'Estou me sentindo um pouco solitário. Podemos ficar abraçados no sofá um pouco?'";
+            }
+
+            display.innerHTML = `
+                <div style="text-align:left; width:100%;">
+                    <p style="color:#c62828; margin-bottom:5px;"><strong>A Queixa (Ataque):</strong> ${complaint}</p>
+                    <p style="color:#283593; margin-bottom:5px;"><strong>A Necessidade Real:</strong> ${need}</p>
+                    <div style="background:#e8eaf6; padding:10px; border-radius:5px; margin-top:10px;">
+                        <p style="color:#1a237e; font-weight:bold;"><i class="fas fa-comment-dots"></i> Tradução Saudável:</p>
+                        <p style="font-style:italic;">${action}</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+
+</body>
+</html>
