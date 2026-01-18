@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autossacrifício - Caderno Terapêutico</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta "O Peso da Bondade" */
+            --paper-line: #ecfdf5;    /* Linhas verdes bem claras */
+            --paper-bg: #fafffd;      
+            --ink-color: #064e3b;
+            
+            /* Cores do Esquema (Doação -> Limites) */
+            --primary: #059669;       /* Verde Esmeralda (Cura/Ajuda) */
+            --primary-hover: #047857;
+            --burden: #b45309;        /* Terracota (O Peso) */
+            
+            /* Tags de Personas */
+            --tag-alice-bg: #d1fae5; --tag-alice-text: #065f46; /* Verde (Cuidadora) */
+            --tag-bruno-bg: #ffedd5; --tag-bruno-text: #9a3412; /* Laranja (Mártir) */
+
+            --radius: 16px;
+            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: var(--ink-color);
+            line-height: 1.6;
+            background-color: var(--paper-bg);
+            /* Efeito Papel Pautado */
+            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
+            background-size: 100% 2rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Patrick Hand', cursive;
+            color: #064e3b;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 2px dashed #6ee7b7;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0px #d1fae5;
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: #047857;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+            display: grid;
+            gap: 35px;
+            margin-bottom: 60px;
+        }
+
+        /* --- CARDS (PAPEL) --- */
+        .paper-card {
+            background-color: #ffffff;
+            border-radius: 2px;
+            box-shadow: var(--shadow-paper);
+            border: 1px solid #d1fae5;
+            padding: 2rem;
+            position: relative;
+            transform: rotate(-0.5deg);
+            transition: transform 0.3s;
+        }
+        
+        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
+        
+        /* Esparadrapo Decorativo (Simbolizando cura/ferida) */
+        .paper-card::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 25px;
+            background-color: #fcd34d; /* Amarelo esparadrapo */
+            border: 1px solid #fbbf24;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            opacity: 0.8;
+            border-radius: 4px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--paper-line);
+            padding-bottom: 10px;
+        }
+
+        .card-icon { font-size: 1.8rem; color: var(--primary); }
+        .card-title { font-size: 1.8rem; margin: 0; }
+
+        /* --- POST-IT (DEFINIÇÃO) --- */
+        .post-it {
+            background-color: #d1fae5; /* Verde Água */
+            padding: 1.5rem;
+            border-radius: 2px 2px 16px 2px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.3rem;
+            color: #064e3b;
+            transform: rotate(1deg);
+            margin: 20px 0;
+            border-left: 5px solid #059669;
+        }
+
+        /* --- PERSONAS --- */
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .persona-card {
+            background: #fff;
+            padding: 20px;
+            border: 2px dashed #6ee7b7;
+            border-radius: 12px;
+        }
+        
+        .persona-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .persona-name { font-size: 1.4rem; font-weight: 700; color: #047857; }
+        .persona-tag { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
+        
+        .tag-alice { background: var(--tag-alice-bg); color: var(--tag-alice-text); }
+        .tag-bruno { background: var(--tag-bruno-bg); color: var(--tag-bruno-text); }
+
+        /* --- STICKERS (3 DIMENSÕES) --- */
+        .sticker-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        }
+        
+        .sticker-box {
+            background: white; padding: 1.5rem; border-radius: 12px;
+            border: 2px solid #ecfdf5; text-align: center;
+            transition: all 0.3s;
+        }
+        .sticker-box:hover { border-color: var(--primary); transform: scale(1.02); }
+        .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+
+        /* --- TRADUTOR INTERATIVO --- */
+        .translator-area {
+            background-color: #fff7ed; /* Laranja muito claro */
+            padding: 2rem; border-radius: 20px;
+            border: 2px dashed #fdba74; text-align: center;
+        }
+
+        .btn-translate {
+            background: white; border: 2px solid #fed7aa;
+            padding: 10px 20px; margin: 5px; border-radius: 30px;
+            font-family: 'Nunito', sans-serif; font-weight: 700; color: #c2410c;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 0 #fed7aa;
+        }
+        
+        .btn-translate:active { box-shadow: 0 0 0 #fed7aa; transform: translateY(4px); }
+        .btn-translate:hover { background: #fff; border-color: var(--burden); color: var(--burden); }
+
+        .result-bubble {
+            background: white; padding: 20px; border-radius: 20px;
+            margin-top: 20px; border: 2px solid #fdba74;
+            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
+            color: #9a3412; min-height: 100px; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- ACCORDIONS --- */
+        details {
+            background: #f0fdf4; border-radius: 12px; margin-bottom: 10px;
+            border: 1px solid #86efac;
+        }
+        summary {
+            padding: 15px; font-weight: 700; cursor: pointer; list-style: none;
+            display: flex; justify-content: space-between; color: #166534;
+        }
+        summary:hover { background: #dcfce7; border-radius: 12px; }
+        .details-content { padding: 20px; border-top: 1px dashed #86efac; color: #14532d; }
+
+        /* --- FLASHCARD (FLIP) --- */
+        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
+        .flashcard-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.6s; transform-style: preserve-3d;
+        }
+        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 16px; padding: 2rem;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-paper); border: 2px solid;
+        }
+        
+        .flashcard-front {
+            background: #fff7ed; border-color: #ffedd5; color: #9a3412;
+        }
+        .flashcard-back {
+            background: #ecfdf5; border-color: #6ee7b7; color: #047857;
+            transform: rotateY(180deg);
+        }
+
+        /* --- FOOTER PADRÃO --- */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+        .footer-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
+        .social-links a:hover { color: var(--primary); }
+
+        @media (max-width: 640px) {
+            .footer-container { flex-direction: column; gap: 1rem; }
+            .persona-grid, .sticker-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1 class="header-title">Autossacrifício</h1>
+            <p class="header-subtitle">Caderno de Psicoeducação</p>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-hand-holding-heart card-icon"></i>
+                <h2 class="card-title">O Peso da Bondade</h2>
+            </div>
+            <p>O Esquema de Autossacrifício é a crença de que você deve, voluntariamente, priorizar as necessidades dos outros em detrimento das suas, para evitar sentir culpa ou para manter a conexão.</p>
+            
+            <div class="post-it">
+                <i class="fas fa-thumbtack" style="color:#047857; margin-right:10px;"></i>
+                "Se eu não ajudar, quem vai? Eles precisam de mim. Seria egoísmo da minha parte dizer não e cuidar de mim agora."
+            </div>
+        </div>
+
+        <div class="paper-card" style="transform: rotate(0.5deg);">
+            <div class="card-header">
+                <i class="fas fa-users card-icon"></i>
+                <h2 class="card-title">Espelhos da Vida Real</h2>
+            </div>
+            <p>Como o excesso de doação se manifesta:</p>
+            
+            <div class="persona-grid">
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-name">Alice</span>
+                        <span class="persona-tag tag-alice">A "Mãe" de Todos</span>
+                    </div>
+                    <p>Alice é quem organiza as festas, ouve os desabafos de madrugada e empresta dinheiro. Ela cancela o próprio médico para ajudar uma amiga na mudança. Ela sente que sua missão é servir.</p>
+                    <p style="font-size:0.85rem; color:#047857;"><strong>Comportamento:</strong> Rendição (Doação Total)</p>
+                </div>
+
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <span class="persona-name">Bruno</span>
+                        <span class="persona-tag tag-bruno">O Mártir</span>
+                    </div>
+                    <p>Bruno faz tudo pela família, mas vive suspirando e batendo portas. Ele espera que os outros notem seu sacrifício e retribuam, mas como ele não pede, ninguém faz. Ele acumula muita raiva.</p>
+                    <p style="font-size:0.85rem; color:#c2410c;"><strong>Comportamento:</strong> Passivo-Agressivo (Exaustão)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-shapes card-icon"></i>
+                <h2 class="card-title">O Custo do Sacrifício</h2>
+            </div>
+            <div class="sticker-grid">
+                <div class="sticker-box">
+                    <span class="sticker-icon">😞</span>
+                    <h4>Culpa Tóxica</h4>
+                    <p>Sentir-se uma pessoa ruim ou egoísta ao pensar em fazer algo apenas para si mesmo.</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">🥀</span>
+                    <h4>Negligência</h4>
+                    <p>Esquecer de comer, dormir mal ou ignorar sintomas de saúde porque estava "ocupado cuidando dos outros".</p>
+                </div>
+                <div class="sticker-box">
+                    <span class="sticker-icon">🦸</span>
+                    <h4>Onipotência</h4>
+                    <p>Achar que você é o único capaz de salvar, resolver ou aliviar a dor alheia.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card" style="transform: rotate(-0.5deg);">
+            <div class="card-header">
+                <i class="fas fa-sync card-icon"></i>
+                <h2 class="card-title">Tradutor de Limites</h2>
+            </div>
+            <p>A culpa mente para você. Vamos traduzir o "Sacrifício" em "Autocuidado":</p>
+            
+            <div class="translator-area">
+                <p style="margin-bottom:15px; font-weight:700;">O que a culpa diz?</p>
+                <div>
+                    <button class="btn-translate" onclick="translateNeed('egoismo')">"Sou egoísta se disser não."</button>
+                    <button class="btn-translate" onclick="translateNeed('sozinho')">"Eles não conseguem sem mim."</button>
+                    <button class="btn-translate" onclick="translateNeed('pena')">"Tenho pena, não consigo ver ele sofrer."</button>
+                </div>
+                
+                <div id="translator-bubble" class="result-bubble">
+                    Toque em uma frase para traduzir...
+                </div>
+            </div>
+        </div>
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-brain card-icon"></i>
+                <h2 class="card-title">Conceitos Clínicos</h2>
+            </div>
+            
+            <details>
+                <summary>🧠 Neurobiologia: A Empatia Hiperativa <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>Você tem uma "contágio emocional" alto. Quando vê alguém sofrendo, seu cérebro ativa a área da dor como se a dor fosse sua. Ajudar o outro é a forma mais rápida de aliviar a <em>sua</em> própria angústia.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>O objetivo é o <strong>Equilíbrio</strong>. Aprender que você também tem necessidades e que elas são tão importantes quanto as dos outros. Trabalhamos a capacidade de tolerar a culpa de dizer "não" sem se sentir uma pessoa ruim.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>⚠️ A Armadilha da Dependência <i class="fas fa-chevron-down"></i></summary>
+                <div class="details-content">
+                    <p>Ao fazer tudo pelo outro, você impede que ele cresça e aprenda a se virar. Seu sacrifício, muitas vezes, mantém a dependência da outra pessoa e a sua exaustão. A ajuda saudável empodera, não resolve tudo.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="paper-card">
+            <div class="card-header">
+                <i class="fas fa-adjust card-icon"></i>
+                <h2 class="card-title">Vire o Pensamento</h2>
+            </div>
+            <p>Toque no cartão quando sentir culpa por descansar:</p>
+            
+            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz da Culpa</h3>
+                        <p style="margin-top:10px;">"Como posso estar aqui descansando enquanto ele está com problemas? Eu deveria estar lá ajudando. Sou uma pessoa horrível por pensar em mim agora."</p>
+                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#b45309; font-size:1.5rem;"></i>
+                    </div>
+                    <div class="flashcard-back">
+                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
+                        <p style="margin-top:10px;">"Eu não sou onipotente. Eu preciso recarregar minhas energias para continuar sendo útil. Dizer não para ele agora é dizer sim para a minha saúde. Ele é um adulto e pode lidar com isso."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                &copy; 2026 Bruno de Souza
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function translateNeed(type) {
+            const bubble = document.getElementById('translator-bubble');
+            let text = "";
+            
+            if (type === 'egoismo') {
+                text = "✨ Tradução: 'Autocuidado não é egoísmo. Colocar a máscara de oxigênio em mim primeiro é a única forma de ajudar alguém.'";
+            } else if (type === 'sozinho') {
+                text = "✨ Tradução: 'Eles são mais capazes do que eu imagino. Se eu fizer tudo, tiro a oportunidade deles de aprender.'";
+            } else if (type === 'pena') {
+                text = "✨ Tradução: 'A dor dele é dele. Eu posso ser empático e estar junto, sem precisar carregar o problema nas costas.'";
+            }
+            
+            bubble.style.opacity = 0;
+            setTimeout(() => {
+                bubble.innerHTML = text;
+                bubble.style.opacity = 1;
+                bubble.style.transition = "opacity 0.3s";
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
