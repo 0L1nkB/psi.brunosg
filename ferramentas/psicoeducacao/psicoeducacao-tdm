@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicoeducação: Transtorno Depressivo Maior</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7DB9B6; 
+            --secondary: #E9EDC9; 
+            --accent: #E29578; 
+            --dark-green: #2D5A58;
+            --text-color: #444;
+            --bg-body: #FBFBFB;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        h1, h2, h3 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
+
+        /* --- Header / Hero --- */
+        header {
+            height: 60vh;
+            background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; border-radius: 0 0 60px 60px;
+            padding: 20px;
+        }
+
+        header h1 { font-size: 3rem; color: white; margin-bottom: 20px; }
+        header p { font-size: 1.2rem; max-width: 650px; opacity: 0.95; }
+
+        /* --- Seções --- */
+        section { padding: 80px 0; border-bottom: 1px solid #eee; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.2rem; position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; width: 60%; height: 4px; background: var(--secondary); position: absolute; bottom: -10px; left: 20%; border-radius: 2px; }
+
+        /* --- Cards e Boxes --- */
+        .info-card {
+            background: white; padding: 35px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .highlight-box {
+            background: var(--secondary); padding: 25px; border-left: 6px solid var(--primary);
+            border-radius: 10px; margin: 30px 0;
+        }
+
+        .grid-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+
+        /* --- Neurobiologia --- */
+        .neuro-list { list-style: none; }
+        .neuro-list li { margin-bottom: 20px; padding-left: 30px; position: relative; }
+        .neuro-list li::before { content: '•'; color: var(--primary); font-size: 2rem; position: absolute; left: 0; top: -10px; }
+
+        /* --- Tabela --- */
+        .table-wrap { overflow-x: auto; margin-top: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 18px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        th { background: var(--primary); color: white; }
+
+        /* --- Exercício de Ativação Comportamental --- */
+        .activation-container {
+            background: var(--dark-green); color: white;
+            padding: 60px 20px; border-radius: 40px; text-align: center;
+            margin: 50px 0; display: flex; flex-direction: column; align-items: center;
+        }
+
+        .step-visual {
+            display: flex; gap: 15px; margin: 40px 0; align-items: flex-end; height: 100px;
+        }
+
+        .bar {
+            width: 30px; background: var(--primary); border-radius: 5px 5px 0 0;
+            animation: growBar 3s infinite alternate ease-in-out;
+        }
+
+        .bar:nth-child(2) { animation-delay: 0.5s; height: 40px; }
+        .bar:nth-child(3) { animation-delay: 1s; height: 60px; }
+        .bar:nth-child(4) { animation-delay: 1.5s; height: 85px; }
+
+        @keyframes growBar {
+            from { opacity: 0.4; transform: scaleY(0.8); }
+            to { opacity: 1; transform: scaleY(1.1); }
+        }
+
+        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #666; }
+        .ref-list { list-style: none; padding-top: 15px; }
+        .ref-list li { margin-bottom: 10px; }
+
+        @media (max-width: 768px) { header h1 { font-size: 2.2rem; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" data-aos="fade-up">
+            <h1>Depressão Maior</h1>
+            <p>Compreendendo o peso do transtorno e os mecanismos biológicos da esperança.</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>O que é o Transtorno Depressivo?</h2></div>
+            <p>O Transtorno Depressivo Maior (TDM) não é tristeza passageira ou fraqueza. É uma condição médica complexa que altera o humor, o pensamento e as funções biológicas básicas (sono, apetite e energia). Para o diagnóstico, os sintomas devem estar presentes por pelo menos <strong>duas semanas</strong>, representando uma mudança clara no funcionamento anterior.</p>
+            
+            <div class="highlight-box">
+                <strong>Anedonia:</strong> Um dos marcos da depressão é a perda de interesse ou prazer em atividades que antes eram gratificantes. É como se o "sistema de cores" da vida perdesse a saturação, deixando tudo em tons de cinza.
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>A Neurociência da Depressão</h2></div>
+            <p>A depressão altera a estrutura física e a comunicação química do cérebro.</p>
+            
+            
+
+            <div class="info-card">
+                <ul class="neuro-list">
+                    <li><strong>Hipótese Monoaminérgica:</strong> Há uma redução na disponibilidade de neurotransmissores essenciais, como <strong>Serotonina</strong> (bem-estar), <strong>Dopamina</strong> (motivação/prazer) e <strong>Noradrenalina</strong> (energia).</li>
+                    <li><strong>Atrofia do Hipocampo:</strong> O estresse crônico e o excesso de cortisol podem reduzir o volume do hipocampo (área de memória e emoção). O tratamento ajuda a reverter esse processo através da <em>neuroplasticidade</em>.</li>
+                    <li><strong>Neuroplasticidade e BDNF:</strong> Na depressão, os níveis de BDNF (uma "proteína fertilizante" para neurônios) diminuem. O tratamento visa aumentar o BDNF para que o cérebro consiga criar novas conexões.</li>
+                    <li><strong>Eixo HPA (Estresse):</strong> O sistema de resposta ao estresse fica "travado" no modo ligado, mantendo níveis de cortisol elevados que prejudicam o sistema imunológico e o sono.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>Sintomas e Impactos</h2></div>
+            <div class="grid-two">
+                <div class="card info-card">
+                    <h3>Impacto Cognitivo</h3>
+                    <p>Dificuldade de tomada de decisão, perda de concentração, sentimentos de culpa excessiva e pensamentos recorrentes sobre a morte.</p>
+                </div>
+                <div class="card info-card">
+                    <h3>Impacto Físico</h3>
+                    <p>Alterações no padrão de sono (insônia ou hipersonia), fadiga constante, lentificação psicomotora ou agitação, e mudanças no peso.</p>
+                </div>
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>Estratégias de Recuperação</h2></div>
+            <p>A recuperação da depressão foca em reconstruir a química cerebral e os padrões de comportamento.</p>
+            
+            
+
+            <div class="info-card">
+                <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
+                <ul>
+                    <li><strong>Tríade Cognitiva de Beck:</strong> Trabalhar a visão negativa sobre si mesmo, o mundo e o futuro.</li>
+                    <li><strong>Ativação Comportamental:</strong> A estratégia mais eficaz. Consiste em retomar atividades pequenas de forma gradual para reativar o sistema de dopamina.</li>
+                    <li><strong>Desafios de Pensamento:</strong> Identificar distorções como a "generalização" (achar que nada nunca vai dar certo).</li>
+                </ul>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Classes Medicamentosas</th>
+                            <th>Função Neuroquímica</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ISRS (ex: Fluoxetina)</strong></td>
+                            <td>Aumentam a serotonina, melhorando o humor e a ansiedade.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IRSN (ex: Duloxetina)</strong></td>
+                            <td>Atuam na serotonina e noradrenalina, ajudando na energia e dores físicas.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Atípicos (ex: Bupropiona)</strong></td>
+                            <td>Focam em dopamina e noradrenalina, auxiliando na motivação e prazer.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="activation-container" data-aos="zoom-in">
+            <h2>Pequenos Passos, Grandes Mudanças</h2>
+            <p>A depressão retira a energia para agir. Na TCC, aprendemos que a <strong>ação precede a motivação</strong>. Não esperamos ter vontade; agimos para que a vontade surja depois.</p>
+            
+            <div class="step-visual">
+                <div class="bar" style="height: 20px;"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            
+            <p style="max-width: 500px; font-size: 0.9rem; opacity: 0.9;"><strong>Desafio de hoje:</strong> Qual é a menor tarefa possível que você pode realizar agora? (Ex: Lavar um copo, abrir a janela, trocar de roupa). <br><em>Cada pequena barra preenchida sinaliza ao seu cérebro que a mudança começou.</em></p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="font-weight: 700; color: var(--dark-green);">Referências Técnicas:</p>
+            <ul class="ref-list">
+                <li><strong>Beck, A. T. (1979).</strong> Cognitive Therapy of Depression.</li>
+                <li><strong>Stahl, S. M. (2014).</strong> Psicofarmacologia: Bases Neurocientíficas.</li>
+                <li><strong>American Psychiatric Association (2022).</strong> DSM-5-TR.</li>
+                <li><strong>Kandel, E. R. (2018).</strong> Princípios da Neurociência.</li>
+                <li><strong>Martell, C. R. (2010).</strong> Behavioral Activation for Depression.</li>
+            </ul>
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
+            <p>© 2026 Guia de Psicoeducação Clínica - Bruno de Souza (CRP 07/44472)</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
