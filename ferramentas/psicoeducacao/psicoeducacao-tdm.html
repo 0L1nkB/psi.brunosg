@@ -362,3 +362,118 @@
                             <p>Desesperança. Acreditar que o sofrimento atual é permanente e imutável.</p>
                             <hr style="border:0; border-top:1px solid rgba(255,255,255,0.2); margin:10px 0;">
                             <p><strong>Fato:</strong> A depressão é episódica e tratável. O jeito que você se sente agora não é como se sentirá para sempre.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #e8f5e9;">
+        <div class="container">
+            <h2 class="section-title">Pilares do Tratamento</h2>
+            <p class="section-subtitle">Como recuperamos a qualidade de vida.</p>
+
+            <div class="treatment-grid">
+                <div class="treat-card treat-tcc">
+                    <h3 style="color: #2e7d32;"><i class="fas fa-comments"></i> Terapia Cognitivo-Comportamental</h3>
+                    <p>Focada em mudar padrões de pensamento e comportamento:</p>
+                    <ul class="treat-list">
+                        <li><strong>Ativação Comportamental:</strong> Planejar atividades prazerosas ou de domínio, mesmo sem vontade, para "ligar o motor" do cérebro novamente.</li>
+                        <li><strong>Reestruturação Cognitiva:</strong> Identificar e questionar pensamentos automáticos negativos (como os do baralho).</li>
+                        <li><strong>Higiene do Sono:</strong> Regularizar o ciclo circadiano.</li>
+                    </ul>
+                </div>
+
+                <div class="treat-card treat-med">
+                    <h3 style="color: #1565c0;"><i class="fas fa-capsules"></i> Farmacologia</h3>
+                    <p>O objetivo não é "criar felicidade artificial", mas restaurar o equilíbrio biológico:</p>
+                    <ul class="treat-list">
+                        <li><strong>ISRS (Ex: Fluoxetina, Escitalopram):</strong> Aumentam a Serotonina.</li>
+                        <li><strong>Duais (Ex: Venlafaxina):</strong> Atuam na Serotonina e Noradrenalina (energia/foco).</li>
+                        <li><strong>Dopaminérgicos (Ex: Bupropiona):</strong> Ajudam na motivação e prazer.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ref-section">
+        <div class="container">
+            <h4>Referências Bibliográficas</h4>
+            <ul class="ref-list" style="list-style-type: decimal; margin-left: 20px;">
+                <li>American Psychiatric Association. (2014). <em>Manual Diagnóstico e Estatístico de Transtornos Mentais (DSM-5)</em>.</li>
+                <li>Beck, A. T. (1979). <em>Cognitive Therapy of Depression</em>. New York: Guilford Press.</li>
+                <li>Stahl, S. M. (2014). <em>Psicofarmacologia Essencial de Stahl</em>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer style="background: #37474f; color: white; padding: 40px 0; text-align: center;">
+        <div class="container">
+            <h3>Bruno de Souza</h3>
+            <p>Psicólogo Clínico | CRP 07/44472</p>
+            <p style="font-size: 0.9rem; color: #cfd8dc; margin-top: 10px;">Especialista em TCC e Terapia do Esquema.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Função Neurobiologia ---
+        function explain(topic) {
+            const descBox = document.getElementById('brain-desc');
+            
+            if (topic === 'neuro') {
+                descBox.style.backgroundColor = "#fff9c4"; // Amarelo suave
+                descBox.innerHTML = `
+                    <h4 style='color:#fbc02d; margin-bottom:10px;'>A "Sopa Química"</h4>
+                    <p>A depressão está ligada à escassez de neurotransmissores na fenda sináptica:
+                    <br><strong>Serotonina:</strong> Regula humor, sono e apetite.
+                    <br><strong>Noradrenalina:</strong> Energia e atenção.
+                    <br><strong>Dopamina:</strong> Prazer, recompensa e motivação.
+                    <br>Os antidepressivos funcionam aumentando a disponibilidade dessas substâncias.</p>
+                `;
+            } 
+            else if (topic === 'hippo') {
+                descBox.style.backgroundColor = "#e1bee7"; // Roxo suave
+                descBox.innerHTML = `
+                    <h4 style='color:#8e24aa; margin-bottom:10px;'>O Hipocampo</h4>
+                    <p>Responsável pela memória e emoção. Em depressões longas e não tratadas, o estresse crônico (Cortisol) pode causar uma leve <strong>atrofia</strong> (encolhimento) do hipocampo. A boa notícia é que o tratamento (terapia e medicação) estimula a neurogênese, revertendo esse processo.</p>
+                `;
+            } 
+            else if (topic === 'cortex') {
+                descBox.style.backgroundColor = "#bbdefb"; // Azul suave
+                descBox.innerHTML = `
+                    <h4 style='color:#0d47a1; margin-bottom:10px;'>Hipoatividade Frontal</h4>
+                    <p>O Córtex Pré-Frontal (lado esquerdo), associado a objetivos e motivação, tende a estar menos ativo na depressão. Isso explica a dificuldade de "iniciar" tarefas, tomar decisões ou planejar o futuro (Funções Executivas prejudicadas).</p>
+                `;
+            }
+        }
+
+        // --- Função Gerador de Ativação (Behavioral Activation) ---
+        const tasks = [
+            "Beber um copo d'água gelada.",
+            "Abrir uma janela e olhar o céu por 1 minuto.",
+            "Arrumar apenas a cama (não precisa arrumar o quarto todo).",
+            "Ouvir uma música que você gostava há 5 anos.",
+            "Tomar um banho (mesmo que rápido).",
+            "Mandar uma figurinha para um amigo.",
+            "Ficar em pé e espreguiçar o corpo.",
+            "Lavar apenas 3 pratos da pia."
+        ];
+
+        function generateTask() {
+            const display = document.getElementById('task-display');
+            // Efeito de carregamento rápido
+            display.style.opacity = 0;
+            
+            setTimeout(() => {
+                const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+                display.innerHTML = `"${randomTask}"`;
+                display.style.opacity = 1;
+                display.style.transform = "scale(1.05)";
+                setTimeout(() => display.style.transform = "scale(1)", 200);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
