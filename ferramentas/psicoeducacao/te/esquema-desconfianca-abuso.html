@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mergulho Profundo: Desconfiança e Abuso - Bruno de Souza</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta "The Fortress" - Sóbria, Protetora e Alerta */
+            --bg-body: #f5f7f8;      
+            --text-main: #263238;    /* Cinza Chumbo */
+            --text-light: #546e7a;
+            
+            /* Cores dos Esquemas */
+            --schema-abuse: #ff7043; /* Laranja Queimado (Alerta) */
+            --mode-child: #bcaaa4;   /* Taupe (Criança Ferida) */
+            --mode-protector: #455a64; /* Cinza (Protetor Desligado/Ataque) */
+            --mode-adult: #78909c;   /* Azul Aço (Adulto Racional) */
+            
+            --radius: 8px;
+            --shadow: 0 4px 20px rgba(38, 50, 56, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Merriweather', serif;
+            color: #1c2326;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* HEADER */
+        header {
+            padding: 80px 20px 60px;
+            text-align: center;
+            background: linear-gradient(to bottom, #fff 0%, var(--bg-body) 100%);
+            border-bottom: 1px solid #cfd8dc;
+        }
+        
+        .tag {
+            background: #263238; color: white; padding: 4px 12px; border-radius: 4px;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+            display: inline-block; margin-bottom: 20px;
+        }
+
+        /* COMPONENTES DE LEITURA (ACCORDION) */
+        details {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-left: 5px solid var(--schema-abuse);
+        }
+
+        summary {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            transition: background 0.2s;
+        }
+        
+        summary:hover { background: #fff3e0; }
+        
+        summary::after {
+            content: '+'; 
+            font-size: 1.5rem; 
+            color: var(--schema-abuse);
+            font-weight: 300;
+        }
+        
+        details[open] summary::after { content: '-'; }
+        
+        .content-body {
+            padding: 0 30px 30px 30px;
+            color: var(--text-light);
+            background: white;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        /* CITATION BOX */
+        .quote-box {
+            background: white; padding: 40px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin: 40px 0; text-align: center;
+            border: 1px solid #b0bec5;
+            position: relative;
+        }
+        .quote-box::before {
+            content: '\f132'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            font-size: 2.5rem; color: var(--schema-abuse); background: var(--bg-body); padding: 0 10px;
+        }
+        .quote-text { font-family: 'Merriweather', serif; font-size: 1.4rem; font-style: italic; color: #37474f; }
+
+        /* RADAR GRID */
+        .radar-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;
+        }
+        .radar-card {
+            background: #fafafa; padding: 25px; border-radius: 8px; border: 1px solid #eee;
+        }
+        .radar-title { font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+
+        /* MODOS (TABELA) */
+        .mode-table {
+            width: 100%; border-collapse: collapse; margin-top: 20px; background: white;
+            box-shadow: var(--shadow); border-radius: var(--radius); overflow: hidden;
+        }
+        .mode-table th { background: #37474f; color: white; padding: 15px; text-align: left; }
+        .mode-table td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: top; }
+        .mode-icon { font-size: 1.5rem; margin-right: 10px; vertical-align: middle; }
+
+        /* DETECTOR DE BANDEIRAS TOOL */
+        .flag-widget {
+            background: #eceff1; padding: 40px; border-radius: var(--radius);
+            border: 2px solid var(--mode-adult); margin: 60px 0;
+            text-align: center;
+        }
+        .flag-display {
+            background: white; padding: 30px; border-radius: 4px; margin-top: 20px;
+            font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.6;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;
+            min-height: 120px; display: flex; align-items: center; justify-content: center;
+        }
+        .btn-flag {
+            padding: 10px 20px; border: none; border-radius: 50px; cursor: pointer;
+            font-weight: bold; margin: 5px; transition: transform 0.2s; color: white;
+        }
+        .btn-flag:hover { transform: translateY(-2px); }
+        .btn-red { background: #c62828; }
+        .btn-green { background: #2e7d32; }
+
+        /* --- FOOTER CLEAN / TECH --- */
+        footer {
+            margin-top: auto;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 40px 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Merriweather', serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #343a40;
+        }
+
+        .footer-links a {
+            color: #6c757d;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: #263238; }
+
+        .social-icons { display: flex; gap: 15px; }
+        .social-btn {
+            width: 35px; height: 35px; border-radius: 50%; background: white;
+            border: 1px solid #dee2e6; display: flex; align-items: center; justify-content: center;
+            color: #495057; text-decoration: none; transition: all 0.2s;
+        }
+        .social-btn:hover { background: #263238; color: white; border-color: #263238; }
+        
+        .copyright { margin-top: 10px; font-size: 0.8rem; opacity: 0.8; }
+        
+        @media (max-width: 768px) {
+            .radar-grid { grid-template-columns: 1fr; }
+            .mode-table, .mode-table tbody, .mode-table tr, .mode-table td { display: block; width: 100%; }
+            .mode-table tr { margin-bottom: 20px; border: 1px solid #eee; }
+            .mode-table td { text-align: left; padding-left: 15px; }
+            .mode-table thead { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <span class="tag">Dossiê Clínico</span>
+            <h1>Desconfiança e Abuso</h1>
+            <p style="margin-top: 15px; color: #546e7a; font-size: 1.1rem;">
+                A crença central de que o mundo é perigoso e as pessoas têm intenções ocultas.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section class="quote-box">
+            <p class="quote-text">"Se eu baixar a guarda, eles vão me usar, me manipular ou me machucar. É comer ou ser comido."</p>
+            <p style="margin-top: 20px; font-size: 1rem; color: #455a64;">
+                Este esquema nasce da quebra fundamental da segurança na infância. Diferente do abandono (que é a perda), aqui o foco é o <strong>dano intencional</strong>.
+            </p>
+        </section>
+
+        <h3 style="margin-bottom: 20px; text-align: center;">1. Anatomia da Desconfiança</h3>
+        
+        <details open>
+            <summary>A Expectativa de Dano</summary>
+            <div class="content-body">
+                <p>O paciente com este esquema vive em um estado de "paranóia funcional". Ele não espera *se* vai ser traído, mas *quando*. Isso gera uma vigilância exaustiva.</p>
+                <p style="margin-top: 15px;">Formas comuns de manifestação:</p>
+                <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.6;">
+                    <li><strong>Suspeita Crônica:</strong> Acreditar que elogios são manipulações ou que favores serão cobrados com juros altos.</li>
+                    <li><strong>Guardar Segredos:</strong> Não compartilhar informações pessoais para que não sejam usadas contra você ("Tudo o que você disser poderá ser usado...").</li>
+                    <li><strong>Vitimismo (Rendição):</strong> Acabar se relacionando repetidamente com parceiros abusivos, narcisistas ou sádicos, confirmando a crença de que "todos são maus".</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>As Origens: O Ambiente Tóxico</summary>
+            <div class="content-body">
+                <p>Este esquema geralmente vem de ambientes onde a criança foi <strong>usada, humilhada ou ferida</strong> por quem deveria protegê-la.</p>
+                <div style="margin-top: 20px;">
+                    <h4 style="color: #bf360c; font-size: 1rem;">Experiências Formadoras:</h4>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Abuso Físico ou Sexual:</strong> A violação direta do corpo e da segurança.</li>
+                        <li><strong>Abuso Verbal/Sadismo:</strong> Pais que ridicularizavam, apelidavam ou humilhavam a criança em público.</li>
+                        <li><strong>Manipulação:</strong> Pais que usavam a criança para atingir o outro cônjuge ou que faziam "jogos mentais" (Gaslighting).</li>
+                        <li><strong>Bullying Severo:</strong> Ser o alvo constante na escola sem proteção dos adultos.</li>
+                    </ul>
+                </div>
+            </div>
+        </details>
+
+        <div style="margin: 60px 0;">
+            <h3 style="text-align: center; margin-bottom: 20px;">2. O Cérebro em Guerra</h3>
+            <p style="text-align: center; margin-bottom: 30px; color: #546e7a;">Por que é tão difícil relaxar?</p>
+            
+            <div class="radar-grid">
+                <div class="radar-card" style="background: #fff3e0; border-color: #ffcc80;">
+                    <div class="radar-title" style="color: #e65100;">
+                        <i class="fas fa-eye"></i> Hipervigilância
+                    </div>
+                    <p>Seu sistema de detecção de ameaças (Amígdala) está sempre ligado. Você entra em uma sala e imediatamente localiza as saídas, lê as microexpressões faciais e procura sinais de perigo. Isso gera <strong>exaustão crônica</strong>.</p>
+                </div>
+
+                <div class="radar-card" style="background: #eceff1; border-color: #b0bec5;">
+                    <div class="radar-title" style="color: #37474f;">
+                        <i class="fas fa-microchip"></i> Viés de Interpretação
+                    </div>
+                    <p>O cérebro interpreta estímulos <strong>neutros</strong> como <strong>hostis</strong>. Se alguém esquece de te dar bom dia, seu cérebro não pensa "ele está distraído", mas sim "ele está com raiva de mim ou tramando algo".</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="text-align: center; margin-bottom: 20px;">3. As Vozes Internas</h3>
+        <p style="text-align: center; margin-bottom: 20px; color: #546e7a;">Quem está no comando da defesa?</p>
+
+        <table class="mode-table">
+            <thead>
+                <tr>
+                    <th width="30%">Modo</th>
+                    <th width="35%">O que ele diz/faz</th>
+                    <th width="35%">Função (Por que existe?)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: #5d4037; font-weight: bold;">
+                        <i class="fas fa-child mode-icon" style="color:#d7ccc8;"></i> Criança Abusada
+                    </td>
+                    <td>
+                        Sente terror, vergonha e impotência. Acredita que merece o castigo ou o abuso. Fica paralisada (Freeze).
+                    </td>
+                    <td>
+                        É a parte que guarda a dor do trauma original.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #c62828; font-weight: bold;">
+                        <i class="fas fa-shield-alt mode-icon" style="color:#ef9a9a;"></i> Ataque (Hipercompensação)
+                    </td>
+                    <td>
+                        "Vou te machucar antes que você me machuque." Torna-se agressivo, vingativo ou extremamente desconfiado. "A melhor defesa é o ataque."
+                    </td>
+                    <td>
+                        Tenta inverter o jogo para não ser mais a vítima. Transforma medo em raiva.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #2e7d32; font-weight: bold;">
+                        <i class="fas fa-user-check mode-icon" style="color:#a5d6a7;"></i> Adulto Saudável
+                    </td>
+                    <td>
+                        "Eu sei que parece perigoso, mas essa pessoa não é o meu pai/agressor. Eu posso me proteger se algo acontecer, mas não preciso atacar agora."
+                    </td>
+                    <td>
+                        Avalia quem é confiavél e quem não é (Discernimento).
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="flag-widget">
+            <h3 style="color: #37474f; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fas fa-flag"></i> Detector de Bandeiras
+            </h3>
+            <p style="color: #546e7a;">Aprenda a diferenciar perigo real de projeção do trauma.</p>
+            
+            <div class="flag-display" id="flag-text">
+                <p style="text-align:center; color:#90a4ae; width:100%;">Clique em um botão para analisar um comportamento.</p>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn-flag btn-red" onclick="showFlag('red')">🚩 Comportamento Suspeito (Red Flag)</button>
+                <button class="btn-flag btn-green" onclick="showFlag('green')">✅ Comportamento Seguro (Green Flag)</button>
+            </div>
+        </div>
+
+        <details>
+            <summary>O Ciclo do Teste (Como eu afasto as pessoas)</summary>
+            <div class="content-body">
+                <p>Para se proteger, o paciente com este esquema costuma submeter parceiros e amigos a "Testes de Resistência":</p>
+                <ol style="margin-left: 20px; margin-top: 15px; line-height: 1.6;">
+                    <li><strong>O Muro:</strong> Você é frio e distante, esperando que o outro "pule o muro" para provar que se importa.</li>
+                    <li><strong>A Acusação:</strong> Você acusa o outro de traição ou mentira sem provas, só para ver a reação.</li>
+                    <li><strong>O Resultado:</strong> A pessoa saudável se sente injustiçada e vai embora. Seu esquema diz: "Viu? Eu sabia que ela não prestava."</li>
+                </ol>
+                <p style="margin-top:10px; font-weight:bold;">A quebra do ciclo envolve aprender a confiar gradualmente, sem testes.</p>
+            </div>
+        </details>
+
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">Bruno de Souza</div>
+            
+            <div class="footer-links">
+                <a href="#">Início</a>
+                <a href="#">Ferramentas Clínicas</a>
+                <a href="#">Agendamento</a>
+            </div>
+
+            <div class="social-icons">
+                <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="copyright">
+                &copy; 2026 Bruno de Souza. Psicólogo CRP 07/44472. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showFlag(type) {
+            const display = document.getElementById('flag-text');
+            
+            if (type === 'red') {
+                display.innerHTML = `
+                    <div style="border-left: 4px solid #c62828; padding-left: 15px;">
+                        <h4 style="color:#c62828; margin-bottom:5px;">Bandeira Vermelha (Perigo Real)</h4>
+                        <ul style="list-style:disc; margin-left:15px; font-size:0.95rem;">
+                            <li>A pessoa mente sobre pequenas coisas constantemente.</li>
+                            <li>Ela diminui seus sentimentos ("Você é louco/a").</li>
+                            <li>Ela viola limites que você estabeleceu claramente.</li>
+                            <li>Ela fala mal de todos os ex-parceiros/amigos.</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                display.innerHTML = `
+                    <div style="border-left: 4px solid #2e7d32; padding-left: 15px;">
+                        <h4 style="color:#2e7d32; margin-bottom:5px;">Bandeira Verde (Segurança)</h4>
+                        <ul style="list-style:disc; margin-left:15px; font-size:0.95rem;">
+                            <li>A pessoa admite quando erra e pede desculpas.</li>
+                            <li>Ela respeita seu "não" sem fazer chantagem.</li>
+                            <li>As ações dela combinam com as palavras (Consistência).</li>
+                            <li>Ela permite que você tenha privacidade.</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+    </script>
+
+</body>
+</html>
