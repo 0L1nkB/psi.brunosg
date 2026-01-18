@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicoeducação: Transtorno de Compulsão Alimentar</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7DB9B6; 
+            --secondary: #E9EDC9; 
+            --accent: #E29578; 
+            --dark-green: #2D5A58;
+            --text-color: #444;
+            --bg-body: #FBFBFB;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        h1, h2, h3 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
+
+        /* --- Header / Hero --- */
+        header {
+            height: 60vh;
+            background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; border-radius: 0 0 60px 60px;
+            padding: 20px;
+        }
+
+        header h1 { font-size: 3rem; color: white; margin-bottom: 20px; }
+        header p { font-size: 1.2rem; max-width: 650px; opacity: 0.95; }
+
+        /* --- Seções --- */
+        section { padding: 80px 0; border-bottom: 1px solid #eee; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.2rem; position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; width: 60%; height: 4px; background: var(--secondary); position: absolute; bottom: -10px; left: 20%; border-radius: 2px; }
+
+        /* --- Cards e Boxes --- */
+        .info-card {
+            background: white; padding: 35px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .highlight-box {
+            background: var(--secondary); padding: 25px; border-left: 6px solid var(--primary);
+            border-radius: 10px; margin: 30px 0;
+        }
+
+        .grid-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+
+        /* --- Neurobiologia --- */
+        .neuro-list { list-style: none; }
+        .neuro-list li { margin-bottom: 20px; padding-left: 30px; position: relative; }
+        .neuro-list li::before { content: '•'; color: var(--primary); font-size: 2rem; position: absolute; left: 0; top: -10px; }
+
+        /* --- Tabela --- */
+        .table-wrap { overflow-x: auto; margin-top: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 18px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        th { background: var(--primary); color: white; }
+
+        /* --- Exercício de Pausa Atencional --- */
+        .pause-container {
+            background: var(--dark-green); color: white;
+            padding: 60px 20px; border-radius: 40px; text-align: center;
+            margin: 50px 0; display: flex; flex-direction: column; align-items: center;
+        }
+
+        .wave-visual {
+            width: 250px; height: 120px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; margin: 30px 0;
+        }
+
+        .wave-dot {
+            width: 20px; height: 20px; background: var(--accent);
+            border-radius: 50%; position: absolute;
+            animation: moveWave 4s infinite ease-in-out;
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        @keyframes moveWave {
+            0%, 100% { transform: translate(-100px, 0); }
+            50% { transform: translate(100px, -50px); }
+        }
+
+        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #666; }
+        .ref-list { list-style: none; padding-top: 15px; }
+        .ref-list li { margin-bottom: 10px; }
+
+        @media (max-width: 768px) { header h1 { font-size: 2.2rem; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" data-aos="fade-up">
+            <h1>Compulsão Alimentar</h1>
+            <p>Compreendendo o transtorno além do comportamento: a relação entre cérebro, emoção e alimento.</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>O que é o TCA?</h2></div>
+            <p>O Transtorno de Compulsão Alimentar (TCA) é caracterizado por episódios recorrentes de ingestão de grandes quantidades de comida em um curto espaço de tempo, acompanhados por uma <strong>sensação de perda de controle</strong>. Diferente da bulimia, no TCA não existem comportamentos compensatórios regulares (como vômitos ou uso de laxantes).</p>
+            
+            <div class="highlight-box">
+                <strong>O Ciclo do Sofrimento:</strong> O episódio de compulsão geralmente é seguido por intensos sentimentos de culpa, nojo de si mesmo e depressão, o que muitas vezes atua como gatilho para o próximo episódio, criando um ciclo vicioso de regulação emocional ineficaz através da comida.
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>A Neurobiologia da Compulsão</h2></div>
+            <p>No TCA, o cérebro apresenta desequilíbrios nos circuitos de recompensa e de controle inibitório.</p>
+            
+            
+
+            <div class="info-card">
+                <ul class="neuro-list">
+                    <li><strong>Sistema Dopaminérgico:</strong> O alimento atua como uma "droga" natural, liberando grandes quantidades de dopamina. Com o tempo, o cérebro desenvolve uma tolerância, exigindo quantidades maiores para sentir o mesmo alívio ou prazer.</li>
+                    <li><strong>Córtex Pré-Frontal (CPF):</strong> Durante um episódio, a área responsável pela tomada de decisões e freio de impulsos apresenta hipoatividade. É por isso que o paciente sente que "não consegue parar", mesmo querendo.</li>
+                    <li><strong>Hipotálamo e Homeostase:</strong> O TCA pode envolver uma desregulação nos sinais de fome e saciedade (leptina e grelina), fazendo com que o corpo não envie sinais claros de que já está satisfeito.</li>
+                    <li><strong>O Papel da Serotonina:</strong> Níveis baixos de serotonina estão ligados à impulsividade e ao desejo por carboidratos, funcionando como uma tentativa do corpo de "automedicar" um humor deprimido.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>Sinais e Critérios</h2></div>
+            <div class="grid-two">
+                <div class="card info-card">
+                    <h3>Comportamentais</h3>
+                    <p>Comer muito mais rápido que o normal, comer até sentir-se desconfortavelmente cheio e alimentar-se escondido por vergonha da quantidade ingerida.</p>
+                </div>
+                <div class="card info-card">
+                    <h3>Emocionais</h3>
+                    <p>Comer grandes quantidades mesmo sem fome física, sentir-se culpado ou deprimido após o episódio e usar o alimento como principal ferramenta para lidar com estresse ou ansiedade.</p>
+                </div>
+            </div>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>O Tratamento Baseado em Evidências</h2></div>
+            <p>O foco do tratamento é restaurar um padrão alimentar saudável e desenvolver novas formas de lidar com as emoções.</p>
+            
+            
+
+            <div class="info-card">
+                <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
+                <ul>
+                    <li><strong>Regularidade Alimentar:</strong> Estabelecer horários para as refeições para evitar a fome extrema, que é um gatilho biológico para a compulsão.</li>
+                    <li><strong>Identificação de Gatilhos:</strong> Aprender a diferenciar a "fome física" da "fome emocional" (comer para anestesiar sentimentos).</li>
+                    <li><strong>Técnicas de Tolerância ao Mal-estar:</strong> Desenvolver estratégias para "surfar a onda" da fissura sem ceder ao impulso.</li>
+                </ul>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Recurso Farmacológico</th>
+                            <th>Mecanismo de Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Lisdexanfetamina</strong></td>
+                            <td>Atualmente o único aprovado especificamente para TCA; ajuda no controle de impulsos e redução da frequência dos episódios.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ISRS (Antidepressivos)</strong></td>
+                            <td>Auxiliam no controle da ansiedade e humor, reduzindo a necessidade de "comer emocionalmente".</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Topiramato</strong></td>
+                            <td>Atua na redução do desejo (fissura) por alimentos e na impulsividade.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="pause-container" data-aos="zoom-in">
+            <h2>Surfando a Urgência</h2>
+            <p>A vontade de comer compulsivamente funciona como uma onda: ela cresce, atinge um pico e depois desce. Tente apenas observar o movimento desta esfera sem julgamento.</p>
+            
+            <div class="wave-visual">
+                <div class="wave-dot"></div>
+            </div>
+            
+            <p style="max-width: 500px; font-size: 0.9rem; opacity: 0.9;">Prática da Pausa: Quando sentir o impulso, espere 5 minutos. Respire e perceba onde você sente a "vontade" no corpo. <br><strong>A urgência é um sentimento, não uma ordem de comando.</strong></p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="font-weight: 700; color: var(--dark-green);">Referências Técnicas:</p>
+            <ul class="ref-list">
+                <li><strong>Fairburn, C. G. (2013).</strong> Overcoming Binge Eating. The Guilford Press.</li>
+                <li><strong>American Psychiatric Association (2022).</strong> DSM-5-TR.</li>
+                <li><strong>Stahl, S. M. (2014).</strong> Psicofarmacologia: Bases Neurocientíficas.</li>
+                <li><strong>Duchesne, M. (2015).</strong> Transtorno da Compulsão Alimentar. Artmed.</li>
+            </ul>
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
+            <p>© 2026 Guia de Psicoeducação Clínica - Bruno de Souza (CRP 07/44472)</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
