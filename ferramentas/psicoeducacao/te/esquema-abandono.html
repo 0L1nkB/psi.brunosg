@@ -10,19 +10,19 @@
 
     <style>
         :root {
-            /* Paleta "Deep Healing" - Mais sóbria e profunda */
+            /* Paleta "Deep Healing" */
             --bg-body: #fff9f5;      
-            --text-main: #3e2723;
-            --text-light: #5d4037;
+            --text-main: #2c3e50;    /* Azul Petróleo Escuro (Mais moderno que marrom) */
+            --text-light: #546e7a;
             
             /* Cores dos Esquemas */
-            --schema-abandonment: #ff8a65; /* Laranja queimado */
+            --schema-abandonment: #ff8a65; /* Laranja suave */
             --mode-child: #ffccbc;
-            --mode-parent: #546e7a;
-            --mode-adult: #66bb6a;
+            --mode-parent: #b0bec5;
+            --mode-adult: #81c784;
             
             --radius: 8px;
-            --shadow: 0 4px 20px rgba(62, 39, 35, 0.08);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,30 +33,33 @@
             color: var(--text-main);
             line-height: 1.8;
             font-size: 1.05rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Merriweather', serif; /* Fonte mais editorial/livro */
-            color: #281a16;
+            font-family: 'Merriweather', serif;
+            color: #1a237e; /* Azul Profundo para Títulos (Mais autoridade) */
         }
 
         .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
         
         /* HEADER */
         header {
-            padding: 80px 20px;
+            padding: 80px 20px 60px;
             text-align: center;
             background: linear-gradient(to bottom, #fff 0%, var(--bg-body) 100%);
             border-bottom: 1px solid #efebe9;
         }
         
         .tag {
-            background: #3e2723; color: white; padding: 4px 12px; border-radius: 4px;
+            background: #1a237e; color: white; padding: 4px 12px; border-radius: 4px;
             font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
             display: inline-block; margin-bottom: 20px;
         }
 
-        /* COMPONENTES DE LEITURA DENSA (ACCORDION) */
+        /* COMPONENTES DE LEITURA (ACCORDION) */
         details {
             background: white;
             margin-bottom: 15px;
@@ -94,7 +97,7 @@
             padding: 0 30px 30px 30px;
             color: var(--text-light);
             background: white;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #f5f5f5;
         }
 
         /* CITATION BOX */
@@ -103,23 +106,23 @@
             box-shadow: var(--shadow); margin: 40px 0; text-align: center;
             border: 1px solid #ffccbc;
         }
-        .quote-text { font-family: 'Merriweather', serif; font-size: 1.4rem; font-style: italic; color: #bf360c; }
+        .quote-text { font-family: 'Merriweather', serif; font-size: 1.4rem; font-style: italic; color: #d84315; }
 
         /* QUÍMICA ESQUEMÁTICA */
         .chemistry-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;
         }
         .magnet-card {
-            background: #fafafa; padding: 20px; border-radius: 8px; border: 1px solid #eee;
+            background: #fafafa; padding: 25px; border-radius: 8px; border: 1px solid #eee;
         }
-        .magnet-title { font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .magnet-title { font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
 
         /* MODOS (TABELA) */
         .mode-table {
             width: 100%; border-collapse: collapse; margin-top: 20px; background: white;
             box-shadow: var(--shadow); border-radius: var(--radius); overflow: hidden;
         }
-        .mode-table th { background: #3e2723; color: white; padding: 15px; text-align: left; }
+        .mode-table th { background: #37474f; color: white; padding: 15px; text-align: left; }
         .mode-table td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: top; }
         .mode-icon { font-size: 1.5rem; margin-right: 10px; vertical-align: middle; }
 
@@ -131,11 +134,66 @@
         .flashcard-content {
             background: white; padding: 30px; border-radius: 4px;
             font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.8;
-            border-left: 5px solid var(--mode-adult);
+            border-left: 5px solid var(--mode-adult); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* TEXT HIGHLIGHTS */
-        .highlight { background: #ffe0b2; padding: 2px 4px; border-radius: 4px; }
+        /* --- FOOTER (NOVO DESIGN: Clean & Tech) --- */
+        footer {
+            margin-top: auto; /* Empurra para o final */
+            background-color: #f8f9fa; /* Cinza bem claro (Clean) */
+            border-top: 1px solid #e9ecef;
+            padding: 40px 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Merriweather', serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #343a40;
+        }
+
+        .footer-links a {
+            color: #6c757d;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: #1a237e; }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .social-btn {
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #dee2e6;
+            display: flex; align-items: center; justify-content: center;
+            color: #495057;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .social-btn:hover {
+            background: #1a237e;
+            color: white;
+            border-color: #1a237e;
+        }
+
+        .copyright {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
         
         @media (max-width: 768px) {
             .chemistry-grid { grid-template-columns: 1fr; }
@@ -152,8 +210,8 @@
         <div class="container">
             <span class="tag">Dossiê Clínico</span>
             <h1>O Esquema de Abandono</h1>
-            <p style="margin-top: 15px; color: #795548;">
-                Um guia profundo sobre a crença central de instabilidade e perda de conexão.
+            <p style="margin-top: 15px; color: #546e7a; font-size: 1.1rem;">
+                Compreendendo a crença central de instabilidade e a perda de conexão.
             </p>
         </div>
     </header>
@@ -161,9 +219,9 @@
     <div class="container">
 
         <section class="quote-box">
-            <p class="quote-text">"Não é que eu ache que você <strong>quer</strong>strong> me deixar. Eu sinto que é <strong>inevitável</strong>strong> que você vá, porque todos vão."</p>
-            <p style="margin-top: 20px; font-size: 0.9rem;">
-                O Abandono é um esquema da primeira infância (Domínio de Desconexão e Rejeição). Ele cria uma <strong>lente distorcida</strong> onde qualquer separação temporária é sentida como definitiva.
+            <p class="quote-text">"Não é que eu ache que você *quer* me deixar. Eu sinto que é *inevitável* que você vá, porque todos vão."</p>
+            <p style="margin-top: 20px; font-size: 1rem; color: #455a64;">
+                O Abandono é um esquema primário do <strong>Domínio de Desconexão e Rejeição</strong>. Ele cria uma lente distorcida onde qualquer separação temporária é sentida como um rompimento definitivo.
             </p>
         </section>
 
@@ -172,10 +230,10 @@
         <details open>
             <summary>O que realmente é esse esquema?</summary>
             <div class="content-body">
-                <p>O Esquema de Abandono/Instabilidade é a crença arraigada de que seus <strong>vínculos importantes são frágeis</strong> e que as pessoas que você ama não estarão lá para lhe dar apoio emocional, proteção ou conexão de forma consistente.</p>
+                <p>O Esquema de Abandono/Instabilidade é a percepção arraigada de que seus <strong>vínculos importantes são frágeis</strong> e que as pessoas que você ama não estarão lá para lhe dar apoio emocional, proteção ou conexão de forma consistente.</p>
                 <p style="margin-top: 15px;">Ele se manifesta de duas formas principais:</p>
-                <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li><strong>Baseado na Dependência:</strong> "Se você for embora, eu não vou sobreviver sozinho. O mundo é perigoso demais para mim." (Fusão com o outro).</li>
+                <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.6;">
+                    <li><strong>Baseado na Dependência:</strong> "Se você for embora, eu não vou sobreviver sozinho. O mundo é perigoso demais para mim." (Fusão).</li>
                     <li><strong>Baseado na Instabilidade:</strong> "Eu sei me virar, mas as pessoas são volúveis. Uma hora me amam, na outra somem. Não posso confiar na permanência de ninguém."</li>
                 </ul>
             </div>
@@ -184,52 +242,51 @@
         <details>
             <summary>As Origens na Infância (Fatores Biopsicossociais)</summary>
             <div class="content-body">
-                <p>Ninguém desenvolve esse esquema "do nada". Ele é fruto de uma adaptação a um ambiente instável.</p>
+                <p>Ninguém desenvolve esse esquema "do nada". Ele é uma adaptação a um ambiente instável.</p>
                 <div style="margin-top: 20px;">
                     <h4 style="color: #d84315; font-size: 1rem;">Ambiente Familiar Típico:</h4>
-                    <p>Geralmente envolveu a perda de uma figura parental (morte, divórcio) ou, mais comumente, a <strong>"perda emocional intermitente"</strong>: pais que alternavam entre serem carinhosos e explosivos, ou pais que viajavam muito e deixavam a criança aos cuidados de terceiros de forma imprevisível.</p>
-                    <h4 style="color: #5e35b1; font-size: 1rem; margin-top: 15px;">Temperamento Biológico:</h4>
-                    <p>Provavelmente você era uma criança constitucionalmente mais sensível à separação (ansiosa), que demorava mais para se acalmar após o choro e precisava de mais contato físico do que a média.</p>
+                    <p>Geralmente envolveu a perda de uma figura parental (morte, divórcio) ou, mais comumente, a <strong>"perda emocional intermitente"</strong>: pais que alternavam entre serem carinhosos e explosivos, ou pais que viajavam muito.</p>
+                    <h4 style="color: #1a237e; font-size: 1rem; margin-top: 15px;">Temperamento Biológico:</h4>
+                    <p>Provavelmente você era uma criança constitucionalmente mais sensível à separação (ansiosa), que demorava mais para se acalmar após o choro.</p>
                 </div>
             </div>
         </details>
 
         <div style="margin: 60px 0;">
             <h3 style="text-align: center; margin-bottom: 20px;">2. A Química Esquemática</h3>
-            <p style="text-align: center; margin-bottom: 30px;">Por que eu me sinto atraído(a) por quem me machuca?</p>
+            <p style="text-align: center; margin-bottom: 30px; color: #546e7a;">Por que a segurança parece "tédio"?</p>
             
             <div class="chemistry-grid">
-                <div class="magnet-card" style="background: #ffebee; border-color: #ffcdd2;">
-                    <div class="magnet-title">
-                        <i class="fas fa-magnet" style="color: #c62828;"></i> O "Imã" do Abandono
+                <div class="magnet-card" style="background: #fff3e0; border-color: #ffcc80;">
+                    <div class="magnet-title" style="color: #e65100;">
+                        <i class="fas fa-magnet"></i> O "Ímã" do Abandono
                     </div>
                     <p>Seu esquema sente uma atração visceral ("química") por parceiros que são:</p>
-                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px; font-size: 0.95rem;">
                         <li>Emocionalmente distantes ou frios.</li>
                         <li>Imprevisíveis (somem e aparecem).</li>
                         <li>Comprometidos com outras coisas (trabalho, outra família).</li>
-                        <li>Ambivalentes ("Não sei se quero namorar").</li>
                     </ul>
-                    <p style="margin-top: 10px; font-weight: bold;">Por que? Porque isso é FAMILIAR para o seu cérebro.</p>
+                    <p style="margin-top: 10px; font-weight: bold; font-size: 0.9rem;">Por que? Porque isso é FAMILIAR para o seu cérebro.</p>
                 </div>
 
-                <div class="magnet-card" style="background: #e8f5e9; border-color: #c8e6c9;">
-                    <div class="magnet-title">
-                        <i class="fas fa-shield-alt" style="color: #2e7d32;"></i> O "Tédio" da Segurança
+                <div class="magnet-card" style="background: #e8f5e9; border-color: #a5d6a7;">
+                    <div class="magnet-title" style="color: #2e7d32;">
+                        <i class="fas fa-couch"></i> O "Tédio" da Segurança
                     </div>
-                    <p>Quando você encontra alguém estável, seguro, que liga quando diz que vai ligar e demonstra afeto constante, seu esquema diz:</p>
-                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px;">
+                    <p>Quando você encontra alguém estável, que liga quando diz que vai ligar, seu esquema diz:</p>
+                    <ul style="list-style: disc; margin-left: 20px; margin-top: 10px; font-size: 0.95rem;">
                         <li>"Não tem química."</li>
                         <li>"É chato."</li>
                         <li>"Falta paixão."</li>
                     </ul>
-                    <p style="margin-top: 10px;"><strong>O Desafio:</strong> Aprender que segurança não é tédio, é paz.</p>
+                    <p style="margin-top: 10px; font-weight: bold; font-size: 0.9rem;">O Desafio: Aprender que segurança não é tédio, é paz.</p>
                 </div>
             </div>
         </div>
 
         <h3 style="text-align: center; margin-bottom: 20px;">3. As Vozes na Sua Cabeça</h3>
-        <p style="text-align: center; margin-bottom: 20px;">Na Terapia do Esquema, dividimos sua experiência em "partes" (Modos).</p>
+        <p style="text-align: center; margin-bottom: 20px; color: #546e7a;">Identificando quem está no comando.</p>
 
         <table class="mode-table">
             <thead>
@@ -241,33 +298,33 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="color: #bf360c; font-weight: bold;">
+                    <td style="color: #d84315; font-weight: bold;">
                         <i class="fas fa-baby mode-icon" style="color:#ffccbc;"></i> Criança Vulnerável
                     </td>
                     <td>
-                        "Ele não respondeu... ele foi embora. Eu vou ficar sozinho para sempre. É uma dor física no peito. Alguém me ajude, por favor!" (Pânico, choro, desespero).
+                        "Ele foi embora. Eu vou ficar sozinho para sempre. É uma dor física no peito. Alguém me ajude!" (Pânico, choro).
                     </td>
                     <td>
-                        Carrega a memória emocional do abandono original. É a parte que precisa de acolhimento, não de julgamento.
+                        Carrega a memória emocional do abandono original. Precisa de acolhimento.
                     </td>
                 </tr>
                 <tr>
                     <td style="color: #455a64; font-weight: bold;">
-                        <i class="fas fa-gavel mode-icon" style="color:#90a4ae;"></i> Pais Punitivos (Crítico)
+                        <i class="fas fa-gavel mode-icon" style="color:#cfd8dc;"></i> Pais Punitivos
                     </td>
                     <td>
-                        "Você é carente demais. Ninguém aguenta você. É por isso que eles vão embora. Você é um peso para as pessoas."
+                        "Você é carente demais. Ninguém aguenta você. É por isso que eles vão embora."
                     </td>
                     <td>
-                        Internalização de críticas antigas. Tenta "explicar" o abandono culpando você mesmo para dar uma falsa sensação de controle.
+                        Internalização de críticas. Tenta "explicar" o abandono culpando você mesmo.
                     </td>
                 </tr>
                 <tr>
-                    <td style="color: #1b5e20; font-weight: bold;">
+                    <td style="color: #2e7d32; font-weight: bold;">
                         <i class="fas fa-user-shield mode-icon" style="color:#a5d6a7;"></i> Adulto Saudável
                     </td>
                     <td>
-                        "Eu vejo que você está assustada (validação). Mas o fato dele não responder agora não significa que acabou (realidade). Vamos respirar e focar em nós mesmos agora (ação)."
+                        "Eu vejo que você está assustada. Mas o fato dele não responder agora não significa que acabou. Vamos respirar."
                     </td>
                     <td>
                         A parte que desenvolvemos na terapia. Ele acalma a Criança e cala o Crítico.
@@ -277,15 +334,17 @@
         </table>
 
         <div class="flashcard-widget">
-            <h3 style="color: #2e7d32; margin-bottom: 10px;"><i class="fas fa-file-medical"></i> Flashcard de Enfrentamento</h3>
-            <p style="margin-bottom: 20px;">Leia isto quando sentir o pânico do abandono chegando:</p>
+            <h3 style="color: #2e7d32; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-file-medical"></i> Flashcard de Enfrentamento
+            </h3>
+            <p style="margin-bottom: 20px; color: #1b5e20;">Leia isto quando sentir o pânico do abandono chegando:</p>
             
             <div class="flashcard-content">
-                <p>1. <strong>Validação:</strong> "Estou sentindo meu esquema de Abandono ativado agora. Sinto um aperto no peito e vontade de ligar desesperadamente. Isso é uma memória emocional da minha 'Pequena Eu', não necessariamente um fato atual."</p>
+                <p>1. <strong>Validação:</strong> "Estou sentindo meu esquema de Abandono ativado agora. Sinto um aperto no peito. Isso é uma memória emocional da minha 'Pequena Eu', não necessariamente um fato atual."</p>
                 <br>
-                <p>2. <strong>Teste de Realidade:</strong> "Qual a evidência real de que estou sendo abandonado agora? A pessoa disse que ia embora? Ou ela está apenas ocupada/cansada/calada? O silêncio do outro não é necessariamente sobre mim."</p>
+                <p>2. <strong>Teste de Realidade:</strong> "Qual a evidência real de que estou sendo abandonado? A pessoa disse que ia embora? Ou ela está apenas ocupada? O silêncio do outro não é necessariamente sobre mim."</p>
                 <br>
-                <p>3. <strong>Ação Saudável:</strong> "Em vez de ligar 20 vezes (hipercompensação) ou me isolar chorando (rendição), vou fazer algo por mim. Vou tolerar o desconforto da espera e cuidar da minha Criança Vulnerável."</p>
+                <p>3. <strong>Ação Saudável:</strong> "Em vez de ligar 20 vezes (hipercompensação) ou me isolar (rendição), vou fazer algo por mim. Vou tolerar o desconforto da espera e cuidar de mim mesma."</p>
             </div>
         </div>
 
@@ -293,21 +352,36 @@
             <summary>Como eu mantenho esse esquema vivo hoje? (Ciclo)</summary>
             <div class="content-body">
                 <p>Sem perceber, tentamos evitar o abandono com comportamentos que acabam provocando exatamente o que tememos (Profecia Autorrealizável):</p>
-                <ol style="margin-left: 20px; margin-top: 15px;">
-                    <li><strong>Ciúme e Controle:</strong> Você sufoca o parceiro para garantir que ele não saia. O parceiro se sente preso e acaba se afastando para respirar. Seu esquema diz: "Viu? Ele se afastou!".</li>
-                    <li><strong>Testes de Fidelidade:</strong> Você provoca brigas ou diz "então vamos terminar" esperando que o outro lute por você. Às vezes, o outro cansa e aceita o término.</li>
-                    <li><strong>Escolha de Parceiros:</strong> Você ignora "bandeiras vermelhas" (red flags) no início porque a química é forte, entrando novamente em relações com pessoas indisponíveis.</li>
+                <ol style="margin-left: 20px; margin-top: 15px; line-height: 1.6;">
+                    <li><strong>Ciúme e Controle:</strong> Você sufoca o parceiro para garantir que ele não saia. O parceiro se sente preso e se afasta. Seu esquema diz: "Viu? Ele se afastou!".</li>
+                    <li><strong>Testes de Fidelidade:</strong> Você provoca brigas ou ameaça terminar, esperando que o outro lute por você. Às vezes, o outro cansa e aceita o término.</li>
+                    <li><strong>Escolha de Parceiros:</strong> Você ignora sinais de alerta no início porque a química é forte, entrando novamente em relações com pessoas indisponíveis.</li>
                 </ol>
             </div>
         </details>
 
     </div>
 
-      <footer style="background: #37474f; color: white; padding: 40px 0; text-align: center;">
-        <div class="container">
-            <p style="font-size: 0.9rem; color: #cfd8dc; margin-top: 10px;">Bruno de Souza</p>
-            <p style="font-size: 0.9rem; color: #cfd8dc; margin-top: 10px;">Psicólogo Clínico | CRP 07/44472</p>
-            <p style="font-size: 0.9rem; color: #cfd8dc; margin-top: 10px;">Especialista em terapia do esquema e terapia cognitivo comportamental.</p>
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">Bruno de Souza</div>
+            
+            <div class="footer-links">
+                <a href="#">Início</a>
+                <a href="#">Ferramentas</a>
+                <a href="#">Sobre</a>
+                <a href="#">Contato</a>
+            </div>
+
+            <div class="social-icons">
+                <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="copyright">
+                &copy; 2026 Bruno de Souza. Psicólogo CRP 07/44472. Todos os direitos reservados.
+            </div>
         </div>
     </footer>
 
