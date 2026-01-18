@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoeducação: Transtorno de Ansiedade Generalizada</title>
+    <title>Transtorno de Ansiedade Generalizada: O Guia Completo</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
@@ -11,323 +11,227 @@
     
     <style>
         :root {
-            --primary: #7DB9B6; /* Verde Água */
-            --secondary: #E9EDC9; /* Creme */
+            --primary: #7DB9B6; /* Verde Água Acolhedor */
+            --secondary: #E9EDC9; /* Creme Suave */
             --accent: #E29578; /* Tom Terra */
-            --text: #4A4A4A;
-            --bg-light: #FBFBFB;
-            --white: #ffffff;
+            --dark-green: #2D5A58;
+            --text-color: #444;
+            --bg-body: #FBFBFB;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
         body {
             font-family: 'Open Sans', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text);
+            background-color: var(--bg-body);
+            color: var(--text-color);
             line-height: 1.8;
         }
 
-        h1, h2, h3 {
-            font-family: 'Quicksand', sans-serif;
-            color: #2D5A58;
-        }
+        h1, h2, h3 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
 
-        /* --- Header / Hero --- */
+        /* --- Hero Section --- */
         header {
-            height: 70vh;
+            height: 60vh;
             background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            border-radius: 0 0 50px 50px;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; border-radius: 0 0 60px 60px;
             padding: 20px;
         }
 
-        header h1 {
-            font-size: 2.8rem;
-            color: white;
-            margin-bottom: 15px;
-        }
+        header h1 { font-size: 3rem; color: white; margin-bottom: 20px; }
+        header p { font-size: 1.2rem; max-width: 650px; opacity: 0.95; }
 
-        header p {
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-            opacity: 0.95;
-        }
+        /* --- Seções Estilizadas --- */
+        section { padding: 80px 0; border-bottom: 1px solid #eee; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.2rem; position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; width: 60%; height: 4px; background: var(--secondary); position: absolute; bottom: -10px; left: 20%; border-radius: 2px; }
 
-        /* --- Seções --- */
-        section {
-            padding: 80px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .highlight-box {
-            background: var(--secondary);
-            padding: 25px;
-            border-left: 5px solid var(--primary);
-            border-radius: 8px;
-            margin: 25px 0;
-        }
-
-        /* --- Cards de Sintomas --- */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .card {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        /* --- Cards e Boxes --- */
+        .info-card {
+            background: white; padding: 35px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin-bottom: 30px;
             border: 1px solid #f0f0f0;
         }
 
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
+        .highlight-box {
+            background: var(--secondary); padding: 25px; border-left: 6px solid var(--primary);
+            border-radius: 10px; margin: 30px 0;
         }
 
-        /* --- Tabela de Farmacologia --- */
-        .table-container {
-            overflow-x: auto;
-            margin: 30px 0;
-        }
+        .grid-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+        /* --- Neurobiologia & Circuitos --- */
+        .neuro-list { list-style: none; }
+        .neuro-list li { margin-bottom: 20px; padding-left: 30px; position: relative; }
+        .neuro-list li::before { content: '•'; color: var(--primary); font-size: 2rem; position: absolute; left: 0; top: -10px; }
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
+        /* --- Tabela de Tratamento --- */
+        .table-wrap { overflow-x: auto; margin-top: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 18px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        th { background: var(--primary); color: white; }
 
-        th {
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-        }
-
-        /* --- Exercício de Respiração (Corrigido) --- */
-        .breathing-wrap {
-            background: #2D5A58;
-            border-radius: 30px;
-            padding: 60px 20px;
-            color: white;
-            text-align: center;
-            margin: 40px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* --- Exercício de Respiração (Design Corrigido) --- */
+        .breathing-container {
+            background: var(--dark-green); color: white;
+            padding: 60px 20px; border-radius: 40px; text-align: center;
+            margin: 50px 0; display: flex; flex-direction: column; align-items: center;
         }
 
         .visual-guide {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 40px 0;
+            width: 220px; height: 220px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; margin: 40px 0;
         }
 
-        .circle-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-        }
-
-        .circle-main {
-            width: 100px;
-            height: 100px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px rgba(125, 185, 182, 0.5);
+        .breathing-circle {
+            width: 100px; height: 100px; background: var(--primary);
+            border-radius: 50%; box-shadow: 0 0 40px rgba(125, 185, 182, 0.4);
             animation: breatheAnimation 8s infinite ease-in-out;
-            z-index: 2;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        #breathe-text {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: white;
-        }
+        #breathe-text { font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
 
         @keyframes breatheAnimation {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.8); }
+            50% { transform: scale(1.9); }
         }
 
         /* --- Rodapé --- */
-        footer {
-            background: #f4f4f4;
-            padding: 50px 0;
-            font-size: 0.9rem;
-            color: #777;
-        }
+        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #666; }
+        .ref-title { font-weight: 700; color: var(--dark-green); margin-bottom: 15px; }
+        .ref-list { list-style: none; }
+        .ref-list li { margin-bottom: 10px; }
 
-        footer ul {
-            list-style: none;
-            margin-top: 15px;
-        }
-
-        footer li { margin-bottom: 8px; }
-
-        @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-        }
+        @media (max-width: 768px) { header h1 { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
 
     <header>
         <div class="container" data-aos="fade-up">
-            <h1>Transtorno de Ansiedade Generalizada</h1>
-            <p>Um guia detalhado para compreender o funcionamento da mente, o papel do corpo e os caminhos da recuperação.</p>
+            <h1>Compreendendo o TAG</h1>
+            <p>Um mergulho profundo na ciência, no corpo e no tratamento do Transtorno de Ansiedade Generalizada.</p>
         </div>
     </header>
 
     <main class="container">
-        
+
         <section data-aos="fade-up">
-            <h2>Compreendendo o Transtorno</h2>
-            <p>O TAG é caracterizado por uma preocupação excessiva e persistente (expectativa apreensiva) sobre diversos eventos ou atividades. No indivíduo com TAG, a ansiedade não é um evento pontual, mas um estado de "alerta constante".</p>
+            <div class="section-title"><h2>Definição e Origens</h2></div>
+            <p>O Transtorno de Ansiedade Generalizada (TAG) não é apenas uma preocupação comum; é um estado crônico de <strong>expectativa apreensiva</strong>. Ele se manifesta como uma dificuldade persistente em "desligar" o processo de varredura de ameaças no ambiente.</p>
+            
             <div class="highlight-box">
-                <strong>O Ciclo da Incerteza:</strong> A mente busca prever todas as catástrofes possíveis para tentar se sentir segura, mas esse processo acaba gerando mais exaustão e ansiedade.
+                <strong>Origem Biopsicossocial:</strong> O TAG surge da interação entre vulnerabilidade genética (hereditariedade de aprox. 30%), temperamento (inibição comportamental) e eventos de vida estressores que moldam a percepção de que o mundo é um lugar perigoso e incontrolável.
             </div>
         </section>
 
         <section data-aos="fade-up">
-            <h2>Fundamentos Neurocientíficos</h2>
-            <p>A neurobiologia do TAG envolve uma comunicação disfuncional entre áreas específicas do cérebro:</p>
+            <div class="section-title"><h2>O Cérebro Ansioso: Neurobiologia</h2></div>
+            <p>No TAG, a ansiedade é o resultado de uma falha na comunicação entre o sistema límbico (emoção) e o córtex cerebral (razão).</p>
             
-            <div class="grid-cards">
-                <div class="card">
-                    <h3>Amígdala</h3>
-                    <p>O "centro de alarme" do cérebro. No TAG, ela apresenta hiperatividade, reagindo intensamente a estímulos ambíguos.</p>
-                </div>
-                <div class="card">
-                    <h3>Córtex Pré-Frontal</h3>
-                    <p>Responsável pela regulação emocional. Há uma dificuldade dessa área em "frear" os impulsos da amígdala.</p>
-                </div>
-            </div>
-        </section>
-
-        <section data-aos="fade-up">
-            <h2>Como o corpo e a mente reagem</h2>
-            <div class="grid-cards">
-                <div class="card">
-                    <h3>Sintomas Cognitivos</h3>
-                    <p>Dificuldade de concentração, irritabilidade, "mente branca" e ruminação constante sobre o futuro.</p>
-                </div>
-                <div class="card">
-                    <h3>Sintomas Físicos</h3>
-                    <p>Tensão muscular crônica, fadiga, inquietação e sintomas autonômicos (palpitações, sudorese).</p>
-                </div>
-            </div>
-        </section>
-
-        <section data-aos="fade-up">
-            <h2>O Tratamento na TCC</h2>
-            <p>A Terapia Cognitivo-Comportamental é o padrão-ouro para o TAG. O processo foca em:</p>
             
-            <ul>
-                <li><strong>Reestruturação Cognitiva:</strong> Identificar erros de pensamento (como a catastrofização).</li>
-                <li><strong>Tolerância à Incerteza:</strong> Aprender a conviver com o fato de que não podemos controlar o futuro.</li>
-                <li><strong>Relaxamento Progressivo:</strong> Reduzir a tensão física acumulada no corpo.</li>
-            </ul>
+
+            <div class="info-card">
+                <ul class="neuro-list">
+                    <li><strong>Hiperatividade da Amígdala:</strong> A "sentinela" do cérebro está excessivamente sensível, disparando sinais de perigo para situações cotidianas.</li>
+                    <li><strong>Disfunção do Córtex Pré-Frontal (CPF):</strong> Esta área deveria regular a amígdala. No TAG, o CPF não consegue exercer o controle inibitório necessário, falhando em "racionalizar" o medo.</li>
+                    <li><strong>O Papel do GABA e Serotonina:</strong> Há uma redução na atividade do GABA (o principal neurotransmissor relaxante) e irregularidades na Serotonina, o que impede que o sistema nervoso retorne ao estado de repouso após um estresse.</li>
+                    <li><strong>Eixo HPA:</strong> O sistema de resposta ao estresse fica permanentemente ativado, inundando o corpo com cortisol de forma crônica.</li>
+                </ul>
+            </div>
         </section>
 
         <section data-aos="fade-up">
-            <h2>Apoio Farmacológico</h2>
-            <p>A medicação pode ser uma aliada importante para estabilizar os níveis neuroquímicos e permitir o avanço na terapia.</p>
-            <div class="table-container">
+            <div class="section-title"><h2>Manifestações do Transtorno</h2></div>
+            <div class="grid-two">
+                <div class="card info-card">
+                    <h3>Cognitivas e Emocionais</h3>
+                    <p>Preocupação incontrolável ("E se?"), intolerância à incerteza, irritabilidade, dificuldade de concentração e fadiga mental.</p>
+                </div>
+                <div class="card info-card">
+                    <h3>Físicas e Somáticas</h3>
+                    <p>Tensão muscular (dor nas costas/pescoço), cefaleia tensional, taquicardia, tremores, sudorese e alterações gastrointestinais.</p>
+                </div>
+            </div>
+            <p style="margin-top:20px; text-align:center; font-style:italic;">Estes sintomas devem persistir por pelo menos 6 meses para o fechamento diagnóstico segundo o DSM-5-TR.</p>
+        </section>
+
+        <section data-aos="fade-up">
+            <div class="section-title"><h2>Abordagens de Tratamento</h2></div>
+            <p>O tratamento mais eficaz combina a reestruturação dos padrões de pensamento com o suporte neuroquímico quando necessário.</p>
+            
+            
+
+            <div class="info-card">
+                <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
+                <p>A TCC foca em três pilares para o TAG:</p>
+                <ul>
+                    <li><strong>Treinamento de Automonitoramento:</strong> Identificar os gatilhos das preocupações.</li>
+                    <li><strong>Desafios Cognitivos:</strong> Confrontar pensamentos catastróficos com evidências da realidade.</li>
+                    <li><strong>Prevenção de Resposta:</strong> Abandonar comportamentos de busca por segurança (ex: perguntar repetidamente se algo vai dar certo).</li>
+                </ul>
+            </div>
+
+            <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
-                            <th>Classe</th>
-                            <th>Função Primária</th>
+                            <th>Abordagem Farmacológica</th>
+                            <th>Como atua no Cérebro</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>ISRS (ex: Sertralina)</td>
-                            <td>Aumenta a disponibilidade de serotonina, estabilizando o humor.</td>
+                            <td><strong>Antidepressivos (ISRS/IRSN)</strong></td>
+                            <td>Aumentam a serotonina/noradrenalina, fortalecendo a regulação emocional do CPF.</td>
                         </tr>
                         <tr>
-                            <td>IRSN (ex: Venlafaxina)</td>
-                            <td>Atua na serotonina e noradrenalina, ajudando também na fadiga.</td>
+                            <td><strong>Moduladores de Cálcio (Pregabalina)</strong></td>
+                            <td>Reduzem a liberação excessiva de neurotransmissores excitatórios, "acalmando" os neurônios.</td>
                         </tr>
                         <tr>
-                            <td>Pregabalina</td>
-                            <td>Atua na modulação dos canais de cálcio, reduzindo a hiperexcitabilidade.</td>
+                            <td><strong>Benzodiazepínicos</strong></td>
+                            <td>Potencializam o GABA para alívio imediato (uso restrito e pontual).</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <section class="breathing-wrap" data-aos="zoom-in">
-            <h2>Prática de Regulação</h2>
-            <p>Sincronize sua respiração com o círculo para acalmar o sistema nervoso.</p>
+        <section class="breathing-container" data-aos="zoom-in">
+            <h2>Prática de Regulação do Sistema Nervoso</h2>
+            <p>Utilize esta ferramenta para sinalizar ao seu Córtex Pré-Frontal que você está em segurança.</p>
             
             <div class="visual-guide">
-                <div class="circle-bg"></div>
-                <div class="circle-main">
-                    <span id="breathe-text">Prepare-se</span>
+                <div class="breathing-circle">
+                    <span id="breathe-text">Inspire</span>
                 </div>
             </div>
             
-            <p style="font-size: 0.9rem; opacity: 0.8;">Inspire quando o círculo expandir. Expire quando ele contrair.</p>
+            <p style="max-width: 500px; font-size: 0.9rem; opacity: 0.8;">A técnica de respiração diafragmática reduz a ativação da amígdala e estimula o nervo vago, promovendo o relaxamento biológico.</p>
         </section>
 
     </main>
 
     <footer>
         <div class="container">
-            <h3>Referências e Embasamento</h3>
-            <ul>
-                <li>American Psychiatric Association. (2022). <strong>DSM-5-TR</strong>.</li>
-                <li>Barlow, D. H. (2016). <strong>Manual de Transtornos Psicológicos</strong>. Artmed.</li>
-                <li>Stahl, S. M. (2014). <strong>Psicofarmacologia</strong>. Artmed.</li>
-                <li>Leahy, R. L. (2011). <strong>Livre de Ansiedade</strong>. Artmed.</li>
+            <p class="ref-title">Referências Técnicas e Científicas:</p>
+            <ul class="ref-list">
+                <li><strong>American Psychiatric Association (2022).</strong> DSM-5-TR: Manual Diagnóstico e Estatístico de Transtornos Mentais.</li>
+                <li><strong>Barlow, D. H. (2016).</strong> Manual de Transtornos Psicológicos: Tratamento passo a passo. Porto Alegre: Artmed.</li>
+                <li><strong>Stahl, S. M. (2014).</strong> Psicofarmacologia: Bases Neurocientíficas e Aplicações Práticas. Guanabara Koogan.</li>
+                <li><strong>Leahy, R. L. (2011).</strong> Livre de Ansiedade. Porto Alegre: Artmed.</li>
+                <li><strong>Hofmann, S. G. (2014).</strong> Terapia Cognitivo-Comportamental Baseada em Processos.</li>
             </ul>
-            <br>
-            <p>© 2026 Plataforma de Psicoeducação Clínica.</p>
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
+            <p>Conteúdo elaborado para fins de psicoeducação clínica. Consulte sempre um profissional de saúde mental.</p>
         </div>
     </footer>
 
@@ -335,17 +239,14 @@
     <script>
         AOS.init({ duration: 1000, once: true });
 
-        const textEl = document.getElementById('breathe-text');
-        
-        function updateText() {
-            setTimeout(() => { textEl.innerText = "Inspire"; }, 0);
-            setTimeout(() => { textEl.innerText = "Segure"; }, 3500);
-            setTimeout(() => { textEl.innerText = "Expire"; }, 4500);
-            setTimeout(() => { textEl.innerText = "Aguarde"; }, 7500);
+        // Lógica de texto da respiração sincronizada com o CSS (8 segundos total)
+        const breatheText = document.getElementById('breathe-text');
+        function updateBreatheCycle() {
+            setTimeout(() => { breatheText.innerText = "Inspire"; }, 0);     // 0-4s expansão
+            setTimeout(() => { breatheText.innerText = "Expire"; }, 4000);  // 4-8s contração
         }
-
-        updateText();
-        setInterval(updateText, 8000);
+        updateBreatheCycle();
+        setInterval(updateBreatheCycle, 8000);
     </script>
 </body>
 </html>
