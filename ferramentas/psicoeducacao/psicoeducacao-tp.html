@@ -1,234 +1,474 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoeducação: Transtorno de Pânico</title>
+    <title>Transtorno de Pânico - Bruno de Souza</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #7DB9B6; 
-            --secondary: #E9EDC9; 
-            --accent: #E29578; 
-            --dark-green: #2D5A58;
-            --text-color: #444;
-            --bg-body: #FBFBFB;
+            /* Paleta "Safety & Control" */
+            --bg-paper: #fcfbf9;      
+            --text-primary: #37474f;  
+            --text-serif: #263238;    
+            
+            /* Cores de Destaque */
+            --accent-alert: #ffab91;  /* Coral Suave (Sintoma) */
+            --accent-calm: #90a4ae;   /* Azul Grisáceo (Controle) */
+            --accent-safe: #81d4fa;   /* Azul Claro (Segurança) */
+            --accent-ground: #a1887f; /* Marrom Terra (Aterramento) */
+            
+            --btn-color: #546e7a;     
+            --radius: 16px;
+            --shadow: 0 8px 30px rgba(0,0,0,0.06);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-color);
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-paper);
+            color: var(--text-primary);
             line-height: 1.8;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-serif);
+        }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
+        /* --- LAYOUT --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 80px 0; border-bottom: 1px dashed #cfd8dc; }
+        .section:nth-child(even) { background-color: white; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 15px; }
+        .section-subtitle { text-align: center; color: #78909c; margin-bottom: 50px; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto; }
 
-        /* --- Hero Section --- */
+        /* --- HEADER --- */
         header {
-            height: 60vh;
-            background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; color: white; border-radius: 0 0 60px 60px;
-            padding: 20px;
+            text-align: center; padding: 100px 20px 80px;
+            background: linear-gradient(180deg, #fff 0%, var(--bg-paper) 100%);
+        }
+        header h1 { font-size: 3.5rem; margin-bottom: 20px; letter-spacing: -1px; }
+        .badge {
+            background: var(--text-serif); color: white; padding: 5px 15px;
+            border-radius: 50px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
         }
 
-        header h1 { font-size: 3rem; color: white; margin-bottom: 20px; }
-        header p { font-size: 1.2rem; max-width: 650px; opacity: 0.95; }
-
-        /* --- Seções --- */
-        section { padding: 80px 0; border-bottom: 1px solid #eee; }
-        .section-title { text-align: center; margin-bottom: 50px; }
-        .section-title h2 { font-size: 2.2rem; position: relative; display: inline-block; }
-        .section-title h2::after { content: ''; width: 60%; height: 4px; background: var(--secondary); position: absolute; bottom: -10px; left: 20%; border-radius: 2px; }
-
-        /* --- Cards e Boxes --- */
-        .info-card {
-            background: white; padding: 35px; border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04); margin-bottom: 30px;
-            border: 1px solid #f0f0f0;
+        /* --- CRITÉRIOS --- */
+        .criteria-box {
+            background: white; border: 2px solid var(--accent-alert); border-radius: var(--radius);
+            padding: 30px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow);
+        }
+        .info-badge {
+            background: var(--accent-alert); color: #bf360c; padding: 15px; border-radius: 50%;
+            width: 90px; height: 90px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; font-weight: bold; line-height: 1.2; text-align: center; flex-shrink: 0;
+            border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .highlight-box {
-            background: var(--secondary); padding: 25px; border-left: 6px solid var(--primary);
-            border-radius: 10px; margin: 30px 0;
+        /* --- SINTOMAS FÍSICOS (Destaque no Pânico) --- */
+        .symptoms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
+        .check-item {
+            display: flex; align-items: flex-start; margin-bottom: 15px;
+            background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px;
+            border-left: 4px solid var(--accent-alert);
         }
+        .check-item i { color: #d84315; margin-right: 15px; margin-top: 5px; font-size: 1.2rem; }
 
-        .grid-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-
-        /* --- Neurobiologia --- */
-        .neuro-list { list-style: none; }
-        .neuro-list li { margin-bottom: 20px; padding-left: 30px; position: relative; }
-        .neuro-list li::before { content: '•'; color: var(--primary); font-size: 2rem; position: absolute; left: 0; top: -10px; }
-
-        /* --- Tabela --- */
-        .table-wrap { overflow-x: auto; margin-top: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 18px; text-align: left; border-bottom: 1px solid #f0f0f0; }
-        th { background: var(--primary); color: white; }
-
-        /* --- Exercício de Aterramento (Grounding) --- */
-        .grounding-container {
-            background: var(--dark-green); color: white;
-            padding: 60px 20px; border-radius: 40px; text-align: center;
-            margin: 50px 0; display: flex; flex-direction: column; align-items: center;
+        /* --- NEUROBIOLOGIA --- */
+        .brain-box {
+            background: white; padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow);
+            display: flex; flex-direction: column; align-items: center;
         }
-
-        .pulse-guide {
-            width: 200px; height: 200px; border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center;
-            position: relative; margin: 40px 0;
+        .hotspot-btn {
+            background: var(--btn-color); color: white; border: none; padding: 10px 20px;
+            border-radius: 20px; cursor: pointer; margin: 5px; transition: opacity 0.3s;
+            font-size: 0.9rem; font-weight: bold;
         }
+        #brain-desc { margin-top: 30px; padding: 25px; border-radius: 10px; width: 100%; font-size: 1rem; }
 
-        .pulse-circle {
-            width: 80px; height: 80px; background: var(--primary);
-            border-radius: 50%; box-shadow: 0 0 50px rgba(125, 185, 182, 0.6);
-            animation: pulseAnimation 4s infinite ease-in-out;
-            display: flex; align-items: center; justify-content: center;
+        /* --- CICLO DO PÂNICO --- */
+        .cycle-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;
+            margin-top: 40px; justify-items: center;
         }
-
-        #pulse-text { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; }
-
-        @keyframes pulseAnimation {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.6); opacity: 1; }
+        .cycle-step {
+            background: white; padding: 20px; border-radius: 50%; width: 200px; height: 200px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; box-shadow: var(--shadow); border: 2px solid transparent; font-size: 0.95rem;
+            transition: transform 0.3s;
         }
+        .cycle-step:hover { transform: scale(1.05); }
+        .step-panic-1 { background: #fffbe6; border-color: #fdd835; } /* Gatilho */
+        .step-panic-2 { background: #ffebee; border-color: #ef5350; } /* Sintoma */
+        .step-panic-3 { background: #fce4ec; border-color: #ec407a; } /* Interpretação */
+        .step-panic-4 { background: #eceff1; border-color: #78909c; } /* Medo do Medo */
 
-        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #666; }
-        .ref-list { list-style: none; padding-top: 15px; }
-        .ref-list li { margin-bottom: 10px; }
+        /* --- BARALHO DECODIFICADOR --- */
+        .cards-deck { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+        .distortion-card { width: 220px; height: 360px; perspective: 1000px; cursor: pointer; }
+        .card-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s; transform-style: preserve-3d;
+            box-shadow: var(--shadow); border-radius: 15px;
+        }
+        .distortion-card.flipped .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 15px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; padding: 20px;
+        }
+        .card-front {
+            background: white; border: 8px solid var(--bg-paper);
+            background-image: radial-gradient(#ffccbc 15%, transparent 16%); background-size: 10px 10px;
+        }
+        .card-back { background-color: #37474f; color: white; transform: rotateY(180deg); font-size: 0.9rem; }
+        .card-back h3 { color: var(--accent-alert); margin-bottom: 10px; font-size: 1.1rem; }
 
-        @media (max-width: 768px) { header h1 { font-size: 2.2rem; } }
+        /* --- WIDGET: GROUNDING (ATERRAMENTO) (NOVO) --- */
+        .grounding-widget {
+            background: linear-gradient(135deg, #eceff1 0%, #b0bec5 100%);
+            padding: 50px; border-radius: var(--radius); text-align: center;
+            margin: 40px auto; max-width: 600px; box-shadow: var(--shadow);
+            position: relative;
+        }
+        .grounding-screen {
+            background: white; padding: 30px; border-radius: 10px; margin: 20px auto;
+            min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .grounding-icon { font-size: 3rem; color: #546e7a; margin-bottom: 15px; }
+        .grounding-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #37474f; }
+        
+        .btn-ground {
+            background: #546e7a; color: white; border: none; padding: 15px 40px;
+            border-radius: 50px; font-weight: bold; cursor: pointer; transition: transform 0.2s;
+            font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-ground:hover { transform: translateY(-2px); }
+
+        /* --- TRATAMENTO --- */
+        .treatment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .treat-card { background: white; padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow); border-top: 6px solid; }
+        .treat-tcc { border-color: #81d4fa; }
+        .treat-med { border-color: #ffcc80; }
+        .treat-list { margin-top: 20px; padding-left: 20px; list-style-type: disc; }
+        .treat-list li { margin-bottom: 12px; font-size: 0.95rem; }
+
+        /* Footer */
+        .ref-section { font-size: 0.85rem; color: #666; background: #f5f5f5; padding: 40px 0; }
+        
+        @media (max-width: 768px) {
+            .symptoms-grid, .treatment-grid { grid-template-columns: 1fr; }
+            .criteria-box { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container" data-aos="fade-up">
+        <div class="container">
+            <span class="badge">Psicoeducação Clínica</span>
             <h1>Transtorno de Pânico</h1>
-            <p>Compreendendo o "alarme falso" do corpo e retomando o senso de segurança.</p>
+            <p style="font-size: 1.3rem; color: #666;">"O Medo do Medo"</p>
+            <p style="margin-top: 10px; font-style: italic;">"Um alarme de incêndio falso é assustador, mas não queima a casa."</p>
         </div>
     </header>
 
-    <main class="container">
-
-        <section data-aos="fade-up">
-            <div class="section-title"><h2>O que é o Ataque de Pânico?</h2></div>
-            <p>O Transtorno de Pânico é definido pela presença de ataques de pânico <strong>inesperados e recorrentes</strong>, seguidos por pelo menos um mês de preocupação persistente sobre novos ataques ou suas consequências (medo de morrer, enlouquecer ou perder o controle).</p>
-            
-            <div class="highlight-box">
-                <strong>A Teoria do Alarme Falso:</strong> O ataque de pânico é uma ativação abrupta do sistema de "luta ou fuga" em um momento onde não há perigo real. O cérebro interpreta sensações físicas normais (como um batimento acelerado) como sinais de uma catástrofe iminente.
-            </div>
-        </section>
-
-        <section data-aos="fade-up">
-            <div class="section-title"><h2>Neurobiologia do Medo</h2></div>
-            <p>O pânico ocorre devido a uma hipersensibilidade no "circuito do medo" do cérebro.</p>
-            
-            
-
-            <div class="info-card">
-                <ul class="neuro-list">
-                    <li><strong>Amígdala e Tronco Encefálico:</strong> No pânico, a amígdala reage de forma explosiva, ativando centros no tronco encefálico que controlam a respiração e os batimentos cardíacos.</li>
-                    <li><strong>Locus Coeruleus (Norepinefrina):</strong> Esta área funciona como o interruptor de adrenalina do cérebro. No transtorno de pânico, ele dispara com muita facilidade, inundando o corpo com sinais de alerta.</li>
-                    <li><strong>Substância Cinzenta Periaquedutal (SGP):</strong> Responsável pelas respostas defensivas de "congelamento" ou "fuga". Sua ativação explica a sensação de urgência em escapar do local onde se está.</li>
-                    <li><strong>Hipersensibilidade ao CO₂:</strong> Pesquisas sugerem que pacientes com pânico possuem um "sensor de sufocamento" cerebral mais sensível, reagindo precocemente a variações nos níveis de gás carbônico.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section data-aos="fade-up">
-            <div class="section-title"><h2>Manifestações Físicas e Cognitivas</h2></div>
-            <div class="grid-two">
-                <div class="card info-card">
-                    <h3>Sintomas Físicos</h3>
-                    <p>Palpitações, falta de ar (dispneia), tremores, sudorese, náusea, calafrios ou ondas de calor e sensação de desrealização (sentir que o ambiente não é real).</p>
-                </div>
-                <div class="card info-card">
-                    <h3>O Ciclo do Pensamento</h3>
-                    <p>Interpretação catastrófica: "Vou enfartar", "Vou desmaiar", "Vou perder o juízo". Esse pensamento gera mais medo, que gera mais sintomas físicos, fechando o ciclo.</p>
-                </div>
-            </div>
-        </section>
-
-        <section data-aos="fade-up">
-            <div class="section-title"><h2>Tratamento Baseado em Evidências</h2></div>
-            <p>O objetivo do tratamento é ensinar o cérebro que as sensações físicas do pânico são <strong>desconfortáveis, mas não perigosas</strong>.</p>
-            
-            
-
-            <div class="info-card">
-                <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
-                <ul>
-                    <li><strong>Reestruturação Cognitiva:</strong> Desafiar as previsões de morte ou desmaio com fatos fisiológicos.</li>
-                    <li><strong>Exposição Interoceptiva:</strong> O paciente aprende a induzir voluntariamente pequenas sensações (como girar para sentir tontura) para perder o medo delas.</li>
-                    <li><strong>Eliminação de Comportamentos de Segurança:</strong> Parar de carregar remédios "por precaução" ou evitar lugares, para que o cérebro aprenda a se autorregular.</li>
-                </ul>
-            </div>
-
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Farmacologia</th>
-                            <th>Mecanismo no Pânico</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>ISRS (ex: Paroxetina)</strong></td>
-                            <td>Reduz a sensibilidade do circuito do medo a longo prazo.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Benzodiazepínicos</strong></td>
-                            <td>Usados apenas em crises agudas para frear a resposta de adrenalina (uso cauteloso).</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section class="grounding-container" data-aos="zoom-in">
-            <h2>Âncora de Segurança</h2>
-            <p>Em um momento de pânico, o objetivo não é "parar" o ataque à força, mas flutuar através dele. Sincronize sua atenção com este pulso constante.</p>
-            
-            <div class="pulse-guide">
-                <div class="pulse-circle">
-                    <span id="pulse-text">Seguro</span>
-                </div>
-            </div>
-            
-            <p style="max-width: 500px; font-size: 0.9rem; opacity: 0.8;">Lembre-se: O pânico é um sistema de proteção agindo na hora errada. Ele tem um pico de 10 minutos e depois o corpo naturalmente inicia o processo de relaxamento.</p>
-        </section>
-
-    </main>
-
-    <footer>
+    <section class="section">
         <div class="container">
-            <p style="font-weight: 700; color: var(--dark-green);">Referências Técnicas:</p>
-            <ul class="ref-list">
-                <li><strong>Barlow, D. H. (2016).</strong> Manual de Transtornos Psicológicos: Tratamento passo a passo.</li>
-                <li><strong>Clark, D. M. (1986).</strong> A cognitive approach to panic. Behaviour Research and Therapy.</li>
-                <li><strong>American Psychiatric Association (2022).</strong> DSM-5-TR.</li>
-                <li><strong>Stahl, S. M. (2014).</strong> Psicofarmacologia: Bases Neurocientíficas.</li>
+            <h2 class="section-title">O Que é o Transtorno?</h2>
+            <p class="section-subtitle">Não é apenas ter um ataque, é viver com medo do próximo.</p>
+
+            <div class="criteria-box">
+                <div class="info-badge">
+                    <span>1</span>
+                    <span style="font-size:0.7rem;">MÊS</span>
+                </div>
+                <div>
+                    <h3>Ataques + Preocupação</h3>
+                    <p>O diagnóstico exige a presença de <strong>ataques de pânico recorrentes e inesperados</strong>, seguidos por pelo menos <strong>1 mês</strong> de preocupação persistente sobre ter novos ataques ou suas consequências (ex: "Vou enlouquecer", "Vou ter um ataque cardíaco").</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Anatomia do Ataque</h2>
+            <p class="section-subtitle">Um "tsunami" físico e mental que atinge o pico em minutos.</p>
+
+            <div class="symptoms-grid">
+                <div>
+                    <h3 style="color: #d84315; margin-bottom: 20px; border-bottom: 2px solid #ffab91; display:inline-block;">Sintomas Físicos</h3>
+                    <div class="check-item">
+                        <i class="fas fa-heartbeat"></i>
+                        <div><strong>Taquicardia:</strong> Coração disparado ou palpitante (parece que vai sair pela boca).</div>
+                    </div>
+                    <div class="check-item">
+                        <i class="fas fa-wind"></i>
+                        <div><strong>Falta de Ar:</strong> Sensação de sufocamento ou hiperventilação.</div>
+                    </div>
+                    <div class="check-item">
+                        <i class="fas fa-tint"></i>
+                        <div><strong>Sudorese e Tremores:</strong> Mãos suadas, calafrios ou ondas de calor.</div>
+                    </div>
+                    <div class="check-item">
+                        <i class="fas fa-spinner"></i>
+                        <div><strong>Tontura:</strong> Sensação de desmaio ou instabilidade.</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: #455a64; margin-bottom: 20px; border-bottom: 2px solid #b0bec5; display:inline-block;">Sintomas Cognitivos</h3>
+                    <div class="check-item">
+                        <i class="fas fa-skull-crossbones"></i>
+                        <div><strong>Medo de Morrer:</strong> Certeza absoluta de que algo fatal está acontecendo.</div>
+                    </div>
+                    <div class="check-item">
+                        <i class="fas fa-brain"></i>
+                        <div><strong>Medo de Enlouquecer:</strong> Sentir que está perdendo o controle da mente.</div>
+                    </div>
+                    <div class="check-item">
+                        <i class="fas fa-ghost"></i>
+                        <div><strong>Desrealização:</strong> Sentir que o mundo é irreal ou estranho (como num sonho).</div>
+                    </div>
+                    <div class="check-item">
+                        <i class="fas fa-user-slash"></i>
+                        <div><strong>Despersonalização:</strong> Sentir-se desconectado do próprio corpo.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Ferramenta: Aterramento</h2>
+            <p class="section-subtitle">Use a técnica <strong>5-4-3-2-1</strong> para sair da cabeça e voltar para o corpo durante a ansiedade.</p>
+
+            <div class="grounding-widget">
+                <h3 style="color: #37474f; margin-bottom:10px;">Guia de Emergência</h3>
+                
+                <div class="grounding-screen" id="grounding-display">
+                    <span style="color:#78909c;">Clique no botão para iniciar o exercício guiado.</span>
+                </div>
+                
+                <button class="btn-ground" onclick="startGrounding()">Iniciar Aterramento</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Por que isso acontece?</h2>
+            <p class="section-subtitle">O "Sistema de Alarme" do corpo disparando na hora errada.</p>
+
+            <div class="brain-box">
+                <i class="fas fa-bell" style="font-size: 5rem; color: #ffab91; margin-bottom: 20px;"></i>
+                
+                <div style="margin: 20px 0; display:flex; flex-wrap:wrap; justify-content:center;">
+                    <button class="hotspot-btn" onclick="explain('alarm')">1. Falso Alarme</button>
+                    <button class="hotspot-btn" onclick="explain('co2')">2. Sufocamento</button>
+                    <button class="hotspot-btn" onclick="explain('insula')">3. Ínsula</button>
+                </div>
+
+                <div id="brain-desc" style="background: #fffbe6; display: block;">
+                    <p style="text-align:center;">Selecione um tópico acima para entender a biologia do pânico.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">O Ciclo do Pânico</h2>
+            <p class="section-subtitle">Como uma sensação normal vira um ataque.</p>
+            
+            <div class="cycle-container">
+                <div class="cycle-step step-panic-1">
+                    <h4 style="margin-bottom:10px;">1. Sensação Corporal</h4>
+                    <p>Leve taquicardia ou tontura (normal do dia a dia).</p>
+                </div>
+                <div class="cycle-step step-panic-2">
+                    <h4 style="margin-bottom:10px;">2. Interpretação Catastrófica</h4>
+                    <p>"Meu coração parou!", "Estou tendo um derrame!".</p>
+                </div>
+                <div class="cycle-step step-panic-3">
+                    <h4 style="margin-bottom:10px;">3. Ativação do Alarme</h4>
+                    <p>Adrenalina inunda o corpo. O sintoma físico piora.</p>
+                </div>
+                <div class="cycle-step step-panic-4">
+                    <h4 style="margin-bottom:10px;">4. Confirmação do Medo</h4>
+                    <p>"Eu sabia, estou morrendo". Gera o ataque completo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Decodificador de Sintomas</h2>
+            <p class="section-subtitle">Vamos traduzir o que seu corpo está <em>realmente</em> dizendo.</p>
+
+            <div class="cards-deck">
+                <div class="distortion-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <i class="fas fa-heartbeat fa-3x" style="color:#ff8a65; margin-bottom:15px;"></i>
+                            <h3>Coração Acelerado</h3>
+                            <p style="font-size:0.8rem; color:#888;">Toque para virar</p>
+                        </div>
+                        <div class="card-back">
+                            <h3>Não é Infarto</h3>
+                            <p>É apenas seu coração bombeando sangue para os músculos "fugirem" do perigo imaginário. Corações saudáveis aguentam bater rápido por dias.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="distortion-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <i class="fas fa-wind fa-3x" style="color:#ff8a65; margin-bottom:15px;"></i>
+                            <h3>Falta de Ar</h3>
+                            <p style="font-size:0.8rem; color:#888;">Toque para virar</p>
+                        </div>
+                        <div class="card-back">
+                            <h3>Não é Sufocamento</h3>
+                            <p>Você está com <em>excesso</em> de oxigênio (hiperventilação), não falta. A sensação de "aperto" é a tensão muscular no tórax, não o pulmão fechando.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="distortion-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <i class="fas fa-spinner fa-3x" style="color:#ff8a65; margin-bottom:15px;"></i>
+                            <h3>Tontura</h3>
+                            <p style="font-size:0.8rem; color:#888;">Toque para virar</p>
+                        </div>
+                        <div class="card-back">
+                            <h3>Não é Desmaio</h3>
+                            <p>No pânico, sua pressão arterial geralmente <em>sobe</em>. Para desmaiar, ela precisa cair drasticamente. A tontura é apenas o excesso de oxigênio no cérebro.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #fcfbf9;">
+        <div class="container">
+            <h2 class="section-title">Como Tratar?</h2>
+            <p class="section-subtitle">O objetivo é perder o medo dos sintomas.</p>
+
+            <div class="treatment-grid">
+                <div class="treat-card treat-tcc">
+                    <h3 style="color: #0277bd;"><i class="fas fa-brain"></i> TCC (Padrão-Ouro)</h3>
+                    <p>Focada em exposição interoceptiva:</p>
+                    <ul class="treat-list">
+                        <li><strong>Exposição Interoceptiva:</strong> Provocar propositalmente sintomas leves (ex: girar na cadeira, correr) para provar ao cérebro que eles não são perigosos.</li>
+                        <li><strong>Descatastrofização:</strong> Questionar a certeza de "vou morrer".</li>
+                        <li><strong>Eliminação de Seguranças:</strong> Parar de andar com remédio no bolso ou verificar o pulso.</li>
+                    </ul>
+                </div>
+
+                <div class="treat-card treat-med">
+                    <h3 style="color: #ef6c00;"><i class="fas fa-capsules"></i> Farmacologia</h3>
+                    <p>Ajuda a reduzir a sensibilidade do "alarme":</p>
+                    <ul class="treat-list">
+                        <li><strong>ISRS (Ex: Sertralina, Paroxetina):</strong> Previnem o surgimento de novos ataques a longo prazo.</li>
+                        <li><strong>Benzodiazepínicos (Ex: Clonazepam):</strong> Apenas para "apagar o fogo" em crises agudas (uso restrito devido à dependência).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ref-section">
+        <div class="container">
+            <h4>Referências Bibliográficas</h4>
+            <ul class="ref-list" style="list-style-type: decimal; margin-left: 20px;">
+                <li>American Psychiatric Association. (2014). <em>Manual Diagnóstico e Estatístico de Transtornos Mentais (DSM-5)</em>.</li>
+                <li>Barlow, D. H., & Craske, M. G. (2007). <em>Mastery of your anxiety and panic</em>. Oxford University Press.</li>
+                <li>Clark, D. M. (1986). <em>A cognitive approach to panic</em>. Behaviour Research and Therapy.</li>
             </ul>
-            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
-            <p>© 2026 Guia de Psicoeducação Clínica - Bruno de Souza (CRP 07/44472)</p>
+        </div>
+    </section>
+
+    <footer style="background: #37474f; color: white; padding: 40px 0; text-align: center;">
+        <div class="container">
+            <h3>Bruno de Souza</h3>
+            <p>Psicólogo Clínico | CRP 07/44472</p>
+            <p style="font-size: 0.9rem; color: #b0bec5; margin-top: 10px;">Especialista em TCC e Transtornos de Ansiedade.</p>
         </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        // --- Neurobiologia ---
+        function explain(topic) {
+            const descBox = document.getElementById('brain-desc');
+            
+            if (topic === 'alarm') {
+                descBox.style.backgroundColor = "#fff3e0"; 
+                descBox.innerHTML = `
+                    <h4 style='color:#e65100; margin-bottom:10px;'>O Sistema Lutar ou Fugir</h4>
+                    <p>No Pânico, a <strong>Amígdala</strong> dispara uma resposta massiva de sobrevivência sem haver perigo real. É como se um alarme de incêndio sensível demais disparasse apenas com o vapor do chuveiro. O corpo se prepara para enfrentar um leão que não existe.</p>
+                `;
+            } 
+            else if (topic === 'co2') {
+                descBox.style.backgroundColor = "#eceff1";
+                descBox.innerHTML = `
+                    <h4 style='color:#546e7a; margin-bottom:10px;'>Sensor de Sufocamento</h4>
+                    <p>Teorias indicam que pessoas com pânico possuem um "sensor de CO2" hipersensível no tronco cerebral. Pequenas alterações na respiração ou ambientes abafados podem disparar um falso alarme de "falta de ar iminente".</p>
+                `;
+            } 
+            else if (topic === 'insula') {
+                descBox.style.backgroundColor = "#e1f5fe";
+                descBox.innerHTML = `
+                    <h4 style='color:#0277bd; margin-bottom:10px;'>A Ínsula (Consciência Corporal)</h4>
+                    <p>A Ínsula é a área que monitora as sensações internas. No pânico, ela está hiperativa, fazendo com que você perceba batimentos cardíacos ou mudanças estomacais que outras pessoas nem notariam (Hipervigilância Interoceptiva).</p>
+                `;
+            }
+        }
+
+        // --- Grounding 5-4-3-2-1 ---
+        const steps = [
+            { icon: "fa-eye", text: "Olhe em volta e encontre <strong>5</strong> coisas que você pode ver." },
+            { icon: "fa-hand-paper", text: "Toque em <strong>4</strong> coisas e sinta a textura (sua roupa, a mesa)." },
+            { icon: "fa-assistive-listening-systems", text: "Ouça com atenção e identifique <strong>3</strong> sons ao seu redor." },
+            { icon: "fa-wind", text: "Tente identificar <strong>2</strong> cheiros diferentes (ou pense em 2 cheiros que gosta)." },
+            { icon: "fa-cookie-bite", text: "Sinta <strong>1</strong> gosto na boca (ou tome um gole de água)." }
+        ];
+
+        let currentStep = 0;
+
+        function startGrounding() {
+            const display = document.getElementById('grounding-display');
+            const btn = document.querySelector('.btn-ground');
+            
+            if (currentStep < steps.length) {
+                const s = steps[currentStep];
+                display.innerHTML = `
+                    <i class="fas ${s.icon} grounding-icon"></i>
+                    <p class="grounding-text">${s.text}</p>
+                `;
+                btn.textContent = "Próximo Passo";
+                currentStep++;
+            } else {
+                display.innerHTML = `
+                    <i class="fas fa-check-circle grounding-icon" style="color:#66bb6a;"></i>
+                    <p class="grounding-text">Respire fundo. Você está seguro aqui e agora.</p>
+                `;
+                btn.textContent = "Recomeçar";
+                currentStep = 0;
+            }
+        }
     </script>
 </body>
 </html>
