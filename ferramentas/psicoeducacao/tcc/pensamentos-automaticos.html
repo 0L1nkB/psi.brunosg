@@ -6,24 +6,154 @@
     <title>Pensamentos Automáticos - Laboratório da Mente</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://psibrunosg.github.io/site/style/style.css">
+
+    <style>
+        /* === ESTILOS ESPECÍFICOS DESTA PÁGINA (Diagramas) === */
+
+        /* --- FLUXOGRAMA (CICLO) --- */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .flow-step {
+            background: #ffffff;
+            border: 3px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            position: relative;
+            transition: transform 0.2s;
+            font-family: 'Comic Sans MS', sans-serif;
+        }
+
+        .flow-step:hover { transform: scale(1.02); }
+
+        /* Setinha conectora */
+        .flow-step:not(:last-child)::after {
+            content: '⬇️';
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        /* Cores dos Passos */
+        .step-gray { border-color: #b2bec3; background: #f9f9f9; }
+        .step-purple { border-color: var(--primary); background: #f0f3ff; }
+        .step-red { border-color: var(--te-color); background: #fff0f0; }
+
+        .flow-badge {
+            padding: 8px 15px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            min-width: 100px;
+            text-align: center;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+        .bg-gray { background: #636e72; }
+        .bg-purple { background: var(--primary); }
+        .bg-red { background: var(--te-color); }
+
+        /* --- ARMADILHAS (Cards) --- */
+        .traps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .trap-card {
+            background: white;
+            border: 3px solid #dfe6e9;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .trap-card:hover {
+            border-color: var(--secondary);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+            transform: rotate(2deg);
+        }
+
+        .trap-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .trap-title { font-weight: 800; color: var(--text); margin-bottom: 5px; font-size: 1.1rem; }
+        .trap-desc { font-size: 0.95rem; color: #636e72; }
+
+        /* --- DETETIVE --- */
+        .detective-box {
+            background: #eef2f6;
+            padding: 30px;
+            border-radius: 25px;
+            border: 3px dashed #b2bec3;
+            text-align: center;
+        }
+
+        .btn-small {
+            background: white;
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            border: 2px solid var(--primary);
+            cursor: pointer;
+            margin: 5px;
+            font-family: inherit;
+        }
+        .btn-small:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+
+        /* --- RPD (Acordeão) --- */
+        details {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        summary {
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex; justify-content: space-between;
+            align-items: center;
+            list-style: none;
+        }
+        summary:hover { background: #f9f9f9; border-radius: 10px; }
+        .rpd-content { padding: 15px; border-top: 2px dashed #eee; color: #555; }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .flow-step { flex-direction: column; text-align: center; align-items: center; }
+        }
+    </style>
 </head>
 <body>
 
     <a href="tcc.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
 
-    <div id="dashboard" style="margin-top: 60px;"> <header>
+    <div id="dashboard" style="margin-top: 60px;"> 
+        
+        <header>
             <h1>Pensamentos Automáticos</h1>
             <div class="subtitle">Guia de Investigação Cognitiva</div>
         </header>
 
         <section>
             <h2><i class="fa-solid fa-bolt"></i> O que são essas vozes?</h2>
-            <p>Imagine que sua mente é um smartphone. Os <strong>Pensamentos Automáticos (P.A.s)</strong> são aquelas notificações "push" que pulam na tela sem você pedir. Eles são:</p>
-            <ul>
-                <li>🚀 <strong>Rápidos:</strong> Como um flash de câmera.</li>
-                <li>🤖 <strong>Automáticos:</strong> Você não escolhe tê-los.</li>
-                <li>🤥 <strong>Distorcidos:</strong> Muitas vezes exagerados, mas a gente acredita neles!</li>
-            </ul>
+            <p>Imagine que sua mente é um celular. Os <strong>Pensamentos Automáticos (P.A.s)</strong> são aquelas notificações "push" que pulam na tela sem você pedir.</p>
             
             <div class="highlight-box">
                 "O problema não é ter o pensamento. O problema é acreditar que ele é um FATO só porque apareceu na sua cabeça."
@@ -36,24 +166,24 @@
             
             <div class="flow-container">
                 
-                <div class="flow-step gray">
-                    <div class="flow-badge gray">1. Gatilho</div>
+                <div class="flow-step step-gray">
+                    <div class="flow-badge bg-gray">1. Gatilho</div>
                     <div>
                         <strong>SITUAÇÃO (Fato Real)</strong><br>
                         Ex: Seu chefe pede uma reunião de última hora.
                     </div>
                 </div>
 
-                <div class="flow-step purple">
-                    <div class="flow-badge purple">2. Mente</div>
+                <div class="flow-step step-purple">
+                    <div class="flow-badge bg-purple">2. Mente</div>
                     <div>
                         <strong>PENSAMENTO (Interpretação)</strong><br>
                         <em>"Ai meu Deus, vou ser demitido! Fiz algo errado!"</em>
                     </div>
                 </div>
 
-                <div class="flow-step red">
-                    <div class="flow-badge red">3. Corpo</div>
+                <div class="flow-step step-red">
+                    <div class="flow-badge bg-red">3. Corpo</div>
                     <div>
                         <strong>EMOÇÃO (Reação)</strong><br>
                         Ansiedade, taquicardia, mãos suando.
@@ -69,27 +199,27 @@
             
             <div class="traps-grid">
                 <div class="trap-card">
-                    <div class="trap-icon">🔮</div>
-                    <h4>Adivinhação</h4>
-                    <p>Prever o futuro (sempre negativo) sem provas. "Vai dar tudo errado na festa."</p>
+                    <span class="trap-icon">🔮</span>
+                    <div class="trap-title">Adivinhação</div>
+                    <div class="trap-desc">Prever o futuro (sempre negativo) sem provas. "Vai dar tudo errado."</div>
                 </div>
                 
                 <div class="trap-card">
-                    <div class="trap-icon">🧠</div>
-                    <h4>Leitura Mental</h4>
-                    <p>Achar que sabe o que o outro pensa. "Ele não falou comigo porque me odeia."</p>
+                    <span class="trap-icon">🧠</span>
+                    <div class="trap-title">Leitura Mental</div>
+                    <div class="trap-desc">Achar que sabe o que o outro pensa. "Ele não falou comigo porque me odeia."</div>
                 </div>
 
                 <div class="trap-card">
-                    <div class="trap-icon">🌪️</div>
-                    <h4>Catastrofização</h4>
-                    <p>Transformar um pequeno problema no fim do mundo. "Errei a conta, vou falir."</p>
+                    <span class="trap-icon">🌪️</span>
+                    <div class="trap-title">Catastrofização</div>
+                    <div class="trap-desc">Transformar um pequeno problema no fim do mundo. "Errei a conta, vou falir."</div>
                 </div>
 
                 <div class="trap-card">
-                    <div class="trap-icon">⚖️</div>
-                    <h4>Tudo ou Nada</h4>
-                    <p>Visão preto e branco. "Se não fui perfeito, fui um fracasso total."</p>
+                    <span class="trap-icon">⚖️</span>
+                    <div class="trap-title">Tudo ou Nada</div>
+                    <div class="trap-desc">Visão preto e branco. "Se não fui perfeito, fui um fracasso total."</div>
                 </div>
             </div>
         </section>
@@ -115,38 +245,38 @@
 
         <section>
             <h2><i class="fa-solid fa-pencil"></i> Ferramenta: R.P.D.</h2>
-            <p>O <strong>Registro de Pensamentos Disfuncionais</strong> é sua principal ferramenta de defesa. Use esta estrutura:</p>
+            <p>O <strong>Registro de Pensamentos Disfuncionais</strong> é sua principal ferramenta de defesa:</p>
             
-            <details style="background: #fff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 10px; padding: 10px;">
-                <summary style="cursor: pointer; font-weight: bold; color: var(--primary); padding: 5px;">1. Situação (O Gatilho)</summary>
-                <div style="padding: 15px; color: #666; border-top: 2px dashed #eee; margin-top: 10px;">
+            <details>
+                <summary style="color: var(--primary);">1. Situação (O Gatilho) <i class="fa-solid fa-chevron-down"></i></summary>
+                <div class="rpd-content">
                     <strong>O que aconteceu?</strong> Onde? Com quem?<br>
                     Descreva apenas os fatos, como uma câmera filmaria.<br>
                     <em>Ex: "Enviei mensagem para meu amigo e ele não respondeu em 2 horas."</em>
                 </div>
             </details>
 
-            <details style="background: #fff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 10px; padding: 10px;">
-                <summary style="cursor: pointer; font-weight: bold; color: var(--te-color); padding: 5px;">2. Pensamento Automático</summary>
-                <div style="padding: 15px; color: #666; border-top: 2px dashed #eee; margin-top: 10px;">
+            <details>
+                <summary style="color: var(--te-color);">2. Pensamento Automático <i class="fa-solid fa-chevron-down"></i></summary>
+                <div class="rpd-content">
                     <strong>O que passou pela sua cabeça?</strong><br>
                     Qual o significado disso?<br>
                     <em>Ex: "Ele está me ignorando. Eu devo ser chato. Ninguém quer falar comigo."</em>
                 </div>
             </details>
 
-            <details style="background: #fff; border: 2px solid #e0e0e0; border-radius: 15px; margin-bottom: 10px; padding: 10px;">
-                <summary style="cursor: pointer; font-weight: bold; color: var(--te-color); padding: 5px;">3. Emoção</summary>
-                <div style="padding: 15px; color: #666; border-top: 2px dashed #eee; margin-top: 10px;">
+            <details>
+                <summary style="color: var(--te-color);">3. Emoção <i class="fa-solid fa-chevron-down"></i></summary>
+                <div class="rpd-content">
                     <strong>O que você sentiu?</strong> (Uma palavra)<br>
                     Dê uma nota de 0 a 10 para a intensidade.<br>
                     <em>Ex: Tristeza (8), Rejeição (9).</em>
                 </div>
             </details>
 
-            <details style="background: #eafff8; border: 2px solid var(--secondary); border-radius: 15px; margin-bottom: 10px; padding: 10px;">
-                <summary style="cursor: pointer; font-weight: bold; color: var(--secondary); padding: 5px;">4. Resposta Racional (Conclusão)</summary>
-                <div style="padding: 15px; color: #006266; border-top: 2px dashed #b2bec3; margin-top: 10px;">
+            <details style="background: #eafff8; border-color: var(--secondary);">
+                <summary style="color: var(--secondary);">4. Resposta Racional (Conclusão) <i class="fa-solid fa-check"></i></summary>
+                <div class="rpd-content" style="color: #006266;">
                     <strong>Quais as evidências reais?</strong><br>
                     Existe outra explicação? O que você diria a um amigo nessa situação?<br>
                     <em>Ex: "Ele pode estar trabalhando. Ele sempre responde quando pode. Não tenho provas de que ele me odeia."</em>
