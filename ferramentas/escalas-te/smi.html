@@ -5,7 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMI - Modos Esquemáticos | Bruno de Souza</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://psibrunosg.github.io/site/style/style.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* --- ESTILOS ESPECÍFICOS PARA O QUESTIONÁRIO (CORREÇÃO VISUAL) --- */
+        
+        /* O Container das Perguntas */
+        #questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* O Cartão da Pergunta */
+        .scale-card {
+            background: white;
+            border: 2px dashed #b2bec3; /* Borda tracejada estilo caderno */
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+        }
+
+        .scale-card:hover {
+            border-color: var(--primary);
+            background-color: #fcfcfc;
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
+        }
+
+        /* Número da Questão (Bolinha flutuante) */
+        .q-number {
+            position: absolute; 
+            top: -15px; 
+            left: -10px;
+            background: var(--accent); /* Amarelo */
+            color: var(--text);
+            width: 40px; 
+            height: 40px;
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-weight: 800; 
+            font-size: 1.2rem;
+            border: 3px solid var(--text);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        /* Texto da Pergunta */
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text);
+            margin-bottom: 20px;
+            padding-left: 15px; /* Espaço para não colar na bolinha */
+            line-height: 1.4;
+        }
+
+        /* Container dos Botões (O SEGREDO PARA FICAR LADO A LADO) */
+        .scale-options {
+            display: flex; /* Isso força ficar horizontal */
+            justify-content: space-between; /* Espalha igualmente */
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Botões Individuais (1 a 6) */
+        .scale-btn {
+            flex: 1; /* Faz todos terem o mesmo tamanho */
+            padding: 12px 5px;
+            background: #f1f2f6;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #636e72;
+            text-align: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            font-family: 'Comic Sans MS', sans-serif;
+        }
+
+        .scale-btn:hover {
+            background: #dfe6e9;
+            border-color: #b2bec3;
+            transform: scale(1.05);
+        }
+
+        /* Botão Selecionado (Ativo) */
+        .scale-btn.selected {
+            background: var(--primary); /* Azul */
+            color: white;
+            border-color: var(--text);
+            box-shadow: 0 4px 0 var(--text);
+            transform: translateY(-4px);
+        }
+
+        /* Ajuste para celular */
+        @media (max-width: 600px) {
+            .scale-options {
+                flex-wrap: wrap; /* Permite quebrar linha se a tela for muito pequena */
+            }
+            .scale-btn {
+                min-width: 40px; /* Tamanho mínimo */
+            }
+        }
+
+        /* Barra de Progresso nos Resultados */
+        .progress-track {
+            background: #eee;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #dfe6e9;
+            margin-top: 5px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: width 1s ease;
+        }
+        .result-row { margin-bottom: 15px; }
+        .result-header { display: flex; justify-content: space-between; font-weight: bold; }
+        .score-high { color: #d63031; }
+        .fill-high { background: #ff7675; }
+    </style>
 </head>
 <body>
 
@@ -16,7 +144,7 @@
             <div class="crp">Inventário de Modos Esquemáticos</div>
         </header>
 
-        <div class="highlight-box">
+        <div class="highlight-box" style="background: #fffce0; border: 2px dashed #fdcb6e; padding: 20px; border-radius: 15px; margin-bottom: 30px;">
             <i class="fa-solid fa-circle-info"></i> <strong>Como responder:</strong><br>
             Leia cada afirmação e dê uma nota de <strong>1 a 6</strong>.<br>
             <strong>1</strong> = Nunca / Quase Nunca &nbsp;|&nbsp; <strong>6</strong> = O tempo todo / Perfeitamente
@@ -31,11 +159,10 @@
             <i class="fa-solid fa-wand-magic-sparkles"></i> CALCULAR RESULTADOS
         </button>
 
-        <div id="result-area" class="result-box" style="display: none;">
-            <div class="section-label" style="justify-content: center; color: var(--te-color);">
+        <div id="result-area" class="result-box" style="display: none; background: white; padding: 30px; border-radius: 20px; border: 3px solid var(--text); margin-top: 40px; box-shadow: 10px 10px 0 rgba(0,0,0,0.05);">
+            <div class="section-label" style="justify-content: center; color: var(--te-color); font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-chart-pie"></i> Seu Perfil de Modos
             </div>
-            
             <div id="charts-container"></div>
             
             <button class="btn-login" style="background:var(--text); margin-top:30px;" onclick="window.print()">
@@ -46,9 +173,9 @@
     </div>
 
     <script>
-        // LISTA DE ITENS E MAPEAMENTO DE MODOS (Baseado no SMI Brasil 1.1)
+        // LISTA DE ITENS
         const items = [
-            { t: "1. Eu exijo respeito ao não permitir que os outros me intimidem ou mandem em mim.", m: "Bully" },
+             { t: "1. Eu exijo respeito ao não permitir que os outros me intimidem ou mandem em mim.", m: "Bully" },
             { t: "2. Eu me sinto amado e aceito.", m: "Happy" },
             { t: "3. Eu não me permito sentir prazer, pois não mereço.", m: "Punitive" },
             { t: "4. Eu me sinto fundamentalmente inadequado, falho ou defeituoso.", m: "Vulnerable" },
@@ -172,17 +299,17 @@
             { t: "121. Quando necessário, eu concluo tarefas chatas e rotineiras para que eu conquiste aquilo que eu valorizo.", m: "Healthy" },
             { t: "122. Eu me sinto espontâneo e divertido.", m: "Happy" },
             { t: "123. Às vezes eu fico com tanta raiva que sinto que seria capaz de matar alguém.", m: "Angry" },
-            { t: "124. Eu tenho uma boa noção de quem sou e do que preciso para me deixar feliz.", m: "Healthy" }
+            { t: "124. Eu tenho uma boa noção de quem sou e do que preciso para me deixar feliz.", m: "Healthy" }.
         ];
 
         const modes = {
             "Vulnerable": "Criança Vulnerável",
-            "Angry": "Criança Zangada/Raivosa",
-            "Impulsive": "Criança Impulsiva/Indisciplinada",
+            "Angry": "Criança Zangada",
+            "Impulsive": "Criança Impulsiva",
             "Happy": "Criança Feliz",
             "Compliant": "Capitulador Complacente",
             "Detached": "Protetor Desligado",
-            "SelfSoother": "Auto-confortador Desligado",
+            "SelfSoother": "Auto-confortador",
             "SelfAggrandizer": "Auto-engrandecedor",
             "Bully": "Intimidação e Ataque",
             "Punitive": "Pais Punitivos",
@@ -195,18 +322,18 @@
         // GERAR PERGUNTAS
         items.forEach((item, index) => {
             const card = document.createElement('div');
-            card.className = 'question-card';
+            card.className = 'scale-card'; 
             
-            // Botões de 1 a 6
             let buttonsHTML = '';
             for(let i=1; i<=6; i++) {
+                // AQUI ESTÁ O TRUQUE: scale-btn dentro de scale-options
                 buttonsHTML += `<div class="scale-btn" onclick="selectOption(${index}, ${i}, this)">${i}</div>`;
             }
 
             card.innerHTML = `
                 <div class="q-number">${index + 1}</div>
                 <div class="q-text">${item.t}</div>
-                <div class="scale-container">
+                <div class="scale-options">
                     ${buttonsHTML}
                 </div>
                 <input type="hidden" id="answer-${index}" value="0">
@@ -226,10 +353,7 @@
             let modeCounts = {};
 
             // Inicializar
-            for (let m in modes) {
-                modeScores[m] = 0;
-                modeCounts[m] = 0;
-            }
+            for (let m in modes) { modeScores[m] = 0; modeCounts[m] = 0; }
 
             let totalAnswered = 0;
 
@@ -242,14 +366,15 @@
                 }
             });
 
-            if (totalAnswered < items.length) {
-                if(!confirm(`Você respondeu apenas ${totalAnswered} de ${items.length} itens. Continuar?`)) return;
+            if(totalAnswered === 0) {
+                alert("Por favor, responda as perguntas antes de calcular.");
+                return;
             }
 
             const chartArea = document.getElementById('charts-container');
             chartArea.innerHTML = '';
 
-            // Agrupar por Categorias (Criança, Enfrentamento, Pais, Adulto)
+            // Agrupar por Categorias
             const groups = {
                 "MODOS CRIANÇA": ["Vulnerable", "Angry", "Impulsive", "Happy"],
                 "MODOS ENFRENTAMENTO": ["Compliant", "Detached", "SelfSoother", "SelfAggrandizer", "Bully"],
@@ -259,41 +384,44 @@
 
             for (let groupName in groups) {
                 const title = document.createElement('div');
-                title.className = 'mode-group-title';
+                title.style.marginTop = "20px";
+                title.style.fontWeight = "800";
+                title.style.color = "#2d3436";
+                title.style.borderBottom = "2px dashed #dfe6e9";
                 title.innerText = groupName;
                 chartArea.appendChild(title);
 
                 groups[groupName].forEach(modeKey => {
-                    const count = modeCounts[modeKey];
-                    const total = modeScores[modeKey];
-                    // Média: Total / Quantidade de Itens
-                    const average = count > 0 ? (total / count).toFixed(1) : 0;
-                    
-                    // Lógica visual: Escala vai de 1 a 6.
-                    // Média > 3.5 começa a ser relevante. > 4.5 alto.
-                    const percent = ((average - 1) / 5) * 100; // Normaliza 1-6 para 0-100%
-                    const isHigh = average >= 4.0; 
+                    // Verifica se há contagem para evitar divisão por zero se você usar lista reduzida
+                    // Se for lista completa, sempre haverá perguntas
+                    if(modeCounts[modeKey] >= 0) { 
+                        const count = modeCounts[modeKey] || 1; 
+                        const total = modeScores[modeKey];
+                        const average = (total / count).toFixed(1);
+                        const percent = ((average - 1) / 5) * 100; 
+                        const isHigh = average >= 4.0; 
 
-                    const row = document.createElement('div');
-                    row.className = `schema-row ${isHigh ? 'high-score' : ''}`;
-                    
-                    row.innerHTML = `
-                        <div class="schema-header">
-                            <span>${modes[modeKey]}</span>
-                            <span>Média: ${average}</span>
-                        </div>
-                        <div class="progress-bg">
-                            <div class="progress-bar" style="width: ${Math.max(0, percent)}%"></div>
-                        </div>
-                    `;
-                    chartArea.appendChild(row);
+                        const row = document.createElement('div');
+                        row.className = 'result-row';
+                        
+                        row.innerHTML = `
+                            <div class="result-header">
+                                <span>${modes[modeKey]}</span>
+                                <span class="${isHigh ? 'score-high' : ''}">${average}</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill ${isHigh ? 'fill-high' : ''}" style="width: ${Math.max(0, percent)}%"></div>
+                            </div>
+                        `;
+                        chartArea.appendChild(row);
+                    }
                 });
             }
 
-            document.getElementById('result-area').style.display = 'block';
-            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            resultArea.scrollIntoView({ behavior: 'smooth' });
         }
-         </script>
+    </script>
 </body>
 </html>
-
