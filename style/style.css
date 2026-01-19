@@ -349,3 +349,164 @@ footer {
     .progress-track { border: 1px solid #ccc; -webkit-print-color-adjust: exact; }
     .progress-fill { -webkit-print-color-adjust: exact; }
 }
+/* --- FLUXOGRAMA (ANATOMIA DO CICLO) --- */
+.flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.flow-step {
+    background: #ffffff;
+    border: 3px solid #e0e0e0;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.flow-step:hover {
+    transform: scale(1.02);
+    border-color: var(--primary);
+}
+
+/* Setinha conectora entre os passos */
+.flow-step:not(:last-child)::after {
+    content: '⬇️';
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    z-index: 2;
+}
+
+/* Cores Específicas dos Passos */
+.flow-step.gray { border-color: #b2bec3; background: #f9f9f9; }
+.flow-step.purple { border-color: var(--primary); background: #f0f3ff; }
+.flow-step.red { border-color: var(--te-color); background: #fff0f0; }
+
+.flow-badge {
+    padding: 8px 15px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    min-width: 110px;
+    text-align: center;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+    border: 2px solid rgba(0,0,0,0.1);
+}
+
+.flow-badge.gray { background: #636e72; }
+.flow-badge.purple { background: var(--primary); }
+.flow-badge.red { background: var(--te-color); }
+
+/* --- GRID DE ARMADILHAS/DISTORÇÕES --- */
+.traps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.trap-card {
+    background: white;
+    border: 3px solid #dfe6e9;
+    border-radius: 25px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
+    transition: all 0.3s;
+}
+
+.trap-card:hover {
+    border-color: var(--secondary);
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+    transform: translateY(-5px) rotate(1deg);
+}
+
+.trap-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    background: #eafff8;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+    border: 3px solid var(--secondary);
+}
+
+.trap-card h4 {
+    margin: 0 0 10px 0;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.trap-card p {
+    margin: 0;
+    font-size: 1rem;
+    color: #636e72;
+}
+
+/* --- DETETIVE INTERATIVO --- */
+.detective-box {
+    background: #f0f8ff;
+    padding: 30px;
+    border-radius: 25px;
+    border: 3px dashed #b2bec3;
+    text-align: center;
+}
+
+.btn-small {
+    background: white;
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    font-family: inherit;
+    margin: 5px;
+}
+
+.btn-small:hover {
+    transform: translateY(-2px);
+    background: var(--primary);
+    color: white;
+}
+
+/* --- DESTAQUES GERAIS (HIGHLIGHT BOX) --- */
+.highlight-box {
+    background: #fffce0;
+    border: 3px dashed var(--accent);
+    padding: 25px;
+    border-radius: 20px;
+    font-style: italic;
+    color: #d35400;
+    margin: 25px 0;
+    font-size: 1.1rem;
+    text-align: center;
+    position: relative;
+}
+.highlight-box::before {
+    content: '📌';
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    font-size: 1.5rem;
+}
+
+/* --- Listas --- */
+ul { padding-left: 20px; }
+li { margin-bottom: 10px; }
