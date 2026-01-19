@@ -5,417 +5,397 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Psicólogo Bruno de Souza | Terapia Baseada em Evidências</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- VARIÁVEIS E RESET --- */
+        /* --- VARIÁVEIS DE DESIGN --- */
         :root {
-            /* Paleta de Cores Acolhedora */
-            --cor-bg: #FDFBF7;           /* Creme muito suave (Papel antigo) */
-            --cor-bg-alt: #F2EBE5;       /* Bege levemente mais escuro para seções */
-            --cor-destaque: #C56E4B;     /* Terracota (Quente e Humano) */
-            --cor-destaque-dark: #A05232;
-            --cor-texto: #2D3748;        /* Cinza Chumbo (Legibilidade) */
-            --cor-texto-suave: #586377;  
+            --cor-fundo: #FDFBF8;           /* Creme off-white para o fundo geral */
+            --cor-fundo-secao: #F4ECE6;     /* Bege mais quente para seções */
+            --cor-destaque: #C56E4B;        /* Terracota principal */
+            --cor-destaque-claro: #EBDAD2;  /* Terracota suave para fundos */
+            --cor-texto-titulo: #2D2420;    /* Marrom café quase preto */
+            --cor-texto-corpo: #5C544F;     /* Cinza quente para leitura */
             --cor-branco: #FFFFFF;
             
-            /* Espaçamentos e Bordas */
-            --container-width: 1000px;
-            --radius-suave: 16px;
-            --sombra-card: 0 10px 30px -5px rgba(197, 110, 75, 0.08);
+            --sombra-suave: 0 10px 30px -10px rgba(197, 110, 75, 0.15);
+            --sombra-hover: 0 20px 40px -10px rgba(197, 110, 75, 0.25);
+            --borda-raio: 20px;
+            --container: 1100px;
         }
 
+        /* --- RESET E BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'DM Sans', sans-serif;
-            background-color: var(--cor-bg);
-            color: var(--cor-texto);
-            line-height: 1.7;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto-corpo);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
         h1, h2, h3 {
-            font-family: 'Playfair Display', serif; /* Fonte serifada passa autoridade e elegância */
-            color: #1A202C;
-            line-height: 1.2;
+            font-family: 'Playfair Display', serif;
+            color: var(--cor-texto-titulo);
         }
 
-        a { text-decoration: none; transition: 0.3s ease; }
-        
-        .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        a { text-decoration: none; transition: all 0.3s ease; }
+        .container { max-width: var(--container); margin: 0 auto; padding: 0 25px; }
+        section { padding: 100px 0; }
 
-        /* --- NAVEGAÇÃO (GLASSMORPHISM) --- */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 0;
-            background: rgba(253, 251, 247, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--cor-destaque);
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links a {
-            margin-left: 30px;
-            color: var(--cor-texto-suave);
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        .nav-links a:hover { color: var(--cor-destaque); }
-        .nav-cta {
-            background-color: var(--cor-texto);
-            color: #fff !important;
-            padding: 10px 20px;
-            border-radius: 50px;
-        }
-        .nav-cta:hover { background-color: var(--cor-destaque); }
-
-        /* --- HERO SECTION (ACOLHIMENTO) --- */
-        .hero {
-            padding: 180px 0 100px;
-            text-align: center;
-            position: relative;
-        }
-
-        /* Elemento decorativo sutil */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(197, 110, 75, 0.08) 0%, rgba(255,255,255,0) 70%);
-            z-index: -1;
-            border-radius: 50%;
-        }
-
+        /* --- ELEMENTOS REUTILIZÁVEIS --- */
         .badge {
             display: inline-block;
-            padding: 6px 16px;
-            background: #EFE6DF;
-            color: var(--cor-destaque-dark);
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 24px;
-            color: #2D3748;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--cor-texto-suave);
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--cor-destaque);
-            color: #fff;
-            padding: 16px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            box-shadow: 0 10px 20px rgba(197, 110, 75, 0.25);
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            background-color: var(--cor-destaque-dark);
-            box-shadow: 0 15px 25px rgba(197, 110, 75, 0.35);
-        }
-
-        /* --- SEÇÃO DE "SENTIMENTOS" (Gatilhos) --- */
-        .section-problema {
-            padding: 80px 0;
-            background-color: var(--cor-branco);
-        }
-
-        .grid-sentimentos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .card-sentimento {
-            padding: 30px;
-            background: var(--cor-bg);
-            border-radius: var(--radius-suave);
-            transition: 0.3s;
-            border: 1px solid transparent;
-        }
-        .card-sentimento:hover {
-            border-color: rgba(197, 110, 75, 0.3);
-            transform: translateY(-5px);
-        }
-        .emoji-icon { font-size: 2rem; display: block; margin-bottom: 15px; }
-        .card-sentimento h3 { font-size: 1.3rem; margin-bottom: 10px; font-family: 'DM Sans', sans-serif; font-weight: 700; }
-
-        /* --- METODOLOGIA (LAYOUT ZIG-ZAG) --- */
-        .section-metodo {
-            padding: 100px 0;
-            background-color: var(--cor-bg-alt);
-        }
-
-        .metodo-row {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-            margin-bottom: 100px;
-        }
-        .metodo-row.reverse { flex-direction: row-reverse; }
-
-        .metodo-content { flex: 1; }
-        .metodo-visual {
-            flex: 0.8;
-            background: #E8DFD8;
-            height: 350px;
-            border-radius: var(--radius-suave);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: #FFF;
-            position: relative;
-            overflow: hidden;
-        }
-        /* Apenas decorativo para simular imagem */
-        .metodo-visual::after {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(197, 110, 75, 0.4), transparent);
-        }
-
-        .link-saiba-mais {
-            display: inline-block;
-            margin-top: 20px;
+            background: var(--cor-destaque-claro);
             color: var(--cor-destaque);
             font-weight: 700;
-            border-bottom: 2px solid var(--cor-destaque);
-            padding-bottom: 2px;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .link-saiba-mais:hover { color: var(--cor-destaque-dark); border-color: var(--cor-destaque-dark); }
 
-        /* --- SOBRE MIM --- */
-        .section-sobre {
-            padding: 100px 0;
-            background-color: var(--cor-branco);
+        .titulo-secao {
+            text-align: center;
+            margin-bottom: 60px;
         }
+        .titulo-secao h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        .titulo-secao p { max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 16px 32px; border-radius: 50px; font-weight: 700;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .btn-primary {
+            background: var(--cor-destaque); color: var(--cor-branco);
+            box-shadow: var(--sombra-suave);
+        }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: var(--sombra-hover); background: #b15d3c; }
         
-        .sobre-container {
-            display: flex;
-            gap: 50px;
-            align-items: flex-start;
+        .btn-outline {
+            background: transparent; border: 2px solid var(--cor-destaque); color: var(--cor-destaque);
         }
-        
-        .foto-perfil {
-            width: 350px;
-            height: 450px;
-            object-fit: cover;
-            border-radius: var(--radius-suave);
-            box-shadow: 20px 20px 0px var(--cor-bg-alt); /* Efeito de design gráfico */
-        }
+        .btn-outline:hover { background: var(--cor-destaque); color: var(--cor-branco); }
 
-        .sobre-texto ul {
-            list-style: none;
-            margin: 20px 0;
+        /* --- NAVEGAÇÃO FLUTUANTE --- */
+        nav {
+            position: fixed; width: 100%; top: 0; z-index: 100;
+            background: rgba(253, 251, 248, 0.9); backdrop-filter: blur(10px);
+            padding: 20px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .sobre-texto li {
-            margin-bottom: 10px;
-            padding-left: 25px;
-            position: relative;
-        }
-        .sobre-texto li::before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            color: var(--cor-destaque);
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; font-size: 1.3rem; color: var(--cor-texto-titulo); }
+        .nav-links a { margin-left: 25px; font-weight: 500; color: var(--cor-texto-corpo); font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--cor-destaque); }
+        .nav-cta { background: var(--cor-destaque); color: #fff !important; padding: 10px 25px; border-radius: 50px; }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--sombra-suave); }
 
-        /* --- FOOTER --- */
-        footer {
-            background-color: #2D2D2D;
-            color: #BBB;
-            padding: 60px 0;
+        /* --- HERO (CABEÇALHO) --- */
+        header {
+            padding: 180px 0 120px;
+            background: linear-gradient(135deg, var(--cor-fundo) 0%, var(--cor-fundo-secao) 100%);
+            border-bottom-left-radius: 80px; border-bottom-right-radius: 80px;
             text-align: center;
         }
-        footer p { margin-bottom: 10px; }
-        footer strong { color: #FFF; }
+        header h1 { font-size: 3.8rem; line-height: 1.1; margin-bottom: 25px; }
+        header p { font-size: 1.25rem; max-width: 700px; margin: 0 auto 40px; }
+
+        /* --- CARDS DE AJUDA (MODERNOS) --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .help-card {
+            background: var(--cor-branco);
+            padding: 40px 30px;
+            border-radius: var(--borda-raio);
+            box-shadow: var(--sombra-suave);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
+            border: 1px solid transparent;
+        }
+        .help-card:hover {
+            transform: translateY(-15px); /* Sobe mais ao passar o mouse */
+            border-color: var(--cor-destaque-claro);
+        }
+        .card-icon {
+            font-size: 3rem; margin-bottom: 20px; display: block;
+            background: var(--cor-fundo-secao); width: 70px; height: 70px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: var(--cor-destaque);
+        }
+        .help-card h3 { font-size: 1.4rem; margin-bottom: 15px; font-family: 'DM Sans', sans-serif; font-weight: 700; }
+
+        /* --- LINKS TCC / TE (Visual de "Caminhos") --- */
+        .section-metodo { background: var(--cor-fundo-secao); }
+        .metodo-container { display: flex; gap: 40px; }
+        .metodo-box {
+            flex: 1; background: var(--cor-branco); padding: 50px;
+            border-radius: var(--borda-raio); box-shadow: var(--sombra-suave);
+            position: relative; overflow: hidden;
+        }
+        /* Elemento decorativo de fundo */
+        .metodo-box::before {
+            content: ''; position: absolute; top: -50px; right: -50px;
+            width: 150px; height: 150px; background: var(--cor-destaque-claro);
+            opacity: 0.3; border-radius: 50%; z-index: 0;
+        }
+        .metodo-content { position: relative; z-index: 1; }
+        .metodo-box h3 { font-size: 1.8rem; margin-bottom: 20px; }
+        .metodo-box p { margin-bottom: 30px; }
+        .link-grande {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 25px; background: var(--cor-fundo); border-radius: 15px;
+            font-weight: 700; color: var(--cor-destaque); border: 2px solid var(--cor-destaque-claro);
+        }
+        .link-grande:hover { background: var(--cor-destaque); color: white; border-color: var(--cor-destaque); }
+
+        /* --- EBEP (Escala de Bem-Estar) - Visual de "Checklist" --- */
+        .section-ebep { background-color: var(--cor-branco); }
+        .ebep-wrapper {
+            background: var(--cor-fundo); border: 2px dashed var(--cor-destaque-claro);
+            border-radius: var(--borda-raio); padding: 50px;
+        }
+        .checklist-item {
+            display: flex; align-items: flex-start; margin-bottom: 25px;
+            padding-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .check-box {
+            min-width: 30px; height: 30px; border: 2px solid var(--cor-destaque);
+            border-radius: 8px; margin-right: 20px; position: relative;
+            flex-shrink: 0;
+        }
+        /* Simula um "check" visual */
+        .check-box::after { content: '?'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--cor-destaque); font-weight: bold;}
+        
+        .checklist-content strong { display: block; font-size: 1.1rem; margin-bottom: 8px; color: var(--cor-texto-titulo); }
+        .ebep-note { background: var(--cor-destaque-claro); padding: 20px; border-radius: 12px; text-align: center; margin-top: 30px; font-size: 0.9rem; }
+
+        /* --- SOBRE --- */
+        .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .sobre-img {
+            width: 100%; height: 500px; object-fit: cover;
+            border-radius: var(--borda-raio);
+            /* Efeito de moldura deslocada */
+            box-shadow: 25px 25px 0px var(--cor-destaque-claro);
+        }
+        .lista-qualificacoes li { margin-bottom: 10px; list-style: none; display: flex; align-items: center; }
+        .lista-qualificacoes li::before { content: '✓'; margin-right: 10px; color: var(--cor-destaque); font-weight: bold;}
+
+        /* --- FOOTER --- */
+        footer { background: var(--cor-texto-titulo); color: rgba(255,255,255,0.7); padding: 80px 0 40px; text-align: center; }
+        footer h4 { color: #fff; font-size: 1.5rem; margin-bottom: 20px; }
+        .footer-links a { color: #fff; margin: 0 15px; font-weight: 700; }
 
         /* --- RESPONSIVO --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; } /* Poderia adicionar menu hamburger aqui */
-            .metodo-row, .metodo-row.reverse, .sobre-container { flex-direction: column; gap: 30px; }
-            .foto-perfil { width: 100%; height: auto; box-shadow: 10px 10px 0px var(--cor-bg-alt); }
+        @media (max-width: 900px) {
+            header h1 { font-size: 2.8rem; }
+            .nav-links { display: none; } /* Menu simplificado no mobile */
+            .metodo-container, .sobre-grid { grid-template-columns: 1fr; flex-direction: column; }
+            .sobre-img { height: 400px; box-shadow: 15px 15px 0px var(--cor-destaque-claro); }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="container nav-content">
+        <div class="container nav-container">
             <div class="logo">PSI. BRUNO SOUZA</div>
             <div class="nav-links">
-                <a href="#metodo">Como Funciona</a>
+                <a href="#ajuda">Para que serve?</a>
+                <a href="#metodologia">Como funciona?</a>
+                <a href="#ebep-teste">Autoavaliação</a>
                 <a href="#sobre">Sobre Mim</a>
-                <a href="https://psibrunosg.github.io/site/ferramentas/listaferramentas.html">Área Restrita</a>
-                <a href="https://wa.me/5553991898309" class="nav-cta">Agendar Consulta</a>
+                <a href="https://wa.me/5553991898309" class="nav-cta">Agendar Sessão</a>
             </div>
         </div>
     </nav>
 
-    <header class="hero">
+    <header>
         <div class="container">
-            <span class="badge">Psicologia Clínica Online & Presencial</span>
-            <h1>Reencontre seu equilíbrio <br>emocional e mental.</h1>
+            <span class="badge">Psicologia Clínica & Neurociências</span>
+            <h1>Acolhimento para sua dor, <br>estratégia para sua vida.</h1>
             <p>
-                A vida não precisa ser vivida no "modo sobrevivência". <br>
-                Utilizo a <strong>TCC</strong> e a <strong>Terapia do Esquema</strong> para ajudar você a quebrar ciclos repetitivos e construir uma vida com mais sentido.
+                Um espaço seguro para você entender seus padrões emocionais e construir uma vida com mais sentido, usando a Terapia Cognitivo-Comportamental e a Terapia do Esquema.
             </p>
-            <a href="https://wa.me/5553991898309" class="btn-primary" target="_blank">
-                Iniciar minha jornada
-            </a>
-            <div style="margin-top: 20px; font-size: 0.9rem; color: #888;">
-                Atendimento ético e sigiloso | CRP 07/44472
+            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 40px;">
+                <a href="https://wa.me/5553991898309" class="btn btn-primary">
+                    Conversar com o Bruno
+                </a>
+                <a href="#metodologia" class="btn btn-outline">
+                   Entender as Terapias
+                </a>
             </div>
         </div>
     </header>
 
-    <section class="section-problema">
+    <section id="ajuda">
         <div class="container">
-            <h2 style="text-align: center;">Você tem se sentido assim ultimamente?</h2>
-            <div class="grid-sentimentos">
-                <div class="card-sentimento">
-                    <span class="emoji-icon">💭</span>
-                    <h3>Mente Acelerada</h3>
-                    <p>Pensamentos que não param, preocupação excessiva com o futuro e dificuldade para relaxar ou dormir.</p>
-                </div>
-                <div class="card-sentimento">
-                    <span class="emoji-icon">⛓️</span>
-                    <h3>Padrões Repetitivos</h3>
-                    <p>A sensação de estar preso nas mesmas situações, cometendo os mesmos "erros" nos relacionamentos ou no trabalho.</p>
-                </div>
-                <div class="card-sentimento">
-                    <span class="emoji-icon">📉</span>
-                    <h3>Desânimo Constante</h3>
-                    <p>Falta de energia, perda de prazer nas coisas que antes gostava e sensação de vazio.</p>
-                </div>
+            <div class="titulo-secao">
+                <h2>Como a psicoterapia pode te ajudar?</h2>
+                <p>Não se trata apenas de "curar" um transtorno, mas de devolver sua autonomia e qualidade de vida em áreas que hoje parecem travadas.</p>
             </div>
-        </div>
-    </section>
-
-    <section id="metodo" class="section-metodo">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: 60px;">
-                <span class="badge">Minhas Ferramentas de Trabalho</span>
-                <h2>Ciência e Acolhimento Humano</h2>
-            </div>
-
-            <div class="metodo-row">
-                <div class="metodo-visual">🧩</div> <div class="metodo-content">
-                    <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
-                    <p>
-                        Muitas vezes, não são as situações que nos ferem, mas sim como as interpretamos. A TCC é uma abordagem prática e estruturada que ajuda você a identificar "armadilhas mentais" e mudar comportamentos que mantêm o sofrimento.
-                    </p>
-                    <p>
-                        É considerada o padrão-ouro para tratamento de ansiedade e depressão, com foco na mudança no <strong>aqui e agora</strong>.
-                    </p>
-                    <a href="https://psibrunosg.github.io/site/ferramentas/psicoeducacao/tcc/tcc.html" class="link-saiba-mais">
-                        Ler explicação detalhada sobre TCC →
-                    </a>
-                </div>
-            </div>
-
-            <div class="metodo-row reverse">
-                <div class="metodo-visual">👶</div> <div class="metodo-content">
-                    <h3>Terapia do Esquema (TE)</h3>
-                    <p>
-                        Você sente que reage de forma exagerada a certas situações? Ou que tem uma "criança ferida" dentro de você?
-                    </p>
-                    <p>
-                        A Terapia do Esquema vai mais fundo. Ela foca em suprir necessidades emocionais que não foram atendidas na sua infância e que hoje criam padrões de autossabotagem (os Esquemas). É um processo profundo de reparentalização e cura emocional.
-                    </p>
-                    <a href="https://psibrunosg.github.io/site/ferramentas/psicoeducacao/te/esquema.html" class="link-saiba-mais">
-                        Entender meus Esquemas e Modos →
-                    </a>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="sobre" class="section-sobre">
-        <div class="container sobre-container">
-            <img src="img/foto.jpg" alt="Psicólogo Bruno de Souza" class="foto-perfil">
             
-            <div class="sobre-texto">
-                <span class="badge">Quem sou eu</span>
-                <h2>Olá, sou o Bruno.</h2>
-                <p>
-                    Sou psicólogo clínico apaixonado por neurociências e pelo comportamento humano. Acredito que a terapia deve ser um espaço onde a técnica científica encontra a empatia genuína.
-                </p>
-                <p>
-                    Meu objetivo não é apenas "tirar a dor", mas ajudar você a construir uma caixa de ferramentas emocionais para lidar com a vida de forma autônoma.
-                </p>
-                
-                <h3>Qualificações:</h3>
-                <ul>
-                    <li><strong>Psicólogo Clínico</strong> (CRP 07/44472) formado pela UCPEL.</li>
-                    <li>Especialização em andamento em <strong>TCC</strong> e <strong>Terapia do Esquema</strong> (Instituto Cognitivo).</li>
-                    <li>Atuação com Psicologia do Esporte e Alta Performance.</li>
-                    <li>Criador de um ecossistema digital de ferramentas terapêuticas.</li>
-                </ul>
+            <div class="cards-grid">
+                <div class="help-card">
+                    <span class="card-icon">🌪️</span>
+                    <h3>Ansiedade & Pânico</h3>
+                    <p>Para quem vive com a mente acelerada, medo do futuro ou crises físicas. Aprenda técnicas para retomar o controle do seu corpo e pensamentos.</p>
+                </div>
+                <div class="help-card">
+                    <span class="card-icon">🌑</span>
+                    <h3>Depressão e Desânimo</h3>
+                    <p>Um espaço para recuperar a vitalidade e o sentido, quebrando o ciclo de inatividade e desesperança através da ativação comportamental.</p>
+                </div>
+                <div class="help-card">
+                    <span class="card-icon">🔄</span>
+                    <h3>Padrões Repetitivos (Esquemas)</h3>
+                    <p>Você sente que sempre cai nas mesmas "armadilhas" em relacionamentos ou no trabalho? Vamos identificar e quebrar esses ciclos profundos.</p>
+                </div>
+                <div class="help-card">
+                    <span class="card-icon">🚀</span>
+                    <h3>Performance e Carreira</h3>
+                    <p>Foco em psicologia do esporte e organizacional para quem busca alto desempenho sem sacrificar a saúde mental.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <a href="https://wa.me/5553991898309" class="btn-primary" style="margin-top: 20px;">
-                    Agendar uma conversa sem compromisso
-                </a>
+    <section id="metodologia" class="section-metodo">
+        <div class="container">
+            <div class="titulo-secao">
+                <span class="badge">Minhas Ferramentas</span>
+                <h2>Abordagens Baseadas em Evidências</h2>
+                <p>Utilizo o que há de mais moderno na ciência psicológica para garantir resultados eficazes e duradouros.</p>
+            </div>
+
+            <div class="metodo-container">
+                <div class="metodo-box">
+                    <div class="metodo-content">
+                        <h3>Terapia Cognitivo-Comportamental (TCC)</h3>
+                        <p>Focada no "aqui e agora". Entenda como seus pensamentos distorcidos afetam suas emoções e aprenda a modificá-los na prática.</p>
+                        <a href="https://psibrunosg.github.io/site/ferramentas/psicoeducacao/tcc/tcc.html" class="link-grande">
+                            <span>Ler tudo sobre TCC</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="metodo-box">
+                    <div class="metodo-content">
+                        <h3>Terapia do Esquema (TE)</h3>
+                        <p>Ideal para padrões profundos que vêm da infância. Trabalha a cura emocional das suas necessidades não atendidas no passado.</p>
+                        <a href="https://psibrunosg.github.io/site/ferramentas/psicoeducacao/te/esquema.html" class="link-grande">
+                            <span>Descobrir meus Esquemas</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ebep-teste" class="section-ebep">
+        <div class="container">
+            <div class="titulo-secao">
+                <h2>Será que a terapia é para mim hoje?</h2>
+                <p>Esta é uma reflexão baseada na <strong>Escala de Bem-Estar Psicológico (EBEP)</strong>. Leia as afirmações abaixo e perceba com quais você <strong>menos</strong> se identifica atualmente.</p>
+            </div>
+
+            <div class="ebep-wrapper">
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div class="checklist-content">
+                        <strong>1. Autoaceitação</strong>
+                        <p>"Em geral, sinto-me confiante e positivo(a) em relação a mim mesmo(a) e aceito meus defeitos e qualidades."</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div class="checklist-content">
+                        <strong>2. Relações Positivas</strong>
+                        <p>"Tenho facilidade em manter relações calorosas, satisfatórias e de confiança com outras pessoas."</p>
+                    </div>
+                </div>
+                 <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div class="checklist-content">
+                        <strong>3. Autonomia</strong>
+                        <p>"Consigo tomar decisões baseado(a) nos meus próprios padrões, sem me preocupar excessivamente com a aprovação alheia."</p>
+                    </div>
+                </div>
+                 <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div class="checklist-content">
+                        <strong>4. Domínio do Ambiente</strong>
+                        <p>"Sinto que sou capaz de lidar com as responsabilidades do dia a dia e criar contextos favoráveis para minhas necessidades."</p>
+                    </div>
+                </div>
+                 <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div class="checklist-content">
+                        <strong>5. Propósito de Vida</strong>
+                        <p>"Tenho objetivos claros na vida e sinto que o que faço no meu presente tem sentido e direção."</p>
+                    </div>
+                </div>
+
+                <div class="ebep-note">
+                    <strong>Reflexão:</strong> Se você sentiu dificuldade em concordar com várias dessas áreas, a psicoterapia é a ferramenta ideal para fortalecer esses pilares e aumentar seu bem-estar.
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="https://wa.me/5553991898309" class="btn btn-primary">
+                        Quero trabalhar esses pontos na terapia
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre">
+        <div class="container">
+            <div class="sobre-grid">
+                <img src="img/foto.jpg" alt="Bruno de Souza" class="sobre-img">
+                <div class="sobre-conteudo">
+                    <h2>Olá, eu sou o Bruno.</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 30px;">
+                        Minha missão é traduzir a complexidade da mente humana em ferramentas práticas que você possa usar no seu dia a dia. Acredito em um atendimento ético, humano e sem julgamentos.
+                    </p>
+                    
+                    <ul class="lista-qualificacoes">
+                        <li>Psicólogo Clínico (UCPEL) - CRP 07/44472</li>
+                        <li>Especializando em Terapia Cognitivo-Comportamental (Instituto Cognitivo)</li>
+                        <li>Especializando em Terapia do Esquema (Instituto Cognitivo)</li>
+                        <li>Experiência em Psicologia do Esporte e Organizacional</li>
+                    </ul>
+
+                    <div style="margin-top: 40px; display: flex; gap: 20px; align-items: center;">
+                        <a href="https://wa.me/5553991898309" class="btn btn-primary">
+                            Agendar Horário
+                        </a>
+                         <a href="https://instagram.com" style="font-size: 1.5rem; color: var(--cor-destaque);">IG</a>
+                        <a href="https://linkedin.com" style="font-size: 1.5rem; color: var(--cor-destaque);">IN</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p><strong>Bruno de Souza Gonçalves</strong></p>
+            <h4>Bruno de Souza Gonçalves</h4>
             <p>Psicologia Baseada em Evidências | CRP 07/44472</p>
-            <div style="margin-top: 20px;">
-                <a href="https://www.instagram.com/psi.brunosg/" style="color: #BBB; margin: 0 10px;">Instagram</a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" style="color: #BBB; margin: 0 10px;">LinkedIn</a>
-            </div>
-            <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">
-                &copy; 2026. Todos os direitos reservados.
+            <p style="margin: 30px 0;" class="footer-links">
+                <a href="#ajuda">Serviços</a> |
+                <a href="#metodologia">TCC e TE</a> |
+                <a href="https://psibrunosg.github.io/site/ferramentas/listaferramentas.html">Área do Paciente</a>
             </p>
+            <p style="font-size: 0.9rem; opacity: 0.6;">© 2026 Todos os direitos reservados.</p>
         </div>
     </footer>
 
