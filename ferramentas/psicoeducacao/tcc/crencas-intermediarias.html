@@ -10,7 +10,7 @@
     <style>
         /* === ESTILOS ESPECÍFICOS DESTA PÁGINA === */
         
-        /* Diagrama Lógico (Se... Então...) */
+        /* --- Diagrama Lógico (Se... Então...) --- */
         .logic-container {
             display: flex;
             flex-direction: column;
@@ -23,9 +23,10 @@
             align-items: center;
             gap: 15px;
             background: #fff;
-            padding: 15px;
+            padding: 20px;
             border-radius: 20px;
-            border: 3px dashed #b2bec3; /* Borda tracejada lúdica */
+            border: 3px dashed #b2bec3; /* Borda tracejada estilo caderno */
+            font-family: 'Comic Sans MS', sans-serif;
         }
 
         .logic-box {
@@ -35,27 +36,42 @@
             text-align: center;
             font-weight: bold;
             position: relative;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-size: 1.1rem;
         }
 
+        /* Caixa do "SE..." */
         .box-if {
             background: #fff3e0;
             color: #e67e22;
             border: 2px solid #ffe0b2;
         }
-        
-        .box-if::before { content: 'SE...'; display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; text-transform: uppercase; }
+        .box-if::before { 
+            content: 'SE...'; 
+            display: block; 
+            font-size: 0.8rem; 
+            opacity: 0.8; 
+            margin-bottom: 5px; 
+            text-transform: uppercase; 
+        }
 
+        /* Caixa do "ENTÃO..." */
         .box-then {
             background: #ffebee;
             color: #c0392b;
             border: 2px solid #ffcdd2;
         }
-        .box-then::before { content: 'ENTÃO...'; display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; text-transform: uppercase; }
+        .box-then::before { 
+            content: 'ENTÃO...'; 
+            display: block; 
+            font-size: 0.8rem; 
+            opacity: 0.8; 
+            margin-bottom: 5px; 
+            text-transform: uppercase; 
+        }
 
         .logic-arrow { font-size: 2rem; color: #b2bec3; }
 
-        /* Área de Reescrita */
+        /* --- Área Interativa (Reescrita) --- */
         .rewrite-box {
             background: #f0f8ff;
             border: 3px solid #dfe6e9;
@@ -63,7 +79,24 @@
             padding: 30px;
             text-align: center;
         }
+        /* === ESTILOS GERAIS DOS BLOCOS (Caixas por Tema) === */
+        section {
+            background-color: #ffffff; /* Fundo branco para o bloco */
+            border: 3px solid #dfe6e9; /* Borda cinza azulada estilo "cartão" */
+            border-radius: 25px; /* Bordas bem arredondadas */
+            padding: 30px; /* Espaço interno */
+            margin-bottom: 35px; /* Espaço entre um bloco e outro */
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05); /* Sombra suave para dar profundidade */
+        }
 
+        /* Ajuste para o título ficar mais bonito dentro da caixa */
+        section h2 {
+            margin-top: 0; /* Remove espaço acima do título */
+            border-bottom: 2px dashed #b2bec3; /* Linha tracejada abaixo do título */
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            color: var(--primary); /* Usa a cor principal (roxo/azul) se definida, ou pode fixar uma cor */
+        }
         /* Botões de Opção */
         .btn-option {
             background: white;
@@ -79,9 +112,13 @@
             font-size: 1rem;
             box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
-        .btn-option:hover { transform: translateY(-2px); background: var(--primary); color: white; }
+        .btn-option:hover { 
+            transform: translateY(-2px); 
+            background: var(--primary); 
+            color: white; 
+        }
 
-        /* Resultado da Nova Regra */
+        /* Resultado (Bolha) */
         .result-bubble {
             background: white;
             border: 3px dashed #00b894;
@@ -96,9 +133,10 @@
             justify-content: center;
             box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
             font-size: 1.1rem;
+            font-family: 'Comic Sans MS', sans-serif;
         }
 
-        /* Accordion Lúdico */
+        /* --- Accordion (Detalhes) --- */
         details {
             background: white;
             border: 2px solid #dfe6e9;
@@ -119,25 +157,10 @@
             font-size: 1.1rem;
         }
         summary:hover { color: var(--primary); background-color: #f9f9f9; border-radius: 10px; }
+        
+        /* Remove seta padrão feia */
         summary::-webkit-details-marker { display: none; }
-        /* === ESTILOS GERAIS DOS BLOCOS (Caixas por Tema) === */
-        section {
-            background-color: #ffffff; /* Fundo branco para o bloco */
-            border: 3px solid #dfe6e9; /* Borda cinza azulada estilo "cartão" */
-            border-radius: 25px; /* Bordas bem arredondadas */
-            padding: 30px; /* Espaço interno */
-            margin-bottom: 35px; /* Espaço entre um bloco e outro */
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.05); /* Sombra suave para dar profundidade */
-        }
-
-        /* Ajuste para o título ficar mais bonito dentro da caixa */
-        section h2 {
-            margin-top: 0; /* Remove espaço acima do título */
-            border-bottom: 2px dashed #b2bec3; /* Linha tracejada abaixo do título */
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            color: var(--primary); /* Usa a cor principal (roxo/azul) se definida, ou pode fixar uma cor */
-        }
+        
         .details-content {
             padding: 20px;
             border-top: 2px dashed #dfe6e9;
@@ -156,7 +179,7 @@
 
     <a href="tcc.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
 
-    <div id="dashboard" style="margin-top: 60px;"> 
+    <div id="dashboard" style="margin-top: 60px; display: block !important;"> 
         
         <header>
             <h1>Crenças Intermediárias</h1>
@@ -168,13 +191,13 @@
             <p>Se as Crenças Nucleares são as raízes da árvore, as <strong>Crenças Intermediárias</strong> são o tronco. Elas são as regras, suposições e atitudes que criamos para <em>sobreviver</em> e tentar lidar com nossas dores profundas.</p>
             
             <div class="highlight-box">
-                "Eu criei essas regras na infância para me proteger, mas agora elas viraram uma prisão."
+                "Eu criei essas regras na infância para me proteger da dor, mas agora elas viraram uma prisão."
             </div>
         </section>
 
         <section>
             <h2><i class="fa-solid fa-calculator"></i> A Fórmula "Se... Então..."</h2>
-            <p>Sua mente tenta negociar com a realidade criando condições. Veja como funciona:</p>
+            <p>Sua mente tenta negociar com a realidade criando condições rígidas. Veja como funciona:</p>
             
             <div class="logic-container">
                 
@@ -231,7 +254,7 @@
             <p>O objetivo não é ficar sem regras, mas ter regras flexíveis. Vamos trocar o <strong>"Tenho que"</strong> pelo <strong>"Prefiro"</strong>:</p>
             
             <div class="rewrite-box">
-                <p style="margin-bottom: 20px; font-weight: bold; font-size: 1.1rem;">Toque em uma regra rígida para flexibilizar:</p>
+                <p style="margin-bottom: 20px; font-weight: bold; font-size: 1.1rem; color: var(--text);">Toque em uma regra rígida para flexibilizar:</p>
                 
                 <div>
                     <button class="btn-option" onclick="rewriteRule('perfeito')">"Eu DEVO ser perfeito"</button>
