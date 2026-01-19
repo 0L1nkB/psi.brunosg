@@ -3,290 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCC - Laboratório da Mente</title>
+    <title>TCC - Laboratório da Mente | Bruno de Souza</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
     <style>
-               :root {
-            /* Paleta Base "Fichário Premium" */
-            --paper-line: #e2e8f0;
-            --paper-bg: #f8fafc;
-            --ink-color: #334155;
-            
-            /* Cores dos Domínios (Categorias) */
-            --domain-1: #f43f5e; /* Desconexão (Vermelho/Rosa) */
-            --domain-2: #3b82f6; /* Autonomia (Azul) */
-            --domain-3: #eab308; /* Limites (Amarelo) */
-            --domain-4: #10b981; /* Direcionamento (Verde) */
-            --domain-5: #6366f1; /* Supervigilância (Roxo) */
-
-            --radius: 12px;
-            --shadow-paper: 4px 4px 0px rgba(0,0,0,0.1); 
+        /* === ESTILO BASE LÚDICO (Do arquivo style.css de referência) === */
+        :root {
+            --bg-color: #f0f8ff;
+            --paper: #ffffff;
+            --primary: #6c5ce7;   /* Roxo/Azul */
+            --secondary: #00b894; /* Verde */
+            --accent: #fdcb6e;    /* Amarelo/Laranja */
+            --text: #2d3436;      /* Cinza Escuro */
+            --te-color: #e17055;  /* Cor avermelhada */
+            --aval-color: #0984e3; /* Azul claro */
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Nunito', sans-serif;
-            color: var(--ink-color);
-            line-height: 1.6;
-            background-color: var(--paper-bg);
-            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
-            background-size: 100% 2rem;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
             display: flex;
             flex-direction: column;
+            align-items: center;
             min-height: 100vh;
         }
 
-        h1, h2, h3 {
-            font-family: 'Patrick Hand', cursive;
-            color: #1e293b;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* --- HEADER --- */
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 800;
-            color: #2d3436;
-            letter-spacing: -1px;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        /* --- CARDS / SEÇÕES --- */
-        section {
-            background-color: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            padding: 40px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-        }
-        
-        /* Efeito hover sutil nos cards principais */
-        section:hover {
-            transform: translateY(-2px);
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #2d3436;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 2px solid #f0f2f5;
-            padding-bottom: 15px;
-        }
-
-        h2 i { color: var(--accent-color); font-size: 1.1em; }
-        
-        p { margin-bottom: 1.5rem; color: #444; }
-
-        /* --- DESTAQUE (CITAÇÃO) --- */
-        .highlight-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid var(--accent-color);
-            padding: 20px;
-            border-radius: 0 8px 8px 0;
-            margin: 20px 0;
-            font-style: italic;
-            color: #555;
-        }
-
-        /* --- FLUXOGRAMA (ANATOMIA) --- */
-        .flow-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .flow-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+        /* Botão de Voltar Flutuante */
+        .btn-back {
+            position: fixed;
+            top: 20px; left: 20px;
+            background: white;
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            border: 3px solid var(--text);
+            z-index: 500;
             transition: all 0.2s;
         }
+        .btn-back:hover { transform: translateY(-3px); box-shadow: 0 6px 0 rgba(0,0,0,0.1); }
 
-        .flow-step:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        /* Container Principal */
+        #dashboard {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 60px; /* Espaço para o botão voltar */
         }
+
+        /* Header Lúdico com "Fita Adesiva" */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            border: 3px solid var(--text);
+            box-shadow: 8px 8px 0 var(--shadow);
+            position: relative;
+        }
+
+        header::after {
+            content: "";
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 30px;
+            background-color: rgba(255, 234, 167, 0.8);
+            border: 2px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transform: translateX(-50%) rotate(-2deg);
+        }
+
+        h1 { margin: 0; color: var(--primary); font-size: 2.2rem; }
+        .subtitle { display: inline-block; background: #dfe6e9; padding: 5px 15px; border-radius: 15px; font-size: 1rem; margin-top: 10px; font-weight: bold; color: #636e72; }
+
+        /* Seções de Conteúdo */
+        section {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
+            border: 3px solid #dfe6e9;
+            transition: all 0.3s;
+        }
+        section:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 8px 8px 0 rgba(0,0,0,0.1); }
+
+        h2 {
+            color: var(--text);
+            border-bottom: 3px dashed #dfe6e9;
+            padding-bottom: 15px;
+            margin-top: 0;
+            display: flex; align-items: center; gap: 15px;
+            font-size: 1.5rem;
+        }
+        h2 i { color: var(--accent); font-size: 1.8rem; }
+
+        p { line-height: 1.6; font-size: 1.1rem; }
+
+        /* Caixa de Destaque (Post-it style) */
+        .highlight-box {
+            background: #fffce0;
+            border: 3px dashed var(--accent);
+            padding: 25px;
+            border-radius: 20px;
+            font-style: italic;
+            color: #d35400;
+            margin: 25px 0;
+            font-size: 1.2rem;
+            text-align: center;
+            position: relative;
+        }
+        .highlight-box::before { content: '📌'; position: absolute; top: -15px; left: 20px; font-size: 1.5rem; }
+
+        /* === ESTILOS ESPECÍFICOS DESTA PÁGINA (ADAPTADOS) === */
+
+        /* --- Fluxograma Lúdico --- */
+        .flow-container { display: flex; flex-direction: column; gap: 20px; }
+
+        .flow-step {
+            background: #f8f9fa;
+            border: 3px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex; align-items: flex-start; gap: 20px;
+            transition: transform 0.2s;
+            position: relative;
+        }
+        /* Setinha conectora entre os passos */
+        .flow-step:not(:last-child)::after {
+            content: '⬇️';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        .flow-step:hover { transform: scale(1.02); border-color: var(--primary); }
+
+        /* Cores do Fluxo */
+        .flow-step.purple { border-color: var(--primary); background: #f0f3ff; }
+        .flow-step.red { border-color: var(--te-color); background: #fff0f0; }
+        .flow-step.green { border-color: var(--secondary); background: #eafff8; }
 
         .flow-badge {
-            background: #2d3436;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            min-width: 100px;
-            text-align: center;
+            padding: 8px 15px; border-radius: 15px; color: white; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; min-width: 100px; text-align: center; border: 2px solid rgba(0,0,0,0.1); box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
         }
+        .flow-badge.gray { background: #636e72; }
+        .flow-badge.purple { background: var(--primary); }
+        .flow-badge.red { background: var(--te-color); }
+        .flow-badge.green { background: var(--secondary); }
 
-        .flow-content strong { color: #2d3436; display: block; margin-bottom: 5px; }
+        .flow-content strong { display: block; margin-bottom: 5px; font-size: 1.1rem; }
+        .inline-link { color: var(--primary); font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px; border-bottom: 2px dashed var(--primary); }
+        .inline-link:hover { background: #f0f3ff; border-bottom-style: solid; }
 
-        /* --- ICEBERG (ESTILO BLOCKS) --- */
-        .iceberg-grid {
-            display: grid;
-            gap: 20px;
-        }
+        /* --- Iceberg Lúdico --- */
+        .iceberg-grid { display: grid; gap: 20px; }
 
         .ice-level {
             padding: 25px;
-            border-radius: var(--border-radius);
-            position: relative;
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .ice-level:hover {
-            transform: scale(1.01);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Cores de Profundidade */
-        .level-1 { background-color: var(--level-1-bg); color: var(--level-1-text); }
-        .level-2 { background-color: var(--level-2-bg); color: var(--level-2-text); }
-        .level-3 { background-color: var(--level-3-bg); color: var(--level-3-text); }
-
-        .ice-level h3 {
-            margin-top: 0;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .ice-level p { color: inherit; opacity: 0.9; margin-bottom: 20px; font-size: 0.95rem; }
-
-        /* Botões dentro do Iceberg */
-        .btn-card {
-            display: inline-block;
-            background-color: rgba(255,255,255,0.8);
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: inherit;
-            transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .btn-card:hover {
-            background-color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        /* --- ARMADILHAS (GRID) --- */
-        .traps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .trap-card {
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 25px;
+            border-radius: 25px;
+            border: 3px solid rgba(0,0,0,0.05);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
+        .ice-level:hover { transform: translateY(-5px); box-shadow: 8px 8px 0 rgba(0,0,0,0.1); }
 
-        .trap-card:hover {
-            background: #fff;
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        /* Cores de Profundidade (Adaptadas à paleta) */
+        .level-1 { background: #e0f7fa; color: #006064; border-color: var(--aval-color); } /* Superfície (Ciano) */
+        .level-2 { background: #e3f2fd; color: #0d47a1; border-color: var(--primary); } /* Meio (Azul) */
+        .level-3 { background: #f3e5f5; color: #4a148c; border-color: #9c27b0; } /* Fundo (Roxo profundo) */
+
+        .ice-level h3 { margin: 0 0 15px 0; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .ice-level p { margin: 0 0 20px 0; font-size: 1rem; opacity: 0.9; font-weight: bold; }
+
+        .btn-small {
+            background: white; color: var(--text); padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 0 rgba(0,0,0,0.1); display: inline-block; border: 2px solid currentColor;
         }
+        .btn-small:hover { transform: translateY(-3px); box-shadow: 0 6px 0 rgba(0,0,0,0.1); background: #fffce0; }
 
-        .trap-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .trap-icon { font-size: 1.5rem; }
-        .trap-title { font-weight: 700; color: #1a1a1a; margin: 0; }
-        .trap-desc { font-size: 0.9rem; color: #666; margin: 0; }
+        /* --- Armadilhas (Cards) --- */
+        .traps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
 
-        /* --- TOOLS LIST --- */
-        .tools-list {
-            display: grid;
-            gap: 15px;
+        .trap-card {
+            background: white; border: 3px solid #dfe6e9; border-radius: 25px; padding: 25px; text-align: center;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
+            transition: all 0.3s;
         }
-        
-        .tool-item {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
+        .trap-card:hover { border-color: var(--te-color); box-shadow: 8px 8px 0 rgba(0,0,0,0.1); transform: rotate(2deg) translateY(-5px); }
 
-        .tool-icon {
-            background: #e3f2fd;
-            color: #0d47a1;
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
+        .trap-icon { font-size: 3rem; margin-bottom: 15px; background: #fff0f0; width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 15px auto; border: 3px solid var(--te-color); }
+        .trap-card h4 { margin: 0 0 10px 0; color: var(--te-color); font-size: 1.2rem; }
+        .trap-card p { margin: 0; font-size: 1rem; color: #636e72; }
 
-        /* --- FOOTER --- */
         footer {
+            margin-top: 40px;
             text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid #e5e7eb;
-            color: #9ca3af;
             font-size: 0.9rem;
-        }
-
-        .social-links { margin-top: 15px; }
-        .social-links a {
-            color: #9ca3af;
-            font-size: 1.2rem;
-            margin: 0 10px;
-            transition: color 0.2s;
-        }
-        .social-links a:hover { color: var(--accent-color); }
-
-        /* Mobile */
-        @media (max-width: 600px) {
-            .flow-step { flex-direction: column; }
-            .flow-badge { width: 100%; margin-bottom: 10px; }
-            h1 { font-size: 2rem; }
+            opacity: 0.7;
+            padding-bottom: 30px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <a href="../../../../index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+
+    <div id="dashboard">
         
         <header>
             <h1>Terapia Cognitivo-Comportamental</h1>
@@ -294,164 +227,108 @@
         </header>
 
         <section>
-            <h2><i class="fas fa-book-open"></i> O Que é a TCC?</h2>
-            <p>A TCC é uma abordagem estruturada, diretiva e focada no presente. A premissa central, inspirada no estoicismo, é que a realidade não é o problema, mas sim a nossa "lente" de interpretação.</p>
+            <h2><i class="fa-solid fa-book-open"></i> O Que é a TCC?</h2>
+            <p>A TCC é uma abordagem estruturada e focada no agora. A ideia principal é que não são as coisas que acontecem que nos chateiam, mas sim a "lente" que usamos para ver essas coisas.</p>
             
             <div class="highlight-box">
                 "Não são os fatos que nos perturbam, mas o que pensamos sobre eles."
             </div>
             
-            <p>Nosso objetivo não é o "pensamento positivo", mas sim o <strong>Pensamento Realista</strong> (Reestruturação Cognitiva).</p>
+            <p>Nosso objetivo é desenvolver o <strong>Pensamento Realista</strong> (e não apenas pensamento positivo!).</p>
         </section>
 
         <section>
-            <h2><i class="fas fa-project-diagram"></i> A Anatomia de uma Reação</h2>
-            <p>Tudo começa com um gatilho. Veja o fluxo:</p>
+            <h2><i class="fa-solid fa-arrows-spin"></i> A Anatomia da Reação</h2>
+            <p>Tudo começa com um gatilho. Veja o ciclo:</p>
 
             <div class="flow-container">
-                
                 <div class="flow-step">
-                    <div class="flow-badge" style="background: #6c757d;">Gatilho</div>
+                    <div class="flow-badge gray">Gatilho</div>
                     <div class="flow-content">
                         <strong>SITUAÇÃO</strong>
                         Ex: Chefe pede para falar com você.
                     </div>
                 </div>
 
-                <div class="flow-step" style="border-left: 4px solid var(--accent-color);">
-                    <div class="flow-badge" style="background: var(--accent-color);">Pensamento</div>
+                <div class="flow-step purple">
+                    <div class="flow-badge purple">Pensamento</div>
                     <div class="flow-content">
-                        <strong>1. PENSAMENTO AUTOMÁTICO</strong>
-                        Interpretação rápida: <em>"Vou ser demitido. Fiz algo errado."</em>
-                        <br>
-                        <a href="pensamentos-automaticos.html" style="color: var(--accent-color); font-weight: 600; font-size: 0.9em; text-decoration: none; margin-top: 5px; display: inline-block;">Saiba mais &rarr;</a>
+                        <strong>1. INTERPRETAÇÃO (P.A.)</strong>
+                        <em>"Vou ser demitido! Fiz algo errado!"</em>
+                        <a href="pensamentos-automaticos.html" class="inline-link">Saiba mais sobre P.A.s &rarr;</a>
                     </div>
                 </div>
 
-                <div class="flow-step" style="border-left: 4px solid #dc3545;">
-                    <div class="flow-badge" style="background: #dc3545;">Emoção</div>
+                <div class="flow-step red">
+                    <div class="flow-badge red">Emoção</div>
                     <div class="flow-content">
-                        <strong>2. EMOÇÃO & CORPO</strong>
-                        Ansiedade, medo, taquicardia.
+                        <strong>2. REAÇÃO FÍSICA/EMOCIONAL</strong>
+                        Ansiedade, coração disparado, suor frio.
                     </div>
                 </div>
 
-                <div class="flow-step" style="border-left: 4px solid #28a745;">
-                    <div class="flow-badge" style="background: #28a745;">Ação</div>
+                <div class="flow-step green">
+                    <div class="flow-badge green">Ação</div>
                     <div class="flow-content">
                         <strong>3. COMPORTAMENTO</strong>
-                        Evitar o chefe, procrastinar ou agir defensivamente.
+                        Evitar o chefe, procrastinar ou já chegar se defendendo.
                     </div>
                 </div>
-
             </div>
         </section>
 
         <section>
-            <h2><i class="fas fa-layer-group"></i> O Iceberg Mental</h2>
-            <p>Nossos pensamentos têm camadas de profundidade. O que percebemos no dia a dia é apenas a ponta.</p>
+            <h2><i class="fa-solid fa-icicles"></i> O Iceberg Mental</h2>
+            <p>O que percebemos no dia a dia é apenas a pontinha do gelo. Olha só o que tem embaixo d'água:</p>
 
             <div class="iceberg-grid">
-                
                 <div class="ice-level level-1">
                     <h3>🌊 Superfície: Pensamentos Automáticos</h3>
-                    <p>Frases rápidas e imagens do dia a dia. É o "fluxo de consciência".</p>
-                    <a href="pensamentos-automaticos.html" class="btn-card">
-                        Explorar Pensamentos Automáticos
-                    </a>
+                    <p>Frases rápidas do dia a dia ("Isso vai dar errado", "Que saco").</p>
+                    <a href="pensamentos-automaticos.html" class="btn-small" style="color: var(--aval-color)">Explorar a Superfície</a>
                 </div>
 
                 <div class="ice-level level-2">
                     <h3>⚓ Meio: Crenças Intermediárias</h3>
-                    <p>Regras ("se... então..."), atitudes e suposições que criamos para viver.</p>
-                    <a href="crencas-intermediarias.html" class="btn-card">
-                        Entender Regras & Suposições
-                    </a>
+                    <p>Regras e suposições que criamos ("Se eu falhar, serei rejeitado").</p>
+                    <a href="crencas-intermediarias.html" class="btn-small" style="color: var(--primary)">Ver as Regras</a>
                 </div>
 
                 <div class="ice-level level-3">
                     <h3>💎 Fundo: Crenças Nucleares</h3>
-                    <p>Verdades absolutas e rígidas sobre si mesmo ("Eu sou inadequado").</p>
-                    <a href="crencas-centrais.html" class="btn-card">
-                        Descobrir Crenças Centrais
-                    </a>
+                    <p>Verdades absolutas e rígidas sobre quem somos ("Eu sou inadequado").</p>
+                    <a href="crencas-centrais.html" class="btn-small" style="color: #4a148c">Mergulhar na Raiz</a>
                 </div>
-
             </div>
         </section>
 
         <section>
-            <h2><i class="fas fa-exclamation-triangle"></i> Armadilhas do Pensamento</h2>
-            <p>Erros sistemáticos de processamento (Distorções Cognitivas):</p>
+            <h2><i class="fa-solid fa-bug"></i> Armadilhas da Mente</h2>
+            <p>Às vezes nosso cérebro prega peças (as famosas Distorções Cognitivas):</p>
             
             <div class="traps-grid">
                 <div class="trap-card">
-                    <div class="trap-header">
-                        <span class="trap-icon">⚖️</span>
-                        <h4 class="trap-title">Tudo ou Nada</h4>
-                    </div>
-                    <p class="trap-desc">Se não foi perfeito, foi um fracasso total. Não enxerga o meio-termo.</p>
+                    <div class="trap-icon">⚖️</div>
+                    <h4>Tudo ou Nada</h4>
+                    <p>Se não foi 100% perfeito, então foi um fracasso total. Sem meio-termo.</p>
                 </div>
-                
                 <div class="trap-card">
-                    <div class="trap-header">
-                        <span class="trap-icon">🔮</span>
-                        <h4 class="trap-title">Adivinhação</h4>
-                    </div>
-                    <p class="trap-desc">Prever o futuro negativo sem provas. "Vai dar tudo errado."</p>
+                    <div class="trap-icon">🔮</div>
+                    <h4>Adivinhação</h4>
+                    <p>Ter certeza absoluta que algo vai dar errado no futuro, sem ter prova nenhuma.</p>
                 </div>
-
                 <div class="trap-card">
-                    <div class="trap-header">
-                        <span class="trap-icon">❤️‍🔥</span>
-                        <h4 class="trap-title">Raciocínio Emocional</h4>
-                    </div>
-                    <p class="trap-desc">Considerar o que se sente como prova da realidade.</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2><i class="fas fa-toolbox"></i> Caixa de Ferramentas</h2>
-            <p>As principais técnicas que usaremos em terapia:</p>
-
-            <div class="tools-list">
-                <div class="tool-item">
-                    <div class="tool-icon"><i class="fas fa-pencil-alt"></i></div>
-                    <div>
-                        <strong>RPD (Registro de Pensamentos)</strong>
-                        <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">O "diário de bordo". Anotar: Situação > Pensamento > Emoção > Resposta Racional.</p>
-                    </div>
-                </div>
-
-                <div class="tool-item">
-                    <div class="tool-icon"><i class="fas fa-running"></i></div>
-                    <div>
-                        <strong>Ativação Comportamental</strong>
-                        <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">Ação gera Motivação. Agendar atividades prazerosas para quebrar a inércia da depressão.</p>
-                    </div>
-                </div>
-
-                <div class="tool-item">
-                    <div class="tool-icon"><i class="fas fa-flask"></i></div>
-                    <div>
-                        <strong>Experimentos Comportamentais</strong>
-                        <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">Testar crenças na prática. Se acha que algo vai dar errado, vamos testar em pequena escala.</p>
-                    </div>
+                    <div class="trap-icon">❤️‍🔥</div>
+                    <h4>Raciocínio Emocional</h4>
+                    <p>"Eu SITO que é verdade, então DEVE SER verdade." (Ignora os fatos).</p>
                 </div>
             </div>
         </section>
 
         <footer>
-            <div>&copy; 2026 Bruno de Souza</div>
-            <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
+            Feito com carinho ❤️ • Psicólogo Bruno de Souza
         </footer>
 
     </div>
-
 </body>
 </html>
