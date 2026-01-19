@@ -4,283 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crenças Intermediárias - Laboratório da Mente</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://psibrunosg.github.io/site/style/style.css">
 
     <style>
-               :root {
-            /* --- IDENTIDADE VISUAL "ESQUEMAS" --- */
-            --bg-body: #f0f2f5;       /* Fundo cinza padrão */
-            --bg-card: #ffffff;       /* Cartões brancos */
-            --text-main: #1a1a1a;
-            --text-muted: #65676b;
-            --accent-color: #007bff;  /* Azul Destaque */
-            --border-radius: 12px;    /* Arredondamento das caixas */
-            --card-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 8px 16px rgba(0,0,0,0.05);
-            
-            /* Cores Específicas desta ferramenta */
-            --pa-color: #e65100;      /* Laranja para Pensamentos */
-            --emo-color: #c62828;     /* Vermelho para Emoção */
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-
-        /* --- HEADER --- */
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 800;
-            color: #2d3436;
-            letter-spacing: -1px;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        /* --- CARDS / SEÇÕES --- */
-        section {
-            background-color: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            padding: 40px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #2d3436;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 2px solid #f0f2f5;
-            padding-bottom: 15px;
-        }
-
-        h2 i { color: var(--accent-color); font-size: 1.1em; }
+        /* === ESTILOS ESPECÍFICOS DESTA PÁGINA === */
         
-        p { margin-bottom: 1.5rem; color: #444; }
-
-        /* --- DESTAQUE (CITAÇÃO) --- */
-        .highlight-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid var(--accent-color);
-            padding: 20px;
-            border-radius: 0 8px 8px 0;
-            margin: 20px 0;
-            font-style: italic;
-            color: #555;
-        }
-
-        /* --- DIAGRAMA LÓGICO (SE... ENTÃO...) --- */
+        /* Diagrama Lógico (Se... Então...) */
         .logic-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .logic-row {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             background: #fff;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 5px;
+            padding: 10px;
+            border-radius: 20px;
+            border: 2px dashed #b2bec3;
         }
 
         .logic-box {
             flex: 1;
-            padding: 20px;
-            border-radius: 6px;
-            font-weight: 500;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
         }
 
         .box-if {
-            background-color: var(--condition-bg);
-            color: var(--condition-text);
-            border-left: 4px solid var(--condition-text);
+            background: #fff3e0;
+            color: #e67e22;
+            border: 2px solid #ffe0b2;
         }
+        
+        .box-if::before { content: 'SE...'; display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; }
 
         .box-then {
-            background-color: var(--result-bg);
-            color: var(--result-text);
-            border-left: 4px solid var(--result-text);
+            background: #ffebee;
+            color: #c0392b;
+            border: 2px solid #ffcdd2;
         }
+        .box-then::before { content: 'ENTÃO...'; display: block; font-size: 0.8rem; opacity: 0.8; margin-bottom: 5px; }
 
-        .logic-arrow {
-            color: #ccc;
-            font-size: 1.2rem;
-        }
+        .logic-arrow { font-size: 1.5rem; color: #b2bec3; }
 
-        .logic-label {
-            display: block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            opacity: 0.7;
-            margin-bottom: 5px;
-        }
-
-        /* --- GRID DE TIPOS (CARDS MENORES) --- */
-        .types-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .type-card {
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .type-card:hover {
-            background: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        .type-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .type-icon { font-size: 1.5rem; }
-        .type-title { font-weight: 700; color: #1a1a1a; margin: 0; }
-        .type-desc { font-size: 0.9rem; color: #666; margin: 0; }
-
-        /* --- INTERATIVO (FLEXIBILIZADOR) --- */
+        /* Área de Reescrita */
         .rewrite-box {
-            background: #eef2f6;
+            background: #f0f8ff;
+            border: 3px solid #dfe6e9;
+            border-radius: 25px;
             padding: 30px;
-            border-radius: var(--border-radius);
             text-align: center;
         }
 
-        .btn-rewrite {
-            background: #fff;
-            border: 1px solid #d1d5db;
-            color: #374151;
-            padding: 10px 24px;
-            margin: 5px;
-            border-radius: 50px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
+        /* Botões de Opção */
+        .btn-option {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin: 5px;
+            transition: 0.2s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
+        .btn-option:hover { transform: translateY(-2px); background: var(--primary); color: white; }
 
-        .btn-rewrite:hover {
-            background: var(--accent-color);
-            color: #fff;
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        .result-display {
-            background: #fff;
-            padding: 25px;
-            margin-top: 25px;
-            border-radius: 8px;
-            border-left: 4px solid var(--growth-text);
+        /* Resultado da Nova Regra */
+        .result-bubble {
+            background: white;
+            border: 2px dashed #00b894;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            color: #00b894;
+            font-weight: bold;
             min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--growth-text);
-            font-weight: 500;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.05);
         }
 
-        /* --- ACCORDION (Conceitos) --- */
+        /* Accordion Lúdico */
         details {
-            margin-bottom: 10px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #fff;
+            background: white;
+            border: 2px solid #dfe6e9;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            transition: 0.3s;
         }
-
+        details[open] { border-color: var(--primary); box-shadow: 0 5px 0 rgba(0,0,0,0.05); }
+        
         summary {
-            padding: 18px;
             cursor: pointer;
-            background: #f9fafb;
-            font-weight: 600;
-            color: #1f2937;
+            font-weight: bold;
+            color: var(--text);
             list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 5px 10px;
         }
-
-        summary:hover { background: #f3f4f6; }
-        summary::-webkit-details-marker { display: none; }
-
+        summary:hover { color: var(--primary); }
+        
         .details-content {
-            padding: 20px;
-            border-top: 1px solid #e5e7eb;
-            color: #4b5563;
-            font-size: 0.95rem;
-            background: #fff;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #dfe6e9;
+            color: #636e72;
+            line-height: 1.5;
         }
 
-        /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid #e5e7eb;
-            color: #9ca3af;
-            font-size: 0.9rem;
-        }
-
-        .social-links { margin-top: 10px; }
-        .social-links a {
-            color: #9ca3af;
-            font-size: 1.2rem;
-            margin: 0 10px;
-            transition: color 0.2s;
-        }
-        .social-links a:hover { color: var(--accent-color); }
-
-        /* Mobile Adjustments */
+        /* Mobile */
         @media (max-width: 600px) {
-            .logic-row { flex-direction: column; gap: 0; }
-            .logic-arrow { transform: rotate(90deg); margin: 5px 0; }
-            h1 { font-size: 2rem; }
+            .logic-row { flex-direction: column; }
+            .logic-arrow { transform: rotate(90deg); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <a href="tcc.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+
+    <div id="dashboard" style="margin-top: 60px;"> 
         
         <header>
             <h1>Crenças Intermediárias</h1>
@@ -288,41 +142,37 @@
         </header>
 
         <section>
-            <h2><i class="fas fa-gavel"></i> O Código Penal Interno</h2>
-            <p>Se as Crenças Nucleares são as raízes da árvore, as <strong>Crenças Intermediárias</strong> são o tronco. Elas são as regras, suposições e atitudes que criamos para <em>sobreviver</em> e tentar lidar com nossas dores profundas.</p>
+            <h2><i class="fa-solid fa-gavel"></i> O Código Penal Interno</h2>
+            <p>Se as Crenças Nucleares são as raízes da árvore, as <strong>Crenças Intermediárias</strong> são o tronco. Elas são as regras e suposições que criamos para <em>sobreviver</em> e tentar lidar com nossas dores profundas.</p>
             
             <div class="highlight-box">
-                "Eu criei essas regras na infância para me proteger da dor, mas agora, na vida adulta, elas se tornaram uma prisão."
+                "Eu criei essas regras na infância para me proteger, mas agora elas viraram uma prisão."
             </div>
         </section>
 
         <section>
-            <h2><i class="fas fa-exchange-alt"></i> A Fórmula Condicional</h2>
-            <p>A maioria dessas crenças funciona com uma lógica rígida de "Se... Então...". Veja como sua mente tenta negociar com a realidade:</p>
+            <h2><i class="fa-solid fa-calculator"></i> A Fórmula "Se... Então..."</h2>
+            <p>Sua mente tenta negociar com a realidade criando condições. Veja como funciona:</p>
             
             <div class="logic-container">
                 
                 <div class="logic-row">
                     <div class="logic-box box-if">
-                        <span class="logic-label">Suposição (Se...)</span>
                         "Se eu agradar a todos..."
                     </div>
-                    <div class="logic-arrow"><i class="fas fa-arrow-right"></i></div>
-                    <div class="logic-box box-then">
-                        <span class="logic-label">Consequência (Então...)</span>
-                        "...então serei amado e seguro."
+                    <div class="logic-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="logic-box box-then" style="background: #e3f2fd; color: #0984e3; border-color: #90caf9;">
+                        "...então serei amado."
                     </div>
                 </div>
 
                 <div class="logic-row">
-                    <div class="logic-box box-if" style="background-color: #ffebee; color: #c62828;">
-                        <span class="logic-label">Medo (Se...)</span>
+                    <div class="logic-box box-if" style="background: #fff3e0; color: #e67e22; border-color: #ffe0b2;">
                         "Se eu falhar em algo..."
                     </div>
-                    <div class="logic-arrow"><i class="fas fa-arrow-right"></i></div>
-                    <div class="logic-box box-then" style="background-color: #37474f; color: #fff;">
-                        <span class="logic-label">Catástrofe (Então...)</span>
-                        "...então serei rejeitado por todos."
+                    <div class="logic-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="logic-box box-then">
+                        "...então serei rejeitado."
                     </div>
                 </div>
 
@@ -330,88 +180,77 @@
         </section>
 
         <section>
-            <h2><i class="fas fa-layer-group"></i> As 3 Formas</h2>
+            <h2><i class="fa-solid fa-shapes"></i> As 3 Formas</h2>
             <p>Elas não aparecem sempre do mesmo jeito. Identifique qual formato você usa mais:</p>
             
-            <div class="types-grid">
-                <div class="type-card">
-                    <div class="type-header">
-                        <span class="type-icon">⚖️</span>
-                        <h4 class="type-title">Regras (Imperativos)</h4>
-                    </div>
-                    <p class="type-desc">Ordens rígidas sobre comportamento. "Eu <strong>devo</strong> ser perfeito." "Eu <strong>tenho que</strong> trabalhar mais que os outros."</p>
+            <div class="grid">
+                <div class="card cat-ludico">
+                    <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <div class="card-title">Regras</div>
+                    <div class="card-desc">Ordens rígidas. "Eu <strong>devo</strong> ser perfeito." "Eu <strong>tenho que</strong> trabalhar mais."</div>
                 </div>
                 
-                <div class="type-card">
-                    <div class="type-header">
-                        <span class="type-icon">💭</span>
-                        <h4 class="type-title">Suposições</h4>
-                    </div>
-                    <p class="type-desc">Previsões condicionais sobre o futuro. "Se eu pedir ajuda, vão achar que sou fraco."</p>
+                <div class="card cat-baralho">
+                    <div class="card-icon"><i class="fa-solid fa-cloud-question"></i></div>
+                    <div class="card-title">Suposições</div>
+                    <div class="card-desc">Previsões do futuro. "Se eu pedir ajuda, vão achar que sou fraco."</div>
                 </div>
 
-                <div class="type-card">
-                    <div class="type-header">
-                        <span class="type-icon">😤</span>
-                        <h4 class="type-title">Atitudes</h4>
-                    </div>
-                    <p class="type-desc">Julgamentos de valor arraigados. "Ser vulnerável é perigoso." "Chorar é coisa de gente fraca."</p>
+                <div class="card cat-te">
+                    <div class="card-icon"><i class="fa-solid fa-face-angry"></i></div>
+                    <div class="card-title">Atitudes</div>
+                    <div class="card-desc">Julgamentos de valor. "Ser vulnerável é perigoso." "Chorar é fraqueza."</div>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2><i class="fas fa-edit"></i> Reescrevendo as Leis</h2>
-            <p>O objetivo não é eliminar as regras, mas torná-las flexíveis. Vamos trocar o <strong>"Tenho que"</strong> pelo <strong>"Prefiro"</strong>:</p>
+            <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Reescrevendo as Leis</h2>
+            <p>O objetivo não é ficar sem regras, mas ter regras flexíveis. Vamos trocar o <strong>"Tenho que"</strong> pelo <strong>"Prefiro"</strong>:</p>
             
             <div class="rewrite-box">
-                <p style="margin-bottom: 20px; font-weight: 600;">Clique em uma regra rígida para flexibilizar:</p>
+                <p style="margin-bottom: 20px; font-weight: bold;">Toque em uma regra rígida para flexibilizar:</p>
                 
                 <div>
-                    <button class="btn-rewrite" onclick="rewriteRule('perfeito')">"Eu DEVO fazer tudo perfeito"</button>
-                    <button class="btn-rewrite" onclick="rewriteRule('agradar')">"Eu TENHO QUE agradar todos"</button>
-                    <button class="btn-rewrite" onclick="rewriteRule('forte')">"Eu NUNCA posso chorar"</button>
+                    <button class="btn-option" onclick="rewriteRule('perfeito')">"Eu DEVO ser perfeito"</button>
+                    <button class="btn-option" onclick="rewriteRule('agradar')">"TENHO QUE agradar"</button>
+                    <button class="btn-option" onclick="rewriteRule('forte')">"NUNCA posso chorar"</button>
                 </div>
                 
-                <div id="flex-result" class="result-display">
-                    <span style="color: #999; font-weight: normal;">Aguardando seleção...</span>
+                <div id="flex-result" class="result-bubble">
+                    Toque em um botão acima...
                 </div>
             </div>
         </section>
 
         <section>
-            <h2><i class="fas fa-brain"></i> Entendendo a Origem</h2>
+            <h2><i class="fa-solid fa-brain"></i> Por que elas existem?</h2>
             
             <div style="margin-top: 20px;">
                 <details>
-                    <summary>🛡️ Função Protetora <i class="fas fa-chevron-down" style="color:#aaa"></i></summary>
+                    <summary>🛡️ Função Protetora <i class="fa-solid fa-chevron-down"></i></summary>
                     <div class="details-content">
                         Você não criou essas regras por mal. Elas foram estratégias brilhantes da sua infância para lidar com o ambiente. 
                         <br><br>
-                        <em>Exemplo: "Se eu for muito bonzinho (Regra), meus pais não brigam (Proteção)".</em> 
-                        <br>O problema é que a regra continua ativa mesmo quando a ameaça já passou.
+                        <em>Ex: "Se eu for bonzinho (Regra), meus pais não brigam (Proteção)".</em> 
+                        <br>O problema é que a regra continua ativa mesmo quando o perigo já passou.
                     </div>
                 </details>
 
                 <details>
-                    <summary>🚧 O Problema da Rigidez <i class="fas fa-chevron-down" style="color:#aaa"></i></summary>
+                    <summary>🚧 O Problema da Rigidez <i class="fa-solid fa-chevron-down"></i></summary>
                     <div class="details-content">
-                        Crenças intermediárias disfuncionais são <strong>rígidas</strong>. Elas não aceitam exceções. 
+                        Crenças disfuncionais são <strong>rígidas</strong>. Elas não aceitam exceções. 
                         <br><br>
-                        <em>"Eu devo ser produtivo sempre".</em>
-                        <br>Isso gera culpa constante, porque é humanamente impossível seguir uma regra absoluta 100% do tempo sem falhar.
+                        <em>"Eu devo ser produtivo 100% do tempo".</em>
+                        <br>Isso gera culpa constante, porque somos humanos e falhamos.
                     </div>
                 </details>
             </div>
         </section>
 
         <footer>
-            <div>&copy; 2026 Bruno de Souza</div>
-            <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
+            Feito com carinho ❤️ • Psicólogo Bruno de Souza
         </footer>
 
     </div>
@@ -422,11 +261,11 @@
             let text = "";
             
             if (type === 'perfeito') {
-                text = "🌱 <strong>Nova Regra Flexível:</strong> 'Eu PREFIRO fazer bem feito, mas se eu cometer um erro, ainda sou uma pessoa competente e digna. Errar faz parte do aprendizado.'";
+                text = "🌱 <strong>Nova Regra:</strong> 'Eu PREFIRO fazer bem feito, mas se eu errar, ainda sou uma pessoa competente. Errar faz parte.'";
             } else if (type === 'agradar') {
-                text = "🌱 <strong>Nova Regra Flexível:</strong> 'Eu GOSTARIA que todos gostassem de mim, mas é impossível agradar a todos o tempo todo. Eu posso sobreviver à desaprovação de alguns.'";
+                text = "🌱 <strong>Nova Regra:</strong> 'Eu GOSTARIA que todos gostassem de mim, mas é impossível agradar a todos. Posso sobreviver a uma cara feia.'";
             } else if (type === 'forte') {
-                text = "🌱 <strong>Nova Regra Flexível:</strong> 'É bom ser forte, mas também é saudável expressar emoções. Chorar não me torna fraco, me torna humano e alivia a tensão.'";
+                text = "🌱 <strong>Nova Regra:</strong> 'É bom ser forte, mas também é saudável sentir. Chorar não me torna fraco, me torna humano.'";
             }
             
             box.style.opacity = 0;
