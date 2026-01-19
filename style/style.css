@@ -4,7 +4,7 @@
     /* Paleta Lúdica */
   --bg-color: #f0f8ff;
     --paper: #ffffff;
-    --primary: #6c5ce7;
+    --primary: #ebdad2;
     --secondary: #00b894;
     --accent: #fdcb6e;
     --text: #2d3436;
@@ -34,7 +34,7 @@ body {
 #login-screen {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(244, 236, 230, 0.95);
     backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
