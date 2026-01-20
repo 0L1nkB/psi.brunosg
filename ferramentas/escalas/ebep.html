@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBEP - Bem-Estar Psicológico | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual */
+            --bg-color: #f0f8ff;
+            --primary: #00cec9;       /* Ciano (Bem-Estar) */
+            --primary-dark: #00b894;
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Cores das Dimensões */
+            --dim-auto: #6c5ce7; /* Autonomia */
+            --dim-dom: #0984e3;  /* Domínio */
+            --dim-cres: #00b894; /* Crescimento */
+            --dim-rel: #ff7675;  /* Relações */
+            --dim-prop: #fdcb6e; /* Propósito */
+            --dim-aceit: #e17055;/* Autoaceitação */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(0, 206, 201, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            max-width: 800px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        /* Barra lateral colorida para identificar dimensão (opcional, mas ajuda visualmente) */
+        .dim-bar {
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 6px;
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .q-number {
+            background: #f1f2f6;
+            color: var(--text);
+            font-weight: 800;
+            min-width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA (1 a 6) --- */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .option-label {
+            flex: 1;
+            padding: 12px 2px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s;
+            border: 2px solid #dfe6e9;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .opt-desc { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; margin-top: 4px; opacity: 0.7; }
+
+        .option-label:hover { border-color: var(--primary); color: var(--primary); }
+
+        .option-label:has(input:checked) {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+        }
+
+        .radar-chart-container {
+            position: relative; 
+            height: 300px; 
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .dim-card {
+            padding: 15px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border-left: 5px solid #ccc;
+        }
+
+        .dim-name { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #b2bec3; }
+        .dim-val { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+        .dim-desc { font-size: 0.8rem; color: #636e72; line-height: 1.2; margin-top: 5px; }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .option-label { padding: 10px 0; font-size: 0.9rem; }
+            .opt-desc { display: none; }
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>EBEP</h1>
+        <div class="subtitle">Escala de Bem-Estar Psicológico (Ryff)</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia as afirmações abaixo e marque o quanto você concorda com cada uma, numa escala de <strong>1 (Discordo Totalmente)</strong> a <strong>6 (Concordo Totalmente)</strong>.
+        </div>
+
+        <form id="ebepForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-chart-pie"></i> CALCULAR PERFIL
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="text-align:center; color:#636e72; margin-bottom:20px;">SEU PERFIL DE BEM-ESTAR</h3>
+            
+            <div class="radar-chart-container">
+                <canvas id="wellbeingChart"></canvas>
+            </div>
+
+            <div class="dimensions-grid" id="dim-container">
+                </div>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* DIMENSÕES E ITENS (18 Itens - Versão Reduzida Padrão)
+           R = Reverso (Invertido na pontuação)
+        */
+        const items = [
+            { t: "Gosto da maior parte dos aspectos da minha personalidade.", d: "aceit", r: false },
+            { t: "Tenho dificuldade em gerenciar as responsabilidades do dia a dia.", d: "dom", r: true },
+            { t: "Acho importante ter novas experiências que desafiem como penso sobre mim e o mundo.", d: "cres", r: false },
+            { t: "É importante para mim ser um bom ouvinte quando meus amigos precisam falar.", d: "rel", r: false },
+            { t: "Tenho objetivos de vida e um senso de direção.", d: "prop", r: false },
+            { t: "Tenho confiança nas minhas opiniões, mesmo que sejam contrárias ao consenso geral.", d: "auto", r: false },
+            { t: "Em muitos aspectos, sinto-me decepcionado com minhas conquistas na vida.", d: "aceit", r: true },
+            { t: "Sou bom em lidar com as responsabilidades da vida diária.", d: "dom", r: false },
+            { t: "Para mim, a vida tem sido um processo contínuo de aprendizado, mudança e crescimento.", d: "cres", r: false },
+            { t: "Não tenho muitas pessoas que queiram me ouvir quando preciso falar.", d: "rel", r: true },
+            { t: "Às vezes sinto que já fiz tudo o que havia para fazer na vida.", d: "prop", r: true },
+            { t: "Tendo a me preocupar com o que as outras pessoas pensam de mim.", d: "auto", r: true },
+            { t: "Quando olho para o passado, estou satisfeito com como as coisas aconteceram.", d: "aceit", r: false },
+            { t: "Sinto-me frequentemente sobrecarregado por minhas responsabilidades.", d: "dom", r: true },
+            { t: "Desisti de tentar fazer grandes melhorias ou mudanças na minha vida há muito tempo.", d: "cres", r: true },
+            { t: "Sei que posso confiar nos meus amigos, e eles sabem que podem confiar em mim.", d: "rel", r: false },
+            { t: "Não tenho uma noção clara do que estou tentando alcançar na vida.", d: "prop", r: true },
+            { t: "Julgo-me pelo que acho importante, não pelo que os outros acham importante.", d: "auto", r: false }
+        ];
+
+        const dimensions = {
+            "auto": { name: "Autonomia", color: "#6c5ce7", desc: "Independência e autodeterminação." },
+            "dom": { name: "Domínio do Ambiente", color: "#0984e3", desc: "Capacidade de gerir a vida e responsabilidades." },
+            "cres": { name: "Crescimento Pessoal", color: "#00b894", desc: "Abertura a novas experiências e desenvolvimento." },
+            "rel": { name: "Relações Positivas", color: "#ff7675", desc: "Ter laços de confiança e empatia." },
+            "prop": { name: "Propósito de Vida", color: "#fdcb6e", desc: "Ter metas e sentido para a vida." },
+            "aceit": { name: "Autoaceitação", color: "#e17055", desc: "Atitude positiva em relação a si mesmo." }
+        };
+
+        const container = document.getElementById('questions-container');
+
+        // Renderizar Itens
+        items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+            
+            // Barra lateral colorida baseada na dimensão
+            const color = dimensions[item.d].color;
+            card.innerHTML = `<div class="dim-bar" style="background:${color}"></div>`;
+
+            let optionsHTML = '';
+            for(let i=1; i<=6; i++) {
+                // Descrição para telas grandes
+                let desc = "";
+                if(i===1) desc="Discordo Totalmente";
+                if(i===6) desc="Concordo Totalmente";
+
+                optionsHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="q${index}" value="${i}" data-idx="${index}">
+                        ${i}
+                        <span class="opt-desc">${desc}</span>
+                    </label>
+                `;
+            }
+
+            const content = `
+                <div class="q-header">
+                    <div class="q-number" style="border:2px solid ${color}; color:${color}">${index + 1}</div>
+                    <div class="q-text">${item.t}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            
+            card.innerHTML += content;
+            container.appendChild(card);
+        });
+
+        let myChart = null;
+
+        function calculateResults() {
+            const scores = { "auto": 0, "dom": 0, "cres": 0, "rel": 0, "prop": 0, "aceit": 0 };
+            let answered = 0;
+
+            const form = document.getElementById('ebepForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                const idx = parseInt(input.getAttribute('data-idx'));
+                let val = parseInt(input.value);
+                const item = items[idx];
+
+                // Inversão se necessário (1->6, 6->1)
+                if (item.r) {
+                    val = 7 - val;
+                }
+
+                scores[item.d] += val;
+                answered++;
+            });
+
+            if (answered < items.length) {
+                alert(`Você respondeu ${answered} de ${items.length} itens. Por favor, responda a todos.`);
+                return;
+            }
+
+            // Exibir Gráfico e Resultados
+            document.getElementById('result-area').style.display = 'block';
+            renderChart(scores);
+            renderGrid(scores);
+            
+            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderGrid(scores) {
+            const container = document.getElementById('dim-container');
+            container.innerHTML = '';
+
+            for (const [key, data] of Object.entries(dimensions)) {
+                // Score máximo por dimensão = 3 itens * 6 pontos = 18
+                const max = 18;
+                const score = scores[key];
+                
+                container.innerHTML += `
+                    <div class="dim-card" style="border-left-color: ${data.color}">
+                        <div class="dim-name">${data.name}</div>
+                        <div class="dim-val" style="color:${data.color}">${score} <span style="font-size:0.8rem; color:#ccc;">/${max}</span></div>
+                        <div class="dim-desc">${data.desc}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderChart(scores) {
+            const ctx = document.getElementById('wellbeingChart').getContext('2d');
+            
+            // Dados ordenados
+            const labels = Object.keys(dimensions).map(k => dimensions[k].name);
+            const data = Object.keys(dimensions).map(k => scores[k]);
+            const colors = Object.keys(dimensions).map(k => dimensions[k].color);
+
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nível de Bem-Estar',
+                        data: data,
+                        backgroundColor: 'rgba(0, 206, 201, 0.2)',
+                        borderColor: '#00cec9',
+                        pointBackgroundColor: colors,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: colors
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { display: false },
+                            suggestedMin: 0,
+                            suggestedMax: 18
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
