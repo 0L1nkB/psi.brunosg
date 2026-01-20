@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício: Estrela da Respiração</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #7DB9B6; 
+            --secondary: #E9EDC9; 
+            --accent: #E29578; 
+            --dark-green: #2D5A58;
+            --text-color: #444;
+            --bg-body: #FBFBFB;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        h1, h2 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
+
+        /* --- Header --- */
+        header {
+            height: 40vh;
+            background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; border-radius: 0 0 60px 60px;
+            padding: 20px;
+        }
+
+        header h1 { font-size: 2.8rem; color: white; margin-bottom: 15px; }
+        header p { font-size: 1.1rem; max-width: 600px; opacity: 0.95; }
+
+        /* --- Mindfulness Tool --- */
+        .tool-section { padding: 60px 0; text-align: center; }
+
+        .instruction-box {
+            background: white; padding: 30px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border-left: 6px solid var(--primary);
+            margin-bottom: 40px; text-align: left;
+        }
+
+        .star-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 40px auto;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05));
+        }
+
+        .star-path {
+            fill: none;
+            stroke: var(--secondary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .star-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 20s linear infinite;
+        }
+
+        /* Guia Visual (Bolinha) */
+        .guide-dot {
+            fill: var(--accent);
+            filter: blur(2px);
+            animation: followPath 20s linear infinite;
+        }
+
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes followPath {
+            0% { offset-distance: 0%; }
+            100% { offset-distance: 100%; }
+        }
+
+        .breathe-text-display {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-green);
+            margin-top: 20px;
+            height: 60px;
+            transition: all 0.3s;
+        }
+
+        /* --- Footer --- */
+        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #777; border-top: 1px solid #eee; text-align: center; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .star-container { width: 280px; height: 280px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" data-aos="fade-up">
+            <h1>Estrela da Respiração</h1>
+            <p>Um guia visual para acalmar a mente e equilibrar as emoções.</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="tool-section" data-aos="fade-up">
+            <div class="instruction-box">
+                <p><strong>Como praticar:</strong> Acompanhe o guia visual pelo contorno da estrela.
+                <ul>
+                    <li><strong>Inspirar:</strong> Suba pela ponta da estrela.</li>
+                    <li><strong>Prender:</strong> Mantenha o ar nos vértices (pontas e curvas).</li>
+                    <li><strong>Expirar:</strong> Desça pelo trajeto seguinte.</li>
+                </ul>
+                Repita até completar todo o percurso.</p>
+            </div>
+
+            <div class="star-container">
+                <svg viewBox="0 0 200 200">
+                    <path id="starPath" class="star-path" d="M100,10 L123,70 L187,70 L135,108 L155,170 L100,132 L45,170 L65,108 L13,70 L77,70 Z" />
+                    <path class="star-progress" d="M100,10 L123,70 L187,70 L135,108 L155,170 L100,132 L45,170 L65,108 L13,70 L77,70 Z" />
+                    
+                    <circle r="6" class="guide-dot">
+                        <animateMotion dur="20s" repeatCount="indefinite">
+                            <mpath href="#starPath" />
+                        </animateMotion>
+                    </circle>
+                </svg>
+            </div>
+
+            <div class="breathe-text-display" id="breatheText">Prepare-se...</div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><strong>Fonte:</strong> Estrela da Respiração</p>
+            <p style="margin-top: 10px;">Adaptado para suporte clínico por Bruno de Souza (CRP 07/44472)</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        const breatheText = document.getElementById('breatheText');
+        
+        // Sincronização do texto com a animação da estrela (20 segundos total para 10 segmentos)
+        // Cada subida/descida leva 2 segundos
+        const cycle = [
+            { text: "Inspirar", time: 0 },
+            { text: "Prender", time: 2000 },
+            { text: "Expirar", time: 4000 },
+            { text: "Prender", time: 6000 },
+            { text: "Inspirar", time: 8000 },
+            { text: "Prender", time: 10000 },
+            { text: "Expirar", time: 12000 },
+            { text: "Prender", time: 14000 },
+            { text: "Inspirar", time: 16000 },
+            { text: "Prender", time: 18000 }
+        ];
+
+        function runBreatheCycle() {
+            cycle.forEach(step => {
+                setTimeout(() => {
+                    breatheText.innerText = step.text;
+                    if(step.text === "Inspirar") breatheText.style.color = "#7DB9B6";
+                    if(step.text === "Prender") breatheText.style.color = "#E29578";
+                    if(step.text === "Expirar") breatheText.style.color = "#A2D2FF";
+                }, step.time);
+            });
+        }
+
+        runBreatheCycle();
+        setInterval(runBreatheCycle, 20000);
+    </script>
+</body>
+</html>
