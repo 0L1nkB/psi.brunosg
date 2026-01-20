@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESAF - Escala de Felicidade | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual */
+            --bg-color: #fff9c4;      /* Amarelo Solar Suave */
+            --primary: #fbc02d;       /* Amarelo Ouro */
+            --primary-dark: #f57f17;  /* Laranja */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-1: #e0e0e0;
+            --btn-2: #ffe082;
+            --btn-3: #ffd54f;
+            --btn-4: #ffca28;
+            --btn-5: #ffb300;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#f9e79f 2px, transparent 2px);
+            background-size: 25px 25px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary-dark);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: "☀️"; 
+            position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            font-size: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .question-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .q-num {
+            background: #fff3e0;
+            color: var(--primary-dark);
+            font-weight: 800;
+            min-width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA (1-5) --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .option-label {
+            padding: 10px 2px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .opt-val { font-size: 1.2rem; margin-bottom: 2px; }
+        .opt-text { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; opacity: 0.8; }
+
+        /* Estilos Progressivos */
+        .btn-1:hover { background: #ffebee; border-color: #ef9a9a; }
+        .btn-1:has(input:checked) { background: #ef5350; color: white; border-color: #b71c1c; }
+
+        .btn-2:hover { background: #fff3e0; border-color: #ffcc80; }
+        .btn-2:has(input:checked) { background: #ffa726; color: white; border-color: #e65100; }
+
+        .btn-3:hover { background: #fff8e1; border-color: #ffe082; }
+        .btn-3:has(input:checked) { background: #ffca28; color: white; border-color: #ff6f00; }
+
+        .btn-4:hover { background: #f1f8e9; border-color: #c5e1a5; }
+        .btn-4:has(input:checked) { background: #9ccc65; color: white; border-color: #33691e; }
+
+        .btn-5:hover { background: #e0f2f1; border-color: #80cbc4; }
+        .btn-5:has(input:checked) { background: #26a69a; color: white; border-color: #004d40; }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+            text-align: center;
+        }
+
+        .score-val { font-size: 4rem; font-weight: 900; color: var(--primary-dark); line-height: 1; }
+        .score-desc { font-size: 1.1rem; font-weight: 700; color: #636e72; margin-bottom: 20px; }
+
+        /* Termômetro */
+        .meter-container {
+            width: 100%; height: 25px;
+            background: #dfe6e9; border-radius: 15px;
+            overflow: hidden; margin: 25px 0;
+            position: relative;
+        }
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7043 0%, #f1c40f 50%, #66bb6a 100%);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .option-label { padding: 10px 2px; }
+            .opt-text { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>ESAF</h1>
+        <div class="subtitle">Escala de Felicidade (Barros, 2001)</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia cada afirmação e marque o quanto você concorda com ela, de <strong>1 (Discordo Totalmente)</strong> a <strong>5 (Concordo Totalmente)</strong>.
+        </div>
+
+        <form id="esafForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-star"></i> CALCULAR FELICIDADE
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="color:#b2bec3; text-transform:uppercase; font-size:0.9rem;">Pontuação Total</h3>
+            
+            <div class="score-val" id="total-score">0</div>
+            <div class="score-desc" id="interpretation">...</div>
+            
+            <div class="meter-container">
+                <div class="meter-fill" id="meter-bar"></div>
+            </div>
+            
+            <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+                Mínimo: 18 | Máximo: 90
+            </p>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const questions = [
+            "Sinto-me bem comigo mesmo(a).",
+            "Tenho um bom conceito de mim mesmo(a).",
+            "Aceito-me como sou.",
+            "Relaciono-me bem com as outras pessoas.",
+            "Faço amigos facilmente.",
+            "Gosto de me sentir livre.",
+            "Controlo o ambiente em que vivo.",
+            "Aceito o meu passado.",
+            "Sei viver o momento presente.",
+            "Tenho projetos para o futuro.",
+            "Espero evoluir cada vez mais.",
+            "Sinto-me uma pessoa feliz.",
+            "Luto pelo meu bem-estar.",
+            "Considero-me uma pessoa alegre.",
+            "Sinto-me satisfeito(a) com a vida.",
+            "Tenho conseguido atingir os meus objetivos.",
+            "Considero-me uma pessoa cheia de esperança.",
+            "Tenho bastante sentido de humor."
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        // Renderizar Perguntas
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            for(let i=1; i<=5; i++) {
+                let desc = "";
+                if(i===1) desc="Discordo Totalmente";
+                if(i===2) desc="Discordo";
+                if(i===3) desc="Neutro";
+                if(i===4) desc="Concordo";
+                if(i===5) desc="Concordo Totalmente";
+
+                optionsHTML += `
+                    <label class="option-label btn-${i}">
+                        <input type="radio" name="q${index}" value="${i}">
+                        <span class="opt-val">${i}</span>
+                        <span class="opt-text">${desc}</span>
+                    </label>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-num">${index + 1}</div>
+                    <div class="q-text">${q}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        function calculateResults() {
+            let total = 0;
+            let answered = 0;
+            const form = document.getElementById('esafForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                total += parseInt(input.value);
+                answered++;
+            });
+
+            if (answered < 18) {
+                alert(`Você respondeu ${answered} de 18 itens. Por favor, responda a todos.`);
+                return;
+            }
+
+            // Exibir Resultados
+            document.getElementById('total-score').innerText = total;
+            const interp = document.getElementById('interpretation');
+            const bar = document.getElementById('meter-bar');
+
+            // Percentual (Min 18, Max 90 -> Range 72)
+            const percent = ((total - 18) / 72) * 100;
+            bar.style.width = `${percent}%`;
+
+            if (total <= 42) {
+                interp.innerText = "Nível Baixo de Felicidade";
+                interp.style.color = "#ff7043";
+            } else if (total <= 66) {
+                interp.innerText = "Nível Médio de Felicidade";
+                interp.style.color = "#fbc02d";
+            } else {
+                interp.innerText = "Nível Alto de Felicidade";
+                interp.style.color = "#66bb6a";
+            }
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
