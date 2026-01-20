@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BN - Bulimia Nervosa | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Ciclo/Recuperação" */
+            --bg-color: #f3e5f5;      /* Lavanda Claro */
+            --primary: #8e24aa;       /* Roxo (Profundidade/Impulso) */
+            --primary-dark: #6a1b9a;
+            --accent: #00acc1;        /* Turquesa (Cura/Equilíbrio) */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Cores Específicas */
+            --binge-color: #ff9800;   /* Laranja (Compulsão) */
+            --purge-color: #e53935;   /* Vermelho (Purgação/Perigo) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e1bee7 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(142, 36, 170, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #e0f7fa;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #006064;
+        }
+
+        /* --- GRID DE SINTOMAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .sym-binge { border-color: var(--binge-color); }
+        .sym-binge i { color: var(--binge-color); }
+        
+        .sym-purge { border-color: var(--purge-color); }
+        .sym-purge i { color: var(--purge-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.9rem; }
+        .symptom-item span { font-size: 0.8rem; color: #636e72; }
+
+        /* --- CICLO DA BULIMIA --- */
+        .cycle-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .cycle-step {
+            flex: 1; min-width: 140px;
+            background: white; border: 2px solid #eee;
+            border-radius: 15px; padding: 15px; text-align: center;
+            position: relative;
+        }
+
+        .cs-1 { border-top: 5px solid #00acc1; }
+        .cs-2 { border-top: 5px solid #ff9800; }
+        .cs-3 { border-top: 5px solid #e53935; }
+        .cs-4 { border-top: 5px solid #546e7a; }
+
+        .cycle-step h5 { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: 800; color: #2d3436; }
+        .cycle-step p { margin: 0; font-size: 0.8rem; color: #636e72; }
+
+        /* --- WIDGET: SURFAR A VONTADE (Urge Surfing) --- */
+        .urge-container {
+            text-align: center;
+            background: #eceff1;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #b0bec5;
+        }
+
+        .urge-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-urge {
+            background: white; border: 2px solid #cfd8dc; color: #455a64;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-urge:hover { border-color: var(--accent); background: var(--accent); color: white; }
+
+        /* --- CONSEQUÊNCIAS FÍSICAS --- */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .risk-card {
+            background: #ffebee; border: 1px solid #ffcdd2;
+            border-radius: 10px; padding: 15px; text-align: center;
+        }
+        .risk-card i { font-size: 1.5rem; color: #e53935; margin-bottom: 10px; }
+        .risk-card p { font-size: 0.85rem; color: #c62828; font-weight: 600; margin: 0; }
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .cycle-wrapper { flex-direction: column; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Bulimia Nervosa</h1>
+        <div class="subtitle">Entendendo o Ciclo Compulsão-Purgação</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-scale-unbalanced-flip"></i> O que é a Bulimia?</div>
+            <p>A BN é caracterizada por episódios recorrentes de compulsão alimentar seguidos de <strong>comportamentos compensatórios</strong> para evitar o ganho de peso.</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-triangle-exclamation"></i> <strong>A Diferença:</strong> No Transtorno de Compulsão Alimentar, a pessoa come mas não compensa. Na Bulimia, a culpa leva à purgação (vômito, laxantes, exercício excessivo).
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-arrows-rotate"></i> As Duas Fases</div>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--binge-color);">1. O "Binge" (Ingestão)</h4>
+                    <div class="symptom-item sym-binge">
+                        <i class="fa-solid fa-cookie-bite"></i>
+                        <div><strong>Perda de Controle</strong><span>Comer muito, rápido e sem conseguir parar.</span></div>
+                    </div>
+                    <div class="symptom-item sym-binge">
+                        <i class="fa-solid fa-user-secret"></i>
+                        <div><strong>Segredo</strong><span>Esconder comida ou embalagens vazias.</span></div>
+                    </div>
+                    <div class="symptom-item sym-binge">
+                        <i class="fa-solid fa-face-dizzy"></i>
+                        <div><strong>Desconforto</strong><span>Comer até sentir dor física no estômago.</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--purge-color);">2. O "Purge" (Compensação)</h4>
+                    <div class="symptom-item sym-purge">
+                        <i class="fa-solid fa-toilet"></i>
+                        <div><strong>Vômitos Autoinduzidos</strong><span>Tentativa imediata de "livrar-se" das calorias.</span></div>
+                    </div>
+                    <div class="symptom-item sym-purge">
+                        <i class="fa-solid fa-pills"></i>
+                        <div><strong>Uso de Medicamentos</strong><span>Abuso de laxantes, diuréticos ou inibidores.</span></div>
+                    </div>
+                    <div class="symptom-item sym-purge">
+                        <i class="fa-solid fa-person-running"></i>
+                        <div><strong>Exercício Excessivo</strong><span>Treinar lesionado ou por horas para "queimar".</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-heart-pulse"></i> O Perigo Invisível</div>
+            <p>A bulimia causa danos graves ao corpo, mesmo que o peso pareça "normal".</p>
+            <div class="risk-grid">
+                <div class="risk-card">
+                    <i class="fa-solid fa-tooth"></i>
+                    <p>Erosão do Esmalte Dentário (Ácido)</p>
+                </div>
+                <div class="risk-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <p>Desequilíbrio Eletrolítico (Arritmia)</p>
+                </div>
+                <div class="risk-card">
+                    <i class="fa-solid fa-head-side-cough"></i>
+                    <p>Inflamação do Esôfago/Garganta</p>
+                </div>
+                <div class="risk-card">
+                    <i class="fa-solid fa-droplet-slash"></i>
+                    <p>Desidratação Severa</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-recycle"></i> A Armadilha do Ciclo</div>
+            <p>Como a tentativa de controle gera descontrole.</p>
+            
+            <div class="cycle-wrapper">
+                <div class="cycle-step cs-1">
+                    <h5>1. Restrição</h5>
+                    <p>Dieta rígida, jejum, regras severas.</p>
+                </div>
+                <div class="cycle-step cs-2">
+                    <h5>2. Compulsão</h5>
+                    <p>O corpo faminto "quebra" a regra e exagera.</p>
+                </div>
+                <div class="cycle-step cs-3">
+                    <h5>3. Purgação</h5>
+                    <p>Culpa intensa leva ao vômito/laxante.</p>
+                </div>
+                <div class="cycle-step cs-4">
+                    <h5>4. Alívio/Culpa</h5>
+                    <p>Alívio passageiro, seguido de promessa de nova dieta.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-water"></i> Surfar a Vontade</div>
+            <div class="urge-container">
+                <p style="font-weight:700; color:#546e7a; margin-bottom:15px;">Sente vontade de compensar agora? Tente adiar:</p>
+                
+                <div>
+                    <button class="btn-urge" onclick="surfUrge('breath')">🌬️ Respirar 1 min</button>
+                    <button class="btn-urge" onclick="surfUrge('wait')">⏱️ Esperar 10 min</button>
+                    <button class="btn-urge" onclick="surfUrge('distract')">🎵 Ouvir Música</button>
+                    <button class="btn-urge" onclick="surfUrge('ice')">🧊 Segurar Gelo</button>
+                </div>
+
+                <div class="urge-display" id="urge-res">
+                    <span style="color:#b0bec5; font-style:italic;">Selecione uma estratégia...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Mitos da Bulimia</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-weight-scale" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Só em muito magros"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Peso Normal</h3>
+                            <p style="font-size:0.9rem;">A maioria das pessoas com BN tem peso normal ou sobrepeso. Isso torna a doença "invisível" e perigosa.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-hand-holding-dollar" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Vomitar emagrece"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Ineficaz</h3>
+                            <p style="font-size:0.9rem;">Purgar não elimina todas as calorias ingeridas (o corpo absorve rápido). A purgação causa inchaço e desacelera o metabolismo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-brain" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"É vaidade"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Regulação Emocional</h3>
+                            <p style="font-size:0.9rem;">Não é sobre beleza. É sobre tentar controlar emoções dolorosas através do controle (ou descontrole) da comida.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function surfUrge(type) {
+            const display = document.getElementById('urge-res');
+            let title = "";
+            let text = "";
+            let icon = "";
+            let color = "";
+
+            if(type === 'breath') {
+                title = "Respiração Diafragmática";
+                text = "Respire fundo pelo nariz contando até 4, segure 2, solte pela boca em 6. Isso acalma o sistema nervoso.";
+                icon = '<i class="fa-solid fa-lungs" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#00acc1";
+            } else if(type === 'wait') {
+                title = "A Regra dos 10 Minutos";
+                text = "Diga a si mesmo: 'Vou esperar 10 minutos. Se a vontade persistir, eu decido'. Geralmente, o pico da vontade passa.";
+                icon = '<i class="fa-solid fa-clock" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#ff9800";
+            } else if(type === 'distract') {
+                title = "Distração Sensorial";
+                text = "Coloque uma música alta e cante, ou assista um vídeo engraçado. Tire o foco do pensamento obsessivo.";
+                icon = '<i class="fa-solid fa-music" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#8e24aa";
+            } else if(type === 'ice') {
+                title = "Choque Térmico (TIPP)";
+                text = "Segure um cubo de gelo na mão até derreter. A sensação física intensa desvia a atenção da dor emocional.";
+                icon = '<i class="fa-solid fa-snowflake" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#4dd0e1";
+            }
+
+            display.style.borderTop = `5px solid ${color}`;
+            display.innerHTML = `
+                <div style="color:${color}">${icon}</div>
+                <h3 style="margin:0 0 5px 0; color:#2d3436;">${title}</h3>
+                <p style="margin:0; font-size:0.9rem; color:#636e72; text-align:center;">${text}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
