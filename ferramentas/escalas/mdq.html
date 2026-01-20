@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDQ - Transtorno de Humor | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Bipolaridade/Espectro" */
+            --bg-color: #f3e5f5;      /* Lilás Claro */
+            --primary: #8e44ad;       /* Roxo Intenso */
+            --primary-dark: #6c3483;
+            --secondary: #e056fd;     /* Magenta (Energia) */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-yes: #9b59b6;
+            --btn-no: #b2bec3;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#d2b4de 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(142, 68, 173, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            line-height: 1.6;
+        }
+
+        /* --- SEÇÕES DO QUESTIONÁRIO --- */
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin: 30px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(142, 68, 173, 0.2);
+            padding-bottom: 5px;
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .question-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .q-text {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.4;
+            flex: 1;
+            margin-right: 15px;
+        }
+
+        /* Botões SIM/NÃO */
+        .btn-group { display: flex; gap: 10px; }
+
+        .btn-option {
+            width: 50px; height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f1f2f6; color: #b2bec3;
+        }
+
+        .btn-yes:hover { background: #f3e5f5; color: var(--primary); border-color: var(--primary); }
+        .btn-yes.selected { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(142, 68, 173, 0.4); }
+
+        .btn-no:hover { background: #eceff1; color: #636e72; }
+        .btn-no.selected { background: #95a5a6; color: white; }
+
+        /* Impacto (Radio Buttons) */
+        .impact-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .impact-label {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #dfe6e9;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            color: #636e72;
+            transition: 0.2s;
+        }
+
+        .impact-label:hover { border-color: var(--primary); color: var(--primary); }
+        .impact-label:has(input:checked) { 
+            background: var(--primary); color: white; border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3);
+        }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(142, 68, 173, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); background: var(--primary-dark); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+            text-align: center;
+        }
+
+        .score-val { font-size: 3rem; font-weight: 900; color: var(--primary); line-height: 1; margin: 10px 0; }
+        .score-badge {
+            display: inline-block; padding: 10px 30px; border-radius: 30px;
+            font-weight: 800; color: white; margin-top: 15px; font-size: 1.1rem;
+        }
+        
+        .res-pos { background: #e74c3c; } /* Vermelho */
+        .res-neg { background: #00b894; } /* Verde */
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .question-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .btn-group { width: 100%; justify-content: flex-end; }
+            .btn-option { width: 100px; }
+            .impact-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>MDQ</h1>
+        <div class="subtitle">Questionário de Transtornos de Humor</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            <i class="fa-solid fa-circle-info"></i> <strong>Instruções:</strong> Responda às perguntas abaixo pensando se você já teve algum período na vida em que não se sentiu como o seu "eu" habitual.
+        </div>
+
+        <form id="mdqForm">
+            <div class="section-title">Parte 1: Sintomas</div>
+            <div style="font-size:0.9rem; color:#636e72; margin-bottom:15px;">Houve algum período em que você...</div>
+            
+            <div id="questions-container"></div>
+
+            <div class="section-title" style="margin-top:40px;">Parte 2: Tempo</div>
+            <div class="question-card">
+                <div class="q-text">Vários dos sintomas acima aconteceram durante o mesmo período de tempo?</div>
+                <div class="btn-group">
+                    <div class="btn-option btn-yes" id="btn-time-y" onclick="setTime(1)">SIM</div>
+                    <div class="btn-option btn-no" id="btn-time-n" onclick="setTime(0)">NÃO</div>
+                    <input type="hidden" id="timeInput" value="-1">
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top:40px;">Parte 3: Consequências</div>
+            <div style="font-size:0.9rem; color:#636e72; margin-bottom:15px;">
+                Quanto esses sintomas causaram problemas para você (trabalho, família, dinheiro, problemas legais)?
+            </div>
+            
+            <div class="impact-options">
+                <label class="impact-label">
+                    <input type="radio" name="impact" value="0"> Nenhum Problema
+                </label>
+                <label class="impact-label">
+                    <input type="radio" name="impact" value="1"> Problema Pequeno
+                </label>
+                <label class="impact-label">
+                    <input type="radio" name="impact" value="2"> Problema Moderado
+                </label>
+                <label class="impact-label">
+                    <input type="radio" name="impact" value="3"> Problema Sério
+                </label>
+            </div>
+
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-clipboard-check"></i> VERIFICAR RESULTADO
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="color:#636e72; text-transform:uppercase; font-size:0.9rem;">Resultado da Triagem</h3>
+            
+            <div class="score-val" id="symptom-count">0</div>
+            <div style="font-size:0.9rem; color:#aaa;">Sintomas identificados</div>
+
+            <div class="score-badge" id="interpretation">...</div>
+
+            <div style="margin-top:30px; font-size:0.9rem; color:#636e72; text-align:left; background:#f8f9fa; padding:15px; border-radius:10px;">
+                <strong>Critérios para Triagem Positiva:</strong><br>
+                1. 7 ou mais sintomas marcados como "Sim".<br>
+                2. Sintomas ocorreram ao mesmo tempo.<br>
+                3. Causaram problemas Moderados ou Sérios.
+            </div>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const questions = [
+            "Sentiu-se tão bem ou tão 'hiper' que outras pessoas pensaram que você não era o seu 'eu' normal? Ou estava tão 'hiper' que se meteu em problemas?",
+            "Ficou tão irritado que gritou com as pessoas ou começou brigas ou discussões?",
+            "Sentiu-se muito mais autoconfiante do que o habitual?",
+            "Dormiu muito menos do que o habitual e achou que não sentia falta?",
+            "Ficou muito mais falador(a) ou falou muito mais rápido do que o habitual?",
+            "Os pensamentos corriam pela sua cabeça ou você não conseguia desacelerar sua mente?",
+            "Sentiu-se tão facilmente distraído pelas coisas à sua volta que teve problemas de concentração ou de permanecer no curso?",
+            "Teve muito mais energia do que o habitual?",
+            "Esteve muito mais ativo ou fez muito mais coisas do que o habitual?",
+            "Foi muito mais social ou extrovertido do que o habitual (ex: ligou para amigos no meio da noite)?",
+            "Esteve muito mais interessado em sexo do que o habitual?",
+            "Fez coisas que não eram habituais para você ou que outras pessoas acharam excessivas, tolas ou arriscadas?",
+            "Gastar dinheiro colocou você ou sua família em problemas?"
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        // Renderizar Perguntas
+        questions.forEach((text, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            card.innerHTML = `
+                <div class="q-text">${index + 1}. ${text}</div>
+                <div class="btn-group">
+                    <div class="btn-option btn-yes" id="btn-y-${index}" onclick="setSymptom(${index}, 1)">SIM</div>
+                    <div class="btn-option btn-no" id="btn-n-${index}" onclick="setSymptom(${index}, 0)">NÃO</div>
+                    <input type="hidden" class="symptom-input" value="0">
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        function setSymptom(index, val) {
+            const btnY = document.getElementById(`btn-y-${index}`);
+            const btnN = document.getElementById(`btn-n-${index}`);
+            const input = document.querySelectorAll('.symptom-input')[index];
+
+            btnY.classList.remove('selected');
+            btnN.classList.remove('selected');
+
+            if(val === 1) btnY.classList.add('selected');
+            else btnN.classList.add('selected');
+
+            input.value = val;
+        }
+
+        function setTime(val) {
+            const btnY = document.getElementById('btn-time-y');
+            const btnN = document.getElementById('btn-time-n');
+            const input = document.getElementById('timeInput');
+
+            btnY.classList.remove('selected');
+            btnN.classList.remove('selected');
+
+            if(val === 1) btnY.classList.add('selected');
+            else btnN.classList.add('selected');
+
+            input.value = val;
+        }
+
+        function calculateResults() {
+            // 1. Contar Sintomas
+            let score = 0;
+            const symptomInputs = document.querySelectorAll('.symptom-input');
+            symptomInputs.forEach(inp => score += parseInt(inp.value));
+
+            // 2. Verificar Tempo
+            const timeVal = parseInt(document.getElementById('timeInput').value);
+
+            // 3. Verificar Impacto
+            const impactInputs = document.querySelectorAll('input[name="impact"]:checked');
+            let impactVal = -1;
+            if(impactInputs.length > 0) impactVal = parseInt(impactInputs[0].value);
+
+            // Validação
+            const answeredCount = document.querySelectorAll('.selected').length;
+            if(answeredCount < 14 || impactVal === -1) { // 13 sintomas + 1 tempo
+                if(!confirm("Algumas perguntas não foram respondidas. O resultado pode ser impreciso. Continuar?")) return;
+            }
+
+            // Lógica MDQ
+            // Positivo se: Score >= 7 AND Time == 1 (Sim) AND Impact >= 2 (Moderado ou Sério)
+            const isPositive = (score >= 7) && (timeVal === 1) && (impactVal >= 2);
+
+            // Exibir
+            document.getElementById('symptom-count').innerText = score;
+            const interp = document.getElementById('interpretation');
+            const resArea = document.getElementById('result-area');
+
+            if (isPositive) {
+                interp.innerText = "TRIAGEM POSITIVA";
+                interp.className = "score-badge res-pos";
+            } else {
+                interp.innerText = "TRIAGEM NEGATIVA";
+                interp.className = "score-badge res-neg";
+            }
+
+            resArea.style.display = 'block';
+            resArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
