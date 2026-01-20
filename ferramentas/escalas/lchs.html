@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCHS - Habilidades Sociais (Goldstein) | Bruno de Souza</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual */
+            --bg-color: #f0f8ff;
+            --primary: #0984e3;       /* Azul (Comunicação) */
+            --primary-dark: #0762ac;
+            --secondary: #00b894;     /* Verde (Habilidade) */
+            --accent: #fdcb6e;        /* Amarelo */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões de Frequência */
+            --btn-1: #ff7675; /* Nunca */
+            --btn-2: #fab1a0;
+            --btn-3: #ffeaa7;
+            --btn-4: #81ecec;
+            --btn-5: #00cec9; /* Sempre */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(9, 132, 227, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- NAVEGAÇÃO DE GRUPOS (ABAS) --- */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            max-width: 900px;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid #dfe6e9;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: #b2bec3;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(9, 132, 227, 0.3);
+        }
+
+        /* --- ÁREA DE PERGUNTAS --- */
+        .group-section {
+            display: none; /* Escondido por padrão */
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 0.4s ease;
+        }
+        .group-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .group-title {
+            font-size: 1.5rem; font-weight: 800; color: var(--text);
+            margin-bottom: 20px; border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+        }
+
+        /* CARD DE ITEM */
+        .item-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            border: 1px solid #f1f2f6;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .item-text { font-size: 1.1rem; font-weight: 600; color: #2d3436; }
+
+        /* BOTÕES DE RESPOSTA (1-5) */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .option-label {
+            padding: 10px 2px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .opt-val { font-size: 1.1rem; margin-bottom: 2px; }
+        .opt-desc { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; opacity: 0.7; }
+
+        /* Cores dos botões */
+        .btn-1:hover { background: #ffe6e6; color: var(--btn-1); border-color: var(--btn-1); }
+        .btn-1:has(input:checked) { background: var(--btn-1); color: white; border-color: var(--btn-1); }
+
+        .btn-2:hover { background: #fff0e6; color: var(--btn-2); border-color: var(--btn-2); }
+        .btn-2:has(input:checked) { background: var(--btn-2); color: #2d3436; border-color: var(--btn-2); }
+
+        .btn-3:hover { background: #fffde7; color: #d4ac0d; border-color: #f1c40f; }
+        .btn-3:has(input:checked) { background: var(--btn-3); color: #2d3436; border-color: #f1c40f; }
+
+        .btn-4:hover { background: #e0fcfc; color: var(--btn-4); border-color: var(--btn-4); }
+        .btn-4:has(input:checked) { background: var(--btn-4); color: #2d3436; border-color: var(--btn-4); }
+
+        .btn-5:hover { background: #e0f2f1; color: var(--btn-5); border-color: var(--btn-5); }
+        .btn-5:has(input:checked) { background: var(--btn-5); color: white; border-color: var(--btn-5); }
+
+        input[type="radio"] { display: none; }
+
+        /* --- RESULTADOS --- */
+        #results-area {
+            display: none;
+            width: 100%; max-width: 900px;
+            background: white; padding: 30px;
+            border-radius: 20px;
+            border: 3px dashed var(--primary);
+            margin-top: 40px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .res-card {
+            background: #f8f9fa; padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #ccc;
+        }
+
+        .res-title { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; color: #b2bec3; }
+        .res-score { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+        .res-status { font-size: 0.8rem; font-weight: 700; margin-top: 5px; }
+
+        .status-low { color: #d63031; } /* Déficit */
+        .status-ok { color: #00b894; }  /* Bom */
+
+        /* Botão Calcular */
+        .btn-calc {
+            display: block; width: 100%; max-width: 400px; margin: 40px auto;
+            padding: 15px; background: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .options-row { gap: 3px; }
+            .option-label { padding: 10px 0; }
+            .opt-desc { font-size: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>LCHS</h1>
+        <div class="subtitle">Lista de Checagem de Habilidades Sociais (Goldstein)</div>
+    </header>
+
+    <div class="tabs-container" id="tabs">
+        <button class="tab-btn active" onclick="showGroup(0)">1. Iniciais</button>
+        <button class="tab-btn" onclick="showGroup(1)">2. Avançadas</button>
+        <button class="tab-btn" onclick="showGroup(2)">3. Sentimentos</button>
+        <button class="tab-btn" onclick="showGroup(3)">4. Agressão</button>
+        <button class="tab-btn" onclick="showGroup(4)">5. Estresse</button>
+        <button class="tab-btn" onclick="showGroup(5)">6. Planejamento</button>
+    </div>
+
+    <div class="instruction-box" style="text-align:center; margin-bottom:20px; color:#636e72;">
+        Avalie a frequência com que você utiliza cada habilidade: <strong>1 (Nunca)</strong> a <strong>5 (Sempre)</strong>.
+    </div>
+
+    <form id="lchsForm">
+        <div id="quiz-container"></div>
+    </form>
+
+    <button class="btn-calc" onclick="calculateResults()">
+        <i class="fa-solid fa-clipboard-check"></i> CALCULAR DÉFICITS
+    </button>
+
+    <div id="results-area">
+        <h3 style="text-align:center; color:var(--text); margin-bottom:20px;">ANÁLISE DE DÉFICITS</h3>
+        <p style="text-align:center; font-size:0.9rem; color:#636e72; margin-bottom:20px;">
+            Escores baixos indicam áreas prioritárias para treinamento.
+        </p>
+        
+        <div class="result-grid" id="res-grid"></div>
+
+        <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Salvar Relatório
+        </button>
+    </div>
+
+    <center>
+        <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ESTRUTURA GOLDSTEIN (50 Itens / 6 Grupos) */
+        const groups = [
+            {
+                id: "G1", name: "Habilidades Iniciais", color: "#6c5ce7",
+                items: [
+                    "1. Prestar atenção (ouvir)",
+                    "2. Começar uma conversa",
+                    "3. Manter uma conversa",
+                    "4. Fazer uma pergunta",
+                    "5. Agradecer",
+                    "6. Apresentar-se",
+                    "7. Apresentar outras pessoas",
+                    "8. Elogiar"
+                ]
+            },
+            {
+                id: "G2", name: "Habilidades Avançadas", color: "#0984e3",
+                items: [
+                    "9. Pedir ajuda",
+                    "10. Participar",
+                    "11. Dar instruções",
+                    "12. Seguir instruções",
+                    "13. Desculpar-se",
+                    "14. Convencer os outros"
+                ]
+            },
+            {
+                id: "G3", name: "Lidar com Sentimentos", color: "#00b894",
+                items: [
+                    "15. Conhecer os próprios sentimentos",
+                    "16. Expressar seus sentimentos",
+                    "17. Compreender os sentimentos dos outros",
+                    "18. Enfrentar a raiva de outra pessoa",
+                    "19. Expressar afeto",
+                    "20. Lidar com o medo",
+                    "21. Recompensar a si mesmo"
+                ]
+            },
+            {
+                id: "G4", name: "Alternativas à Agressão", color: "#e17055",
+                items: [
+                    "22. Pedir permissão",
+                    "23. Compartilhar algo",
+                    "24. Ajudar os outros",
+                    "25. Negociar",
+                    "26. Empregar o autocontrole",
+                    "27. Defender seus direitos",
+                    "28. Responder a brincadeiras",
+                    "29. Evitar problemas com os outros",
+                    "30. Não entrar em brigas"
+                ]
+            },
+            {
+                id: "G5", name: "Lidar com o Estresse", color: "#fdcb6e",
+                items: [
+                    "31. Fazer uma reclamação",
+                    "32. Responder a uma reclamação",
+                    "33. Demonstrar esportividade (saber perder)",
+                    "34. Lidar com o embaraço (vergonha)",
+                    "35. Lidar com o fato de ser deixado de lado",
+                    "36. Defender um amigo",
+                    "37. Responder à persuasão",
+                    "38. Responder ao fracasso",
+                    "39. Enfrentar mensagens contraditórias",
+                    "40. Enfrentar uma acusação",
+                    "41. Preparar-se para uma conversa difícil",
+                    "42. Lidar com a pressão do grupo"
+                ]
+            },
+            {
+                id: "G6", name: "Planejamento", color: "#a29bfe",
+                items: [
+                    "43. Tomar iniciativas",
+                    "44. Discernir sobre a causa de um problema",
+                    "45. Estabelecer um objetivo",
+                    "46. Determinar as próprias habilidades",
+                    "47. Recolher informações",
+                    "48. Resolver problemas segundo a importância",
+                    "49. Tomar uma decisão",
+                    "50. Concentrar-se numa tarefa"
+                ]
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        let globalItemIndex = 0; // Para dar ID único aos radios
+
+        // Renderizar Grupos
+        groups.forEach((group, gIndex) => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = `group-section ${gIndex === 0 ? 'active' : ''}`;
+            groupDiv.id = `group-${gIndex}`;
+            
+            let html = `<div class="group-title" style="border-color:${group.color}; color:${group.color}">${group.name}</div>`;
+            
+            group.items.forEach((itemText) => {
+                globalItemIndex++;
+                html += `
+                    <div class="item-card">
+                        <div class="item-text">${itemText}</div>
+                        <div class="options-row">
+                            <label class="option-label btn-1">
+                                <input type="radio" name="q${globalItemIndex}" value="1" data-group="${gIndex}">
+                                <span class="opt-val">1</span><span class="opt-desc">Nunca</span>
+                            </label>
+                            <label class="option-label btn-2">
+                                <input type="radio" name="q${globalItemIndex}" value="2" data-group="${gIndex}">
+                                <span class="opt-val">2</span><span class="opt-desc">Raro</span>
+                            </label>
+                            <label class="option-label btn-3">
+                                <input type="radio" name="q${globalItemIndex}" value="3" data-group="${gIndex}">
+                                <span class="opt-val">3</span><span class="opt-desc">Às Vezes</span>
+                            </label>
+                            <label class="option-label btn-4">
+                                <input type="radio" name="q${globalItemIndex}" value="4" data-group="${gIndex}">
+                                <span class="opt-val">4</span><span class="opt-desc">Freq.</span>
+                            </label>
+                            <label class="option-label btn-5">
+                                <input type="radio" name="q${globalItemIndex}" value="5" data-group="${gIndex}">
+                                <span class="opt-val">5</span><span class="opt-desc">Sempre</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            groupDiv.innerHTML = html;
+            container.appendChild(groupDiv);
+        });
+
+        // Controle de Abas
+        function showGroup(index) {
+            // Abas
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                if(i === index) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            // Conteúdo
+            document.querySelectorAll('.group-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(`group-${index}`).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // Cálculo
+        function calculateResults() {
+            let groupScores = [0,0,0,0,0,0];
+            let groupCounts = [0,0,0,0,0,0];
+            let totalAnswered = 0;
+
+            const inputs = document.querySelectorAll('input[type="radio"]:checked');
+            
+            inputs.forEach(inp => {
+                const gIdx = parseInt(inp.getAttribute('data-group'));
+                const val = parseInt(inp.value);
+                groupScores[gIdx] += val;
+                groupCounts[gIdx]++;
+                totalAnswered++;
+            });
+
+            if(totalAnswered < 50) {
+                if(!confirm(`Você respondeu ${totalAnswered} de 50 itens. Deseja calcular mesmo assim?`)) return;
+            }
+
+            const grid = document.getElementById('res-grid');
+            grid.innerHTML = '';
+
+            groups.forEach((g, idx) => {
+                const score = groupScores[idx];
+                const count = group.items.length;
+                // Média para facilitar interpretação (1 a 5)
+                const avg = count > 0 ? (score / count).toFixed(1) : 0;
+                
+                // Classificação simples baseada na média (Goldstein sugere analisar os itens baixos individualmente)
+                let status = "Bom Repertório";
+                let statusClass = "status-ok";
+                let barColor = "#00b894";
+
+                if(avg < 3.5) { status = "Médio"; statusClass = ""; barColor="#fdcb6e"; }
+                if(avg < 2.5) { status = "Déficit Significativo"; statusClass = "status-low"; barColor="#ff7675"; }
+
+                grid.innerHTML += `
+                    <div class="res-card" style="border-left-color:${g.color}">
+                        <div class="res-title">${g.name}</div>
+                        <div class="res-score">${avg} <span style="font-size:0.8rem; color:#ccc;">/5.0</span></div>
+                        <div class="res-status ${statusClass}">${status}</div>
+                        <div style="width:100%; height:6px; background:#eee; margin-top:10px; border-radius:3px;">
+                            <div style="height:100%; background:${barColor}; width:${(avg/5)*100}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const resArea = document.getElementById('results-area');
+            resArea.style.display = 'block';
+            resArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
