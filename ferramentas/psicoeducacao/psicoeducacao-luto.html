@@ -13,9 +13,9 @@
         :root {
             /* Identidade Visual - Tema "Luto/Profundidade" */
             --bg-color: #f3f0ff;      /* Lilás muito suave */
-            --primary: #6c5ce7;       /* Roxo (Espiritualidade/Processo) */
+            --primary: #6c5ce7;       /* Roxo */
             --primary-dark: #4834d4;
-            --accent: #00cec9;        /* Turquesa (Cura) */
+            --accent: #00cec9;        /* Turquesa */
             --text: #2d3436;
             --card-border: #b2bec3;
             
@@ -38,7 +38,7 @@
             align-items: center;
         }
 
-        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        /* --- CABEÇALHO --- */
         header {
             text-align: center;
             margin: 20px auto 40px auto;
@@ -137,7 +137,7 @@
         .symptom-item strong { display: block; color: var(--text); font-size: 0.95rem; }
         .symptom-item span { font-size: 0.85rem; color: #636e72; }
 
-        /* --- BÚSSOLA DO CUIDADO (Widget) --- */
+        /* --- BÚSSOLA DO CUIDADO --- */
         .compass-container {
             text-align: center;
             background: #f1f2f6;
@@ -193,39 +193,63 @@
         .dc-loss { border-color: var(--wave-color); color: var(--wave-color); }
         .dc-rest { border-color: var(--rest-color); color: #00b894; }
 
-        /* --- FLIP CARDS (MITOS) --- */
+        /* --- FLIP CARDS (CORRIGIDO) --- */
         .flip-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            /* Garante que os cards tenham largura mínima decente ou ocupem a linha */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px; /* Mais espaço entre os cards */
         }
 
         .flip-card {
             background-color: transparent;
-            height: 250px;
+            height: 300px; /* Aumentado para 300px para caber o texto */
             perspective: 1000px;
             cursor: pointer;
         }
 
         .flip-card-inner {
-            position: relative; width: 100%; height: 100%;
-            text-align: center; transition: transform 0.6s;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
             transform-style: preserve-3d;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-
-        .flip-front, .flip-back {
-            position: absolute; width: 100%; height: 100%;
-            -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; border-radius: 15px; border: 2px solid #dfe6e9;
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
         }
 
-        .flip-front { background-color: white; color: #2d3436; }
-        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px; /* Padding interno generoso */
+            border-radius: 15px;
+            border: 2px solid #dfe6e9;
+            box-sizing: border-box; /* Garante que padding não estoure */
+        }
+
+        .flip-front {
+            background-color: white;
+            color: #2d3436;
+        }
+
+        .flip-back {
+            background-color: var(--primary);
+            color: white;
+            transform: rotateY(180deg);
+            border-color: var(--primary);
+        }
 
         /* Botão Voltar */
         .btn-back {
@@ -236,6 +260,8 @@
         @media (max-width: 600px) {
             .symptoms-grid { grid-template-columns: 1fr; }
             .dual-model { flex-direction: column; }
+            /* No mobile, ajusta a altura se necessário */
+            .flip-card { height: 320px; }
         }
     </style>
 </head>
@@ -328,11 +354,11 @@
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <i class="fa-solid fa-clock" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
-                            <h3 style="font-size:1.1rem; color:#2d3436;">"O tempo cura tudo"</h3>
+                            <h3 style="font-size:1.1rem; color:#2d3436; margin-top:10px;">"O tempo cura tudo"</h3>
                         </div>
                         <div class="flip-back">
                             <h3 style="font-size:1rem; margin-bottom:10px;">O tempo apenas passa</h3>
-                            <p style="font-size:0.9rem;">O que cura é o que você faz com o tempo. Processar a dor exige trabalho emocional ativo.</p>
+                            <p style="font-size:0.9rem;">O que cura é o que você faz com o tempo. Processar a dor exige trabalho emocional ativo, não apenas esperar.</p>
                         </div>
                     </div>
                 </div>
@@ -341,7 +367,7 @@
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <i class="fa-solid fa-dumbbell" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
-                            <h3 style="font-size:1.1rem; color:#2d3436;">"Tenho que ser forte"</h3>
+                            <h3 style="font-size:1.1rem; color:#2d3436; margin-top:10px;">"Tenho que ser forte"</h3>
                         </div>
                         <div class="flip-back">
                             <h3 style="font-size:1rem; margin-bottom:10px;">Permita-se sentir</h3>
@@ -354,11 +380,11 @@
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <i class="fa-solid fa-eraser" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
-                            <h3 style="font-size:1.1rem; color:#2d3436;">"Se parar de doer, esqueço"</h3>
+                            <h3 style="font-size:1.1rem; color:#2d3436; margin-top:10px;">"Se parar de doer, esqueço"</h3>
                         </div>
                         <div class="flip-back">
                             <h3 style="font-size:1rem; margin-bottom:10px;">Amor ≠ Dor</h3>
-                            <p style="font-size:0.9rem;">Você pode voltar a sorrir sem esquecer. A memória vive no amor, não apenas no sofrimento.</p>
+                            <p style="font-size:0.9rem;">Você pode voltar a sorrir sem esquecer. A memória vive no amor, não apenas no sofrimento constante.</p>
                         </div>
                     </div>
                 </div>
