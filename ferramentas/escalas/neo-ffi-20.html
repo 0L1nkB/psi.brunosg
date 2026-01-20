@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO-FFI-20 (Big Five) | Bruno de Souza</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual */
+            --bg-color: #f0f8ff;
+            --primary: #6c5ce7;       /* Roxo (Personalidade) */
+            --primary-dark: #4834d4;
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Cores dos 5 Fatores (OCEAN) */
+            --openness: #00b894;      /* Abertura (Verde) */
+            --conscientiousness: #0984e3; /* Conscienciosidade (Azul) */
+            --extraversion: #fdcb6e;  /* Extroversão (Amarelo) */
+            --agreeableness: #e84393; /* Amabilidade (Rosa) */
+            --neuroticism: #d63031;   /* Neuroticismo (Vermelho) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(108, 92, 231, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .q-number {
+            background: #f1f2f6;
+            color: var(--primary);
+            font-weight: 800;
+            min-width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA (1-5) --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .option-label {
+            padding: 10px 2px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .opt-val { font-size: 1.2rem; margin-bottom: 2px; }
+        .opt-desc { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; opacity: 0.7; }
+
+        /* Cores progressivas */
+        .btn-1:hover { background: #ffe6e6; color: #d63031; }
+        .btn-1:has(input:checked) { background: #d63031; color: white; box-shadow: 0 4px 0 #b02627; }
+
+        .btn-2:hover { background: #fff0e6; color: #e17055; }
+        .btn-2:has(input:checked) { background: #e17055; color: white; box-shadow: 0 4px 0 #c25e46; }
+
+        .btn-3:hover { background: #fffde7; color: #f1c40f; }
+        .btn-3:has(input:checked) { background: #f1c40f; color: white; box-shadow: 0 4px 0 #d4ac0d; }
+
+        .btn-4:hover { background: #e0fcfc; color: #00cec9; }
+        .btn-4:has(input:checked) { background: #00cec9; color: white; box-shadow: 0 4px 0 #008f8c; }
+
+        .btn-5:hover { background: #e0f2f1; color: #00b894; }
+        .btn-5:has(input:checked) { background: #00b894; color: white; box-shadow: 0 4px 0 #00876c; }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .traits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .trait-card {
+            padding: 15px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border-left: 6px solid #ccc;
+        }
+
+        .trait-name { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #b2bec3; }
+        .trait-score { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+        .trait-desc { font-size: 0.85rem; margin-top: 5px; color: #636e72; }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .options-row { gap: 3px; }
+            .option-label { padding: 12px 0; }
+            .opt-desc { display: none; } /* Esconde texto em telas pequenas */
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>NEO-FFI-20</h1>
+        <div class="subtitle">Inventário dos Cinco Grandes Fatores (Big Five)</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia cada frase e marque o quanto ela descreve você, de <strong>1 (Discordo Totalmente)</strong> a <strong>5 (Concordo Totalmente)</strong>.
+        </div>
+
+        <form id="neoForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-fingerprint"></i> GERAR PERFIL
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="text-align:center; color:#636e72; margin-bottom:20px;">SEU PERFIL DE PERSONALIDADE</h3>
+            
+            <div class="chart-container">
+                <canvas id="big5Chart"></canvas>
+            </div>
+
+            <div class="traits-grid" id="traits-container">
+                </div>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ITENS (Baseado no Mini-IPIP 20)
+           Fatores:
+           E = Extroversão
+           A = Amabilidade (Agreeableness)
+           C = Conscienciosidade
+           N = Neuroticismo (Estabilidade Emocional invertida)
+           O = Abertura (Openness)
+           
+           R = Reverso (1=5, 5=1)
+        */
+        const items = [
+            { t: "Sou a vida da festa.", f: "E", r: false },
+            { t: "Sinto pouca preocupação pelos outros.", f: "A", r: true },
+            { t: "Estou sempre preparado.", f: "C", r: false },
+            { t: "Fico estressado facilmente.", f: "N", r: false },
+            { t: "Tenho um vocabulário rico / Ideias vivas.", f: "O", r: false },
+            { t: "Não falo muito.", f: "E", r: true },
+            { t: "Interesso-me pelas pessoas.", f: "A", r: false },
+            { t: "Deixo minhas coisas largadas/bagunçadas.", f: "C", r: true },
+            { t: "Sou relaxado a maior parte do tempo.", f: "N", r: true },
+            { t: "Tenho dificuldade em entender ideias abstratas.", f: "O", r: true },
+            { t: "Sinto-me confortável perto das pessoas.", f: "E", r: false },
+            { t: "Insulto as pessoas.", f: "A", r: true },
+            { t: "Presto atenção aos detalhes.", f: "C", r: false },
+            { t: "Preocupo-me com as coisas.", f: "N", r: false },
+            { t: "Tenho uma imaginação fértil.", f: "O", r: false },
+            { t: "Mantenho-me em segundo plano (reservado).", f: "E", r: true },
+            { t: "Simpatizo com os sentimentos dos outros.", f: "A", r: false },
+            { t: "Faço bagunça nas coisas.", f: "C", r: true },
+            { t: "Sinto-me triste com frequência.", f: "N", r: false },
+            { t: "Não estou interessado em ideias abstratas.", f: "O", r: true }
+        ];
+
+        const factorsInfo = {
+            O: { name: "Abertura", color: "#00b894", desc: "Criatividade, curiosidade intelectual e apreço pela arte." },
+            C: { name: "Conscienciosidade", color: "#0984e3", desc: "Organização, disciplina e foco em metas." },
+            E: { name: "Extroversão", color: "#fdcb6e", desc: "Sociabilidade, energia e busca de estímulos." },
+            A: { name: "Amabilidade", color: "#e84393", desc: "Empatia, cooperação e confiança nos outros." },
+            N: { name: "Neuroticismo", color: "#d63031", desc: "Instabilidade emocional e tendência a ansiedade/tristeza." }
+        };
+
+        const container = document.getElementById('questions-container');
+
+        // Renderizar Perguntas
+        items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            for(let i=1; i<=5; i++) {
+                let desc = "";
+                if(i===1) desc="Discordo";
+                if(i===3) desc="Neutro";
+                if(i===5) desc="Concordo";
+
+                optionsHTML += `
+                    <label class="option-label btn-${i}">
+                        <input type="radio" name="q${index}" value="${i}" data-idx="${index}">
+                        <span class="opt-val">${i}</span>
+                        <span class="opt-desc">${desc}</span>
+                    </label>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${item.t}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        let myChart = null;
+
+        function calculateResults() {
+            let scores = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+            let answered = 0;
+
+            const form = document.getElementById('neoForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                const idx = parseInt(input.getAttribute('data-idx'));
+                let val = parseInt(input.value);
+                const item = items[idx];
+
+                // Inversão (1->5, 2->4, 3->3, 4->2, 5->1)
+                if(item.r) {
+                    val = 6 - val;
+                }
+
+                scores[item.f] += val;
+                answered++;
+            });
+
+            if (answered < 20) {
+                alert(`Você respondeu ${answered} de 20 itens. Por favor, responda a todos.`);
+                return;
+            }
+
+            // Exibir Resultados
+            document.getElementById('result-area').style.display = 'block';
+            renderGrid(scores);
+            renderChart(scores);
+            
+            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderGrid(scores) {
+            const container = document.getElementById('traits-container');
+            container.innerHTML = '';
+
+            // Ordem OCEAN
+            const order = ['O', 'C', 'E', 'A', 'N'];
+
+            order.forEach(key => {
+                const info = factorsInfo[key];
+                const score = scores[key];
+                // Máximo possível é 20 (4 itens * 5 pts)
+                
+                container.innerHTML += `
+                    <div class="trait-card" style="border-left-color: ${info.color}">
+                        <div class="trait-name">${info.name}</div>
+                        <div class="trait-score" style="color:${info.color}">${score} <span style="font-size:0.8rem; color:#ccc;">/20</span></div>
+                        <div class="trait-desc">${info.desc}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderChart(scores) {
+            const ctx = document.getElementById('big5Chart').getContext('2d');
+            
+            const labels = ['Abertura', 'Conscienciosidade', 'Extroversão', 'Amabilidade', 'Neuroticismo'];
+            const data = [scores.O, scores.C, scores.E, scores.A, scores.N];
+            const colors = [
+                factorsInfo.O.color,
+                factorsInfo.C.color,
+                factorsInfo.E.color,
+                factorsInfo.A.color,
+                factorsInfo.N.color
+            ];
+
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Perfil Big Five',
+                        data: data,
+                        backgroundColor: 'rgba(108, 92, 231, 0.2)',
+                        borderColor: '#6c5ce7',
+                        pointBackgroundColor: colors,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: colors,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { display: false },
+                            suggestedMin: 0,
+                            suggestedMax: 20,
+                            ticks: { display: false } // Limpa o gráfico
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
