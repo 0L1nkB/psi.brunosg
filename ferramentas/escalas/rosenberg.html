@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de Autoestima de Rosenberg | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Valor/Ouro" */
+            --bg-color: #fef9e7;      /* Creme Amarelado */
+            --primary: #f1c40f;       /* Amarelo Ouro */
+            --primary-dark: #d35400;  /* Laranja Queimado */
+            --accent: #e67e22;        /* Laranja */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-agree: #00b894;     /* Verde */
+            --btn-disagree: #ff7675;  /* Vermelho */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e5dcb1 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary-dark);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(241, 196, 15, 0.3); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        .instruction-box {
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            max-width: 800px;
+            border-left: 5px solid var(--primary);
+        }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .q-number {
+            background: var(--bg-color);
+            color: var(--primary-dark);
+            font-weight: 800;
+            min-width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary);
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .option-label {
+            padding: 12px 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            border: 2px solid #dfe6e9;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+        }
+
+        /* Cores Específicas */
+        .btn-dt:hover { background: #ffebee; border-color: var(--btn-disagree); color: var(--btn-disagree); }
+        .btn-dt:has(input:checked) { background: var(--btn-disagree); color: white; border-color: var(--btn-disagree); box-shadow: 0 4px 0 #c0392b; }
+
+        .btn-d:hover { background: #fff5f5; border-color: #fab1a0; color: #e17055; }
+        .btn-d:has(input:checked) { background: #fab1a0; color: white; border-color: #fab1a0; box-shadow: 0 4px 0 #e17055; }
+
+        .btn-c:hover { background: #e0f2f1; border-color: #81ecec; color: #00cec9; }
+        .btn-c:has(input:checked) { background: #81ecec; color: white; border-color: #81ecec; box-shadow: 0 4px 0 #00cec9; }
+
+        .btn-ct:hover { background: #e6fffa; border-color: var(--btn-agree); color: var(--btn-agree); }
+        .btn-ct:has(input:checked) { background: var(--btn-agree); color: white; border-color: var(--btn-agree); box-shadow: 0 4px 0 #006266; }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BARRA DE RESULTADOS (Fixa) --- */
+        .result-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3436;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 100;
+            border: 3px solid white;
+            animation: slideUp 0.3s ease-out;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .res-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .score-big { font-size: 1.5rem; color: var(--primary); }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100px); }
+            to { transform: translate(-50%, 0); }
+        }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: inline-block; margin-top: 20px; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary-dark); }
+
+        @media (max-width: 600px) {
+            .options-row { grid-template-columns: 1fr 1fr; }
+            .option-label { font-size: 0.75rem; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Autoestima</h1>
+        <div class="subtitle">Escala de Rosenberg</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Indique o quanto você concorda com cada afirmação sobre você mesmo.
+        </div>
+
+        <form id="rosenbergForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+    </div>
+
+    <div class="result-bar" id="resultBar">
+        <div class="res-content">
+            <span>RESULTADO:</span>
+            <span class="score-big" id="scoreVal">0</span>
+            <span id="scoreText" style="font-size: 0.9rem; color: #ccc;">...</span>
+        </div>
+        <div style="margin-top:5px; font-size:0.7rem; opacity:0.6;">(Máximo: 30)</div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ITENS DA ESCALA
+           type: 'P' (Positivo) ou 'N' (Negativo/Invertido)
+           Positivo: CT=3, C=2, D=1, DT=0
+           Negativo: CT=0, C=1, D=2, DT=3
+        */
+        const questions = [
+            { t: "Sinto que sou uma pessoa de valor, pelo menos tanto quanto as outras.", type: 'P' },
+            { t: "Acho que tenho várias boas qualidades.", type: 'P' },
+            { t: "Levando tudo em conta, inclino-me a achar que sou um fracasso.", type: 'N' },
+            { t: "Sou capaz de fazer as coisas tão bem quanto a maioria das pessoas.", type: 'P' },
+            { t: "Sinto que não tenho muito do que me orgulhar.", type: 'N' },
+            { t: "Tenho uma atitude positiva em relação a mim mesmo.", type: 'P' },
+            { t: "No geral, estou satisfeito comigo mesmo.", type: 'P' },
+            { t: "Gostaria de ter mais respeito por mim mesmo.", type: 'N' },
+            { t: "Às vezes, sinto-me inútil.", type: 'N' },
+            { t: "Às vezes, penso que não sirvo para nada.", type: 'N' }
+        ];
+
+        const options = [
+            { val: 0, text: "Discordo Totalmente", class: "btn-dt" },
+            { val: 1, text: "Discordo", class: "btn-d" },
+            { val: 2, text: "Concordo", class: "btn-c" },
+            { val: 3, text: "Concordo Totalmente", class: "btn-ct" }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            options.forEach(opt => {
+                // Passamos o valor bruto (0-3) para o HTML. A lógica JS trata a inversão.
+                optionsHTML += `
+                    <label class="option-label ${opt.class}">
+                        <input type="radio" name="q${index}" value="${opt.val}" onchange="calculateScore()">
+                        ${opt.text}
+                    </label>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${q.t}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        function calculateScore() {
+            let total = 0;
+            let answered = 0;
+            const form = document.getElementById('rosenbergForm');
+            const formData = new FormData(form);
+
+            for (let pair of formData.entries()) {
+                const index = parseInt(pair[0].substring(1)); // q0 -> 0
+                let rawVal = parseInt(pair[1]); // 0, 1, 2, 3
+                
+                // Lógica de Inversão
+                let finalVal = rawVal;
+                if (questions[index].type === 'N') {
+                    // Se for negativo: 0->3, 1->2, 2->1, 3->0
+                    if(rawVal === 0) finalVal = 3;
+                    else if(rawVal === 1) finalVal = 2;
+                    else if(rawVal === 2) finalVal = 1;
+                    else if(rawVal === 3) finalVal = 0;
+                }
+
+                total += finalVal;
+                answered++;
+            }
+
+            const resultBar = document.getElementById('resultBar');
+            const scoreVal = document.getElementById('scoreVal');
+            const scoreText = document.getElementById('scoreText');
+            
+            if (answered > 0) {
+                resultBar.style.display = 'block';
+                scoreVal.innerText = total;
+
+                // Interpretação Rápida (Referência comum)
+                if (total < 15) {
+                    scoreText.innerText = "Baixa";
+                    scoreText.style.color = "#ff7675";
+                } else if (total <= 25) {
+                    scoreText.innerText = "Média/Saudável";
+                    scoreText.style.color = "#fdcb6e";
+                } else {
+                    scoreText.innerText = "Alta";
+                    scoreText.style.color = "#00b894";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
