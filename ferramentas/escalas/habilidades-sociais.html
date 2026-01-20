@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habilidades Sociais | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual */
+            --bg-color: #f0f8ff;
+            --primary: #00cec9;       /* Verde Água (Tema Social/Interação) */
+            --primary-dark: #00b894;
+            --accent: #fdcb6e;        /* Amarelo */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-0: #ff7675; /* Nunca */
+            --btn-1: #fab1a0;
+            --btn-2: #ffeaa7;
+            --btn-3: #74b9ff;
+            --btn-4: #0984e3; /* Sempre */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 160px; height: 35px; 
+            background-color: rgba(0, 206, 201, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #dfe6e9;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            max-width: 800px;
+            width: 100%;
+            border-left: 5px solid var(--primary);
+        }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .q-number {
+            background: var(--bg-color);
+            color: var(--primary);
+            font-weight: 800;
+            min-width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary);
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .option-label {
+            padding: 12px 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .opt-val { font-size: 1.1rem; margin-bottom: 2px; opacity: 0.6; }
+        .opt-text { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+
+        /* Estilos Específicos por Valor */
+        .btn-0:hover { background: #ffe6e6; border-color: var(--btn-0); color: var(--btn-0); }
+        .btn-0:has(input:checked) { background: var(--btn-0); color: white; border-color: var(--btn-0); box-shadow: 0 4px 0 #d63031; }
+
+        .btn-1:hover { background: #fff0e6; border-color: var(--btn-1); color: var(--btn-1); }
+        .btn-1:has(input:checked) { background: var(--btn-1); color: #2d3436; border-color: var(--btn-1); box-shadow: 0 4px 0 #e17055; }
+
+        .btn-2:hover { background: #fffde7; border-color: var(--btn-2); color: #d4ac0d; }
+        .btn-2:has(input:checked) { background: var(--btn-2); color: #2d3436; border-color: var(--btn-2); box-shadow: 0 4px 0 #f1c40f; }
+
+        .btn-3:hover { background: #e3f2fd; border-color: var(--btn-3); color: var(--btn-3); }
+        .btn-3:has(input:checked) { background: var(--btn-3); color: white; border-color: var(--btn-3); box-shadow: 0 4px 0 #0984e3; }
+
+        .btn-4:hover { background: #e0f2f1; border-color: var(--btn-4); color: var(--btn-4); }
+        .btn-4:has(input:checked) { background: var(--btn-4); color: white; border-color: var(--btn-4); box-shadow: 0 4px 0 #006266; }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0, 206, 201, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); background: var(--primary-dark); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+            text-align: center;
+        }
+
+        .score-val { font-size: 3.5rem; font-weight: 800; color: var(--primary); line-height: 1; margin: 10px 0; }
+        .score-desc { font-size: 1.1rem; font-weight: 600; color: #636e72; margin-bottom: 20px; }
+
+        /* Categorias do Resultado */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .cat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #ccc;
+        }
+
+        .cat-name { font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #b2bec3; }
+        .cat-score { font-size: 1.4rem; font-weight: 800; color: var(--text); }
+        .cat-bar { height: 6px; background: #eee; border-radius: 3px; margin-top: 5px; overflow: hidden; }
+        .cat-fill { height: 100%; background: var(--primary); width: 0%; transition: width 1s; }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .options-row { gap: 5px; }
+            .option-label { padding: 10px 2px; }
+            .opt-text { display: none; } /* Esconde texto em telas pequenas */
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Habilidades Sociais</h1>
+        <div class="subtitle">Lista de Verificação (IHS-Del Prette)</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia cada item e marque a frequência com que você <strong>apresenta a reação indicada</strong> em cada situação.
+        </div>
+
+        <form id="ihsForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-calculator"></i> CALCULAR RESULTADO
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="color:#636e72; text-transform:uppercase; font-size:1rem;">Escore Geral</h3>
+            <div class="score-val" id="total-score">0</div>
+            <div class="score-desc">Indicador Global de Habilidades Sociais</div>
+            
+            <div class="cat-grid" id="cat-container">
+                </div>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ITENS DO IHS-Del-Prette (38 Itens)
+           Fatores (Simplificados para Web):
+           F1 = Enfrentamento com Risco (11 itens)
+           F2 = Autoafirmação na Expressão de Sentimento Positivo (7 itens)
+           F3 = Conversação e Desenvoltura Social (7 itens)
+           F4 = Autoexposição a Desconhecidos e Situações Novas (4 itens)
+           F5 = Autocontrole da Agressividade (3 itens)
+           
+           *Nota: Alguns itens entram em múltiplos fatores na análise fatorial complexa, 
+           aqui usaremos a alocação principal para feedback rápido.
+        */
+
+        const questions = [
+            { t: "Em um grupo de pessoas desconhecidas, fico à vontade, conversando naturalmente.", f: "F3" },
+            { t: "Quando alguém me elogia, aceito e agradeço, sem ficar sem graça.", f: "F2" },
+            { t: "Se estou em uma fila e alguém 'fura', eu reclamo e peço para ir para o fim.", f: "F1" },
+            { t: "Em um grupo de conhecidos, se quero dizer algo, eu falo, mesmo sem ser perguntado.", f: "F3" },
+            { t: "Consigo manter uma conversa com alguém que acabei de conhecer.", f: "F3" },
+            { t: "Se um vendedor insiste em um produto que não quero, eu digo 'não' claramente.", f: "F1" },
+            { t: "Faço elogios a familiares e amigos quando gosto de algo que fizeram.", f: "F2" },
+            { t: "Se sou criticado injustamente, eu me defendo.", f: "F1" },
+            { t: "Devolvo produtos com defeito na loja, exigindo a troca ou o dinheiro.", f: "F1" },
+            { t: "Se um amigo me pede um favor que não posso fazer, eu recuso e explico o motivo.", f: "F1" },
+            { t: "Em uma palestra, se tenho dúvida, levanto a mão e pergunto.", f: "F4" },
+            { t: "Peço favores a amigos quando preciso.", f: "F2" },
+            { t: "Se alguém me atrapalha no cinema (conversando alto), peço para parar.", f: "F1" },
+            { t: "Quando não entendo a explicação de alguém, peço para explicar de novo.", f: "F1" },
+            { t: "Se vejo alguém que gosto, vou cumprimentar e conversar.", f: "F2" },
+            { t: "Se um amigo está triste, ofereço apoio e carinho.", f: "F2" },
+            { t: "Consigo encerrar uma conversa ao telefone quando estou ocupado.", f: "F1" },
+            { t: "Em uma entrevista ou situação de avaliação, consigo me manter calmo.", f: "F5" },
+            { t: "Falo sobre mim mesmo(a) para outras pessoas.", f: "F4" },
+            { t: "Consigo falar em público (apresentações, reuniões).", f: "F4" },
+            { t: "Se alguém me ofende, consigo reagir sem agredir (física ou verbalmente).", f: "F5" },
+            { t: "Consigo controlar minha raiva em situações frustrantes.", f: "F5" },
+            { t: "Demonstro meu amor/afeto fisicamente (abraço, beijo) a quem amo.", f: "F2" },
+            { t: "Puxo conversa com pessoas desconhecidas (fila, ônibus).", f: "F3" },
+            { t: "Faço perguntas para manter a conversa fluindo.", f: "F3" },
+            { t: "Aceito convites para festas ou eventos sociais.", f: "F3" },
+            { t: "Olho nos olhos das pessoas quando converso.", f: "F3" },
+            { t: "Sorrio para as pessoas.", f: "F2" },
+            { t: "Reconheço meus erros e peço desculpas.", f: "F5" },
+            { t: "Expresso minha opinião, mesmo que seja diferente da do grupo.", f: "F1" }
+            // Lista reduzida para 30 itens representativos para web
+        ];
+
+        const factors = {
+            F1: "Enfrentamento / Autoafirmação",
+            F2: "Expressão de Sentimento Positivo",
+            F3: "Conversação e Desenvoltura",
+            F4: "Autoexposição / Público",
+            F5: "Autocontrole"
+        };
+
+        const options = [
+            { val: 0, text: "Nunca" },
+            { val: 1, text: "Pouco" },
+            { val: 2, text: "Às vezes" },
+            { val: 3, text: "Muito" },
+            { val: 4, text: "Sempre" }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            options.forEach(opt => {
+                optionsHTML += `
+                    <label class="option-label btn-${opt.val}">
+                        <input type="radio" name="q${index}" value="${opt.val}" data-factor="${q.f}">
+                        <span class="opt-val">${opt.val}</span>
+                        <span class="opt-text">${opt.text}</span>
+                    </label>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${q.t}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        function calculateResults() {
+            let total = 0;
+            let scores = { F1: 0, F2: 0, F3: 0, F4: 0, F5: 0 };
+            let counts = { F1: 0, F2: 0, F3: 0, F4: 0, F5: 0 };
+            let answered = 0;
+
+            const form = document.getElementById('ihsForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                const val = parseInt(input.value);
+                const fac = input.getAttribute('data-factor');
+                
+                total += val;
+                scores[fac] += val;
+                counts[fac]++;
+                answered++;
+            });
+
+            if (answered < questions.length) {
+                alert(`Você respondeu ${answered} de ${questions.length} itens. Responda a todos para maior precisão.`);
+                return;
+            }
+
+            // Exibir Total
+            document.getElementById('total-score').innerText = total;
+
+            // Renderizar Categorias
+            const catContainer = document.getElementById('cat-container');
+            catContainer.innerHTML = '';
+
+            for (const [key, name] of Object.entries(factors)) {
+                if (counts[key] > 0) {
+                    // Média simples por fator (0 a 4) para facilitar visualização
+                    const avg = (scores[key] / counts[key]).toFixed(1);
+                    const percent = (avg / 4) * 100;
+                    
+                    let color = "#00b894"; // Bom
+                    if (avg < 2.5) color = "#fdcb6e"; // Médio
+                    if (avg < 1.5) color = "#ff7675"; // Baixo (Déficit)
+
+                    catContainer.innerHTML += `
+                        <div class="cat-card" style="border-left-color: ${color}">
+                            <div class="cat-name">${name}</div>
+                            <div class="cat-score">${avg} <span style="font-size:0.8rem; color:#ccc;">/4.0</span></div>
+                            <div class="cat-bar"><div class="cat-fill" style="width:${percent}%; background:${color}"></div></div>
+                        </div>
+                    `;
+                }
+            }
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
