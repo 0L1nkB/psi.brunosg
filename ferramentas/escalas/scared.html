@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCARED - Ansiedade Infantil | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual */
+            --bg-color: #f0f8ff;
+            --primary: #0984e3;       /* Azul Céu */
+            --primary-dark: #0762ac;
+            --secondary: #74b9ff;     /* Azul Claro */
+            --accent: #fdcb6e;        /* Amarelo */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-0: #81ecec;
+            --btn-1: #fdcb6e;
+            --btn-2: #ff7675;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(9, 132, 227, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .q-number {
+            background: var(--bg-color);
+            color: var(--primary);
+            font-weight: 800;
+            min-width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary);
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .option-label {
+            padding: 12px 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .opt-val { font-size: 1.2rem; margin-bottom: 4px; }
+        .opt-text { font-size: 0.75rem; font-weight: 600; opacity: 0.8; text-transform: uppercase; }
+
+        /* Estilos Específicos */
+        .btn-0:hover { background: #e0fcfc; border-color: var(--btn-0); }
+        .btn-0:has(input:checked) { background: var(--btn-0); color: #006266; border-color: #00cec9; box-shadow: 0 4px 0 #00cec9; }
+
+        .btn-1:hover { background: #fff8e1; border-color: var(--btn-1); }
+        .btn-1:has(input:checked) { background: var(--btn-1); color: #d35400; border-color: #e67e22; box-shadow: 0 4px 0 #e67e22; }
+
+        .btn-2:hover { background: #ffebee; border-color: var(--btn-2); }
+        .btn-2:has(input:checked) { background: var(--btn-2); color: white; border-color: #d63031; box-shadow: 0 4px 0 #d63031; }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); background: var(--primary-dark); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+        }
+
+        .total-score {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .score-val { font-size: 3rem; font-weight: 800; color: var(--primary); }
+        .score-class { font-weight: 700; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-top: 10px; }
+
+        .class-ok { background: #00b894; color: white; }
+        .class-risk { background: #ff7675; color: white; }
+
+        /* Grid de Subescalas */
+        .sub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .sub-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #ccc;
+        }
+
+        .sub-name { font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: #b2bec3; }
+        .sub-val { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+        .sub-status { font-size: 0.8rem; font-weight: 700; }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .option-label { padding: 10px 2px; }
+            .opt-text { font-size: 0.65rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>SCARED</h1>
+        <div class="subtitle">Triagem de Transtornos de Ansiedade Infanto-Juvenil</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia cada frase e decida se é <strong>"Não é verdade"</strong>, <strong>"Um pouco verdade"</strong> ou <strong>"Muito verdade"</strong> para você nos últimos 3 meses.
+        </div>
+
+        <form id="scaredForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-calculator"></i> CALCULAR RESULTADO
+        </button>
+
+        <div class="result-section" id="result-area">
+            <div class="total-score">
+                <h3 style="color:#636e72; text-transform:uppercase; font-size:1rem; margin-bottom:5px;">Escore Total</h3>
+                <div class="score-val" id="total-val">0</div>
+                <div id="total-status" class="score-class">...</div>
+                <p style="font-size:0.8rem; color:#b2bec3; margin-top:10px;">Corte Clínico Total: ≥ 25</p>
+            </div>
+
+            <h3 style="color:var(--text); margin-bottom:20px; font-size:1.1rem; border-bottom:1px solid #eee; padding-bottom:10px;">Detalhamento por Subescala</h3>
+            <div class="sub-grid" id="sub-container"></div>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /*
+          ITENS SCARED (41 Itens)
+          Subescalas (baseada nos índices originais - 1-based no papel, 0-based aqui no array):
+          Pânico/Somático (PN): 1, 6, 9, 12, 15, 18, 19, 22, 24, 27, 30, 34, 38
+          TAG (GD): 5, 7, 14, 21, 23, 28, 33, 35, 37
+          Separação (SP): 4, 8, 13, 16, 20, 25, 29, 31
+          Social (SC): 3, 10, 26, 32, 39, 40, 41
+          Escolar (SH): 2, 11, 17, 36
+        */
+
+        const questions = [
+            "Quando sinto medo, mal consigo respirar.", // 1
+            "Sinto dores de cabeça quando estou na escola.", // 2
+            "Não gosto de estar com pessoas que não conheço bem.", // 3
+            "Fico assustado se durmo fora de casa.", // 4
+            "Preocupo-me com o fato de os outros gostarem de mim.", // 5
+            "Quando fico assustado, sinto que vou desmaiar.", // 6
+            "Sou nervoso(a).", // 7
+            "Sigo meus pais a qualquer lugar que eles vão.", // 8
+            "As pessoas me dizem que pareço nervoso(a).", // 9
+            "Sinto-me nervoso(a) com pessoas que não conheço bem.", // 10
+            "Sinto dores de barriga na escola.", // 11
+            "Quando fico assustado(a), sinto que vou enlouquecer.", // 12
+            "Preocupo-me em dormir sozinho(a).", // 13
+            "Preocupo-me em ser tão bom quanto as outras crianças.", // 14
+            "Quando fico assustado, sinto que as coisas não são reais.", // 15
+            "Tenho pesadelos que algo ruim vai acontecer com meus pais.", // 16
+            "Preocupo-me em ir à escola.", // 17
+            "Quando fico assustado, meu coração bate rápido.", // 18
+            "Fico trêmulo(a).", // 19
+            "Tenho pesadelos que algo ruim vai acontecer comigo.", // 20
+            "Preocupo-me com o futuro.", // 21
+            "Quando fico assustado, suou muito.", // 22
+            "Preocupo-me com o que já aconteceu.", // 23
+            "Quando fico assustado, sinto muito medo.", // 24
+            "Tenho medo de ficar sozinho em casa.", // 25
+            "É difícil para mim falar com pessoas que não conheço.", // 26
+            "Quando fico assustado, sinto falta de ar.", // 27
+            "As pessoas me dizem que me preocupo demais.", // 28
+            "Fico assustado longe de casa.", // 29
+            "Tenho medo de ter crises de ansiedade (pânico).", // 30
+            "Preocupo-me que meus pais me deixem.", // 31
+            "Sinto-me tímido com pessoas que não conheço bem.", // 32
+            "Preocupo-me com o que ainda vai acontecer.", // 33
+            "Quando fico assustado, sinto tonturas.", // 34
+            "Preocupo-me quando as coisas não dão certo.", // 35
+            "Tenho medo de ir à escola.", // 36
+            "Preocupo-me muito com as coisas.", // 37
+            "Quando fico assustado, sinto que vou vomitar.", // 38
+            "Sinto-me tímido quando sou o centro das atenções.", // 39
+            "Sinto-me nervoso quando tenho que fazer algo em público.", // 40
+            "Sinto-me tímido quando tenho que falar com adultos." // 41
+        ];
+
+        // Mapeamento de índices (0-based) para as subescalas
+        const subscales = {
+            "Pânico / Somático": { idx: [0, 5, 8, 11, 14, 17, 18, 21, 23, 26, 29, 33, 37], cut: 7 },
+            "Ansiedade Generalizada": { idx: [4, 6, 13, 20, 22, 27, 32, 34, 36], cut: 9 },
+            "Ansiedade de Separação": { idx: [3, 7, 12, 15, 19, 24, 28, 30], cut: 5 },
+            "Ansiedade Social": { idx: [2, 9, 25, 31, 38, 39, 40], cut: 8 },
+            "Evitação Escolar": { idx: [1, 10, 16, 35], cut: 3 }
+        };
+
+        const options = [
+            { val: 0, text: "Não é Verdade" },
+            { val: 1, text: "Um Pouco Verdade" },
+            { val: 2, text: "Muito Verdade" }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            options.forEach(opt => {
+                optionsHTML += `
+                    <label class="option-label btn-${opt.val}">
+                        <input type="radio" name="q${index}" value="${opt.val}" onchange="checkAnswer(${index})">
+                        <span class="opt-val">${opt.val}</span>
+                        <span class="opt-text">${opt.text}</span>
+                    </label>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${q}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Função visual apenas para marcar que foi respondido (opcional)
+        function checkAnswer(index) {
+            // Pode adicionar classe ao card se quiser
+        }
+
+        function calculateResults() {
+            let total = 0;
+            let subScores = {
+                "Pânico / Somático": 0,
+                "Ansiedade Generalizada": 0,
+                "Ansiedade de Separação": 0,
+                "Ansiedade Social": 0,
+                "Evitação Escolar": 0
+            };
+            
+            let answered = 0;
+            const form = document.getElementById('scaredForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                const qIdx = parseInt(input.name.substring(1)); // q0 -> 0
+                const val = parseInt(input.value);
+                
+                total += val;
+                answered++;
+
+                // Distribuir nas subescalas
+                for (const [key, data] of Object.entries(subscales)) {
+                    if (data.idx.includes(qIdx)) {
+                        subScores[key] += val;
+                    }
+                }
+            });
+
+            if (answered < 41) {
+                if(!confirm(`Você respondeu ${answered} de 41 questões. O resultado pode ser impreciso. Deseja continuar?`)) return;
+            }
+
+            // Exibir Total
+            document.getElementById('total-val').innerText = total;
+            const totalStatus = document.getElementById('total-status');
+            if(total >= 25) {
+                totalStatus.innerText = "SINAIS DE ANSIEDADE";
+                totalStatus.classList.add('class-risk');
+                totalStatus.classList.remove('class-ok');
+            } else {
+                totalStatus.innerText = "BAIXO RISCO";
+                totalStatus.classList.add('class-ok');
+                totalStatus.classList.remove('class-risk');
+            }
+
+            // Exibir Subescalas
+            const subContainer = document.getElementById('sub-container');
+            subContainer.innerHTML = '';
+
+            for (const [key, score] of Object.entries(subScores)) {
+                const cutoff = subscales[key].cut;
+                let color = "#ccc"; 
+                let statusText = "Normal";
+                let statusColor = "#636e72";
+
+                if (score >= cutoff) {
+                    color = "#ff7675"; // Risco
+                    statusText = "Acima do Corte";
+                    statusColor = "#d63031";
+                } else {
+                    color = "#00b894"; // Ok
+                }
+
+                subContainer.innerHTML += `
+                    <div class="sub-card" style="border-left-color:${color}">
+                        <div class="sub-name">${key}</div>
+                        <div class="sub-val" style="color:${statusColor}">${score}</div>
+                        <div class="sub-status" style="color:${statusColor}">${statusText} (Corte: ${cutoff})</div>
+                    </div>
+                `;
+            }
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
