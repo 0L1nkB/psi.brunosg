@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AN - Anorexia Nervosa | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Rigidez/Recuperação" */
+            --bg-color: #f0f4f8;      /* Cinza Azulado Claro */
+            --primary: #00897b;       /* Verde Petróleo (Saúde/Equilíbrio) */
+            --primary-dark: #004d40;
+            --accent: #b0bec5;        /* Cinza (Rigidez/Controle) */
+            --text: #2d3436;
+            --card-border: #90a4ae;
+            
+            /* Cores Específicas */
+            --distort-color: #5e35b1; /* Roxo (Distorção) */
+            --restrict-color: #c62828; /* Vermelho (Restrição) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cfd8dc 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(0, 137, 123, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #e0f2f1;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #004d40;
+        }
+
+        /* --- GRID DE SINTOMAS --- */
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border: 2px solid transparent;
+        }
+        
+        .sym-rest { border-color: var(--restrict-color); }
+        .sym-rest i { color: var(--restrict-color); }
+        
+        .sym-dist { border-color: var(--distort-color); }
+        .sym-dist i { color: var(--distort-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.95rem; }
+        .symptom-item span { font-size: 0.85rem; color: #636e72; }
+
+        /* --- WIDGET: DESAFIAR A VOZ (Thought Challenger) --- */
+        .voice-container {
+            text-align: center;
+            background: #eceff1;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #90a4ae;
+        }
+
+        .voice-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-voice {
+            background: white; border: 2px solid #cfd8dc; color: #455a64;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-voice:hover { border-color: var(--distort-color); background: #ede7f6; color: var(--distort-color); }
+
+        /* --- CICLO DA ANOREXIA --- */
+        .cycle-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .cycle-step {
+            flex: 1; min-width: 140px;
+            background: white; border: 2px solid #eee;
+            border-radius: 15px; padding: 15px; text-align: center;
+            position: relative;
+        }
+
+        .cs-1 { border-top: 5px solid #ef5350; }
+        .cs-2 { border-top: 5px solid #ab47bc; }
+        .cs-3 { border-top: 5px solid #26a69a; } /* Alívio Paradoxal */
+        .cs-4 { border-top: 5px solid #78909c; }
+
+        .cycle-step h5 { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: 800; color: #2d3436; }
+        .cycle-step p { margin: 0; font-size: 0.8rem; color: #636e72; }
+
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .symptoms-grid { grid-template-columns: 1fr; }
+            .cycle-wrapper { flex-direction: column; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Anorexia Nervosa</h1>
+        <div class="subtitle">Entendendo a Restrição e a Distorção</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-scale-unbalanced"></i> O que é a Anorexia?</div>
+            <p>A Anorexia Nervosa (AN) é um transtorno psiquiátrico grave caracterizado pela restrição persistente da ingestão calórica, medo intenso de ganhar peso e perturbação na imagem corporal.</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-circle-exclamation"></i> <strong>Atenção:</strong> A Anorexia tem a maior taxa de mortalidade de qualquer doença psiquiátrica. Não é uma "escolha de estilo de vida", é uma condição médica séria.
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Sinais e Sintomas</div>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--restrict-color);">Comportamento Restritivo</h4>
+                    <div class="symptom-item sym-rest">
+                        <i class="fa-solid fa-ban"></i>
+                        <div><strong>Restrição Calórica</strong><span>Evitar grupos inteiros de alimentos ou pular refeições.</span></div>
+                    </div>
+                    <div class="symptom-item sym-rest">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <div><strong>Rituais Alimentares</strong><span>Cortar comida em pedaços minúsculos, pesar tudo.</span></div>
+                    </div>
+                    <div class="symptom-item sym-rest">
+                        <i class="fa-solid fa-person-running"></i>
+                        <div><strong>Exercício Compulsivo</strong><span>Treinar mesmo doente ou cansado para "compensar".</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--distort-color);">Distorção e Medo</h4>
+                    <div class="symptom-item sym-dist">
+                        <i class="fa-solid fa-eye-slash"></i>
+                        <div><strong>Distorção de Imagem</strong><span>Ver-se com sobrepeso mesmo estando abaixo do peso.</span></div>
+                    </div>
+                    <div class="symptom-item sym-dist">
+                        <i class="fa-solid fa-weight-scale"></i>
+                        <div><strong>Medo Intenso</strong><span>Pavor irracional de ganhar peso ou "ficar gordo".</span></div>
+                    </div>
+                    <div class="symptom-item sym-dist">
+                        <i class="fa-solid fa-lock"></i>
+                        <div><strong>Controle Rígido</strong><span>A autoestima é baseada unicamente no peso/forma.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-comments"></i> Desafiando a "Voz da Anorexia"</div>
+            <div class="voice-container">
+                <p style="font-weight:700; color:#546e7a; margin-bottom:15px;">O transtorno mente para você. Selecione um pensamento:</p>
+                
+                <div>
+                    <button class="btn-voice" onclick="challengeThought('control')">"Se eu comer, perco o controle."</button>
+                    <button class="btn-voice" onclick="challengeThought('enough')">"Eu não mereço comer."</button>
+                    <button class="btn-voice" onclick="challengeThought('body')">"Estou enorme."</button>
+                </div>
+
+                <div class="voice-display" id="voice-res">
+                    <span style="color:#b0bec5; font-style:italic;">Clique para ver o reframe saudável...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> O Cérebro na Anorexia</div>
+            <p>Por que a fome não funciona como deveria?</p>
+            
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-arrow-down-up-across-line"></i>
+                    <h4>Recompensa Paradoxal</h4>
+                    <p>Em cérebros saudáveis, a fome gera ansiedade e comer gera prazer. Na AN, a fome <strong>reduz a ansiedade</strong> e comer gera medo. A restrição vira um "ansiolítico".</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-street-view"></i>
+                    <h4>A Ínsula (Distorção)</h4>
+                    <p>A Ínsula processa a imagem corporal e sensações internas. Na AN, ela funciona de forma alterada, criando uma percepção visual distorcida do próprio tamanho.</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-repeat"></i>
+                    <h4>O Hábito (Estriado)</h4>
+                    <p>Com o tempo, a restrição deixa de ser uma escolha e migra para o Estriado Dorsal, tornando-se um hábito automático e compulsivo difícil de quebrar.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-rotate-right"></i> O Ciclo de Manutenção</div>
+            <p>Como a doença se retroalimenta.</p>
+            
+            <div class="cycle-wrapper">
+                <div class="cycle-step cs-1">
+                    <h5>1. Ansiedade/Baixa Autoestima</h5>
+                    <p>Sensação de falta de controle na vida.</p>
+                </div>
+                <div class="cycle-step cs-2">
+                    <h5>2. Restrição</h5>
+                    <p>Controlar a comida para sentir controle.</p>
+                </div>
+                <div class="cycle-step cs-3">
+                    <h5>3. Alívio Temporário</h5>
+                    <p>Sensação de "sucesso" e redução da ansiedade.</p>
+                </div>
+                <div class="cycle-step cs-4">
+                    <h5>4. Consequência</h5>
+                    <p>Fome física, obsessão por comida, isolamento.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Mitos da Anorexia</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-camera-retro" style="font-size:2.5rem; color:#cfd8dc; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"É vaidade"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">É sobre Controle</h3>
+                            <p style="font-size:0.9rem;">A busca pela magreza é um sintoma, não a causa. A doença é uma forma desadaptativa de lidar com emoções dolorosas e ansiedade.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-weight-hanging" style="font-size:2.5rem; color:#cfd8dc; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Só se for esquelético"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Anorexia Atípica</h3>
+                            <p style="font-size:0.9rem;">Pessoas com peso normal ou alto podem ter Anorexia (perda de peso rápida e comportamentos restritivos). É tão grave quanto.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-burger" style="font-size:2.5rem; color:#cfd8dc; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"É só comer"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Bloqueio Mental</h3>
+                            <p style="font-size:0.9rem;">Para quem tem AN, comer gera um terror comparável a pular de um prédio. Exige tratamento especializado e realimentação cuidadosa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function challengeThought(type) {
+            const display = document.getElementById('voice-res');
+            let title = "";
+            let text = "";
+            let icon = "";
+            let color = "";
+
+            if(type === 'control') {
+                title = "Fato: A Doença Controla Você";
+                text = "A restrição dá uma falsa sensação de poder. Na verdade, quando você não consegue comer o que quer, é a doença que está no controle, não você.";
+                icon = '<i class="fa-solid fa-lock-open" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#00897b";
+            } else if(type === 'enough') {
+                title = "Fato: Comida é Combustível";
+                text = "Ninguém precisa 'merecer' respirar, e ninguém precisa 'merecer' comer. É uma necessidade biológica básica para seu coração bater e seu cérebro pensar.";
+                icon = '<i class="fa-solid fa-gas-pump" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#5e35b1";
+            } else if(type === 'body') {
+                title = "Fato: Sua Visão Mente";
+                text = "A desnutrição altera a forma como o cérebro processa imagens (Dismorfia). O que você vê no espelho não é a realidade objetiva.";
+                icon = '<i class="fa-solid fa-eye-slash" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#c62828";
+            }
+
+            display.style.borderTop = `5px solid ${color}`;
+            display.innerHTML = `
+                <div style="color:${color}">${icon}</div>
+                <h3 style="margin:0 0 5px 0; color:#2d3436;">${title}</h3>
+                <p style="margin:0; font-size:0.9rem; color:#636e72; text-align:center;">${text}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
