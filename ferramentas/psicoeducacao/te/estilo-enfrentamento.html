@@ -3,112 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estilos de Enfrentamento - Caderno Terapêutico</title>
+    <title>Estilos de Enfrentamento | Bruno de Souza</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Paleta "Survival Mode" */
-            --paper-line: #f1f5f9;
-            --paper-bg: #fdfdfd;
-            --ink-color: #334155;
+            /* Identidade Visual do Site */
+            --bg-color: #f0f8ff;
+            --primary: #55efc4;       /* Verde Água (Tema Enfrentamento/Cura) */
+            --primary-dark: #00b894;
+            --text: #2d3436;
+            --card-border: #b2bec3;
             
             /* Cores dos 3 Estilos */
-            --surrender: #64748b;     /* Rendição (Cinza/Congelar) */
-            --avoidance: #3b82f6;     /* Evitação (Azul/Fugir) */
-            --overcomp: #ef4444;      /* Hipercompensação (Vermelho/Lutar) */
-            
-            --radius: 16px;
-            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.06);
+            --surrender: #636e72;     /* Rendição (Cinza) */
+            --avoidance: #0984e3;     /* Evitação (Azul) */
+            --overcomp: #d63031;      /* Hipercompensação (Vermelho) */
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            color: var(--ink-color);
-            line-height: 1.6;
-            background-color: var(--paper-bg);
-            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
-            background-size: 100% 2rem;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Patrick Hand', cursive;
-            color: #1e293b;
-        }
-
-        /* --- HEADER --- */
+        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-bottom: 2px dashed #cbd5e1;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
-        }
-
-        .header-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
             text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 900px;
+            width: 100%;
         }
 
-        .header-title {
-            font-size: 2.5rem;
-            color: #0f172a;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0px #e2e8f0;
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(85, 239, 196, 0.3); /* Verde translúcido */
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .header-subtitle {
-            font-size: 1.2rem;
-            color: #64748b;
-            font-family: 'Patrick Hand', cursive;
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            margin-top: 5px; color: #636e72; font-weight: 600;
         }
 
         /* --- CONTAINER --- */
         .main-container {
             max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
             width: 100%;
             display: grid;
-            gap: 35px;
-            margin-bottom: 60px;
+            gap: 30px;
+            margin-bottom: 80px;
         }
 
-        /* --- CARDS (PAPEL) --- */
-        .paper-card {
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: var(--shadow-paper);
-            border: 1px solid #e2e8f0;
-            padding: 2rem;
+        /* --- CARDS PADRÃO --- */
+        .content-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px dashed var(--card-border);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
             position: relative;
-            transform: rotate(-0.5deg);
-            transition: transform 0.3s;
-        }
-        
-        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
-        
-        /* Escudo Decorativo */
-        .paper-card::before {
-            content: '🛡️';
-            position: absolute;
-            top: -25px;
-            right: 20px;
-            font-size: 2.5rem;
-            z-index: 2;
-            transform: rotate(10deg);
         }
 
         .card-header {
@@ -116,60 +97,57 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--paper-line);
+            border-bottom: 2px solid #f1f2f6;
             padding-bottom: 10px;
         }
 
-        .card-icon { font-size: 1.8rem; color: #334155; }
-        .card-title { font-size: 1.8rem; margin: 0; }
+        .card-icon { font-size: 1.8rem; color: var(--primary-dark); }
+        .card-title { font-size: 1.5rem; margin: 0; color: var(--text); font-weight: 800; }
 
-        /* --- POST-IT (DEFINIÇÃO) --- */
-        .post-it {
-            background-color: #fff7ed; /* Amarelo Papel Velho */
-            padding: 1.5rem;
-            border-radius: 2px 2px 16px 2px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.2rem;
-            color: #78350f;
-            transform: rotate(1deg);
+        /* Highlight Box */
+        .highlight-box {
+            background: #fffce0;
+            border-left: 5px solid #fdcb6e;
+            padding: 20px;
             margin: 20px 0;
-            border-left: 5px solid #d97706;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #555;
         }
 
         /* --- GRID DOS 3 ESTILOS --- */
         .styles-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
         .style-box {
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px dashed;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid;
             background: #fff;
             text-align: center;
             transition: transform 0.2s;
         }
-        .style-box:hover { transform: scale(1.03); }
+        .style-box:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
 
         /* Estilo Rendição */
         .box-surrender { border-color: var(--surrender); background: #f8fafc; }
-        .box-surrender h3 { color: var(--surrender); margin-bottom: 5px; }
-        .box-surrender i { font-size: 2rem; color: var(--surrender); margin-bottom: 10px; }
+        .box-surrender h3 { color: var(--surrender); margin-bottom: 5px; font-weight:800; }
+        .box-surrender i { font-size: 2.5rem; color: var(--surrender); margin-bottom: 15px; }
 
         /* Estilo Evitação */
-        .box-avoidance { border-color: var(--avoidance); background: #eff6ff; }
-        .box-avoidance h3 { color: var(--avoidance); margin-bottom: 5px; }
-        .box-avoidance i { font-size: 2rem; color: var(--avoidance); margin-bottom: 10px; }
+        .box-avoidance { border-color: var(--avoidance); background: #eaf6ff; }
+        .box-avoidance h3 { color: var(--avoidance); margin-bottom: 5px; font-weight:800; }
+        .box-avoidance i { font-size: 2.5rem; color: var(--avoidance); margin-bottom: 15px; }
 
         /* Estilo Hipercompensação */
-        .box-overcomp { border-color: var(--overcomp); background: #fef2f2; }
-        .box-overcomp h3 { color: var(--overcomp); margin-bottom: 5px; }
-        .box-overcomp i { font-size: 2rem; color: var(--overcomp); margin-bottom: 10px; }
+        .box-overcomp { border-color: var(--overcomp); background: #fff0f0; }
+        .box-overcomp h3 { color: var(--overcomp); margin-bottom: 5px; font-weight:800; }
+        .box-overcomp i { font-size: 2.5rem; color: var(--overcomp); margin-bottom: 15px; }
 
-        /* --- EXEMPLO COMPARATIVO (TABELA) --- */
+        /* --- TABELA COMPARATIVA --- */
         .comparison-table {
             width: 100%;
             border-collapse: separate;
@@ -177,95 +155,89 @@
             margin-top: 15px;
         }
         
-        .comparison-table th { text-align: left; font-family: 'Patrick Hand'; font-size: 1.2rem; color: #64748b; }
         .comparison-table td { 
-            padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; 
-            font-size: 0.9rem; vertical-align: middle;
+            padding: 15px; 
+            background: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            vertical-align: middle;
         }
-        .comparison-table tr td:first-child { border-radius: 10px 0 0 10px; border-left: 4px solid; font-weight: 700; }
+        .comparison-table tr td:first-child { border-radius: 10px 0 0 10px; border-left: 5px solid; font-weight: 700; width: 30%; }
         .comparison-table tr td:last-child { border-radius: 0 10px 10px 0; }
 
-        /* Cores da Tabela */
         .row-surrender td:first-child { border-left-color: var(--surrender); color: var(--surrender); }
         .row-avoidance td:first-child { border-left-color: var(--avoidance); color: var(--avoidance); }
         .row-overcomp td:first-child { border-left-color: var(--overcomp); color: var(--overcomp); }
 
-        /* --- FERRAMENTA INTERATIVA --- */
+        /* --- INTERATIVO --- */
         .interactive-area {
-            background-color: #f0fdfa;
+            background-color: #e0fcf6;
             padding: 2rem; border-radius: 20px;
-            border: 2px dashed #5eead4; text-align: center;
+            border: 2px dashed var(--primary); 
+            text-align: center;
         }
 
         .btn-scenario {
-            background: white; border: 2px solid #ccfbf1;
-            padding: 10px 20px; margin: 5px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; font-weight: 700; color: #0f766e;
+            background: white; border: 2px solid var(--primary);
+            padding: 12px 25px; margin: 5px; border-radius: 30px;
+            font-family: 'Quicksand', sans-serif; font-weight: 700; color: var(--primary-dark);
             cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 0 #ccfbf1;
+            box-shadow: 0 4px 0 #b9fbe8;
         }
         
-        .btn-scenario:hover { background: #fff; transform: translateY(-2px); border-color: #0d9488; color: #0d9488; }
+        .btn-scenario:hover { transform: translateY(-2px); background: #f0fffa; }
 
         .result-bubble {
-            background: white; padding: 20px; border-radius: 20px;
-            margin-top: 20px; border: 2px solid #99f6e4;
-            font-family: 'Patrick Hand', cursive; font-size: 1.2rem;
-            color: #134e4a; min-height: 80px; display: flex; align-items: center; justify-content: center;
+            background: white; padding: 20px; border-radius: 15px;
+            margin-top: 20px; border: 2px solid var(--primary);
+            font-size: 1.1rem; color: var(--text); 
+            min-height: 80px; display: flex; align-items: center; justify-content: center;
+            opacity: 0; /* Começa invisível */
         }
 
-        /* --- FOOTER PADRÃO --- */
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            padding: 2rem 0;
-            margin-top: auto;
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 40px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
         }
-        .footer-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
-        .social-links { display: flex; gap: 1.5rem; }
-        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
-        .social-links a:hover { color: var(--surrender); }
+        .btn-back:hover { color: var(--primary-dark); }
 
         @media (max-width: 640px) {
-            .footer-container { flex-direction: column; gap: 1rem; }
             .styles-grid { grid-template-columns: 1fr; }
-            .comparison-table, .comparison-table tbody, .comparison-table tr, .comparison-table td { display: block; width: 100%; }
+            .comparison-table, .comparison-table tr, .comparison-table td { display: block; width: 100%; }
             .comparison-table tr { margin-bottom: 15px; }
-            .comparison-table td { padding: 10px; }
+            .comparison-table td { padding: 10px; border: none; background: #fff; }
+            .comparison-table tr td:first-child { border-radius: 10px 10px 0 0; border-left: none; border-top: 5px solid; }
+            .comparison-table tr td:last-child { border-radius: 0 0 10px 10px; border: 1px solid #eee; border-top: none; }
+            
+            /* Ajuste bordas mobile */
+            .row-surrender td:first-child { border-top-color: var(--surrender); }
+            .row-avoidance td:first-child { border-top-color: var(--avoidance); }
+            .row-overcomp td:first-child { border-top-color: var(--overcomp); }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <h1 class="header-title">Estilos de Enfrentamento</h1>
-            <p class="header-subtitle">Como sobrevivemos aos esquemas</p>
-        </div>
+    <header data-aos="fade-down">
+        <h1>Estilos de Enfrentamento</h1>
+        <div class="subtitle">Como sobrevivemos aos esquemas</div>
     </header>
 
     <div class="main-container">
 
-        <div class="paper-card">
+        <div class="content-card" data-aos="fade-up">
             <div class="card-header">
                 <i class="fas fa-shield-virus card-icon"></i>
                 <h2 class="card-title">A Armadura de Sobrevivência</h2>
             </div>
             <p>Quando um esquema é ativado (trazendo dor), nós reagimos instintivamente para sobreviver. Esses comportamentos foram úteis na infância, mas hoje nos mantêm presos.</p>
             
-            <div class="post-it">
-                <i class="fas fa-thumbtack" style="color:#78350f; margin-right:10px;"></i>
-                "Eu não sou meu comportamento. Meu jeito de agir é apenas a forma como aprendi a me proteger da dor do meu esquema."
+            <div class="highlight-box">
+                <i class="fas fa-thumbtack" style="color:#e67e22; margin-right:10px;"></i>
+                "Eu não sou meu comportamento. Meu jeito de agir é apenas a forma como aprendi a me proteger da dor."
             </div>
         </div>
 
-        <div class="paper-card" style="transform: rotate(0.5deg);">
+        <div class="content-card" data-aos="fade-up">
             <div class="card-header">
                 <i class="fas fa-random card-icon"></i>
                 <h2 class="card-title">Lutar, Fugir ou Congelar?</h2>
@@ -274,58 +246,55 @@
             <div class="styles-grid">
                 <div class="style-box box-surrender">
                     <i class="fas fa-flag"></i>
-                    <h3>Rendição (Congelar)</h3>
-                    <p>Você aceita o esquema como verdade. "Sou assim mesmo". Você revive a dor da infância repetidamente.</p>
-                    <span style="font-size:0.8rem; background:#cbd5e1; padding:2px 8px; border-radius:10px;">Ex: Escolher parceiros críticos.</span>
+                    <h3>Rendição</h3>
+                    <p><strong>(Congelar)</strong><br>Você aceita o esquema como verdade. "Sou assim mesmo". Revive a dor repetidamente.</p>
                 </div>
 
                 <div class="style-box box-avoidance">
                     <i class="fas fa-running"></i>
-                    <h3>Evitação (Fugir)</h3>
-                    <p>Você organiza a vida para não sentir a dor. Evita desafios, pessoas ou intimidade. Usa distrações.</p>
-                    <span style="font-size:0.8rem; background:#dbeafe; padding:2px 8px; border-radius:10px;">Ex: Beber, dormir, procrastinar.</span>
+                    <h3>Evitação</h3>
+                    <p><strong>(Fugir)</strong><br>Você organiza a vida para não sentir. Evita desafios, pessoas ou intimidade. Usa distrações.</p>
                 </div>
 
                 <div class="style-box box-overcomp">
                     <i class="fas fa-fist-raised"></i>
-                    <h3>Hipercompensação (Lutar)</h3>
-                    <p>Você ataca o esquema agindo de forma oposta e extrema. Se sente inferior, age como superior.</p>
-                    <span style="font-size:0.8rem; background:#fee2e2; padding:2px 8px; border-radius:10px;">Ex: Perfeccionismo, Arrogância.</span>
+                    <h3>Hipercompensação</h3>
+                    <p><strong>(Lutar)</strong><br>Você ataca o esquema agindo de forma oposta e extrema. Se sente inferior, age como superior.</p>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
+        <div class="content-card" data-aos="fade-up">
             <div class="card-header">
                 <i class="fas fa-microscope card-icon"></i>
-                <h2 class="card-title">Mesmo Esquema, Reações Diferentes</h2>
+                <h2 class="card-title">Exemplo Prático</h2>
             </div>
             <p>Imagine 3 pessoas com o esquema de <strong>Defectividade</strong> (sentir-se inferior/falho). Veja como cada uma age:</p>
             
             <table class="comparison-table">
                 <tbody>
                     <tr class="row-surrender">
-                        <td width="30%">Rendição</td>
-                        <td>Escolhe amigos que o criticam e aceita as críticas ("Eles têm razão, sou burro").</td>
+                        <td>Rendição</td>
+                        <td>Escolhe amigos que o criticam e aceita as críticas ("Eles têm razão, sou falho").</td>
                     </tr>
                     <tr class="row-avoidance">
-                        <td width="30%">Evitação</td>
+                        <td>Evitação</td>
                         <td>Evita situações sociais para não ser julgado. Fica no canto ou bebe para se soltar.</td>
                     </tr>
                     <tr class="row-overcomp">
-                        <td width="30%">Hipercompensação</td>
-                        <td>Torna-se narcisista. Critica os outros antes de ser criticado. Busca status obsessivamente.</td>
+                        <td>Hipercompensação</td>
+                        <td>Torna-se arrogante. Critica os outros antes de ser criticado. Busca status obsessivamente.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="paper-card" style="transform: rotate(-0.5deg);">
+        <div class="content-card" data-aos="fade-up">
             <div class="card-header">
                 <i class="fas fa-search-location card-icon"></i>
                 <h2 class="card-title">Qual é o seu estilo?</h2>
             </div>
-            <p>Pense em um problema atual. Como você está lidando com ele?</p>
+            <p style="text-align: center; margin-bottom: 20px;">Pense em um problema atual. Como você está lidando com ele?</p>
             
             <div class="interactive-area">
                 <div>
@@ -340,44 +309,36 @@
             </div>
         </div>
 
-        <div class="paper-card">
+        <div class="content-card" data-aos="fade-up">
             <div class="card-header">
                 <i class="fas fa-brain card-icon"></i>
                 <h2 class="card-title">A Armadilha</h2>
             </div>
             <p>O problema desses estilos é que eles <strong>reforçam</strong> o esquema a longo prazo:</p>
             <ul style="list-style:none; padding:0;">
-                <li style="margin-bottom:10px; display:flex; gap:10px;">
-                    <i class="fas fa-check" style="color:var(--surrender);"></i> 
+                <li style="margin-bottom:15px; display:flex; gap:15px; align-items: center;">
+                    <i class="fas fa-circle-check" style="color:var(--surrender); font-size: 1.2rem;"></i> 
                     <span><strong>Quem se rende:</strong> Confirma que a dor é real e merecida.</span>
                 </li>
-                <li style="margin-bottom:10px; display:flex; gap:10px;">
-                    <i class="fas fa-check" style="color:var(--avoidance);"></i> 
+                <li style="margin-bottom:15px; display:flex; gap:15px; align-items: center;">
+                    <i class="fas fa-circle-check" style="color:var(--avoidance); font-size: 1.2rem;"></i> 
                     <span><strong>Quem evita:</strong> Nunca aprende que consegue superar o medo (porque nunca tenta).</span>
                 </li>
-                <li style="margin-bottom:10px; display:flex; gap:10px;">
-                    <i class="fas fa-check" style="color:var(--overcomp);"></i> 
+                <li style="margin-bottom:15px; display:flex; gap:15px; align-items: center;">
+                    <i class="fas fa-circle-check" style="color:var(--overcomp); font-size: 1.2rem;"></i> 
                     <span><strong>Quem ataca:</strong> Afasta as pessoas, criando a rejeição que tanto temia.</span>
                 </li>
             </ul>
         </div>
 
+        <a href="../../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
     </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-brand">
-                &copy; 2026 Bruno de Souza
-            </div>
-            <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
-    </footer>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
+
         function checkStyle(type) {
             const bubble = document.getElementById('style-bubble');
             let text = "";
@@ -385,19 +346,20 @@
             
             if (type === 'paraliso') {
                 text = "🏳️ <strong>Rendição:</strong> Você está paralisado na dor. O desafio é começar a se defender e colocar limites.";
-                color = "#64748b";
+                color = "#636e72";
             } else if (type === 'fujo') {
                 text = "🏃 <strong>Evitação:</strong> Você está fugindo. O desafio é enfrentar o desconforto aos poucos.";
-                color = "#3b82f6";
+                color = "#0984e3";
             } else if (type === 'ataco') {
                 text = "⚔️ <strong>Hipercompensação:</strong> Você está atacando. O desafio é mostrar vulnerabilidade sem agressão.";
-                color = "#ef4444";
+                color = "#d63031";
             }
             
             bubble.style.opacity = 0;
             setTimeout(() => {
                 bubble.innerHTML = text;
                 bubble.style.color = color;
+                bubble.style.borderColor = color;
                 bubble.style.opacity = 1;
                 bubble.style.transition = "opacity 0.3s";
             }, 200);
