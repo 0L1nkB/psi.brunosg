@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AH/SD - Altas Habilidades | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Potencial/Intensidade" */
+            --bg-color: #fffde7;      /* Creme Suave */
+            --primary: #fbc02d;       /* Dourado (Potencial) */
+            --primary-dark: #f57f17;
+            --accent: #1a237e;        /* Azul Marinho (Profundidade) */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Cores Específicas */
+            --intellect-color: #304ffe; /* Azul Elétrico */
+            --emotion-color: #d500f9;   /* Roxo Vibrante */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#fff9c4 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(251, 192, 45, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #e8eaf6;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* --- GRID DE SINTOMAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .sym-intel { border-color: var(--intellect-color); }
+        .sym-intel i { color: var(--intellect-color); }
+        
+        .sym-emo { border-color: var(--emotion-color); }
+        .sym-emo i { color: var(--emotion-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.9rem; }
+        .symptom-item span { font-size: 0.8rem; color: #636e72; }
+
+        /* --- WIDGET SOBRE-EXCITABILIDADE --- */
+        .dabrowski-container {
+            text-align: center;
+            background: #fff3e0;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #ffe0b2;
+        }
+
+        .dabrowski-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-type {
+            background: white; border: 2px solid #ffe0b2; color: #f57c00;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-type:hover { border-color: var(--primary); background: var(--primary); color: white; }
+
+        /* --- DIAGRAMA RENZULLI (Anéis) --- */
+        .renzulli-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .renzulli-circle {
+            width: 130px; height: 130px;
+            border-radius: 50%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            font-size: 0.8rem; font-weight: 800;
+            padding: 10px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .rc-1 { background: #ffca28; } /* Habilidade */
+        .rc-2 { background: #42a5f5; } /* Criatividade */
+        .rc-3 { background: #ef5350; } /* Envolvimento */
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--accent); color: white; transform: rotateY(180deg); border-color: var(--accent); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>AH/SD</h1>
+        <div class="subtitle">Altas Habilidades / Superdotação</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> Neurodivergência</div>
+            <p>AH/SD não é apenas "tirar notas boas". É uma forma diferente de processar o mundo, caracterizada por aprendizado rápido, intensidade emocional e um senso de justiça aguçado.</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-star"></i> <strong>Não é doença.</strong> É uma característica constitucional. O cérebro AH/SD tem mais conexões neurais e maior eficiência no processamento de informações.
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-shapes"></i> Os 3 Anéis (Renzulli)</div>
+            <p style="text-align:center;">O comportamento superdotado ocorre na intersecção de três fatores:</p>
+            
+            <div class="renzulli-wrapper">
+                <div class="renzulli-circle rc-1">
+                    <i class="fa-solid fa-bolt" style="font-size:2rem; margin-bottom:5px;"></i>
+                    Habilidade Acima da Média
+                </div>
+                <div class="renzulli-circle rc-2">
+                    <i class="fa-solid fa-lightbulb" style="font-size:2rem; margin-bottom:5px;"></i>
+                    Criatividade
+                </div>
+                <div class="renzulli-circle rc-3">
+                    <i class="fa-solid fa-rocket" style="font-size:2rem; margin-bottom:5px;"></i>
+                    Envolvimento com a Tarefa
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Características Comuns</div>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--intellect-color);">Cognitivo</h4>
+                    <div class="symptom-item sym-intel">
+                        <i class="fa-solid fa-forward"></i>
+                        <div><strong>Velocidade</strong><span>Aprende e processa informações muito rápido.</span></div>
+                    </div>
+                    <div class="symptom-item sym-intel">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <div><strong>Curiosidade</strong><span>Questionamentos profundos e precoces sobre a vida.</span></div>
+                    </div>
+                    <div class="symptom-item sym-intel">
+                        <i class="fa-solid fa-book-open"></i>
+                        <div><strong>Vocabulário</strong><span>Uso de palavras complexas para a idade.</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--emotion-color);">Socioemocional</h4>
+                    <div class="symptom-item sym-emo">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <div><strong>Intensidade</strong><span>Sente tudo "demais" (alegria, dor, raiva).</span></div>
+                    </div>
+                    <div class="symptom-item sym-emo">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                        <div><strong>Senso de Justiça</strong><span>Inconformismo extremo com regras injustas.</span></div>
+                    </div>
+                    <div class="symptom-item sym-emo">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <div><strong>Assincronia</strong><span>Intelecto de adulto, mas emoção da idade cronológica.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-gauge-high"></i> Intensidades (Dabrowski)</div>
+            <div class="dabrowski-container">
+                <p style="font-weight:700; color:#e65100; margin-bottom:15px;">Explore os tipos de "Sobre-excitabilidade":</p>
+                
+                <div>
+                    <button class="btn-type" onclick="explain('intelectual')">🧠 Intelectual</button>
+                    <button class="btn-type" onclick="explain('emocional')">❤️ Emocional</button>
+                    <button class="btn-type" onclick="explain('imaginativa')">🎨 Imaginativa</button>
+                    <button class="btn-type" onclick="explain('sensorial')">👀 Sensorial</button>
+                    <button class="btn-type" onclick="explain('psicomotora')">🏃 Psicomotora</button>
+                </div>
+
+                <div class="dabrowski-display" id="dabrowski-res">
+                    <span style="color:#b2bec3; font-style:italic;">Clique nos botões acima...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Mitos vs. Realidade</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-graduation-cap" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Só tira nota 10"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Desempenho ≠ Capacidade</h3>
+                            <p style="font-size:0.9rem;">Muitos AH/SD têm baixo rendimento escolar por tédio, perfeccionismo paralisante ou falta de função executiva.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-hand-holding-hand" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Não precisa de ajuda"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Alta demanda</h3>
+                            <p style="font-size:0.9rem;">Pelo contrário. A assincronia (ser muito inteligente mas imaturo emocionalmente) gera grande sofrimento e risco de ansiedade/depressão.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-users" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"São antissociais"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Busca por Pares</h3>
+                            <p style="font-size:0.9rem;">Eles buscam conexão intelectual. Se não encontram "pares mentais" (mesmos interesses/nível), podem se isolar, mas desejam conexão.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function explain(type) {
+            const display = document.getElementById('dabrowski-res');
+            let title = "";
+            let text = "";
+            let icon = "";
+            let color = "";
+
+            if(type === 'intelectual') {
+                title = "Sobre-excitabilidade Intelectual";
+                text = "Sede insaciável por conhecimento, curiosidade intensa, amor pela teoria e análise, perguntas constantes ('Por quê?').";
+                icon = '<i class="fa-solid fa-brain" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#304ffe";
+            } else if(type === 'emocional') {
+                title = "Sobre-excitabilidade Emocional";
+                text = "Emoções extremas (picos de euforia e vales de tristeza), empatia profunda, apego forte a pessoas ou animais.";
+                icon = '<i class="fa-solid fa-heart-pulse" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#d500f9";
+            } else if(type === 'imaginativa') {
+                title = "Sobre-excitabilidade Imaginativa";
+                text = "Vida interior rica, amigos imaginários (em crianças), pensamento visual, dramatização, tendência a sonhar acordado.";
+                icon = '<i class="fa-solid fa-palette" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#00bcd4";
+            } else if(type === 'sensorial') {
+                title = "Sobre-excitabilidade Sensorial";
+                text = "Prazer ou desconforto extremo com estímulos (luzes, tecidos, sons, sabores). A etiqueta da roupa pode ser uma tortura.";
+                icon = '<i class="fa-solid fa-eye" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#ffab00";
+            } else if(type === 'psicomotora') {
+                title = "Sobre-excitabilidade Psicomotora";
+                text = "Excesso de energia física, fala rápida, gesticulação intensa, necessidade de movimento (pode ser confundido com TDAH).";
+                icon = '<i class="fa-solid fa-bolt" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#ff3d00";
+            }
+
+            display.style.borderTop = `5px solid ${color}`;
+            display.innerHTML = `
+                <div style="color:${color}">${icon}</div>
+                <h3 style="margin:0 0 5px 0; color:#2d3436;">${title}</h3>
+                <p style="margin:0; font-size:0.9rem; color:#636e72; text-align:center;">${text}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
