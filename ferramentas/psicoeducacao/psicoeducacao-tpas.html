@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPAS - Personalidade Antissocial | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Objetividade/Consequência" */
+            --bg-color: #eceff1;      /* Cinza Frio Claro */
+            --primary: #37474f;       /* Cinza Chumbo (Seriedade) */
+            --primary-dark: #263238;
+            --accent: #d84315;        /* Laranja Queimado (Alerta/Impulso) */
+            --text: #2d3436;
+            --card-border: #b0bec5;
+            
+            /* Cores Específicas */
+            --impulse-color: #ef5350; /* Vermelho (Ação) */
+            --cold-color: #78909c;    /* Azul Acinzentado (Frieza/Distanciamento) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cfd8dc 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(55, 71, 79, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #fff3e0;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* --- GRID DE SINTOMAS --- */
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border: 2px solid transparent;
+        }
+        
+        .sym-behav { border-color: var(--impulse-color); }
+        .sym-behav i { color: var(--impulse-color); }
+        
+        .sym-inter { border-color: var(--cold-color); }
+        .sym-inter i { color: var(--cold-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.95rem; }
+        .symptom-item span { font-size: 0.85rem; color: #636e72; }
+
+        /* --- WIDGET CONSEQUÊNCIA (Calculadora de Futuro) --- */
+        .future-container {
+            text-align: center;
+            background: #eceff1;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #90a4ae;
+        }
+
+        .future-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-check {
+            background: white; border: 2px solid #cfd8dc; color: #455a64;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-check:hover { border-color: var(--accent); color: var(--accent); background: #fff3e0; }
+
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b0bec5; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .symptoms-grid { grid-template-columns: 1fr; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>TPAS</h1>
+        <div class="subtitle">Transtorno de Personalidade Antissocial</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-gavel"></i> Definição Clínica</div>
+            <p>O TPAS é um padrão persistente de desrespeito e violação dos direitos dos outros. Não é apenas "mau comportamento", mas uma estrutura de personalidade rígida e desadaptativa.</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-circle-exclamation"></i> <strong>Critério Chave:</strong> O diagnóstico só pode ser feito após os <strong>18 anos</strong>, mas deve haver evidências de Transtorno de Conduta (problemas de comportamento) antes dos 15 anos.
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Padrões de Comportamento</div>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--impulse-color); text-align:center; text-transform:uppercase; font-size:0.9rem; margin-bottom:15px;">Impulsividade & Ação</h4>
+                    <div class="symptom-item sym-behav">
+                        <i class="fa-solid fa-hand-fist"></i>
+                        <div><strong>Irritabilidade/Agressividade</strong><span>Lutas corporais ou agressões físicas repetidas.</span></div>
+                    </div>
+                    <div class="symptom-item sym-behav">
+                        <i class="fa-solid fa-bolt"></i>
+                        <div><strong>Impulsividade</strong><span>Fracasso em planejar o futuro. Ação no "agora".</span></div>
+                    </div>
+                    <div class="symptom-item sym-behav">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div><strong>Descaso pela Segurança</strong><span>Negligência com a segurança própria ou alheia (ex: direção).</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--cold-color); text-align:center; text-transform:uppercase; font-size:0.9rem; margin-bottom:15px;">Interpessoal & Afeto</h4>
+                    <div class="symptom-item sym-inter">
+                        <i class="fa-solid fa-face-meh"></i>
+                        <div><strong>Ausência de Remorso</strong><span>Indiferença ou racionalização ao ferir ou roubar alguém.</span></div>
+                    </div>
+                    <div class="symptom-item sym-inter">
+                        <i class="fa-solid fa-mask"></i>
+                        <div><strong>Falsidade (Engano)</strong><span>Mentiras repetidas, uso de nomes falsos ou trapaça para ganho pessoal.</span></div>
+                    </div>
+                    <div class="symptom-item sym-inter">
+                        <i class="fa-solid fa-file-contract"></i>
+                        <div><strong>Irresponsabilidade</strong><span>Falha em sustentar trabalho ou honrar obrigações financeiras.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-scale-balanced"></i> Calculadora de Consequências</div>
+            <div class="future-container">
+                <p style="font-weight:700; color:#546e7a; margin-bottom:15px;">O cérebro TPAS foca no ganho imediato. Vamos ver o custo futuro:</p>
+                
+                <div>
+                    <button class="btn-check" onclick="checkCost('lie')">Mentir para sair de problema</button>
+                    <button class="btn-check" onclick="checkCost('impulse')">Agir por impulso/raiva</button>
+                    <button class="btn-check" onclick="checkCost('rule')">Quebrar uma regra</button>
+                </div>
+
+                <div class="future-display" id="cost-res">
+                    <span style="color:#b0bec5; font-style:italic;">Selecione uma ação acima...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> Por que isso acontece?</div>
+            <p>Estudos indicam bases biológicas, não apenas "falha de caráter".</p>
+            
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-battery-quarter"></i>
+                    <h4>Baixa Ativação (Arousal)</h4>
+                    <p>O sistema nervoso é "subativado". O indivíduo busca situações extremas ou perigosas apenas para sentir algo ou se sentir "vivo".</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-eye-slash"></i>
+                    <h4>Amígdala Reduzida</h4>
+                    <p>Menor resposta ao medo. Punições e ameaças não funcionam bem porque o cérebro não processa o medo da consequência como os outros.</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-ban"></i>
+                    <h4>Déficit Pré-Frontal</h4>
+                    <p>Dificuldade biológica no "freio" do comportamento. O impulso viaja mais rápido que a capacidade de inibi-lo.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Mitos vs. Realidade</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-user-ninja" style="font-size:2.5rem; color:#cfd8dc; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"São todos criminosos"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Nem todos</h3>
+                            <p style="font-size:0.9rem;">Embora haja maior incidência no sistema prisional, muitos indivíduos com TPAS estão na sociedade, muitas vezes causando danos emocionais/financeiros, mas sem cometer crimes violentos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-skull" style="font-size:2.5rem; color:#cfd8dc; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Psicopata vs. TPAS"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Diferença Clínica</h3>
+                            <p style="font-size:0.9rem;">TPAS é o diagnóstico do DSM-5 (focado em comportamento). Psicopatia é um construto mais grave (focado em traços de personalidade fria/calculista). Todo psicopata tem TPAS, mas nem todo TPAS é psicopata.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-road-barrier" style="font-size:2.5rem; color:#cfd8dc; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Não tem tratamento"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Manejo é Possível</h3>
+                            <p style="font-size:0.9rem;">A cura da personalidade é improvável, mas o manejo é possível. Terapias focadas em consequências lógicas e redução de danos podem diminuir a reincidência de problemas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center; font-size:0.85rem; color:#78909c; max-width:600px; margin:20px auto;">
+            <i class="fa-solid fa-circle-info"></i> <strong>Nota Ética:</strong> Este conteúdo é informativo. O diagnóstico de TPAS é complexo e deve ser feito exclusivamente por profissionais de saúde mental, considerando histórico detalhado e diagnóstico diferencial.
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function checkCost(type) {
+            const display = document.getElementById('cost-res');
+            let title = "";
+            let text = "";
+            let icon = "";
+            let color = "";
+
+            if(type === 'lie') {
+                title = "Custo da Mentira";
+                text = "Ganho Imediato: Evitar problema. <br><strong>Custo Futuro:</strong> Perda total de credibilidade. Quando precisar de ajuda real, ninguém acreditará. Isolamento social.";
+                icon = '<i class="fa-solid fa-user-slash" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#d84315";
+            } else if(type === 'impulse') {
+                title = "Custo do Impulso";
+                text = "Ganho Imediato: Alívio da raiva. <br><strong>Custo Futuro:</strong> Problemas legais, perda de emprego, multas ou retaliação física.";
+                icon = '<i class="fa-solid fa-gavel" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#e65100";
+            } else if(type === 'rule') {
+                title = "Custo da Transgressão";
+                text = "Ganho Imediato: Vantagem/Dinheiro. <br><strong>Custo Futuro:</strong> Registro criminal, perda de liberdade (prisão) e restrição de oportunidades futuras.";
+                icon = '<i class="fa-solid fa-building-columns" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#37474f";
+            }
+
+            display.style.borderTop = `5px solid ${color}`;
+            display.innerHTML = `
+                <div style="color:${color}">${icon}</div>
+                <h3 style="margin:0 0 5px 0; color:#2d3436;">${title}</h3>
+                <p style="margin:0; font-size:0.9rem; text-align:center;">${text}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
