@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHS - Escala de Felicidade | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Solar/Felicidade" */
+            --bg-color: #fffdf0;      /* Creme */
+            --primary: #f1c40f;       /* Amarelo Ouro */
+            --primary-dark: #f39c12;  /* Laranja */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-active: #ffeaa7;
+            --btn-border: #f1c40f;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#eaddb1 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary-dark);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(241, 196, 15, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .q-number {
+            background: #fff9c4;
+            color: var(--primary-dark);
+            font-weight: 800;
+            min-width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+            border: 2px solid var(--primary);
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA (1-7) --- */
+        .scale-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .anchors {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #636e72;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+        }
+
+        .option-label {
+            flex: 1;
+            height: 45px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            border: 2px solid #dfe6e9;
+            background: #f8f9fa;
+            color: #b2bec3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        .option-label:has(input:checked) {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+            text-align: center;
+        }
+
+        .score-val { font-size: 4rem; font-weight: 900; color: var(--primary-dark); line-height: 1; margin: 10px 0; }
+        .score-desc { font-size: 1.1rem; font-weight: 700; color: #636e72; margin-bottom: 20px; }
+
+        /* Termômetro */
+        .meter-container {
+            width: 100%; height: 25px;
+            background: #dfe6e9; border-radius: 15px;
+            overflow: hidden; margin: 25px 0;
+            position: relative;
+        }
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7675 0%, #f1c40f 50%, #00b894 100%);
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .meter-marker {
+            position: absolute; top:0; bottom:0; width: 4px; background: #2d3436;
+            transform: translateX(-50%); opacity: 0.8;
+        }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary-dark); }
+
+        @media (max-width: 600px) {
+            .options-row { gap: 2px; }
+            .option-label { font-size: 0.9rem; height: 40px; }
+            .anchors { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>SHS</h1>
+        <div class="subtitle">Escala de Felicidade Subjetiva</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Para cada afirmação, escolha o ponto na escala (1 a 7) que melhor descreve você.
+        </div>
+
+        <form id="shsForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-sun"></i> CALCULAR FELICIDADE
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="color:#b2bec3; text-transform:uppercase; font-size:0.9rem;">Índice Médio de Felicidade</h3>
+            
+            <div class="score-val" id="total-score">0.0</div>
+            <div class="score-desc" id="interpretation">...</div>
+            
+            <div class="meter-container">
+                <div class="meter-fill" style="width: 100%"></div> <div class="meter-marker" id="score-marker" style="left: 0%"></div> </div>
+            
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:#aaa; font-weight:bold;">
+                <span>1 (Baixo)</span>
+                <span>4 (Médio)</span>
+                <span>7 (Alto)</span>
+            </div>
+
+            <p style="margin-top:30px; font-size:0.9rem; color:#636e72;">
+                A média da população geral costuma variar entre <strong>4.5 e 5.5</strong>.
+            </p>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ITENS SHS (Lyubomirsky & Lepper, 1999)
+           r: true indica item reverso (Item 4)
+        */
+        const questions = [
+            { 
+                t: "No geral, eu me considero:", 
+                min: "Uma pessoa não muito feliz", 
+                max: "Uma pessoa muito feliz", 
+                r: false 
+            },
+            { 
+                t: "Comparado com a maioria dos meus colegas, eu me considero:", 
+                min: "Menos feliz", 
+                max: "Mais feliz", 
+                r: false 
+            },
+            { 
+                t: "Algumas pessoas são muito felizes em geral. Elas aproveitam a vida, independentemente do que aconteça. Até que ponto essa caracterização descreve você?", 
+                min: "Não me descreve", 
+                max: "Descreve muito bem", 
+                r: false 
+            },
+            { 
+                t: "Algumas pessoas não são muito felizes em geral. Embora não estejam deprimidas, elas nunca parecem tão felizes quanto poderiam ser. Até que ponto isso descreve você?", 
+                min: "Não me descreve", 
+                max: "Descreve muito bem", 
+                r: true 
+            }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        // Renderizar Perguntas
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            for(let i=1; i<=7; i++) {
+                optionsHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="q${index}" value="${i}" data-reverse="${q.r}">
+                        ${i}
+                    </label>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${q.t}</div>
+                </div>
+                <div class="scale-container">
+                    <div class="anchors">
+                        <span>${q.min}</span>
+                        <span>${q.max}</span>
+                    </div>
+                    <div class="options-row">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        function calculateResults() {
+            let total = 0;
+            let answered = 0;
+            const form = document.getElementById('shsForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                let val = parseInt(input.value);
+                const isReverse = input.getAttribute('data-reverse') === 'true';
+
+                // Inversão para escala de 7 pontos: (8 - valor)
+                if (isReverse) {
+                    val = 8 - val;
+                }
+
+                total += val;
+                answered++;
+            });
+
+            if (answered < 4) {
+                alert("Por favor, responda todas as 4 perguntas para obter o resultado.");
+                return;
+            }
+
+            // Cálculo da Média
+            const average = (total / 4).toFixed(1);
+
+            // Exibir Resultados
+            document.getElementById('total-score').innerText = average;
+            const interp = document.getElementById('interpretation');
+            const marker = document.getElementById('score-marker');
+
+            // Posicionar marcador (1 = 0%, 7 = 100%)
+            // Formula: ((Valor - Min) / (Max - Min)) * 100
+            const percentage = ((average - 1) / 6) * 100;
+            marker.style.left = `${percentage}%`;
+
+            if (average < 4) {
+                interp.innerText = "Felicidade Subjetiva Baixa";
+                interp.style.color = "#ff7675";
+            } else if (average <= 5.5) {
+                interp.innerText = "Felicidade Subjetiva Média";
+                interp.style.color = "#f1c40f";
+            } else {
+                interp.innerText = "Felicidade Subjetiva Alta";
+                interp.style.color = "#00b894";
+            }
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
