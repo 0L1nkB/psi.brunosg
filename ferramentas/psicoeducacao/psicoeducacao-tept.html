@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEPT - Pós-Traumático | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Memória/Segurança" */
+            --bg-color: #f4f6f8;      /* Cinza Frio Suave */
+            --primary: #34495e;       /* Azul Ardósia (Estabilidade/Profundidade) */
+            --primary-dark: #2c3e50;
+            --accent: #f39c12;        /* Âmbar (Alerta/Luz) */
+            --text: #2d3436;
+            --card-border: #b0bec5;
+            
+            /* Cores Específicas */
+            --flash-color: #c0392b;   /* Vermelho (Flashback/Intrusão) */
+            --avoid-color: #8e44ad;   /* Roxo (Evitação) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cfd8dc 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(52, 73, 94, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #fff8e1;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* --- GRID DE SINTOMAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .sym-flash { border-color: var(--flash-color); }
+        .sym-flash i { color: var(--flash-color); }
+        
+        .sym-avoid { border-color: var(--avoid-color); }
+        .sym-avoid i { color: var(--avoid-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.9rem; }
+        .symptom-item span { font-size: 0.8rem; color: #636e72; }
+
+        /* --- WIDGET: GROUNDING (Aqui e Agora) --- */
+        .grounding-container {
+            text-align: center;
+            background: #eceff1;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #b0bec5;
+        }
+
+        .grounding-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-ground {
+            background: white; border: 2px solid #cfd8dc; color: #455a64;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-ground:hover { border-color: var(--primary); background: var(--primary); color: white; }
+
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>TEPT</h1>
+        <div class="subtitle">Transtorno de Estresse Pós-Traumático</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Quando o passado invade o presente</div>
+            <p>O TEPT ocorre quando o cérebro não consegue processar e "arquivar" uma memória traumática. O evento acabou, mas o corpo continua reagindo como se ele estivesse acontecendo <strong>agora</strong>.</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-triangle-exclamation"></i> Não é fraqueza. É uma lesão biológica no sistema de alarme e memória do cérebro.
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Os 4 Grupos de Sintomas</div>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--flash-color);">Revivência (Intrusão)</h4>
+                    <div class="symptom-item sym-flash">
+                        <i class="fa-solid fa-bolt"></i>
+                        <div><strong>Flashbacks</strong><span>Sentir como se o evento estivesse acontecendo de novo.</span></div>
+                    </div>
+                    <div class="symptom-item sym-flash">
+                        <i class="fa-solid fa-cloud-moon"></i>
+                        <div><strong>Pesadelos</strong><span>Sonhos aflitivos recorrentes sobre o trauma.</span></div>
+                    </div>
+                    <div class="symptom-item sym-flash">
+                        <i class="fa-solid fa-film"></i>
+                        <div><strong>Imagens Invasivas</strong><span>Memórias que "pipocam" sem permissão.</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--avoid-color);">Evitação & Alerta</h4>
+                    <div class="symptom-item sym-avoid">
+                        <i class="fa-solid fa-person-walking-arrow-right"></i>
+                        <div><strong>Evitação</strong><span>Fugir de lugares, pessoas ou pensamentos que lembram o trauma.</span></div>
+                    </div>
+                    <div class="symptom-item sym-avoid">
+                        <i class="fa-solid fa-eye"></i>
+                        <div><strong>Hipervigilância</strong><span>Estar sempre em guarda, esperando o pior.</span></div>
+                    </div>
+                    <div class="symptom-item sym-avoid">
+                        <i class="fa-solid fa-face-frown-open"></i>
+                        <div><strong>Entorpecimento</strong><span>Sentir-se desconectado ou incapaz de sentir amor/alegria.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-anchor"></i> Âncora: "Aqui e Agora"</div>
+            <div class="grounding-container">
+                <p style="font-weight:700; color:#546e7a; margin-bottom:15px;">Se sentir que está "saindo do ar" ou voltando ao passado, clique abaixo:</p>
+                
+                <div class="grounding-display" id="grounding-res">
+                    <span style="color:#b0bec5; font-style:italic;">Clique no botão para se orientar...</span>
+                </div>
+
+                <button class="btn-ground" onclick="flashGrounding()">Trazer para o Presente</button>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> Por que não esqueço?</div>
+            <p>O trauma desregula a comunicação entre três áreas chave do cérebro:</p>
+            
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-fire-extinguisher"></i>
+                    <h4>Amígdala (O Alarme)</h4>
+                    <p>Fica travada na posição "LIGADO". Qualquer barulho ou cheiro parecido com o do trauma dispara um ataque de pânico imediato.</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-book"></i>
+                    <h4>Hipocampo (O Arquivista)</h4>
+                    <p>Deveria datar a memória como "passado". No trauma, ele falha, e a memória fica solta, como se fosse um evento presente e eterno.</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-ban"></i>
+                    <h4>Pré-Frontal (O Freio)</h4>
+                    <p>Fica hipoativo. Ele não consegue dizer à Amígdala: "Calma, é só um barulho, não é um tiro". O instinto vence a razão.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Mitos do Trauma</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-person-military-rifle" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Só para soldados"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Qualquer um</h3>
+                            <p style="font-size:0.9rem;">TEPT pode ocorrer após acidentes, assaltos, abuso, violência doméstica ou procedimentos médicos. Não é exclusividade de guerra.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-hourglass-half" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Já passou muito tempo"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Sem data de validade</h3>
+                            <p style="font-size:0.9rem;">Sintomas podem surgir meses ou anos após o evento (TEPT de início tardio). Nunca é tarde para tratar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-heart-crack" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Estou quebrado"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Crescimento Pós-Traumático</h3>
+                            <p style="font-size:0.9rem;">O cérebro tem neuroplasticidade. O tratamento (EMDR, TCC) pode reprocessar a memória e restaurar a qualidade de vida.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const groundings = [
+            { t: "Olhe para os seus pés.", d: "Eles estão no chão. Você está aqui, neste ano, neste lugar seguro." },
+            { t: "Nomeie 3 cores.", d: "Olhe ao redor. Fale em voz alta três cores que você vê agora." },
+            { t: "Toque na cadeira.", d: "Sinta a textura. É dura ou macia? Fria ou quente? Foque no tato." },
+            { t: "Que dia é hoje?", d: "Diga a data completa de hoje. Lembre-se da sua idade atual." },
+            { t: "Respire fundo.", d: "O ar entrando é frio, o ar saindo é quente. Sinta apenas o ar." }
+        ];
+
+        function flashGrounding() {
+            const display = document.getElementById('grounding-res');
+            
+            // Efeito visual
+            display.style.opacity = 0;
+            
+            setTimeout(() => {
+                const item = groundings[Math.floor(Math.random() * groundings.length)];
+                
+                display.innerHTML = `
+                    <h3 style="margin:0 0 10px 0; color:#34495e; font-size:1.2rem;">${item.t}</h3>
+                    <p style="margin:0; font-size:0.95rem; color:#546e7a;">${item.d}</p>
+                `;
+                display.style.opacity = 1;
+                display.style.backgroundColor = "#fffde7"; // Fundo levemente amarelo para destaque
+                display.style.border = "1px solid #f39c12";
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>
