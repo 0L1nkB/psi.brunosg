@@ -39,7 +39,7 @@
             align-items: center;
         }
 
-        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        /* --- CABEÇALHO --- */
         header {
             text-align: center;
             margin: 20px auto 40px auto;
@@ -202,16 +202,16 @@
         .cycle-step h5 { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: 800; color: #2d3436; }
         .cycle-step p { margin: 0; font-size: 0.8rem; color: #636e72; }
 
-        /* --- FLIP CARDS (MITOS) --- */
+        /* --- FLIP CARDS (CORRIGIDO) --- */
         .flip-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px; /* Mais espaço */
         }
 
         .flip-card {
             background-color: transparent;
-            height: 250px;
+            height: 300px; /* Aumentado para 300px */
             perspective: 1000px;
             cursor: pointer;
         }
@@ -230,7 +230,9 @@
             position: absolute; width: 100%; height: 100%;
             -webkit-backface-visibility: hidden; backface-visibility: hidden;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; border-radius: 15px; border: 2px solid #dfe6e9;
+            padding: 25px; /* Padding seguro */
+            border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
         }
 
         .flip-front { background-color: white; color: #2d3436; }
@@ -245,6 +247,7 @@
         @media (max-width: 600px) {
             .dual-symptoms { grid-template-columns: 1fr; }
             .cycle-wrapper { flex-direction: column; }
+            .flip-card { height: 320px; } /* Ainda mais alto no mobile */
         }
     </style>
 </head>
