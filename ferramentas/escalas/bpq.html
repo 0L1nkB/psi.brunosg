@@ -3,144 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPQ - Questionário Borderline | Caderno Incrível</title>
+    <title>BPQ - Questionário Borderline | Bruno de Souza</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
         :root {
+            /* Identidade Visual */
             --bg-color: #f0f8ff;
-            --paper: #ffffff;
-            --primary: #6c5ce7; /* Roxo */
-            --secondary: #00b894; /* Verde */
-            --accent: #fdcb6e; /* Amarelo */
+            --primary: #6c5ce7;       /* Roxo (Tema BPQ) */
+            --primary-dark: #5b4cc4;
+            --accent: #fdcb6e;        /* Amarelo */
             --text: #2d3436;
-            --risk: #ff7675; /* Vermelho */
-            --shadow: rgba(0,0,0,0.1);
+            --card-border: #b2bec3;
+            
+            /* Cores dos Botões */
+            --true-bg: #00b894;       /* Verde */
+            --false-bg: #ff7675;      /* Vermelho Suave */
         }
 
         body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             background-color: var(--bg-color);
             background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
             background-size: 20px 20px;
-            margin: 0; padding: 20px; color: var(--text);
-            display: flex; justify-content: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .container {
-            width: 100%; max-width: 900px;
-            background: var(--paper); padding: 40px;
-            border-radius: 25px; box-shadow: 10px 10px 0 var(--shadow);
-            border: 3px solid var(--text);
+        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
         }
 
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { margin: 0; color: var(--primary); font-size: 2.5rem; text-transform: uppercase; }
-        .subtitle { font-size: 1.1rem; color: #636e72; }
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(108, 92, 231, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
 
         .instruction-box {
-            background: #fffce0; padding: 15px; border-radius: 10px;
-            border: 2px dashed var(--accent); margin-bottom: 25px; font-size: 0.9rem;
+            background: #fffce0;
+            border: 2px dashed var(--accent);
+            padding: 15px 20px;
+            border-radius: 15px;
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            display: inline-block;
         }
 
-        /* LISTA DE QUESTÕES */
-        .question-list { display: flex; flex-direction: column; gap: 10px; }
-        
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- LISTA DE QUESTÕES --- */
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .q-row {
-            display: flex; align-items: center; justify-content: space-between;
-            background: #f8f9fa; padding: 10px 15px; border-radius: 10px;
-            border: 1px solid #eee; transition: 0.2s;
+            background: white;
+            border: 2px dashed var(--card-border);
+            border-radius: 15px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            transition: all 0.2s ease;
         }
-        .q-row:hover { background: #f1f2f6; }
 
-        .q-text { flex: 1; margin-right: 15px; font-size: 0.95rem; }
-        .q-num { font-weight: bold; color: var(--primary); margin-right: 10px; width: 25px; }
+        .q-row:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transform: translateX(5px);
+        }
 
-        /* BOTÕES V/F */
-        .btn-group { display: flex; gap: 5px; }
+        .q-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .q-num {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1rem;
+            min-width: 25px;
+        }
+
+        .q-text {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #2d3436;
+        }
+
+        /* --- BOTÕES V/F --- */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            min-width: 100px;
+            justify-content: flex-end;
+        }
+
         .q-btn {
-            width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ccc;
-            background: white; cursor: pointer; font-weight: bold; color: #ccc;
-            transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+            width: 45px; height: 45px;
+            border-radius: 12px;
+            border: 2px solid #dfe6e9;
+            background: #f8f9fa;
+            color: #b2bec3;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* ESTADOS DOS BOTÕES */
-        .q-btn.true-btn:hover { border-color: var(--secondary); color: var(--secondary); }
-        .q-btn.false-btn:hover { border-color: var(--risk); color: var(--risk); }
+        /* Estados Hover e Active */
+        .q-btn:hover { transform: translateY(-2px); }
 
-        .q-btn.selected.true-btn { background: var(--secondary); border-color: var(--secondary); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .q-btn.selected.false-btn { background: var(--risk); border-color: var(--risk); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .q-btn.true-btn:hover { border-color: var(--true-bg); color: var(--true-bg); }
+        .q-btn.false-btn:hover { border-color: var(--false-bg); color: var(--false-bg); }
 
-        /* RESULTADOS */
+        /* Selecionado */
+        .q-btn.selected.true-btn {
+            background: var(--true-bg);
+            border-color: var(--true-bg);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+        }
+
+        .q-btn.selected.false-btn {
+            background: var(--false-bg);
+            border-color: var(--false-bg);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 118, 117, 0.3);
+        }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); background: var(--primary-dark); }
+
+        /* --- RESULTADOS --- */
         .results-section {
-            display: none; margin-top: 40px; border-top: 3px dashed #ccc; padding-top: 30px;
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+            text-align: center;
         }
-        .total-score {
-            text-align: center; background: var(--primary); color: white;
-            padding: 20px; border-radius: 15px; margin-bottom: 20px;
+
+        .total-score-box {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
         }
-        .score-val { font-size: 3rem; font-weight: 800; line-height: 1; }
-        
-        .subs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+
+        .score-val { font-size: 3.5rem; font-weight: 800; line-height: 1; margin: 10px 0; }
+        .score-class {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        /* Grid de Subescalas */
+        .subs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            text-align: left;
+        }
+
         .sub-card {
-            background: white; border: 2px solid #eee; border-radius: 10px; padding: 15px;
-            display: flex; justify-content: space-between; align-items: center;
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        .sub-name { font-weight: 700; color: #636e72; font-size: 0.95rem; }
         .sub-val { font-weight: 800; color: var(--primary); font-size: 1.2rem; }
+        .sub-max { font-size: 0.8rem; color: #b2bec3; font-weight: 600; }
 
-        .btn-action {
-            display: block; width: 100%; padding: 15px; margin-top: 30px;
-            background-color: var(--text); color: white; border: none; border-radius: 50px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 0 #000;
-            transition: transform 0.1s;
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
         }
-        .btn-action:hover { transform: translateY(-3px); }
-        .btn-action:active { transform: translateY(3px); box-shadow: none; }
+        .btn-back:hover { color: var(--primary); }
 
+        @media (max-width: 600px) {
+            .q-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .btn-group { width: 100%; justify-content: space-between; }
+            .q-btn { width: 48%; }
+            .total-score-box { padding: 20px; }
+            .score-val { font-size: 2.5rem; }
+        }
+        
         @media print {
-            .btn-action, .instruction-box { display: none; }
-            .container { box-shadow: none; border: none; width: 100%; }
-            .q-btn { border: 1px solid #000; color: black; }
-            .q-btn.selected { background: #ddd !important; color: black !important; }
+            .btn-calc, .btn-back, header::before { display: none; }
+            .container, .results-section { border: 1px solid #ccc; box-shadow: none; }
+            .q-row { border: 1px solid #eee; break-inside: avoid; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>BPQ</h1>
-            <div class="subtitle">Borderline Personality Questionnaire</div>
-        </header>
+    <header data-aos="fade-down">
+        <h1>BPQ</h1>
+        <div class="subtitle">Borderline Personality Questionnaire</div>
+    </header>
 
-        <div class="instruction-box">
-            <i class="fa-solid fa-pen"></i> <strong>Instruções:</strong> Leia cada afirmação e marque <strong>V (Verdadeiro)</strong> ou <strong>F (Falso)</strong> conforme descreve como você se sente na maior parte do tempo (nos últimos 2 anos).
+    <div class="main-container">
+        
+        <div style="text-align: center;">
+            <div class="instruction-box">
+                <i class="fa-solid fa-pen-nib"></i> <strong>Instruções:</strong> Leia cada afirmação e marque <strong>V (Verdadeiro)</strong> ou <strong>F (Falso)</strong> conforme descreve como você se sente na maior parte do tempo (nos últimos 2 anos).
+            </div>
         </div>
 
         <div class="question-list" id="q-list">
             </div>
 
-        <button class="btn-action" onclick="calculate()">
+        <button class="btn-calc" onclick="calculate()">
             <i class="fa-solid fa-calculator"></i> CALCULAR RESULTADO
         </button>
 
         <div id="results" class="results-section">
-            <div class="total-score">
-                <div style="font-size:1.1rem; text-transform:uppercase;">Escore Total</div>
+            <div class="total-score-box">
+                <div style="text-transform:uppercase; font-size:0.9rem; opacity:0.8;">Escore Total</div>
                 <div class="score-val" id="total-val">0</div>
-                <div id="total-class" style="background:rgba(0,0,0,0.2); padding:5px 15px; border-radius:20px; display:inline-block; margin-top:10px;">--</div>
+                <div class="score-class" id="total-class">--</div>
             </div>
 
-            <h3>Subescalas</h3>
+            <h3 style="color:var(--text); margin-bottom:20px; text-align:center;">Detalhamento por Subescalas</h3>
             <div class="subs-grid" id="subs-container"></div>
 
-            <button class="btn-action" style="background:var(--secondary); margin-top:30px;" onclick="window.print()">
-                <i class="fa-solid fa-print"></i> IMPRIMIR / PDF
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
             </button>
         </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
     </div>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 80 ITENS (Transcrição do PDF)
+        AOS.init();
+
         const questionsDB = [
             "Por vezes, faço coisas sem pensar muito nelas.",
             "Por vezes, fico subitamente deprimido(a) ou ansioso(a).",
@@ -224,7 +390,7 @@
             "Os outros dizem que me irrito facilmente."
         ];
 
-        // LÓGICA DE CORREÇÃO (Poreh et al.)
+        // Lógica Subescalas (1-based index from PDF logic)
         const subscales = {
             "Impulsividade": { items: [1, 10, 26, 34, 42, 57, 64, 68, 71], reverse: [10] },
             "Instabilidade Afetiva": { items: [2, 11, 19, 27, 35, 43, 49, 58, 65, 72], reverse: [43] },
@@ -237,34 +403,31 @@
             "Estados Quase-Psicóticos": { items: [9, 18, 25, 33, 41, 48, 56], reverse: [48] }
         };
 
-        const answers = new Array(81).fill(null); // Index 1 a 80
+        const answers = new Array(81).fill(null);
 
-        // GERA HTML
-        window.onload = function() {
-            const list = document.getElementById('q-list');
-            questionsDB.forEach((text, index) => {
-                const i = index + 1;
-                const row = document.createElement('div');
-                row.className = 'q-row';
-                row.innerHTML = `
-                    <div style="display:flex; align-items:center; flex:1;">
-                        <span class="q-num">${i}.</span>
-                        <span class="q-text">${text}</span>
-                    </div>
-                    <div class="btn-group">
-                        <div class="q-btn true-btn" id="btn-t-${i}" onclick="setAnswer(${i}, true)">V</div>
-                        <div class="q-btn false-btn" id="btn-f-${i}" onclick="setAnswer(${i}, false)">F</div>
-                    </div>
-                `;
-                list.appendChild(row);
-            });
-        }
+        // Inicializar
+        const list = document.getElementById('q-list');
+        questionsDB.forEach((text, index) => {
+            const i = index + 1;
+            const row = document.createElement('div');
+            row.className = 'q-row';
+            row.setAttribute('data-aos', 'fade-up');
+            
+            row.innerHTML = `
+                <div class="q-info">
+                    <span class="q-num">${i}.</span>
+                    <span class="q-text">${text}</span>
+                </div>
+                <div class="btn-group">
+                    <div class="q-btn true-btn" id="btn-t-${i}" onclick="setAnswer(${i}, true)">V</div>
+                    <div class="q-btn false-btn" id="btn-f-${i}" onclick="setAnswer(${i}, false)">F</div>
+                </div>
+            `;
+            list.appendChild(row);
+        });
 
-        // INTERAÇÃO
         function setAnswer(id, value) {
             answers[id] = value;
-            
-            // UI Update
             const btnT = document.getElementById(`btn-t-${id}`);
             const btnF = document.getElementById(`btn-f-${id}`);
             
@@ -275,30 +438,29 @@
             else btnF.classList.add('selected');
         }
 
-        // CÁLCULO
         function calculate() {
             let total = 0;
             let subResults = {};
             let missing = false;
 
-            // Verificar preenchimento
             for(let i=1; i<=80; i++) {
                 if(answers[i] === null) missing = true;
             }
 
             if(missing) {
-                if(!confirm("Algumas questões não foram respondidas. O cálculo pode ser impreciso. Deseja continuar?")) return;
+                if(!confirm("Algumas questões estão em branco. O resultado pode ser impreciso. Continuar mesmo assim?")) return;
             }
 
-            // Calcular Subescalas
+            // Cálculo
             for (const [name, data] of Object.entries(subscales)) {
                 let subScore = 0;
                 data.items.forEach(idx => {
                     const ans = answers[idx];
                     const isReverse = data.reverse.includes(idx);
                     
-                    // Se Verdadeiro e Normal -> +1
-                    // Se Falso e Inverso -> +1
+                    // Lógica de pontuação:
+                    // Se item direto: V=1, F=0
+                    // Se item reverso: V=0, F=1
                     if ((ans === true && !isReverse) || (ans === false && isReverse)) {
                         subScore++;
                     }
@@ -307,43 +469,40 @@
                 total += subScore;
             }
 
-            // Exibir Total
+            // Renderizar Resultados
             document.getElementById('total-val').innerText = total;
             
-            // Classificação Simples (Sugestão Clínica baseada em cortes comuns)
             const classElem = document.getElementById('total-class');
             if(total < 30) {
-                classElem.innerText = "Baixo Risco / Subclínico";
-                classElem.style.background = "#00b894"; 
+                classElem.innerText = "Baixo Risco";
+                classElem.style.background = "#00b894";
             } else if (total < 43) {
-                classElem.innerText = "Moderado / Sugestivo";
-                classElem.style.background = "#fdcb6e"; color="#333";
+                classElem.innerText = "Moderado";
+                classElem.style.background = "#fdcb6e";
+                classElem.style.color = "#333";
             } else {
-                classElem.innerText = "Elevado / Clínico";
+                classElem.innerText = "Alto Risco Clínico";
                 classElem.style.background = "#ff7675";
+                classElem.style.color = "white";
             }
 
-            // Exibir Subescalas
             const subContainer = document.getElementById('subs-container');
             subContainer.innerHTML = '';
+            
             for (const [name, score] of Object.entries(subResults)) {
                 const max = subscales[name].items.length;
-                const percent = (score / max) * 100;
-                let color = percent > 50 ? 'var(--risk)' : 'var(--text)';
-                if (percent < 30) color = 'var(--secondary)';
-
                 subContainer.innerHTML += `
                     <div class="sub-card">
-                        <span style="font-size:0.9rem; font-weight:bold; color:#555;">${name}</span>
-                        <span class="sub-val" style="color:${color}">${score} <span style="font-size:0.7rem; color:#ccc;">/${max}</span></span>
+                        <span class="sub-name">${name}</span>
+                        <span class="sub-val">${score} <span class="sub-max">/${max}</span></span>
                     </div>
                 `;
             }
 
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('results').scrollIntoView({behavior: 'smooth'});
+            const resultSection = document.getElementById('results');
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
-
 </body>
 </html>
