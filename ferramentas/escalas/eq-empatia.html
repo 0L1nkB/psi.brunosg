@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EQ - Quociente de Empatia | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Afeto/Empatia" */
+            --bg-color: #fff0f5;      /* Rosa Lavanda Claro */
+            --primary: #e84393;       /* Rosa Escuro */
+            --primary-dark: #d63031;
+            --secondary: #fd79a8;     /* Rosa Chiclete */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Botões */
+            --btn-agree: #00b894;
+            --btn-disagree: #ff7675;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e6c3cf 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 30px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(232, 67, 147, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* Barra de Progresso */
+        .progress-container {
+            position: sticky; top: 10px; z-index: 100;
+            width: 100%; max-width: 800px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px; border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            backdrop-filter: blur(5px);
+        }
+        .progress-bar-bg { flex: 1; height: 8px; background: #dfe6e9; border-radius: 5px; margin: 0 15px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+        .progress-text { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .question-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .q-number {
+            background: #ffe0eb;
+            color: var(--primary);
+            font-weight: 800;
+            min-width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .option-label {
+            padding: 15px 5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Estilos Concordo */
+        .btn-agree:hover { background: #e0fcf4; color: #006266; border-color: #81ecec; }
+        .btn-agree:has(input:checked) { 
+            background: var(--btn-agree); color: white; border-color: #00896f; 
+            box-shadow: 0 4px 0 #00896f; transform: translateY(-2px);
+        }
+
+        /* Estilos Discordo */
+        .btn-disagree:hover { background: #ffebee; color: #c0392b; border-color: #ff7675; }
+        .btn-disagree:has(input:checked) { 
+            background: var(--btn-disagree); color: white; border-color: #d63031; 
+            box-shadow: 0 4px 0 #d63031; transform: translateY(-2px);
+        }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--text); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+            text-align: center;
+        }
+
+        .score-val { font-size: 4rem; font-weight: 900; color: var(--primary); line-height: 1; }
+        .score-class { 
+            background: #f8f9fa; color: #636e72; 
+            padding: 8px 20px; border-radius: 20px; 
+            font-weight: 700; display: inline-block; margin-top: 15px; 
+        }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .options-row { grid-template-columns: 1fr 1fr; }
+            .option-label { padding: 12px 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>EQ - Empatia</h1>
+        <div class="subtitle">Quociente de Empatia (Baron-Cohen)</div>
+    </header>
+
+    <div class="progress-container">
+        <span class="progress-text" id="prog-text">0/40</span>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="prog-fill"></div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia cada afirmação e marque a opção que melhor se aplica a você.
+        </div>
+
+        <form id="eqForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-heart"></i> CALCULAR EMPATIA
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="color:#b2bec3; text-transform:uppercase; font-size:0.9rem;">Pontuação Total (0-80)</h3>
+            
+            <div class="score-val" id="total-score">0</div>
+            <div class="score-class" id="interpretation">...</div>
+
+            <div style="margin-top:30px; text-align:left; font-size:0.9rem; background:#f0f8ff; padding:15px; border-radius:10px; border-left:4px solid #0984e3;">
+                <strong style="display:block; margin-bottom:10px;">Interpretação:</strong>
+                <ul style="margin:0; padding-left:20px; line-height:1.6; color:#555;">
+                    <li><strong>0 - 32:</strong> Baixa (Possível dificuldade em processamento emocional/espectro autista).</li>
+                    <li><strong>33 - 52:</strong> Média (Maioria da população).</li>
+                    <li><strong>53 - 63:</strong> Acima da Média.</li>
+                    <li><strong>64 - 80:</strong> Muito Alta.</li>
+                </ul>
+            </div>
+
+            <button class="btn-calc" style="background:#2d3436; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar PDF
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ITENS DO EQ (40 Itens de pontuação)
+           Type 'P' (Positivo): Concordar dá ponto.
+           Type 'N' (Negativo): Discordar dá ponto.
+           
+           Pontuação Baron-Cohen:
+           - Concordo Totalmente / Discordo Totalmente (na direção certa) = 2 pontos
+           - Concordo Parcialmente / Discordo Parcialmente (na direção certa) = 1 ponto
+           - Resposta oposta = 0 pontos
+        */
+        const questions = [
+            { t: "Consigo perceber facilmente se alguém quer entrar numa conversa.", type: "P" },
+            { t: "Acho difícil explicar aos outros coisas que eu entendo facilmente, quando eles não entendem.", type: "N" },
+            { t: "Gosto muito de cuidar de outras pessoas.", type: "P" },
+            { t: "Acho difícil saber o que fazer numa situação social.", type: "N" },
+            { t: "As pessoas costumam dizer que fui longe demais com as minhas piadas.", type: "N" },
+            { t: "Eu me preocupo muito se chegar atrasado num encontro com um amigo.", type: "P" },
+            { t: "Amizades e relacionamentos são difíceis para mim.", type: "N" },
+            { t: "Gosto de ver as coisas do ponto de vista dos outros.", type: "P" },
+            { t: "Tenho jeito para prever como alguém se sentirá.", type: "P" },
+            { t: "Muitas vezes não percebo que alguém se sentiu ofendido com o que eu disse.", type: "N" },
+            { t: "Se digo a alguém que ele chegou na hora errada, acho difícil ser educado.", type: "N" },
+            { t: "Numa conversa, tendo a me concentrar nos meus próprios pensamentos e não no que o outro está dizendo.", type: "N" },
+            { t: "Consigo saber se alguém está disfarçando seus verdadeiros sentimentos.", type: "P" },
+            { t: "Consigo perceber rapidamente quando alguém diz uma coisa mas quer dizer outra.", type: "P" },
+            { t: "Consigo perceber se estou incomodando ou sendo inoportuno.", type: "P" },
+            { t: "Quando vejo alguém chorar, não fico muito comovido.", type: "N" },
+            { t: "Gosto de discutir política ou religião, mesmo que isso ofenda alguém.", type: "N" },
+            { t: "Sou direto e objetivo, o que alguns interpretam como rudeza.", type: "N" },
+            { t: "Consigo entender facilmente o ponto de vista de outra pessoa numa discussão.", type: "P" },
+            { t: "Preocupo-me com os sentimentos dos personagens em filmes e livros.", type: "P" },
+            { t: "Não me interesso muito pelos problemas dos outros.", type: "N" },
+            { t: "Consigo sentir se estou sendo invasivo socialmente.", type: "P" },
+            { t: "Meus amigos dizem que sou um bom ouvinte.", type: "P" },
+            { t: "Acho difícil entender por que algumas coisas chateiam tanto as pessoas.", type: "N" },
+            { t: "Não me incomodo em ver animais sofrendo.", type: "N" },
+            { t: "Consigo tomar decisões sem ser influenciado pelos sentimentos dos outros.", type: "N" },
+            { t: "Consigo perceber facilmente se alguém está interessado ou entediado com o que digo.", type: "P" },
+            { t: "Fico chateado se vejo alguém ser tratado injustamente.", type: "P" },
+            { t: "Acho difícil entender as regras sociais implícitas.", type: "N" },
+            { t: "Consigo prever o que alguém vai fazer com base no que sei sobre ele.", type: "P" },
+            { t: "Tenho facilidade em perceber as emoções das pessoas num grupo.", type: "P" },
+            { t: "Geralmente participo emocionalmente dos problemas dos meus amigos.", type: "P" },
+            { t: "Quando faço coisas, não me preocupo muito com como isso afeta os outros.", type: "N" },
+            { t: "Gosto de garantir que todos estejam se sentindo bem num grupo.", type: "P" },
+            { t: "Acho difícil me colocar no lugar de outra pessoa.", type: "N" },
+            { t: "Gosto de tentar entender como as coisas funcionam, mais do que entender as pessoas.", type: "N" },
+            { t: "Consigo saber o que é apropriado ou não numa situação social.", type: "P" },
+            { t: "As pessoas dizem que sou bom em compreender como elas se sentem.", type: "P" },
+            { t: "Costumo pensar sobre o que os outros estão sentindo.", type: "P" },
+            { t: "Consigo perceber quando alguém está escondendo uma emoção.", type: "P" }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            // Valores: 1=Conc. Total, 2=Conc. Parcial, 3=Disc. Parcial, 4=Disc. Total
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${q.t}</div>
+                </div>
+                <div class="options-row">
+                    <label class="option-label btn-agree">
+                        <input type="radio" name="q${index}" value="1" data-type="${q.type}" onclick="updateProgress()">
+                        Conc. Totalmente
+                    </label>
+                    <label class="option-label btn-agree">
+                        <input type="radio" name="q${index}" value="2" data-type="${q.type}" onclick="updateProgress()">
+                        Conc. Parcialmente
+                    </label>
+                    <label class="option-label btn-disagree">
+                        <input type="radio" name="q${index}" value="3" data-type="${q.type}" onclick="updateProgress()">
+                        Disc. Parcialmente
+                    </label>
+                    <label class="option-label btn-disagree">
+                        <input type="radio" name="q${index}" value="4" data-type="${q.type}" onclick="updateProgress()">
+                        Disc. Totalmente
+                    </label>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        function updateProgress() {
+            const total = questions.length;
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percent = (answered / total) * 100;
+            
+            document.getElementById('prog-fill').style.width = `${percent}%`;
+            document.getElementById('prog-text').innerText = `${answered}/${total}`;
+        }
+
+        function calculateResults() {
+            let score = 0;
+            let answered = 0;
+            const form = document.getElementById('eqForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                const val = parseInt(input.value);
+                const type = input.getAttribute('data-type');
+                
+                /* Lógica de Pontuação EQ:
+                   Se Item Positivo (P):
+                     - Concordo Total (1) = 2 pts
+                     - Concordo Parcial (2) = 1 pt
+                   Se Item Negativo (N):
+                     - Discordo Total (4) = 2 pts
+                     - Discordo Parcial (3) = 1 pt
+                */
+
+                if (type === 'P') {
+                    if (val === 1) score += 2;
+                    else if (val === 2) score += 1;
+                } else if (type === 'N') {
+                    if (val === 4) score += 2;
+                    else if (val === 3) score += 1;
+                }
+                
+                answered++;
+            });
+
+            if (answered < 40) {
+                if(!confirm(`Você respondeu apenas ${answered} de 40 perguntas. O resultado será impreciso. Continuar?`)) return;
+            }
+
+            document.getElementById('total-score').innerText = score;
+            const interp = document.getElementById('interpretation');
+            
+            if (score <= 32) {
+                interp.innerText = "Empatia Baixa";
+                interp.style.color = "#d63031";
+            } else if (score <= 52) {
+                interp.innerText = "Empatia Média";
+                interp.style.color = "#fdcb6e";
+            } else if (score <= 63) {
+                interp.innerText = "Empatia Acima da Média";
+                interp.style.color = "#00b894";
+            } else {
+                interp.innerText = "Empatia Muito Alta";
+                interp.style.color = "#6c5ce7";
+            }
+
+            const resArea = document.getElementById('result-area');
+            resArea.style.display = 'block';
+            resArea.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
