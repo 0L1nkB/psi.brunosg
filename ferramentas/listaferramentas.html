@@ -25,9 +25,7 @@
             --color-aval: #00b894;
         }
 
-        * {
-            box-sizing: border-box; /* Garante que bordas e padding não estourem o tamanho */
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Quicksand', sans-serif;
@@ -44,7 +42,7 @@
         /* --- CABEÇALHO --- */
         header {
             text-align: center;
-            margin: 30px auto 80px auto; /* Aumentado para não colar nos cards */
+            margin: 30px auto 80px auto;
             background: white;
             padding: 40px 20px;
             border-radius: 25px;
@@ -73,9 +71,7 @@
             font-weight: 800;
         }
 
-        .subtitle {
-            margin-top: 8px; color: #636e72; font-weight: 600; font-size: 1.1rem;
-        }
+        .subtitle { margin-top: 8px; color: #636e72; font-weight: 600; font-size: 1.1rem; }
 
         #btn-sair {
             position: absolute; top: 20px; right: 25px;
@@ -93,7 +89,7 @@
 
         .section-label {
             font-size: 1.5rem; font-weight: 800;
-            margin: 80px 0 40px; /* Muito espaço acima para evitar sobreposição */
+            margin: 80px 0 40px;
             display: flex; align-items: center; gap: 15px;
             padding-left: 10px; text-transform: uppercase; letter-spacing: 1px;
             border-bottom: 2px dashed rgba(0,0,0,0.1);
@@ -102,11 +98,9 @@
 
         .grid {
             display: grid;
-            /* Auto-fit cria colunas responsivas. Minmax garante largura mínima saudável */
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            /* Espaçamento generoso entre colunas e linhas */
             gap: 30px; 
-            row-gap: 50px; /* Espaço extra vertical para evitar colisão de sombras */
+            row-gap: 50px;
             width: 100%;
         }
 
@@ -119,44 +113,29 @@
             text-decoration: none;
             color: var(--text);
             transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
-            box-shadow: 0 5px 0 rgba(0,0,0,0.05); /* Sombra sólida vertical */
+            box-shadow: 0 5px 0 rgba(0,0,0,0.05);
             display: flex; flex-direction: column; align-items: center; text-align: center;
             position: relative;
-            height: 100%; /* Faz todos da linha terem a mesma altura */
+            height: 100%;
         }
 
-        /* Efeito Hover */
         .tool-card:hover {
-            transform: translateY(-10px); /* Sobe mais */
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra difusa suave */
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
             border-color: var(--primary);
-            z-index: 5; /* Garante que fique por cima se houver dúvida */
+            z-index: 5;
         }
 
-        .card-icon {
-            font-size: 2.5rem; margin-bottom: 15px; transition: 0.3s;
-        }
-
+        .card-icon { font-size: 2.5rem; margin-bottom: 15px; transition: 0.3s; }
         .tool-card:hover .card-icon { transform: scale(1.1) rotate(5deg); }
 
-        .card-title {
-            font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; color: #2d3436;
-        }
+        .card-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; color: #2d3436; }
+        .card-desc { font-size: 0.9rem; color: #636e72; line-height: 1.5; }
 
-        .card-desc {
-            font-size: 0.9rem; color: #636e72; line-height: 1.5;
-        }
+        footer { text-align: center; margin-top: 100px; color: #b2bec3; font-size: 0.9rem; font-weight: 600; }
 
-        footer {
-            text-align: center; margin-top: 100px; color: #b2bec3; font-size: 0.9rem; font-weight: 600;
-        }
-
-        /* Responsividade */
         @media (max-width: 600px) {
-            .grid { 
-                grid-template-columns: 1fr; /* 1 card por linha no celular */
-                row-gap: 30px;
-            }
+            .grid { grid-template-columns: 1fr; row-gap: 30px; }
             .section-label { font-size: 1.2rem; margin: 50px 0 20px; }
             header { padding: 30px 15px; }
             header h1 { font-size: 1.6rem; }
@@ -320,9 +299,9 @@
                 <div class="card-desc">Psicoeducação TDAH</div>
             </a>
              <a href="baralhos/baralho-tres-solucoes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--color-baralhos);"><i class="fa-solid fa-bolt"></i></div>
-                <div class="card-title">Baralho 3 soluções</div>
-                <div class="card-desc">Flexibilidade cognitiva</div>
+                <div class="card-icon" style="color: var(--color-baralhos);"><i class="fa-solid fa-lightbulb"></i></div>
+                <div class="card-title">Baralho 3 Soluções</div>
+                <div class="card-desc">Flexibilidade Cognitiva</div>
             </a>
         </div>
 
@@ -397,15 +376,25 @@
             <i class="fa-solid fa-clipboard-check"></i> Avaliação & Testes
         </div>
         <div class="grid">
-            <a href="escalas/bdi.html" class="tool-card">
-                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-face-frown"></i></div>
-                <div class="card-title">BDI</div>
-                <div class="card-desc">Depressão (Beck)</div>
+            <a href="escalas/asrs18.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-user-check"></i></div>
+                <div class="card-title">ASRS-18</div>
+                <div class="card-desc">TDAH Adulto</div>
             </a>
             <a href="escalas/bai.html" class="tool-card">
                 <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-wind"></i></div>
                 <div class="card-title">BAI</div>
                 <div class="card-desc">Ansiedade (Beck)</div>
+            </a>
+            <a href="escalas/bdi.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-face-frown"></i></div>
+                <div class="card-title">BDI</div>
+                <div class="card-desc">Depressão (Beck)</div>
+            </a>
+            <a href="escalas/bes.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-pizza-slice"></i></div>
+                <div class="card-title">BES</div>
+                <div class="card-desc">Compulsão Alimentar</div>
             </a>
             <a href="escalas/bhs.html" class="tool-card">
                 <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-cloud-rain"></i></div>
@@ -415,37 +404,127 @@
             <a href="escalas/bpq.html" class="tool-card">
                 <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-clipboard-question"></i></div>
                 <div class="card-title">BPQ</div>
-                <div class="card-desc">Preocupação (Penn)</div>
+                <div class="card-desc">Borderline</div>
             </a>
-            <a href="escalas/asrs18.html" class="tool-card">
-                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-user-check"></i></div>
-                <div class="card-title">ASRS-18</div>
-                <div class="card-desc">TDAH Adulto</div>
+            <a href="escalas/brums.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-masks-theater"></i></div>
+                <div class="card-title">BRUMS</div>
+                <div class="card-desc">Escala de Humor</div>
             </a>
-            <a href="escalas/snap-iv.html" class="tool-card">
-                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-child"></i></div>
-                <div class="card-title">SNAP-IV</div>
-                <div class="card-desc">TDAH Infanto-Juvenil</div>
+            <a href="escalas/coopersmith.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-star"></i></div>
+                <div class="card-title">Coopersmith</div>
+                <div class="card-desc">Autoestima Escolar</div>
             </a>
-            <a href="escalas/spin.html" class="tool-card">
-                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-users-slash"></i></div>
-                <div class="card-title">SPIN</div>
-                <div class="card-desc">Fobia Social</div>
+            <a href="escalas/dass21.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div class="card-title">DASS-21</div>
+                <div class="card-desc">Depressão/Ansiedade</div>
             </a>
-            <a href="escalas/bes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-pizza-slice"></i></div>
-                <div class="card-title">BES</div>
-                <div class="card-desc">Compulsão Alimentar</div>
+            <a href="escalas/ebep.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-seedling"></i></div>
+                <div class="card-title">EBEP</div>
+                <div class="card-desc">Bem-Estar (Ryff)</div>
+            </a>
+            <a href="escalas/eq-empatia.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-heart"></i></div>
+                <div class="card-title">EQ (Empatia)</div>
+                <div class="card-desc">Quociente Empático</div>
+            </a>
+            <a href="escalas/esaf-felicidade.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-sun"></i></div>
+                <div class="card-title">ESAF</div>
+                <div class="card-desc">Escala de Felicidade</div>
+            </a>
+            <a href="escalas/etpc.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-face-smile-wink"></i></div>
+                <div class="card-title">ETPC</div>
+                <div class="card-desc">Personalidade Infantil</div>
+            </a>
+            <a href="escalas/felicidade.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-face-grin-beam"></i></div>
+                <div class="card-title">SHS</div>
+                <div class="card-desc">Felicidade Subjetiva</div>
+            </a>
+            <a href="escalas/habilidades-sociais.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-users"></i></div>
+                <div class="card-title">IHS-Del-Prette</div>
+                <div class="card-desc">Habilidades Sociais</div>
+            </a>
+            <a href="escalas/ham-a.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-stethoscope"></i></div>
+                <div class="card-title">HAM-A</div>
+                <div class="card-desc">Ansiedade (Hamilton)</div>
+            </a>
+            <a href="escalas/hcl32.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-bolt"></i></div>
+                <div class="card-title">HCL-32</div>
+                <div class="card-desc">Hipomania</div>
+            </a>
+            <a href="escalas/lchs.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-handshake"></i></div>
+                <div class="card-title">LCHS</div>
+                <div class="card-desc">Hab. Sociais (Goldstein)</div>
             </a>
             <a href="escalas/masc.html" class="tool-card">
                 <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-shapes"></i></div>
                 <div class="card-title">MASC</div>
                 <div class="card-desc">Ansiedade Infantil</div>
             </a>
+            <a href="escalas/mdq.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="card-title">MDQ</div>
+                <div class="card-desc">Transtorno de Humor</div>
+            </a>
+            <a href="escalas/neo-ffi-20.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-dna"></i></div>
+                <div class="card-title">NEO-FFI-20</div>
+                <div class="card-desc">Big Five (Reduzido)</div>
+            </a>
+            <a href="escalas/pbq-sf.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-brain"></i></div>
+                <div class="card-title">PBQ-SF</div>
+                <div class="card-desc">Crenças (Beck)</div>
+            </a>
+            <a href="escalas/qa-autismo.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-puzzle-piece"></i></div>
+                <div class="card-title">QA (Autismo)</div>
+                <div class="card-desc">Quociente Espectro</div>
+            </a>
             <a href="escalas/quati.html" class="tool-card">
                 <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-fingerprint"></i></div>
                 <div class="card-title">QUATI</div>
-                <div class="card-desc">Tipologia (Jung)</div>
+                <div class="card-desc">Tipologia Junguiana</div>
+            </a>
+            <a href="escalas/rmh22.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="card-title">RMH-22</div>
+                <div class="card-desc">Resiliência</div>
+            </a>
+            <a href="escalas/rosenberg.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-gem"></i></div>
+                <div class="card-title">Rosenberg</div>
+                <div class="card-desc">Autoestima Global</div>
+            </a>
+            <a href="escalas/scared.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-child-reaching"></i></div>
+                <div class="card-title">SCARED</div>
+                <div class="card-desc">Ansiedade Infantil</div>
+            </a>
+            <a href="escalas/snap-iv.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-child"></i></div>
+                <div class="card-title">SNAP-IV</div>
+                <div class="card-desc">TDAH (Crianças)</div>
+            </a>
+            <a href="escalas/spin.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-users-slash"></i></div>
+                <div class="card-title">SPIN</div>
+                <div class="card-desc">Fobia Social</div>
+            </a>
+            <a href="escalas/thomas-kilmann.html" class="tool-card">
+                <div class="card-icon" style="color: var(--color-aval);"><i class="fa-solid fa-scale-balanced"></i></div>
+                <div class="card-title">Thomas-Kilmann</div>
+                <div class="card-desc">Conflitos (TKI)</div>
             </a>
         </div>
 
