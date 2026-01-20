@@ -3,413 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inibição Emocional - Caderno Terapêutico</title>
+    <title>Inibição Emocional | Bruno de Souza</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Paleta "O Homem de Gelo" */
-            --paper-line: #f1f5f9;    /* Linhas cinza azulado */
-            --paper-bg: #f8fafc;      
-            --ink-color: #334155;
+            /* Identidade Visual - Tema "Controle/Expressão" */
+            --bg-color: #f8fafc;      /* Cinza Azulado muito pálido */
+            --primary: #475569;       /* Cinza Ardósia (Controle/Rigidez) */
+            --primary-dark: #1e293b;
+            --accent: #ea580c;        /* Laranja Queimado (Emoção/Calor) */
+            --text: #2d3436;
+            --card-border: #cbd5e1;
             
-            /* Cores do Esquema (Controle -> Expressão) */
-            --primary: #475569;       /* Cinza Ardósia (O Controle Rígido) */
-            --primary-hover: #1e293b;
-            --warmth: #ea580c;        /* Laranja Queimado (O Sentir) */
-            
-            /* Tags de Personas */
-            --tag-arthur-bg: #e2e8f0; --tag-arthur-text: #1e293b; /* Cinza (Lógico) */
-            --tag-claudia-bg: #ffedd5; --tag-claudia-text: #9a3412; /* Laranja (Educada) */
-
-            --radius: 16px;
-            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.06);
+            /* Cores Específicas */
+            --logic-color: #334155;   /* Cinza Escuro (Lógica/Arthur) */
+            --anger-color: #c2410c;   /* Laranja Escuro (Raiva/Cláudia) */
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            color: var(--ink-color);
-            line-height: 1.6;
-            background-color: var(--paper-bg);
-            /* Efeito Papel Pautado */
-            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
-            background-size: 100% 2rem;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e2e8f0 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Patrick Hand', cursive;
-            color: #1e293b;
-        }
-
-        /* --- HEADER --- */
+        /* --- CABEÇALHO --- */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-bottom: 2px dashed #94a3b8;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
-        }
-
-        .header-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
             text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
         }
 
-        .header-title {
-            font-size: 2.5rem;
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(71, 85, 105, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0px #cbd5e1;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
         }
 
-        .header-subtitle {
-            font-size: 1.2rem;
-            color: #64748b;
-            font-family: 'Patrick Hand', cursive;
-        }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
 
         /* --- CONTAINER --- */
         .main-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+            max-width: 850px;
             width: 100%;
-            display: grid;
-            gap: 35px;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
-        /* --- CARDS (PAPEL) --- */
-        .paper-card {
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: var(--shadow-paper);
-            border: 1px solid #cbd5e1;
-            padding: 2rem;
-            position: relative;
-            transform: rotate(-0.5deg);
-            transition: transform 0.3s;
-        }
-        
-        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
-        
-        /* Clipe de Metal Decorativo */
-        .paper-card::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            right: 30px;
-            width: 15px;
-            height: 45px;
-            border: 4px solid #94a3b8;
-            border-bottom: none;
-            border-radius: 10px 10px 0 0;
-            z-index: 2;
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
         }
 
-        .card-header {
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--paper-line);
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
             padding-bottom: 10px;
         }
 
-        .card-icon { font-size: 1.8rem; color: var(--warmth); }
-        .card-title { font-size: 1.8rem; margin: 0; }
-
-        /* --- POST-IT (DEFINIÇÃO) --- */
-        .post-it {
-            background-color: #f1f5f9; /* Cinza Gelo */
-            padding: 1.5rem;
-            border-radius: 2px 2px 16px 2px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.3rem;
-            color: #334155;
-            transform: rotate(1deg);
-            margin: 20px 0;
-            border-left: 5px solid #475569;
-        }
-
-        /* --- PERSONAS --- */
-        .persona-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .persona-card {
-            background: #fff;
+        .highlight-box {
+            background: #f1f5f9;
+            border-left: 5px solid var(--primary);
             padding: 20px;
-            border: 2px dashed #94a3b8;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #334155;
+        }
+
+        /* --- GRID DE PERSONAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 12px;
+            display: flex; flex-direction: column; gap: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
         }
         
-        .persona-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .persona-name { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
-        .persona-tag { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
-        
-        .tag-arthur { background: var(--tag-arthur-bg); color: var(--tag-arthur-text); }
-        .tag-claudia { background: var(--tag-claudia-bg); color: var(--tag-claudia-text); }
+        .style-logic { border-color: var(--logic-color); }
+        .style-anger { border-color: var(--anger-color); }
 
-        /* --- STICKERS (3 DIMENSÕES) --- */
-        .sticker-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        .persona-tag {
+            font-size: 0.75rem; text-transform: uppercase; font-weight: 800;
+            padding: 4px 10px; border-radius: 20px; width: fit-content;
         }
-        
-        .sticker-box {
-            background: white; padding: 1.5rem; border-radius: 12px;
-            border: 2px solid #f8fafc; text-align: center;
-            transition: all 0.3s;
-        }
-        .sticker-box:hover { border-color: var(--warmth); transform: scale(1.02); }
-        .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .tag-arthur { background: #e2e8f0; color: var(--logic-color); }
+        .tag-claudia { background: #ffedd5; color: var(--anger-color); }
 
-        /* --- TRADUTOR INTERATIVO --- */
-        .translator-area {
-            background-color: #fff7ed; /* Laranja muito claro */
-            padding: 2rem; border-radius: 20px;
-            border: 2px dashed #fdba74; text-align: center;
+        /* --- WIDGET: TRADUTOR DE EMOÇÕES --- */
+        .translator-container {
+            text-align: center;
+            background: #fff7ed; /* Laranja muito claro */
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #fed7aa;
         }
 
-        .btn-translate {
-            background: white; border: 2px solid #fed7aa;
-            padding: 10px 20px; margin: 5px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; font-weight: 700; color: #9a3412;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 0 #fed7aa;
-        }
-        
-        .btn-translate:active { box-shadow: 0 0 0 #fed7aa; transform: translateY(4px); }
-        .btn-translate:hover { background: #fff; border-color: var(--warmth); color: var(--warmth); }
-
-        .result-bubble {
-            background: white; padding: 20px; border-radius: 20px;
-            margin-top: 20px; border: 2px solid #cbd5e1;
-            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
-            color: #334155; min-height: 100px; display: flex; align-items: center; justify-content: center;
+        .translator-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
 
-        /* --- ACCORDIONS --- */
-        details {
-            background: #f8fafc; border-radius: 12px; margin-bottom: 10px;
-            border: 1px solid #cbd5e1;
+        .btn-trans {
+            background: white; border: 2px solid #ffccbc; color: #c2410c;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
         }
-        summary {
-            padding: 15px; font-weight: 700; cursor: pointer; list-style: none;
-            display: flex; justify-content: space-between; color: #475569;
-        }
-        summary:hover { background: #f1f5f9; border-radius: 12px; }
-        .details-content { padding: 20px; border-top: 1px dashed #cbd5e1; color: #475569; }
+        .btn-trans:hover { border-color: var(--accent); background: var(--accent); color: white; }
 
-        /* --- FLASHCARD (FLIP) --- */
-        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
-        .flashcard-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.6s; transform-style: preserve-3d;
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;
         }
-        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
-        
-        .flashcard-front, .flashcard-back {
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin: 0 auto;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
             position: absolute; width: 100%; height: 100%;
             -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 16px; padding: 2rem;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-paper); border: 2px solid;
-        }
-        
-        .flashcard-front {
-            background: #f1f5f9; border-color: #cbd5e1; color: #334155;
-        }
-        .flashcard-back {
-            background: #ffedd5; border-color: #fdba74; color: #9a3412;
-            transform: rotateY(180deg);
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
         }
 
-        /* --- FOOTER PADRÃO --- */
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--accent); color: white; transform: rotateY(180deg); border-color: var(--accent); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        /* --- FOOTER ADAPTADO --- */
         footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            padding: 2rem 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px dashed #b2bec3;
+            padding: 30px 20px;
             margin-top: auto;
         }
         .footer-container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
-        .social-links { display: flex; gap: 1.5rem; }
-        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
-        .social-links a:hover { color: var(--primary); }
+        .footer-brand { color: #636e72; font-weight: 700; font-size: 0.95rem; }
+        .social-links { display: flex; gap: 20px; }
+        .social-links a { color: #b2bec3; font-size: 1.4rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
 
-        @media (max-width: 640px) {
-            .footer-container { flex-direction: column; gap: 1rem; }
-            .persona-grid, .sticker-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .footer-container { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <h1 class="header-title">Inibição Emocional</h1>
-            <p class="header-subtitle">Caderno de Psicoeducação</p>
-        </div>
+    <header data-aos="fade-down">
+        <h1>Inibição Emocional</h1>
+        <div class="subtitle">O freio de mão dos sentimentos</div>
     </header>
 
     <div class="main-container">
-
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-snowflake card-icon"></i>
-                <h2 class="card-title">O Freio de Mão</h2>
-            </div>
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-snowflake"></i> O Freio de Mão</div>
             <p>O Esquema de Inibição Emocional é o bloqueio da espontaneidade. É a crença de que você deve suprimir suas emoções (boas ou ruins) para evitar vergonha, críticas ou perda de controle.</p>
-            
-            <div class="post-it">
-                <i class="fas fa-thumbtack" style="color:#475569; margin-right:10px;"></i>
-                "Mantenha a postura. Chorar é fraqueza. Rir alto é vulgar. Se eu demonstrar o que sinto, algo ruim vai acontecer."
+            <div class="highlight-box">
+                <i class="fa-solid fa-face-meh-blank"></i> <strong>A Regra Rígida:</strong> "Mantenha a postura. Chorar é fraqueza. Rir alto é vulgar. Se eu demonstrar, algo ruim vai acontecer."
             </div>
         </div>
 
-        <div class="paper-card" style="transform: rotate(0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-users card-icon"></i>
-                <h2 class="card-title">Espelhos da Vida Real</h2>
-            </div>
-            <p>Como o congelamento emocional se apresenta:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-users"></i> Formas de Enfrentamento</div>
             
-            <div class="persona-grid">
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Arthur</span>
-                        <span class="persona-tag tag-arthur">O Robô</span>
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <div class="symptom-item style-logic">
+                        <span class="persona-tag tag-arthur">Arthur (O Robô)</span>
+                        <div><strong>Comportamento:</strong> Analisa tudo logicamente. Não chora em funerais nem gargalha em festas. Considera emoção "ineficiência" ou "drama".</div>
                     </div>
-                    <p>Arthur analisa tudo logicamente. Ele não chora em funerais e não gargalha em festas. Para ele, emoção é "ineficiência" ou "drama". As pessoas o acham frio e distante, mas ele diz que é "apenas racional".</p>
-                    <p style="font-size:0.85rem; color:#334155;"><strong>Comportamento:</strong> Racionalização Excessiva</p>
-                </div>
-
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Cláudia</span>
-                        <span class="persona-tag tag-claudia">A "Educada"</span>
+                    <div class="symptom-item style-logic">
+                        <div><strong>Consequência:</strong> Distanciamento afetivo, frieza nas relações, solidão.</div>
                     </div>
-                    <p>Cláudia sente muita raiva, mas engole tudo. Ela sorri mesmo quando é ofendida para manter a imagem de "profissional" e "civilizada". Ela vive com dores musculares e gastrite.</p>
-                    <p style="font-size:0.85rem; color:#9a3412;"><strong>Comportamento:</strong> Supressão da Raiva</p>
+                </div>
+
+                <div class="symptom-column">
+                    <div class="symptom-item style-anger">
+                        <span class="persona-tag tag-claudia">Cláudia (A Educada)</span>
+                        <div><strong>Comportamento:</strong> Sente raiva, mas engole. Sorri mesmo ofendida para manter a imagem de "profissional" e "civilizada".</div>
+                    </div>
+                    <div class="symptom-item style-anger">
+                        <div><strong>Consequência:</strong> Doenças psicossomáticas (gastrite, dor muscular), explosões ocasionais.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-shapes card-icon"></i>
-                <h2 class="card-title">O que está travado?</h2>
-            </div>
-            <div class="sticker-grid">
-                <div class="sticker-box">
-                    <span class="sticker-icon">😶</span>
-                    <h4>Agressividade</h4>
-                    <p>Dificuldade em expressar raiva ou desagrado de forma saudável. "Engolir sapo".</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🎉</span>
-                    <h4>Alegria</h4>
-                    <p>Vergonha de ser espontâneo, brincar, dançar ou demonstrar afeto e entusiasmo.</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">💬</span>
-                    <h4>Vulnerabilidade</h4>
-                    <p>Bloqueio em falar sobre medos, tristezas ou necessidades. Ênfase total na lógica.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="paper-card" style="transform: rotate(-0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-sync card-icon"></i>
-                <h2 class="card-title">Tradutor de Emoções</h2>
-            </div>
-            <p>Seu cérebro racionaliza tudo. Vamos traduzir a "Lógica" em "Sentimento":</p>
-            
-            <div class="translator-area">
-                <p style="margin-bottom:15px; font-weight:700;">O que você diz?</p>
-                <div>
-                    <button class="btn-translate" onclick="translateNeed('logico')">"Não faz sentido chorar por isso."</button>
-                    <button class="btn-translate" onclick="translateNeed('drama')">"Isso é drama desnecessário."</button>
-                    <button class="btn-translate" onclick="translateNeed('bem')">"Está tudo bem." (Com o rosto rígido)</button>
-                </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-language"></i> Tradutor de Emoções</div>
+            <div class="translator-container">
+                <p style="font-weight:700; color:#ea580c; margin-bottom:15px;">Seu cérebro racionaliza. Vamos sentir:</p>
                 
-                <div id="translator-bubble" class="result-bubble">
-                    Toque em uma frase para traduzir...
+                <div>
+                    <button class="btn-trans" onclick="translateNeed('logico')">"Não faz sentido chorar por isso."</button>
+                    <button class="btn-trans" onclick="translateNeed('drama')">"Isso é drama desnecessário."</button>
+                    <button class="btn-trans" onclick="translateNeed('bem')">"Está tudo bem." (Rosto rígido)</button>
+                </div>
+
+                <div class="translator-display" id="trans-res">
+                    <span style="color:#b0bec5; font-style:italic;">Clique na frase...</span>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-brain card-icon"></i>
-                <h2 class="card-title">Conceitos Clínicos</h2>
-            </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> O Cérebro Rígido</div>
             
-            <details>
-                <summary>🧠 Neurobiologia: O Córtex Hiperativo <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Seu Córtex Pré-Frontal (razão) trabalha em excesso para "abafar" a Amígdala (emoção). Você gasta uma energia enorme para manter essa barreira, o que gera exaustão e doenças psicossomáticas.</p>
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Córtex Hiperativo</h4>
+                    <p>Seu Córtex Pré-Frontal (razão) trabalha em excesso para "abafar" a Amígdala (emoção). Você gasta uma energia enorme para manter essa barreira.</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>O objetivo não é explodir, mas <strong>Fluir</strong>. Usamos técnicas vivenciais (como falar com a cadeira vazia) para ajudar você a sentir no corpo e expressar na fala, conectando cabeça e coração.</p>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-fire"></i>
+                    <h4>Panela de Pressão</h4>
+                    <p>Inibir não faz a emoção sumir, apenas a pressuriza. Isso pode levar a explosões desproporcionais ("Gota d'água") ou doenças físicas.</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>⚠️ A Panela de Pressão <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Inibir não faz a emoção sumir, ela apenas fica pressurizada. Muitas vezes, o inibido explode de forma desproporcional por um motivo pequeno ("A Gota D'água") ou o corpo adoece para expressar a dor.</p>
-                </div>
-            </details>
+            </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-adjust card-icon"></i>
-                <h2 class="card-title">Vire o Pensamento</h2>
-            </div>
-            <p>Toque no cartão quando sentir vergonha de chorar ou rir:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-rotate"></i> Vire o Pensamento</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque no cartão para ativar o Adulto Saudável</p>
             
-            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz da Inibição</h3>
-                        <p style="margin-top:10px;">"Controle-se! Pare com isso. Todo mundo está olhando. Seja adulto. Emoção é coisa de gente fraca. Mantenha a cara de paisagem."</p>
-                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#475569; font-size:1.5rem;"></i>
-                    </div>
-                    <div class="flashcard-back">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
-                        <p style="margin-top:10px;">"Sentir é humano. Minhas emoções são dados importantes sobre o que eu preciso. Eu posso expressar o que sinto de forma adequada sem perder a dignidade. Chorar ou rir alivia e conecta."</p>
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-hand-holding" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">Voz da Inibição</h3>
+                            <p style="margin-top:10px; font-size:0.9rem; color:#555;">"Controle-se! Pare com isso. Todo mundo está olhando. Seja adulto. Emoção é coisa de gente fraca."</p>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1.1rem; margin-bottom:10px;">Adulto Saudável</h3>
+                            <p style="font-size:0.9rem;">"Sentir é humano. Minhas emoções são dados importantes sobre minhas necessidades. Posso expressar o que sinto de forma adequada sem perder a dignidade."</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <center>
+            <a href="../../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
 
     </div>
 
@@ -419,31 +371,39 @@
                 &copy; 2026 Bruno de Souza
             </div>
             <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
+
         function translateNeed(type) {
-            const bubble = document.getElementById('translator-bubble');
+            const display = document.getElementById('trans-res');
             let text = "";
+            let color = "";
             
             if (type === 'logico') {
-                text = "✨ Tradução: 'A situação me deixou triste. Mesmo que não resolva o problema, chorar me ajuda a processar a dor.'";
+                text = "✨ <strong>Tradução:</strong> 'A situação me deixou triste. Mesmo que não resolva o problema prático, chorar me ajuda a processar a dor emocional.'";
+                color = "#334155";
             } else if (type === 'drama') {
-                text = "✨ Tradução: 'Estou minimizando meu sentimento para não incomodar. Eu tenho direito de estar chateado.'";
+                text = "✨ <strong>Tradução:</strong> 'Estou minimizando meu sentimento para não incomodar. Eu tenho direito de estar chateado.'";
+                color = "#ea580c";
             } else if (type === 'bem') {
-                text = "✨ Tradução: 'Na verdade, estou com muita raiva. Preciso dizer que não gostei disso, em vez de fingir que não me afetou.'";
+                text = "✨ <strong>Tradução:</strong> 'Na verdade, estou com muita raiva. Preciso dizer que não gostei disso, em vez de fingir que não me afetou.'";
+                color = "#c2410c";
             }
             
-            bubble.style.opacity = 0;
+            display.style.opacity = 0;
+            display.style.borderTop = `5px solid ${color}`;
+            
             setTimeout(() => {
-                bubble.innerHTML = text;
-                bubble.style.opacity = 1;
-                bubble.style.transition = "opacity 0.3s";
+                display.innerHTML = `<p style="font-size:1.1rem; color:#2d3436;">${text}</p>`;
+                display.style.opacity = 1;
             }, 200);
         }
     </script>
