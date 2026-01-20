@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esquizofrenia | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Mente/Realidade" */
+            --bg-color: #f3e5f5;      /* Roxo muito pálido */
+            --primary: #673ab7;       /* Roxo Profundo (Mistério/Mente) */
+            --primary-dark: #512da8;
+            --accent: #009688;        /* Verde Menta (Estabilidade/Saúde) */
+            --text: #2d3436;
+            --card-border: #b0bec5;
+            
+            /* Cores Específicas */
+            --pos-color: #e91e63;     /* Rosa (Sintomas Positivos - Excesso) */
+            --neg-color: #607d8b;     /* Cinza (Sintomas Negativos - Falta) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#d1c4e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(103, 58, 183, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #e0f2f1;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #004d40;
+        }
+
+        /* --- GRID DE SINTOMAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+        }
+        
+        .sym-pos { border-color: var(--pos-color); }
+        .sym-pos i { color: var(--pos-color); }
+        
+        .sym-neg { border-color: var(--neg-color); }
+        .sym-neg i { color: var(--neg-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.9rem; }
+        .symptom-item span { font-size: 0.8rem; color: #636e72; }
+
+        /* --- WIDGET: CLASSIFICADOR DE SINTOMAS --- */
+        .sorter-container {
+            text-align: center;
+            background: #ede7f6;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #b39ddb;
+        }
+
+        .sorter-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-sort {
+            background: white; border: 2px solid #d1c4e9; color: #512da8;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-sort:hover { border-color: var(--primary); background: var(--primary); color: white; }
+
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Esquizofrenia</h1>
+        <div class="subtitle">Além do Estigma: Compreensão e Tratamento</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-puzzle-piece"></i> O que é?</div>
+            <p>A Esquizofrenia é um transtorno mental crônico e complexo que afeta como a pessoa pensa, sente e se comporta. Ela causa uma desconexão temporária com a realidade (psicose).</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-circle-info"></i> <strong>Não é "Dupla Personalidade".</strong> O termo significa "mente dividida", referindo-se à ruptura entre o pensamento lógico e a realidade, não a ter múltiplas personalidades.
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Os Tipos de Sintomas</div>
+            <p style="margin-bottom:20px;">A chave para entender é dividir em Positivos (Adição) e Negativos (Subtração).</p>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--pos-color);">Sintomas Positivos (+)</h4>
+                    <p style="text-align:center; font-size:0.8rem; color:#aaa; margin-top:-10px; margin-bottom:15px;">Coisas que foram adicionadas à mente.</p>
+                    
+                    <div class="symptom-item sym-pos">
+                        <i class="fa-solid fa-ear-listen"></i>
+                        <div><strong>Alucinações</strong><span>Ouvir vozes ou ver coisas que não estão lá (mas parecem reais).</span></div>
+                    </div>
+                    <div class="symptom-item sym-pos">
+                        <i class="fa-solid fa-user-secret"></i>
+                        <div><strong>Delírios</strong><span>Crenças fixas e falsas (ex: "estou sendo perseguido").</span></div>
+                    </div>
+                    <div class="symptom-item sym-pos">
+                        <i class="fa-solid fa-shuffle"></i>
+                        <div><strong>Desorganização</strong><span>Pensamento confuso, fala sem sentido ("salada de palavras").</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--neg-color);">Sintomas Negativos (-)</h4>
+                    <p style="text-align:center; font-size:0.8rem; color:#aaa; margin-top:-10px; margin-bottom:15px;">Coisas que foram retiradas da pessoa.</p>
+
+                    <div class="symptom-item sym-neg">
+                        <i class="fa-solid fa-face-meh-blank"></i>
+                        <div><strong>Embotamento Afetivo</strong><span>Expressão facial imóvel, pouca reação emocional.</span></div>
+                    </div>
+                    <div class="symptom-item sym-neg">
+                        <i class="fa-solid fa-battery-empty"></i>
+                        <div><strong>Avolia (Apatia)</strong><span>Falta total de motivação para iniciar tarefas básicas.</span></div>
+                    </div>
+                    <div class="symptom-item sym-neg">
+                        <i class="fa-solid fa-comment-slash"></i>
+                        <div><strong>Alogia</strong><span>Pobreza de discurso, falar muito pouco.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-filter"></i> Classificador de Sintomas</div>
+            <div class="sorter-container">
+                <p style="font-weight:700; color:#512da8; margin-bottom:15px;">Clique em um sintoma para entender sua categoria:</p>
+                
+                <div>
+                    <button class="btn-sort" onclick="explainSymptom('voice')">Ouvir Vozes</button>
+                    <button class="btn-sort" onclick="explainSymptom('bed')">Não sair da cama</button>
+                    <button class="btn-sort" onclick="explainSymptom('spy')">Achar que é espião</button>
+                    <button class="btn-sort" onclick="explainSymptom('cold')">Rosto sem expressão</button>
+                </div>
+
+                <div class="sorter-display" id="sort-res">
+                    <span style="color:#b0bec5; font-style:italic;">Selecione uma opção...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-dna"></i> Causas Biológicas</div>
+            <p>É uma doença do neurodesenvolvimento, com forte componente genético.</p>
+            
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-flask"></i>
+                    <h4>Dopamina (O Volume)</h4>
+                    <p><strong>Hipótese Dopaminérgica:</strong> Excesso de dopamina em algumas áreas causa as alucinações (como um volume muito alto), e falta de dopamina em outras causa a apatia.</p>
+                </div>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-scissors"></i>
+                    <h4>Poda Neural</h4>
+                    <p>Durante a adolescência, o cérebro faz uma "limpeza" nas conexões. Na esquizofrenia, essa poda pode ser excessiva, afetando a comunicação entre áreas.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Mitos Comuns</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-hand-fist" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"São Perigosos"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Mito de Hollywood</h3>
+                            <p style="font-size:0.9rem;">Pessoas com esquizofrenia são mais propensas a serem <strong>vítimas</strong> de violência do que agressoras. Quando tratados, o risco é igual ao da população geral.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-users-viewfinder" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Múltiplas Personalidades"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Confusão Comum</h3>
+                            <p style="font-size:0.9rem;">Isso é Transtorno Dissociativo de Identidade. Esquizofrenia é uma fragmentação da realidade, não da identidade.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-road-barrier" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Não tem vida normal"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Recuperação Possível</h3>
+                            <p style="font-size:0.9rem;">Com medicação contínua e terapia, muitas pessoas estudam, trabalham, casam e vivem com qualidade e estabilidade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-heart-pulse"></i> Tratamento Essencial</div>
+            <ul style="line-height:1.8; color:#555;">
+                <li><strong>Medicação (Antipsicóticos):</strong> O pilar fundamental. Regula a dopamina para parar as vozes e delírios. É de uso contínuo.</li>
+                <li><strong>Psicoterapia (TCC):</strong> Ajuda a testar a realidade ("Essa voz é real ou sintoma?") e treinar habilidades sociais.</li>
+                <li><strong>Apoio Familiar:</strong> Famílias bem informadas reduzem drasticamente as recaídas.</li>
+            </ul>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function explainSymptom(type) {
+            const display = document.getElementById('sort-res');
+            let title = "";
+            let text = "";
+            let icon = "";
+            let color = "";
+
+            if(type === 'voice') {
+                title = "Sintoma Positivo (+)";
+                text = "Alucinação Auditiva. É algo 'adicionado' à realidade. O cérebro ativa a área da audição sem som externo.";
+                icon = '<i class="fa-solid fa-ear-listen" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#e91e63";
+            } else if(type === 'bed') {
+                title = "Sintoma Negativo (-)";
+                text = "Avolia (Falta de vontade). É algo 'subtraído' da pessoa (a energia vital). Não é preguiça.";
+                icon = '<i class="fa-solid fa-battery-empty" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#607d8b";
+            } else if(type === 'spy') {
+                title = "Sintoma Positivo (+)";
+                text = "Delírio Persecutório. Uma crença adicionada. O cérebro encontra padrões e significados onde não existem.";
+                icon = '<i class="fa-solid fa-user-secret" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#e91e63";
+            } else if(type === 'cold') {
+                title = "Sintoma Negativo (-)";
+                text = "Embotamento Afetivo. A perda da capacidade de expressar emoções facialmente, mesmo que sinta por dentro.";
+                icon = '<i class="fa-solid fa-face-meh-blank" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#607d8b";
+            }
+
+            display.style.borderTop = `5px solid ${color}`;
+            display.innerHTML = `
+                <div style="color:${color}">${icon}</div>
+                <h3 style="margin:0 0 5px 0; color:#2d3436;">${title}</h3>
+                <p style="margin:0; font-size:0.9rem; color:#636e72; text-align:center;">${text}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
