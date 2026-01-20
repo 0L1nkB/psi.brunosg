@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBQ-SF - Crenças de Personalidade | Bruno de Souza</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Cognitivo/Crenças" */
+            --bg-color: #eceff1;      /* Cinza Azulado Claro */
+            --primary: #37474f;       /* Azul Petróleo Escuro */
+            --primary-light: #546e7a;
+            --accent: #00b894;        /* Verde Água */
+            --text: #2d3436;
+            
+            /* Botões */
+            --btn-0: #cfd8dc;
+            --btn-1: #b0bec5;
+            --btn-2: #90a4ae;
+            --btn-3: #78909c;
+            --btn-4: #546e7a;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cfd8dc 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(55, 71, 79, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* Barra de Progresso */
+        .progress-container {
+            position: sticky; top: 10px; z-index: 100;
+            width: 100%; max-width: 800px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px; border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            backdrop-filter: blur(5px);
+        }
+        .progress-bg { flex: 1; height: 8px; background: #dfe6e9; border-radius: 5px; margin: 0 15px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+        .progress-text { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        .instruction-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* --- CARTÃO DE PERGUNTA --- */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .question-card:hover {
+            border-color: #b2bec3;
+            transform: translateY(-2px);
+        }
+
+        .q-header {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .q-number {
+            background: #eceff1;
+            color: var(--primary);
+            font-weight: 800;
+            min-width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        /* --- BOTÕES DE RESPOSTA (0-4) --- */
+        .options-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .option-label {
+            padding: 12px 2px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            color: #636e72;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .opt-val { font-size: 1.2rem; margin-bottom: 3px; }
+        .opt-desc { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; opacity: 0.7; }
+
+        /* Estilos Progressivos */
+        .btn-0:hover { background: #eceff1; border-color: var(--btn-0); }
+        .btn-0:has(input:checked) { background: var(--btn-0); color: #333; box-shadow: 0 4px 0 #90a4ae; }
+
+        .btn-1:hover { background: #cfd8dc; border-color: var(--btn-1); }
+        .btn-1:has(input:checked) { background: var(--btn-1); color: #333; box-shadow: 0 4px 0 #78909c; }
+
+        .btn-2:hover { background: #b0bec5; border-color: var(--btn-2); }
+        .btn-2:has(input:checked) { background: var(--btn-2); color: white; box-shadow: 0 4px 0 #546e7a; }
+
+        .btn-3:hover { background: #90a4ae; border-color: var(--btn-3); }
+        .btn-3:has(input:checked) { background: var(--btn-3); color: white; box-shadow: 0 4px 0 #37474f; }
+
+        .btn-4:hover { background: #546e7a; border-color: var(--btn-4); }
+        .btn-4:has(input:checked) { background: var(--btn-4); color: white; box-shadow: 0 4px 0 #263238; }
+
+        input[type="radio"] { display: none; }
+
+        /* --- BOTÃO CALCULAR --- */
+        .btn-calc {
+            display: block; width: 100%;
+            margin-top: 40px; padding: 18px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; font-family: 'Quicksand', sans-serif;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(55, 71, 79, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-calc:hover { transform: translateY(-3px); }
+
+        /* --- RESULTADOS --- */
+        .result-section {
+            display: none;
+            margin-top: 50px;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            border: 3px dashed var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .res-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .res-table th { background: var(--primary); color: white; padding: 10px; text-align: left; border-radius: 5px 5px 0 0; }
+        .res-table td { padding: 10px; border-bottom: 1px solid #eee; color: var(--text); }
+        .res-table tr:last-child td { border-bottom: none; }
+        .highlight-row { background-color: #e0f2f1; font-weight: bold; }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin-top: 30px; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .options-row { gap: 2px; }
+            .option-label { padding: 12px 0; }
+            .opt-desc { display: none; }
+            .chart-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>PBQ-SF</h1>
+        <div class="subtitle">Questionário de Crenças de Personalidade (Beck)</div>
+    </header>
+
+    <div class="progress-container">
+        <span class="progress-text" id="prog-text">0/65</span>
+        <div class="progress-bg">
+            <div class="progress-fill" id="prog-fill"></div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="instruction-box">
+            Leia as afirmações abaixo e avalie o quanto você acredita em cada uma delas, de <strong>0 (Não acredito nem um pouco)</strong> a <strong>4 (Acredito totalmente)</strong>.
+        </div>
+
+        <form id="pbqForm">
+            <div id="questions-container"></div>
+        </form>
+
+        <button class="btn-calc" onclick="calculateResults()">
+            <i class="fa-solid fa-chart-radar"></i> GERAR PERFIL
+        </button>
+
+        <div class="result-section" id="result-area">
+            <h3 style="text-align:center; color:#546e7a; margin-bottom:20px;">PERFIL DE CRENÇAS DISFUNCIONAIS</h3>
+            
+            <div class="chart-container">
+                <canvas id="pbqChart"></canvas>
+            </div>
+
+            <div class="table-container">
+                <table class="res-table">
+                    <thead>
+                        <tr>
+                            <th>Transtorno / Categoria</th>
+                            <th>Pontuação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="res-tbody">
+                        </tbody>
+                </table>
+            </div>
+
+            <p style="margin-top:20px; font-size:0.85rem; color:#78909c; text-align:center;">
+                <strong>Nota:</strong> Pontuações elevadas indicam crenças centrais mais ativas relacionadas àquele padrão de personalidade. Este instrumento não fornece diagnóstico, mas auxilia na conceituação cognitiva.
+            </p>
+
+            <button class="btn-calc" style="background:#263238; margin-top:30px; font-size:1rem;" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Salvar Relatório
+            </button>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* ITENS PBQ-SF (65 Itens)
+           Categorias (C):
+           1. Evitativa (AVD)
+           2. Dependente (DEP)
+           3. Passivo-Agressiva (PAS)
+           4. Obsessivo-Compulsiva (OCD)
+           5. Antissocial (ANT)
+           6. Narcisista (NAR)
+           7. Histriônica (HIS)
+           8. Esquizóide (SCH)
+           9. Paranóide (PAR)
+           10. Borderline (BOR)
+        */
+
+        const questions = [
+            // Evitativa (7 itens)
+            { t: "Seria terrível ser rejeitado, abandonado ou ficar sozinho.", c: "Evitativa" },
+            { t: "Se as pessoas se aproximarem de mim, descobrirão o meu 'eu' verdadeiro e me rejeitarão.", c: "Evitativa" },
+            { t: "Preciso ter a aprovação das outras pessoas para ser feliz.", c: "Evitativa" },
+            { t: "Devo evitar situações desagradáveis a todo custo.", c: "Evitativa" },
+            { t: "Se eu sentir ou pensar algo desagradável, devo tentar esquecer (por exemplo, bebendo, me drogando ou assistindo televisão).", c: "Evitativa" },
+            { t: "Cenas desagradáveis sempre se transformam em desastres.", c: "Evitativa" },
+            { t: "Não tolero sentimentos desagradáveis.", c: "Evitativa" },
+
+            // Dependente (7 itens)
+            { t: "Eu sou carente e fraco.", c: "Dependente" },
+            { t: "Preciso de alguém por perto o tempo todo para me ajudar ou o que tenho que fazer.", c: "Dependente" },
+            { t: "Sou indefeso quando sou deixado por conta própria.", c: "Dependente" },
+            { t: "Sou basicamente sozinho - a menos que possa me vincular a uma pessoa mais forte.", c: "Dependente" },
+            { t: "A pior coisa que pode acontecer seria ser abandonado.", c: "Dependente" },
+            { t: "Se não sou amado, serei sempre infeliz.", c: "Dependente" },
+            { t: "Não devo fazer nada que possa ofender ou afastar aquele que me apóia.", c: "Dependente" },
+
+            // Passivo-Agressiva (6 itens)
+            { t: "As pessoas exigem coisas demais de mim.", c: "Passivo-Agressiva" },
+            { t: "As outras pessoas não valorizam o meu trabalho e o meu valor.", c: "Passivo-Agressiva" },
+            { t: "As pessoas gostam de dominar.", c: "Passivo-Agressiva" },
+            { t: "Eu deveria preservar a minha liberdade de ação.", c: "Passivo-Agressiva" },
+            { t: "Só sendo hostil posso mostrar a minha verdadeira opinião.", c: "Passivo-Agressiva" },
+            { t: "Regras são arbitrárias e me sufocam.", c: "Passivo-Agressiva" },
+
+            // Obsessivo-Compulsiva (7 itens)
+            { t: "Existem comportamentos certos e errados, decisões certas e erradas.", c: "Obsessivo-Compulsiva" },
+            { t: "Para ser digno, devo evitar erros a todo custo.", c: "Obsessivo-Compulsiva" },
+            { t: "O erro é conseqüência do fracasso.", c: "Obsessivo-Compulsiva" },
+            { t: "Devo ter controle total das minhas emoções.", c: "Obsessivo-Compulsiva" },
+            { t: "Sem minhas regras e rituais, eu desmoronaria.", c: "Obsessivo-Compulsiva" },
+            { t: "Quaisquer falhas ou defeitos de desempenho podem levar a uma catástrofe.", c: "Obsessivo-Compulsiva" },
+            { t: "Eu devo estar no controle de tudo.", c: "Obsessivo-Compulsiva" },
+
+            // Antissocial (6 itens)
+            { t: "Tenho que cuidar de mim mesmo.", c: "Antissocial" },
+            { t: "A força ou a esperteza são a única maneira de sobreviver.", c: "Antissocial" },
+            { t: "As pessoas vão me pegar se eu não pegá-las antes.", c: "Antissocial" },
+            { t: "Se eu não manipular as pessoas, elas me manipularão.", c: "Antissocial" },
+            { t: "Eu posso fazer coisas ilegais se eu não for pego.", c: "Antissocial" },
+            { t: "As pessoas são otárias.", c: "Antissocial" },
+
+            // Narcisista (6 itens)
+            { t: "Eu sou uma pessoa muito especial.", c: "Narcisista" },
+            { t: "Como sou superior, tenho direito a tratamento e privilégios especiais.", c: "Narcisista" },
+            { t: "Não tenho que me submeter às regras que se aplicam às outras pessoas.", c: "Narcisista" },
+            { t: "É muito importante ter o reconhecimento, o elogio e a admiração.", c: "Narcisista" },
+            { t: "As pessoas não têm o direito de me criticar.", c: "Narcisista" },
+            { t: "As necessidades dos outros interferem nas minhas.", c: "Narcisista" },
+
+            // Histriônica (6 itens)
+            { t: "Para ser feliz, preciso que as outras pessoas prestem atenção em mim.", c: "Histriônica" },
+            { t: "A menos que eu entretenha ou impressione as pessoas, não sou nada.", c: "Histriônica" },
+            { t: "Se eu não conseguir manter os outros interessados, eles não gostarão de mim.", c: "Histriônica" },
+            { t: "A maneira de conseguir o que quero é deslumbrando ou divertindo as pessoas.", c: "Histriônica" },
+            { t: "É horrível que as pessoas me ignorem.", c: "Histriônica" },
+            { t: "Eu devo ser o centro das atenções.", c: "Histriônica" },
+
+            // Esquizóide (6 itens)
+            { t: "Para mim, é melhor fazer as coisas sozinho do que com os outros.", c: "Esquizóide" },
+            { t: "Em muitas situações, sou melhor sozinho.", c: "Esquizóide" },
+            { t: "Relacionamentos são confusos e indesejáveis.", c: "Esquizóide" },
+            { t: "A vida é mais simples sem os outros.", c: "Esquizóide" },
+            { t: "É melhor manter-se distante das pessoas.", c: "Esquizóide" },
+            { t: "Não preciso dos outros para nada.", c: "Esquizóide" },
+
+            // Paranóide (6 itens)
+            { t: "Não se pode confiar nas pessoas.", c: "Paranóide" },
+            { t: "As pessoas tentam me usar ou manipular.", c: "Paranóide" },
+            { t: "Se eu der uma chance, as pessoas se aproveitarão de mim.", c: "Paranóide" },
+            { t: "As pessoas agirão contra mim se eu não for cuidadoso.", c: "Paranóide" },
+            { t: "Eu tenho que estar sempre em guarda.", c: "Paranóide" },
+            { t: "As pessoas têm motivos ocultos.", c: "Paranóide" },
+
+            // Borderline (8 itens - mistura de dependente, paranóide e histriônica em alguns modelos, mas específico aqui)
+            { t: "Não tenho certeza de quem sou.", c: "Borderline" },
+            { t: "Acabarei sozinho.", c: "Borderline" },
+            { t: "A dor emocional é insuportável.", c: "Borderline" },
+            { t: "Eu não consigo me controlar.", c: "Borderline" },
+            { t: "As pessoas são ótimas ou terríveis.", c: "Borderline" },
+            { t: "Quando sou dominado por emoções, devo fazer algo para acabar com elas.", c: "Borderline" },
+            { t: "Eu sou má pessoa e mereço ser punido.", c: "Borderline" },
+            { t: "Não posso confiar em ninguém (mas preciso deles).", c: "Borderline" }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        // Renderizar Perguntas
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.setAttribute('data-aos', 'fade-up');
+
+            let optionsHTML = '';
+            for(let i=0; i<=4; i++) {
+                let desc = "";
+                if(i===0) desc="Não acredito";
+                if(i===4) desc="Totalmente";
+
+                optionsHTML += `
+                    <label class="option-label btn-${i}">
+                        <input type="radio" name="q${index}" value="${i}" data-cat="${q.c}" onclick="updateProgress()">
+                        <span class="opt-val">${i}</span>
+                        <span class="opt-desc">${desc}</span>
+                    </label>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="q-header">
+                    <div class="q-number">${index + 1}</div>
+                    <div class="q-text">${q.t}</div>
+                </div>
+                <div class="options-row">${optionsHTML}</div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Barra de Progresso
+        function updateProgress() {
+            const total = questions.length;
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percent = (answered / total) * 100;
+            document.getElementById('prog-fill').style.width = `${percent}%`;
+            document.getElementById('prog-text').innerText = `${answered}/${total}`;
+        }
+
+        let pbqChart = null;
+
+        function calculateResults() {
+            const scores = {};
+            let answeredCount = 0;
+
+            // Inicializar scores
+            const categories = ["Evitativa", "Dependente", "Passivo-Agressiva", "Obsessivo-Compulsiva", "Antissocial", "Narcisista", "Histriônica", "Esquizóide", "Paranóide", "Borderline"];
+            categories.forEach(c => scores[c] = 0);
+
+            const form = document.getElementById('pbqForm');
+            const inputs = form.querySelectorAll('input[type="radio"]:checked');
+
+            inputs.forEach(input => {
+                const cat = input.getAttribute('data-cat');
+                const val = parseInt(input.value);
+                scores[cat] += val;
+                answeredCount++;
+            });
+
+            if (answeredCount < 65) {
+                if(!confirm(`Você respondeu apenas ${answeredCount} de 65 itens. O perfil pode estar incompleto. Deseja continuar?`)) return;
+            }
+
+            // Ordenar para a tabela (maior para menor)
+            const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+            // Preencher Tabela
+            const tbody = document.getElementById('res-tbody');
+            tbody.innerHTML = '';
+            
+            sortedScores.forEach(([cat, score], index) => {
+                const row = document.createElement('tr');
+                if (index === 0 && score > 0) row.classList.add('highlight-row'); // Destaque para o maior
+                row.innerHTML = `<td>${cat}</td><td>${score}</td>`;
+                tbody.appendChild(row);
+            });
+
+            // Gerar Gráfico
+            renderChart(scores, categories);
+
+            // Exibir
+            const resArea = document.getElementById('result-area');
+            resArea.style.display = 'block';
+            resArea.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderChart(scores, categories) {
+            const ctx = document.getElementById('pbqChart').getContext('2d');
+            const dataValues = categories.map(c => scores[c]);
+
+            if (pbqChart) pbqChart.destroy();
+
+            pbqChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Perfil de Crenças',
+                        data: dataValues,
+                        backgroundColor: 'rgba(55, 71, 79, 0.2)',
+                        borderColor: '#37474f',
+                        pointBackgroundColor: '#00b894',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#00b894',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 20 // Ajustável conforme média esperada
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
