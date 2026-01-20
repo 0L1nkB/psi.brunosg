@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borderline (TPB) | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual - Tema "Intensidade/Regulação" */
+            --bg-color: #fff0f5;      /* Rosa Lavanda Claro */
+            --primary: #e91e63;       /* Magenta (Intensidade Emocional) */
+            --primary-dark: #c2185b;
+            --accent: #00bcd4;        /* Turquesa (DBT/Regulação) */
+            --text: #2d3436;
+            --card-border: #b2bec3;
+            
+            /* Cores Específicas */
+            --mood-color: #9c27b0;    /* Roxo (Humor) */
+            --rel-color: #ff5252;     /* Vermelho (Relacionamentos) */
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#f8bbd0 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(233, 30, 99, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- CONTAINER --- */
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            margin-bottom: 80px;
+        }
+
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
+            padding-bottom: 10px;
+        }
+
+        .highlight-box {
+            background: #fff8e1; /* Fundo Creme */
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* --- GRID DE SINTOMAS --- */
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .symptom-item {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        
+        .sym-mood { border-color: var(--mood-color); }
+        .sym-mood i { color: var(--mood-color); }
+        
+        .sym-rel { border-color: var(--rel-color); }
+        .sym-rel i { color: var(--rel-color); }
+
+        .symptom-item strong { display: block; color: var(--text); font-size: 0.95rem; }
+        .symptom-item span { font-size: 0.85rem; color: #636e72; }
+
+        /* --- DBT WIDGET (TIPP Skills) --- */
+        .dbt-container {
+            text-align: center;
+            background: #e0f7fa;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #4dd0e1;
+        }
+
+        .dbt-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .btn-skill {
+            background: white; border: 2px solid #b2ebf2; color: #006064;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
+        }
+        .btn-skill:hover { border-color: var(--accent); background: var(--accent); color: white; }
+
+        /* --- CICLO DA EMOÇÃO --- */
+        .cycle-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .cycle-step {
+            flex: 1; min-width: 140px;
+            background: white; border: 2px solid #eee;
+            border-radius: 15px; padding: 15px; text-align: center;
+            position: relative;
+        }
+
+        .cs-1 { border-top: 5px solid #ff4081; }
+        .cs-2 { border-top: 5px solid #e040fb; }
+        .cs-3 { border-top: 5px solid #7c4dff; }
+        .cs-4 { border-top: 5px solid #536dfe; }
+
+        .cycle-step h5 { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: 800; color: #2d3436; }
+        .cycle-step p { margin: 0; font-size: 0.8rem; color: #636e72; }
+
+        /* --- FLIP CARDS (MITOS) --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
+        }
+
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--primary); color: white; transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        @media (max-width: 600px) {
+            .symptoms-grid { grid-template-columns: 1fr; }
+            .cycle-wrapper { flex-direction: column; }
+            .flip-card { height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>TPB</h1>
+        <div class="subtitle">Transtorno de Personalidade Borderline</div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-fire-flame-curved"></i> O que é o Borderline?</div>
+            <p>É um padrão de instabilidade nas relações, na autoimagem e nos afetos, com impulsividade marcante. Marsha Linehan compara a pessoa com TPB a uma <strong>"grande queimadura emocional"</strong>: qualquer toque dói imensamente.</p>
+            <div class="highlight-box">
+                <i class="fa-solid fa-heart"></i> O núcleo do transtorno é a <strong>Desregulação Emocional</strong> e o medo intenso (real ou imaginário) do <strong>Abandono</strong>.
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-list-check"></i> Principais Sintomas</div>
+            
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <h4 style="color:var(--mood-color);">Emoção & Impulso</h4>
+                    <div class="symptom-item sym-mood">
+                        <i class="fa-solid fa-masks-theater"></i>
+                        <div><strong>Instabilidade Afetiva</strong><span>Mudanças de humor drásticas em horas (não dias).</span></div>
+                    </div>
+                    <div class="symptom-item sym-mood">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <div><strong>Impulsividade</strong><span>Gastos, sexo, direção imprudente, compulsão.</span></div>
+                    </div>
+                    <div class="symptom-item sym-mood">
+                        <i class="fa-solid fa-circle-notch"></i>
+                        <div><strong>Vazio Crônico</strong><span>Sensação física de "buraco" no peito.</span></div>
+                    </div>
+                </div>
+
+                <div class="symptom-column">
+                    <h4 style="color:var(--rel-color);">Relações Interpessoais</h4>
+                    <div class="symptom-item sym-rel">
+                        <i class="fa-solid fa-person-running"></i>
+                        <div><strong>Medo de Abandono</strong><span>Esforços frenéticos para evitar ser deixado.</span></div>
+                    </div>
+                    <div class="symptom-item sym-rel">
+                        <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                        <div><strong>Relações Instáveis</strong><span>Alternar entre idealizar ("Você é perfeito") e desvalorizar ("Te odeio").</span></div>
+                    </div>
+                    <div class="symptom-item sym-rel">
+                        <i class="fa-solid fa-explosion"></i>
+                        <div><strong>Raiva Intensa</strong><span>Dificuldade em controlar a raiva em situações de estresse.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-kit-medical"></i> Kit de Sobrevivência (TIPP)</div>
+            <div class="dbt-container">
+                <p style="font-weight:700; color:#006064; margin-bottom:15px;">A emoção está insuportável? Use uma habilidade TIPP:</p>
+                
+                <div>
+                    <button class="btn-skill" onclick="setSkill('temp')">🧊 Temperatura</button>
+                    <button class="btn-skill" onclick="setSkill('intense')">🏃‍♂️ Exercício</button>
+                    <button class="btn-skill" onclick="setSkill('paced')">🫁 Respiração</button>
+                    <button class="btn-skill" onclick="setSkill('muscle')">💪 Relaxamento</button>
+                </div>
+
+                <div class="dbt-display" id="dbt-res">
+                    <span style="color:#b2bec3; font-style:italic;">Selecione uma habilidade para ver a instrução...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-rotate-right"></i> O Ciclo da Crise</div>
+            <p>Como a desregulação acontece.</p>
+            
+            <div class="cycle-wrapper">
+                <div class="cycle-step cs-1">
+                    <h5>1. Gatilho</h5>
+                    <p>Rejeição percebida, crítica ou solidão.</p>
+                </div>
+                <div class="cycle-step cs-2">
+                    <h5>2. Alta Ativação</h5>
+                    <p>Emoção sobe muito rápido (0 a 100).</p>
+                </div>
+                <div class="cycle-step cs-3">
+                    <h5>3. Ação Impulsiva</h5>
+                    <p>Tentativa de aliviar a dor (grito, corte, gasto).</p>
+                </div>
+                <div class="cycle-step cs-4">
+                    <h5>4. Consequência</h5>
+                    <p>Alívio temporário seguido de culpa/vergonha.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-mask"></i> Quebrando Mitos</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque nos cartões para virar</p>
+            
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-hand-holding-heart" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"São Manipuladores"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">É Desespero</h3>
+                            <p style="font-size:0.9rem;">Não é maldade ou plano maquiavélico. São tentativas desesperadas (e muitas vezes ineficazes) de pedir ajuda ou evitar a dor do abandono.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-road-barrier" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Não tem cura"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Alto índice de melhora</h3>
+                            <p style="font-size:0.9rem;">Com o tratamento correto (como DBT), a maioria dos pacientes atinge a remissão dos sintomas e vive uma vida produtiva e feliz.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-user-tag" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">"Personalidade Ruim"</h3>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1rem; margin-bottom:10px;">Biologia + Ambiente</h3>
+                            <p style="font-size:0.9rem;">É o resultado de uma vulnerabilidade biológica (sentir muito) somada a um ambiente invalidante. Não é falha de caráter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <center>
+            <a href="../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function setSkill(type) {
+            const display = document.getElementById('dbt-res');
+            let title = "";
+            let text = "";
+            let icon = "";
+            let color = "";
+
+            if(type === 'temp') {
+                title = "Temperatura (Gelo)";
+                text = "Segure cubos de gelo nas mãos ou mergulhe o rosto em água gelada por 30s. Isso ativa o 'reflexo de mergulho' e acalma o sistema nervoso imediatamente.";
+                icon = '<i class="fa-solid fa-snowflake" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#4dd0e1";
+            } else if(type === 'intense') {
+                title = "Exercício Intenso";
+                text = "Faça polichinelos, corra no lugar ou suba escadas rápido por 1-2 minutos. Queime a adrenalina acumulada pela raiva ou medo.";
+                icon = '<i class="fa-solid fa-person-running" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#ff5252";
+            } else if(type === 'paced') {
+                title = "Respiração Ritimada";
+                text = "Respire contando: Inspire em 4 segundos, segure 2, expire lentamente em 6 ou 8 segundos. A expiração longa acalma o corpo.";
+                icon = '<i class="fa-solid fa-lungs" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#66bb6a";
+            } else if(type === 'muscle') {
+                title = "Relaxamento Muscular";
+                text = "Tensione os músculos (ex: feche os punhos com força) por 5s e solte de uma vez. Note a diferença entre tensão e relaxamento.";
+                icon = '<i class="fa-solid fa-hand-fist" style="font-size:2rem; margin-bottom:10px;"></i>';
+                color = "#ba68c8";
+            }
+
+            display.style.borderTop = `5px solid ${color}`;
+            display.innerHTML = `
+                <div style="color:${color}">${icon}</div>
+                <h3 style="margin:0 0 5px 0; color:#2d3436;">${title}</h3>
+                <p style="margin:0; font-size:0.9rem; color:#636e72; text-align:center;">${text}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
