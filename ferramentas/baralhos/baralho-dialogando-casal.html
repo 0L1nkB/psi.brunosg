@@ -3,279 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ferramenta: Dialogando em Casal</title>
+    <title>Dialogando em Casal | Bruno de Souza</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #7DB9B6; 
-            --secondary: #E9EDC9; 
-            --accent: #E29578; 
-            --dark-green: #2D5A58;
-            --text-color: #444;
-            --bg-body: #FBFBFB;
+            --primary: #2D5A58; /* Verde Escuro Profissional */
+            --accent: #E29578;  /* Tom de Destaque Suave */
+            --bg-body: #f8f9fa;
+            --card-front: #ffffff;
+            --card-back: #7DB9B6; /* Cor do verso da carta */
+            --text-main: #333;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Open Sans', sans-serif;
             background-color: var(--bg-body);
-            color: var(--text-color);
-            line-height: 1.8;
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        h1, h2, h3 { font-family: 'Quicksand', sans-serif; color: var(--dark-green); }
+        /* --- Estilo do Menu Superior --- */
+        nav {
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 0 25px; }
+        .back-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
         /* --- Header --- */
         header {
-            height: 50vh;
-            background: linear-gradient(135deg, var(--primary) 0%, #A2D2FF 100%);
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; color: white; border-radius: 0 0 60px 60px;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+
+        /* --- Sistema da Carta (3D Flip) --- */
+        .game-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
 
-        header h1 { font-size: 2.8rem; color: white; margin-bottom: 15px; }
-        header p { font-size: 1.1rem; max-width: 600px; opacity: 0.95; }
-
-        /* --- Seção Descritiva --- */
-        section { padding: 60px 0; }
-        
-        .intro-box {
-            background: white; padding: 30px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            border-left: 6px solid var(--primary);
-            margin-bottom: 40px;
-        }
-
-        /* --- Simulador de Baralho --- */
-        .deck-wrapper {
-            text-align: center;
-            padding: 40px 20px;
-            background: var(--secondary);
-            border-radius: 40px;
-            margin: 40px 0;
-        }
-
-        .card-display {
+        .card-scene {
             width: 320px;
-            height: 220px;
-            background: white;
-            margin: 20px auto;
-            border-radius: 15px;
+            height: 420px;
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--dark-green);
-            transition: transform 0.6s, opacity 0.3s;
-            cursor: default;
-            border: 2px solid var(--primary);
             text-align: center;
+            border: 8px solid white;
         }
 
-        .card-display.flip { transform: rotateY(180deg); opacity: 0; }
+        .card-front {
+            background-color: var(--card-back);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
 
+        .card-back {
+            background-color: var(--card-front);
+            color: var(--primary);
+            transform: rotateY(180deg);
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        /* --- Botão --- */
         .btn-draw {
-            background-color: var(--accent);
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 35px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(226, 149, 120, 0.4);
+            box-shadow: 0 4px 15px rgba(45, 90, 88, 0.3);
         }
 
-        .btn-draw:hover { transform: scale(1.05); background-color: #d17a5d; }
-
-        /* --- Grid de Instruções --- */
-        .instructions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .instr-card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #eee;
+        .btn-draw:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(45, 90, 88, 0.4);
+            filter: brightness(1.1);
         }
 
         /* --- Footer --- */
-        footer { background: #f4f4f4; padding: 60px 0; font-size: 0.9rem; color: #777; border-top: 1px solid #eee; }
-        .ref-list { list-style: none; margin-top: 10px; }
-        .ref-list li { margin-bottom: 5px; }
+        footer {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 40px;
+        }
 
-        @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            .card-display { width: 100%; height: auto; min-height: 200px; }
+        @media (max-width: 480px) {
+            .card-scene { width: 280px; height: 380px; }
+            header h1 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container" data-aos="fade-up">
-            <h1>Dialogando em Casal</h1>
-            <p>Um facilitador terapêutico com 80 perguntas desenhadas para proporcionar a interação e o autoconhecimento mútuo.</p>
+    <nav>
+        <div class="container">
+            <a href="../" class="back-link">← Voltar para Ferramentas</a>
         </div>
+    </nav>
+
+    <header data-aos="fade-down">
+        <h1>Dialogando em Casal</h1>
+        <p>Tire uma carta para facilitar a conexão, o diálogo e o autoconhecimento mútuo.</p>
     </header>
 
-    <main class="container">
-
-        <section data-aos="fade-up">
-            <div class="intro-box">
-                <p>O <strong>Dialogando em Casal</strong> é um recurso terapêutico facilitador no manejo com casais. Através desta ferramenta, é possível descobrir aspectos novos sobre os parceiros e identificar questões essenciais para serem trabalhadas em terapia[cite: 13].</p>
-            </div>
-            
-            <h2 style="text-align: center; margin-bottom: 20px;">Sorteio Interativo</h2>
-            <p style="text-align: center; opacity: 0.8; max-width: 600px; margin: 0 auto;">Utilize o simulador abaixo para tirar uma carta e iniciar um diálogo profundo com seu parceiro.</p>
-
-            <div class="deck-wrapper" data-aos="zoom-in">
-                <div id="card" class="card-display">Clique no botão para sortear uma dinâmica do baralho original</div>
-                <button class="btn-draw" onclick="drawCard()">Tirar uma Carta</button>
-            </div>
-        </section>
-
-        <section data-aos="fade-up">
-            <h3>Orientações de Uso</h3>
-            <div class="instructions-grid">
-                <div class="instr-card">
-                    <strong>Uso Clínico:</strong> O profissional pode utilizar as respostas para mediar conflitos e aprofundar temas significativos que surgirem durante a interação.
+    <main class="game-container">
+        <div class="card-scene">
+            <div id="card" class="card" onclick="drawCard()">
+                <div class="card-face card-front">
+                    ? <br> Clique para Sortear
                 </div>
-                <div class="instr-card">
-                    <strong>Uso Doméstico:</strong> Os casais podem utilizar as cartas como um ritual de conexão, dedicando um tempo de qualidade para ouvir e serem ouvidos sem julgamentos.
+                <div id="question-text" class="card-face card-back">
+                    Pronto para começar?
                 </div>
-               
             </div>
-        </section>
+        </div>
 
+        <button class="btn-draw" onclick="drawCard()">Sortear Nova Carta</button>
     </main>
 
     <footer>
-        <div class="container">
-            <p><strong>Créditos e Referências Técnicas:</strong></p>
-            <ul class="ref-list">
-                <li><strong>Bruno de Souza</strong> (Psicólogo - CRP 07/44472).</li>
-            </ul>
-            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
-            <p>© 2026 Plataforma de Psicoeducação Clínica.</p>
-        </div>
+        <p><strong>Bruno de Souza</strong> - Psicólogo (CRP 07/44472)</p>
+        <p>© 2026 Ecosistema de Ferramentas de Psicoterapia</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ duration: 800 });
 
-        // Lista completa das 80 questões e tarefas extraídas do baralho
         const questions = [
             "Como foi o dia que vocês se conheceram? O que você sentiu?",
             "O que você mais admira nele/nela?",
             "Se você tivesse que passar por tudo de novo, o que você mudaria no relacionamento?",
             "O que você pode fazer para melhorar o relacionamento?",
-            "Como você descreveria o seu marido/a sua esposa? ",
+            "Como você descreveria o seu marido/a sua esposa?",
             "De qual momento juntos você sente saudade?",
-            "O que você acha que ele/ela admira em você? ",
-            "Conte algumas das coisas mais engraçadas em que vocês já passaram juntos? ",
-            "Você se considera um bom marido/esposa? ",
-            "Qual a melhor qualidade do seu marido/esposa? ",
-            "O que faz você feliz? ",
+            "O que você acha que ele/ela admira em você?",
+            "Conte algumas das coisas mais engraçadas em que vocês já passaram juntos?",
+            "Você se considera um bom marido/esposa?",
+            "Qual a melhor qualidade do seu marido/esposa?",
+            "O que faz você feliz?",
             "O que faz você se sentir amado?",
             "De qual momento juntos você não gosta de lembrar?",
             "Qual atitude você menos gosta nele/nela?",
             "Se você pudesse tirar um dia de folga, o que você faria?",
-            "O que faz você se sentir triste? ",
-            "Qual lembrança faz você feliz? ",
-            "O que te incomoda na relação conjugal? ",
-            "Qual foi a maior coisa que você teve que abrir mão nos últimos anos? ",
-            "O que te tira o sono de preocupação? [cite: 68]",
-            "No momento, o que você mais precisa? Conversar ou ficar em silêncio? ",
-            "O que você faria se tivesse 4 horas a mais no seu dia? ",
-            "Vocês brigam mais desde que tiveram filhos? ",
+            "O que faz você se sentir triste?",
+            "Qual lembrança faz você feliz?",
+            "O que te incomoda na relação conjugal?",
+            "Qual foi a maior coisa que você teve que abrir mão nos últimos anos?",
+            "O que te tira o sono de preocupação?",
+            "No momento, o que você mais precisa? Conversar ou ficar em silêncio?",
+            "O que você faria se tivesse 4 horas a mais no seu dia?",
+            "Vocês brigam mais desde que tiveram filhos?",
             "Você é apaixonado(a) pelo(a) seu marido/sua esposa?",
-            "Você gostaria de fazer sexo com mais frequência? ",
-            "Qual foi a coisa mais legal que ele/ela fez por você? ",
+            "Você gostaria de fazer sexo com mais frequência?",
+            "Qual foi a coisa mais legal que ele/ela fez por você?",
             "O que você gosta de fazer para ele/ela?",
-            "Qual a importância da família para você? ",
-            "Quais são os pontos fortes do seu cônjuge? ",
-            "Quais são os pontos fracos do seu cônjuge? ",
-            "O que você gosta de fazer para se divertir? ",
-            "Em que momento você se sente mais seguro? ",
-            "Você se considera carinhoso(a) com ele/ela? ",
-            "Como está a comunicação entre vocês? ",
-            "Quais sentimentos ele/ela desperta em você? ",
-            "Qual o significado dessa relação para você? ",
-            "O plano de vida de vocês é parecido? Vocês buscam as mesmas coisas? ",
-            "Como você se sente sobre as finanças do casal? ",
-            "Do que você tem medo no relacionamento? ",
-            "Você compromete sua felicidade para o sucesso do relacionamento? ",
-            "Cite 3 coisas importantes para um relacionamento ser bem sucedido. ",
-            "Como você gostaria de passar um dia especial com ele/ela? ",
-            "Os seus pais ainda têm influência na sua vida? Isso atrapalha o casal? ",
-            "O que faz você se sentir mais vivo? ",
-            "Você já se sentiu inseguro no relacionamento? ",
+            "Qual a importância da família para você?",
+            "Quais são os pontos fortes do seu cônjuge?",
+            "Quais são os pontos fracos do seu cônjuge?",
+            "O que você gosta de fazer para se divertir?",
+            "Em que momento você se sente mais seguro?",
+            "Você se considera carinhoso(a) com ele/ela?",
+            "Como está a comunicação entre vocês?",
+            "Quais sentimentos ele/ela desperta em você?",
+            "Qual o significado dessa relação para você?",
+            "O plano de vida de vocês é parecido? Vocês buscam as mesmas coisas?",
+            "Como você se sente sobre as finanças do casal?",
+            "Do que você tem medo no relacionamento?",
+            "Você compromete sua felicidade para o sucesso do relacionamento?",
+            "Cite 3 coisas importantes para um relacionamento ser bem sucedido.",
+            "Como você gostaria de passar um dia especial com ele/ela?",
+            "Os seus pais ainda têm influência na sua vida? Isso atrapalha o casal?",
+            "O que faz você se sentir mais vivo?",
+            "Você já se sentiu inseguro no relacionamento?",
             "Você gosta de tomar iniciativa na hora do sexo? Justifique.",
-            "O que você acha mais atraente nele/nela? ",
+            "O que você acha mais atraente nele/nela?",
             "Você acha que é possível 'recuperar' a relação? De que forma?",
-            "Cite uma recordação agradável vivenciados juntos. ",
-            "Você tem dificuldades para se comunicar com seu parceiro? ",
-            "Complete a frase 'amar é ...' ",
+            "Cite uma recordação agradável vivenciados juntos.",
+            "Você tem dificuldades para se comunicar com seu parceiro?",
+            "Complete a frase 'amar é ...'",
             "Segure as mãos do seu parceiro e faça um elogio.",
-            "Segure as mãos do seu parceiro e cante um trecho de uma canção. ",
-            "Planeje algo divertido para fazer com o seu parceiro. Conte o que planejou. ",
-            "Cite 3 coisas que você gosta de fazer quando estão juntos. ",
+            "Segure as mãos do seu parceiro e cante um trecho de uma canção.",
+            "Planeje algo divertido para fazer com o seu parceiro. Conte o que planejou.",
+            "Cite 3 coisas que você gosta de fazer quando estão juntos.",
             "Levante e abrace o seu parceiro forte. Sinta o calor dele e conte o que sentiu.",
-            "Você é inseguro (a) na relação? Por quê? ",
-            "Você acha que seu parceiro é inseguro? Por quê? ",
-            "Você se sente desvalorizado (a) no seu casamento? ",
-            "Você se sente mal amado (a)? Por quê? ",
-            "Cite 3 atitudes que você considera carinhosas e gostaria de receber. ",
-            "Cite um objeto que representa um momento significativo juntos. ",
-            "Qual foi a briga mais recente que tiveram? Como terminou? ",
-            "Defina: Como você é e como ele(a) te vê. ",
+            "Você é inseguro (a) na relação? Por quê?",
+            "Você acha que seu parceiro é inseguro? Por quê?",
+            "Você se sente desvalorizado (a) no seu casamento?",
+            "Você se sente mal amado (a)? Por quê?",
+            "Cite 3 atitudes que você considera carinhosas e gostaria de receber.",
+            "Cite um objeto que representa um momento significativo juntos.",
+            "Qual foi a briga mais recente que tiveram? Como terminou?",
+            "Defina: Como você é e como ele(a) te vê.",
             "De 1 a 10, qual o grau de ciúmes do seu parceiro? E o seu?",
-            "Qual seu nível de satisfação com o compromisso no relacionamento? ",
-            "Qual seu nível de satisfação com o amor? ",
+            "Qual seu nível de satisfação com o compromisso no relacionamento?",
+            "Qual seu nível de satisfação com o amor?",
             "Qual seu nível de satisfação com a intimidade do casal?",
-            "Qual seu nível de satisfação com a confiança? ",
-            "Qual seu nível de satisfação com a comunicação entre vocês? ",
-            "Você acha que tem contribuído para o bem estar dessa relação? ",
-            "O que você considera como a maior fragilidade do casal? ",
+            "Qual seu nível de satisfação com a confiança?",
+            "Qual seu nível de satisfação com a comunicação entre vocês?",
+            "Você acha que tem contribuído para o bem estar dessa relação?",
+            "O que você considera como a maior fragilidade do casal?",
             "Você acha que a relação do casal caiu na rotina?",
             "Você gostaria de ter mais tempo juntos? Como gastaria esse tempo?",
             "O que faz você continuar casado?",
-            "O que te dá mais prazer nessa relação? ",
+            "O que te dá mais prazer nessa relação?",
             "Cite três coisas que não fazem bem no relacionamento.",
             "Em algum momento, você já se colocou no lugar do seu parceiro?",
             "Você sabe demonstrar amor? De que forma?",
             "De que forma seu parceiro demonstra carinho?"
         ];
 
+        let isAnimating = false;
+
         function drawCard() {
-            const cardElement = document.getElementById('card');
-            cardElement.classList.add('flip');
+            if (isAnimating) return;
+            
+            const card = document.getElementById('card');
+            const questionDisplay = document.getElementById('question-text');
+            
+            isAnimating = true;
+
+            // Se a carta já estiver virada, primeiro desvira, troca o texto e vira de novo
+            if (card.classList.contains('is-flipped')) {
+                card.classList.remove('is-flipped');
+                setTimeout(() => {
+                    updateTextAndFlip(card, questionDisplay);
+                }, 400);
+            } else {
+                updateTextAndFlip(card, questionDisplay);
+            }
+        }
+
+        function updateTextAndFlip(card, display) {
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            display.innerText = questions[randomIndex];
             
             setTimeout(() => {
-                const randomIndex = Math.floor(Math.random() * questions.length);
-                cardElement.innerText = questions[randomIndex];
-                cardElement.classList.remove('flip');
-            }, 300);
+                card.classList.add('is-flipped');
+                isAnimating = false;
+            }, 50);
         }
     </script>
 </body>
