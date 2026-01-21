@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baralho Stop | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta "Stop & Calm" */
+            --bg-color: #fff7ed;      /* Laranja muito pálido */
+            --primary: #f97316;       /* Laranja Vibrante (Ação) */
+            --primary-dark: #c2410c;
+            --secondary: #84cc16;     /* Verde Lima (Verso/Calma) */
+            --text: #2d3436;
+            --card-front: #ffffff;
+            --card-back: #a3e635;     
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#ffedd5 2px, transparent 2px);
+            background-size: 25px 25px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(249, 115, 22, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- ÁREA DA CARTA --- */
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+            height: 550px;
+            perspective: 1000px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* LADOS DA CARTA */
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 25px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+            border: 8px solid white;
+        }
+
+        /* VERSO (CAPA/NÚMERO) */
+        .face-back {
+            background: linear-gradient(135deg, #bef264 0%, #84cc16 100%);
+            color: white;
+            transform: rotateY(0deg);
+        }
+
+        .icon-box {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+            background: rgba(255,255,255,0.2);
+            width: 120px; height: 120px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .deck-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-family: 'Patrick Hand', cursive; /* Fonte lúdica se disponível, senão fallback */
+        }
+
+        .tap-hint {
+            margin-top: 30px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        /* FRENTE (ESTRATÉGIA) */
+        .face-front {
+            transform: rotateY(180deg);
+            background-color: #fff;
+            background-image: radial-gradient(#fff7ed 20%, transparent 20%);
+            background-size: 15px 15px;
+            border-color: var(--primary);
+        }
+
+        .strategy-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            filter: drop-shadow(0 4px 0 rgba(0,0,0,0.1));
+        }
+
+        .strategy-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .strategy-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4b5563;
+            line-height: 1.5;
+            background: #fff7ed;
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .step-badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        /* BOTÃO E FOOTER */
+        .btn-draw {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #c2410c;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .btn-draw:hover { transform: translateY(-3px); background-color: #fb923c; }
+        .btn-draw:active { transform: translateY(2px); box-shadow: none; }
+
+        .back-link {
+            color: #b2bec3;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: auto;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* Responsividade */
+        @media (max-width: 400px) {
+            .card-container { width: 100%; height: 450px; }
+            h1 { font-size: 1.6rem; }
+            .strategy-text { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Baralho Stop</h1>
+        <div class="subtitle">Estratégias para Acalmar a Ansiedade 🛑</div>
+    </header>
+
+    <div class="card-container" onclick="flipCard()" data-aos="zoom-in">
+        <div class="card" id="card">
+            
+            <div class="card-face face-back">
+                <div class="icon-box"><i class="fa-solid fa-hand"></i></div> 
+                <div class="deck-title" id="card-number">STOP</div>
+                <div class="tap-hint">Toque para uma estratégia</div>
+            </div>
+
+            <div class="card-face face-front">
+                <div class="step-badge" id="card-step">Técnica</div>
+                <div class="strategy-icon" id="card-icon"><i class="fa-solid fa-star"></i></div>
+                <div class="strategy-title" id="card-title">...</div>
+                <div class="strategy-text" id="card-desc">
+                    Clique no botão abaixo para retirar uma carta!
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="btn-draw" onclick="drawCard(event)">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Nova Carta
+    </button>
+
+    <a href="../listaferramentas.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const cardsData = [
+            {
+                step: "Técnica Principal",
+                title: "STOP",
+                desc: "Imagine uma placa gigante escrita a palavra 'PARE'. 'Pare' imediatamente os pensamentos e comportamentos que não ajudam.",
+                icon: "fa-hand-paper"
+            },
+            {
+                step: "Respiração - Passo 1",
+                title: "A Florzinha",
+                desc: "Cheire a florzinha bem fundo e devagar, ENCHENDO os meus pulmões de ar e contando até 3.",
+                icon: "fa-leaf"
+            },
+            {
+                step: "Respiração - Passo 2",
+                title: "A Velinha",
+                desc: "ASSOPRE a velinha devagar, soltando o ar e contando até 4.",
+                icon: "fa-cake-candles"
+            },
+            {
+                step: "Respiração Alternativa - Passo 1",
+                title: "A Sopa da Mamãe",
+                desc: "Imagine sentindo o cheiro da sopinha da mamãe. RESPIRE profundamente contando até 3.",
+                icon: "fa-bowl-food"
+            },
+            {
+                step: "Respiração Alternativa - Passo 2",
+                title: "Esfriar a Sopa",
+                desc: "A sopa está quente!!! ASSOPRE devagarzinho para esfriar, contando até 4.",
+                icon: "fa-wind"
+            },
+            {
+                step: "Semáforo - Vermelho",
+                title: "PARE",
+                desc: "PARE e observe as suas emoções e os seus pensamentos. Não aja por impulso.",
+                icon: "fa-traffic-light",
+                color: "#ef4444" // Vermelho
+            },
+            {
+                step: "Semáforo - Amarelo",
+                title: "PENSE",
+                desc: "PENSE em um acontecimento que deixou você muito feliz, alegre e animado(a).",
+                icon: "fa-lightbulb",
+                color: "#f59e0b" // Amarelo
+            },
+            {
+                step: "Semáforo - Verde",
+                title: "SIGA",
+                desc: "SIGA em frente. Agora que você se acalmou, você mudou o seu pensamento e o seu sentimento.",
+                icon: "fa-person-walking",
+                color: "#22c55e" // Verde
+            },
+            {
+                step: "Aterramento",
+                title: "OBSERVE",
+                desc: "OBSERVE as coisas ao seu redor. Nomeie tudo o que vê. Depois, pense nas formas geométricas. Por fim, observe as cores. Nessa ordem!",
+                icon: "fa-eye"
+            },
+            {
+                step: "Distração",
+                title: "Música",
+                desc: "OUÇA uma música que ajuda a me animar e distrair.",
+                icon: "fa-music"
+            },
+            {
+                step: "Expressão",
+                title: "Desenho",
+                desc: "DESENHE o que estou sentindo ou algo que esteja passando na minha cabecinha.",
+                icon: "fa-palette"
+            },
+            {
+                step: "Social",
+                title: "Amigos",
+                desc: "BRINQUE e CONVERSE com os amigos.",
+                icon: "fa-user-group"
+            },
+            {
+                step: "Comunicação",
+                title: "Falar",
+                desc: "FALE o que estou sentindo para um adulto de confiança.",
+                icon: "fa-comments"
+            },
+            {
+                step: "Relaxamento",
+                title: "Ler/Escrever",
+                desc: "ESCREVA um pouco ou leia um livro legal.",
+                icon: "fa-book-open"
+            },
+            {
+                step: "Distração",
+                title: "Filme",
+                desc: "ASSISTA um filme ou série que me faça distrair e relaxar.",
+                icon: "fa-film"
+            },
+            {
+                step: "Movimento",
+                title: "Ao Ar Livre",
+                desc: "PRATIQUE uma atividade ao ar livre (andar de bicicleta, caminhar).",
+                icon: "fa-bicycle"
+            },
+            {
+                step: "Social",
+                title: "Parque",
+                desc: "BRINQUE no parque com os meus amigos e colegas.",
+                icon: "fa-tree"
+            },
+            {
+                step: "Afeto",
+                title: "Abraço",
+                desc: "PEÇA um abraço, um carinho para a pessoa que confio.",
+                icon: "fa-hands-holding-child"
+            }
+        ];
+
+        let availableCards = [...cardsData];
+        const cardElement = document.getElementById('card');
+        
+        // Elementos DOM
+        const elTitle = document.getElementById('card-title');
+        const elDesc = document.getElementById('card-desc');
+        const elStep = document.getElementById('card-step');
+        const elIcon = document.getElementById('card-icon');
+        const elNumber = document.getElementById('card-number');
+
+        function drawCard(event) {
+            if(event) event.stopPropagation();
+
+            if (availableCards.length === 0) {
+                alert("Você completou o baralho! Reembaralhando...");
+                availableCards = [...cardsData];
+            }
+
+            // Animação Flip
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
+                setTimeout(() => {
+                    updateContent();
+                    cardElement.classList.add('flipped');
+                }, 600);
+            } else {
+                updateContent();
+                cardElement.classList.add('flipped');
+            }
+        }
+
+        function updateContent() {
+            const randomIndex = Math.floor(Math.random() * availableCards.length);
+            const card = availableCards[randomIndex];
+            
+            availableCards.splice(randomIndex, 1);
+
+            // Atualiza Conteúdo
+            elTitle.innerText = card.title;
+            elDesc.innerText = card.desc;
+            elStep.innerText = card.step;
+            elIcon.innerHTML = `<i class="fa-solid ${card.icon}"></i>`;
+            
+            // Se tiver cor específica (Semáforo), aplica
+            if(card.color) {
+                elIcon.style.color = card.color;
+            } else {
+                elIcon.style.color = "var(--primary)";
+            }
+
+            // Atualiza número no verso (opcional, só visual)
+            elNumber.innerText = `Carta ${cardsData.length - availableCards.length}`;
+        }
+
+        function flipCard() {
+            cardElement.classList.toggle('flipped');
+        }
+    </script>
+
+</body>
+</html>
