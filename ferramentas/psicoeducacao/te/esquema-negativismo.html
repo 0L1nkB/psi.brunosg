@@ -3,409 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Negativismo e Pessimismo - Caderno Terapêutico</title>
+    <title>Negativismo e Pessimismo | Bruno de Souza</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Paleta "Dias Nublados vs Sol" */
-            --paper-line: #f3f4f6;    /* Linhas cinza muito claras */
-            --paper-bg: #ffffff;      
-            --ink-color: #3f3f46;
+            /* Identidade Visual - Tema "Nuvem/Sol" */
+            --bg-color: #f4f4f5;      /* Cinza muito pálido */
+            --primary: #52525b;       /* Cinza Chumbo (Pessimismo/Nuvem) */
+            --primary-dark: #27272a;
+            --accent: #fbc02d;        /* Amarelo Solar (Otimismo Realista) */
+            --text: #2d3436;
+            --card-border: #d4d4d8;
             
-            /* Cores do Esquema (Cinza -> Amarelo) */
-            --primary: #52525b;       /* Cinza Chumbo (O Pessimismo) */
-            --primary-hover: #27272a;
-            --light: #facc15;         /* Amarelo Solar (O Otimismo Realista) */
-            
-            /* Tags de Personas */
-            --tag-marta-bg: #e4e4e7; --tag-marta-text: #3f3f46; /* Cinza (Nuvem) */
-            --tag-ricardo-bg: #fef08a; --tag-ricardo-text: #854d0e; /* Amarelo (Precavido) */
-
-            --radius: 16px;
-            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.06);
+            /* Cores Específicas */
+            --complain-color: #71717a; /* Cinza Médio (Queixa/Marta) */
+            --worry-color: #854d0e;    /* Ocre (Preocupação/Ricardo) */
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            color: var(--ink-color);
-            line-height: 1.6;
-            background-color: var(--paper-bg);
-            /* Efeito Papel Pautado */
-            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
-            background-size: 100% 2rem;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e4e4e7 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Patrick Hand', cursive;
-            color: #27272a;
-        }
-
-        /* --- HEADER --- */
+        /* --- CABEÇALHO --- */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-bottom: 2px dashed #d4d4d8;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
-        }
-
-        .header-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
             text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
         }
 
-        .header-title {
-            font-size: 2.5rem;
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(82, 82, 91, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0px #e4e4e7;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
         }
 
-        .header-subtitle {
-            font-size: 1.2rem;
-            color: #71717a;
-            font-family: 'Patrick Hand', cursive;
-        }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
 
         /* --- CONTAINER --- */
         .main-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+            max-width: 850px;
             width: 100%;
-            display: grid;
-            gap: 35px;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
-        /* --- CARDS (PAPEL) --- */
-        .paper-card {
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: var(--shadow-paper);
-            border: 1px solid #e4e4e7;
-            padding: 2rem;
-            position: relative;
-            transform: rotate(-0.5deg);
-            transition: transform 0.3s;
-        }
-        
-        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
-        
-        /* Nuvem/Sol Decorativo */
-        .paper-card::before {
-            content: '⛅';
-            position: absolute;
-            top: -20px;
-            left: 20px;
-            font-size: 2rem;
-            z-index: 2;
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
         }
 
-        .card-header {
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--paper-line);
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
             padding-bottom: 10px;
         }
 
-        .card-icon { font-size: 1.8rem; color: var(--primary); }
-        .card-title { font-size: 1.8rem; margin: 0; }
-
-        /* --- POST-IT (DEFINIÇÃO) --- */
-        .post-it {
-            background-color: #f4f4f5; /* Cinza Claro */
-            padding: 1.5rem;
-            border-radius: 2px 2px 16px 2px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.3rem;
-            color: #27272a;
-            transform: rotate(1deg);
-            margin: 20px 0;
-            border-left: 5px solid #52525b;
-        }
-
-        /* --- PERSONAS --- */
-        .persona-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .persona-card {
-            background: #fff;
+        .highlight-box {
+            background: #fafafa;
+            border-left: 5px solid var(--primary);
             padding: 20px;
-            border: 2px dashed #d4d4d8;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #3f3f46;
+        }
+
+        /* --- GRID DE PERSONAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 12px;
+            display: flex; flex-direction: column; gap: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
         }
         
-        .persona-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .persona-name { font-size: 1.4rem; font-weight: 700; color: #18181b; }
-        .persona-tag { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
-        
-        .tag-marta { background: var(--tag-marta-bg); color: var(--tag-marta-text); }
-        .tag-ricardo { background: var(--tag-ricardo-bg); color: var(--tag-ricardo-text); }
+        .style-complain { border-color: var(--complain-color); }
+        .style-worry { border-color: var(--worry-color); }
 
-        /* --- STICKERS (3 DIMENSÕES) --- */
-        .sticker-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        .persona-tag {
+            font-size: 0.75rem; text-transform: uppercase; font-weight: 800;
+            padding: 4px 10px; border-radius: 20px; width: fit-content;
         }
-        
-        .sticker-box {
-            background: white; padding: 1.5rem; border-radius: 12px;
-            border: 2px solid #f3f4f6; text-align: center;
-            transition: all 0.3s;
-        }
-        .sticker-box:hover { border-color: var(--light); transform: scale(1.02); }
-        .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .tag-marta { background: #e4e4e7; color: var(--complain-color); }
+        .tag-ricardo { background: #fef08a; color: var(--worry-color); }
 
-        /* --- TRADUTOR INTERATIVO --- */
-        .translator-area {
-            background-color: #fefce8; /* Amarelo muito pálido */
-            padding: 2rem; border-radius: 20px;
-            border: 2px dashed #facc15; text-align: center;
+        /* --- WIDGET: TRADUTOR DE REALIDADE --- */
+        .translator-container {
+            text-align: center;
+            background: #fff9c4; /* Amarelo muito claro */
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #fdd835;
         }
 
-        .btn-translate {
-            background: white; border: 2px solid #fde047;
-            padding: 10px 20px; margin: 5px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; font-weight: 700; color: #854d0e;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 0 #fde047;
-        }
-        
-        .btn-translate:active { box-shadow: 0 0 0 #fde047; transform: translateY(4px); }
-        .btn-translate:hover { background: #fff; border-color: var(--primary); color: var(--primary); }
-
-        .result-bubble {
-            background: white; padding: 20px; border-radius: 20px;
-            margin-top: 20px; border: 2px solid #e4e4e7;
-            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
-            color: #3f3f46; min-height: 100px; display: flex; align-items: center; justify-content: center;
+        .translator-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
 
-        /* --- ACCORDIONS --- */
-        details {
-            background: #f4f4f5; border-radius: 12px; margin-bottom: 10px;
-            border: 1px solid #d4d4d8;
+        .btn-trans {
+            background: white; border: 2px solid #fff59d; color: #f57f17;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
         }
-        summary {
-            padding: 15px; font-weight: 700; cursor: pointer; list-style: none;
-            display: flex; justify-content: space-between; color: #52525b;
-        }
-        summary:hover { background: #e4e4e7; border-radius: 12px; }
-        .details-content { padding: 20px; border-top: 1px dashed #d4d4d8; color: #52525b; }
+        .btn-trans:hover { border-color: var(--accent); background: var(--accent); color: white; }
 
-        /* --- FLASHCARD (FLIP) --- */
-        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
-        .flashcard-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.6s; transform-style: preserve-3d;
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;
         }
-        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
-        
-        .flashcard-front, .flashcard-back {
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin: 0 auto;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
             position: absolute; width: 100%; height: 100%;
             -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 16px; padding: 2rem;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-paper); border: 2px solid;
-        }
-        
-        .flashcard-front {
-            background: #f4f4f5; border-color: #d4d4d8; color: #27272a;
-        }
-        .flashcard-back {
-            background: #fef9c3; border-color: #fde047; color: #854d0e;
-            transform: rotateY(180deg);
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
         }
 
-        /* --- FOOTER PADRÃO --- */
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--accent); color: white; transform: rotateY(180deg); border-color: var(--accent); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        /* --- FOOTER ADAPTADO --- */
         footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            padding: 2rem 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px dashed #b2bec3;
+            padding: 30px 20px;
             margin-top: auto;
         }
         .footer-container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
-        .social-links { display: flex; gap: 1.5rem; }
-        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
-        .social-links a:hover { color: var(--primary); }
+        .footer-brand { color: #636e72; font-weight: 700; font-size: 0.95rem; }
+        .social-links { display: flex; gap: 20px; }
+        .social-links a { color: #b2bec3; font-size: 1.4rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
 
-        @media (max-width: 640px) {
-            .footer-container { flex-direction: column; gap: 1rem; }
-            .persona-grid, .sticker-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .footer-container { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <h1 class="header-title">Negativismo</h1>
-            <p class="header-subtitle">Caderno de Psicoeducação</p>
-        </div>
+    <header data-aos="fade-down">
+        <h1>Negativismo</h1>
+        <div class="subtitle">A lente escura da vida</div>
     </header>
 
     <div class="main-container">
-
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-cloud-showers-heavy card-icon"></i>
-                <h2 class="card-title">A Lente Escura</h2>
-            </div>
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-cloud-showers-heavy"></i> O Que é Isso?</div>
             <p>O Esquema de Negativismo/Pessimismo é o foco excessivo nos aspectos negativos da vida (dor, morte, perda, conflito) enquanto se minimiza os positivos. É a expectativa constante de que algo vai dar errado.</p>
-            
-            <div class="post-it">
-                <i class="fas fa-thumbtack" style="color:#52525b; margin-right:10px;"></i>
-                "Não se anime muito, porque algo ruim vai acontecer logo em seguida. É melhor esperar o pior para não se decepcionar."
+            <div class="highlight-box">
+                <i class="fa-solid fa-umbrella"></i> <strong>A Regra:</strong> "Não se anime muito, porque algo ruim vai acontecer logo em seguida. É melhor esperar o pior para não se decepcionar."
             </div>
         </div>
 
-        <div class="paper-card" style="transform: rotate(0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-users card-icon"></i>
-                <h2 class="card-title">Espelhos da Vida Real</h2>
-            </div>
-            <p>Como o foco no negativo se manifesta:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-users"></i> Formas de Enfrentamento</div>
             
-            <div class="persona-grid">
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Marta</span>
-                        <span class="persona-tag tag-marta">A Nuvem Negra</span>
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <div class="symptom-item style-complain">
+                        <span class="persona-tag tag-marta">Marta (A Nuvem Negra)</span>
+                        <div><strong>Comportamento:</strong> Reclama de tudo. Sol é calor demais, chuva é umidade. Tem medo de sentir alegria porque "felicidade de pobre dura pouco".</div>
                     </div>
-                    <p>Marta reclama de tudo. Se faz sol, reclama do calor. Se chove, da umidade. Ela tem medo de sentir alegria porque acredita que "felicidade de pobre dura pouco". Ela foca sempre no que falta.</p>
-                    <p style="font-size:0.85rem; color:#52525b;"><strong>Comportamento:</strong> Rendição (Queixa Crônica)</p>
-                </div>
-
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Ricardo</span>
-                        <span class="persona-tag tag-ricardo">O Precavido</span>
+                    <div class="symptom-item style-complain">
+                        <div><strong>Consequência:</strong> Afasta as pessoas, amargura, incapacidade de aproveitar momentos bons.</div>
                     </div>
-                    <p>Ricardo vive obcecado com segurança. Ele checa tudo obsessivamente para evitar desastres. Ele diz que é "realista", mas na verdade vive tenso, incapaz de relaxar e curtir o momento.</p>
-                    <p style="font-size:0.85rem; color:#854d0e;"><strong>Comportamento:</strong> Controle (Preocupação)</p>
+                </div>
+
+                <div class="symptom-column">
+                    <div class="symptom-item style-worry">
+                        <span class="persona-tag tag-ricardo">Ricardo (O Precavido)</span>
+                        <div><strong>Comportamento:</strong> Obsessão com segurança. Checa tudo para evitar desastres. Diz que é "realista", mas vive tenso.</div>
+                    </div>
+                    <div class="symptom-item style-worry">
+                        <div><strong>Consequência:</strong> Ansiedade crônica, incapacidade de relaxar, tensão muscular.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-shapes card-icon"></i>
-                <h2 class="card-title">Sintomas da Nuvem</h2>
-            </div>
-            <div class="sticker-grid">
-                <div class="sticker-box">
-                    <span class="sticker-icon">⛈️</span>
-                    <h4>Catastrofização</h4>
-                    <p>Diante de uma incerteza, seu cérebro sempre escolhe o pior cenário possível como o mais provável.</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🕶️</span>
-                    <h4>Filtragem</h4>
-                    <p>Você ignora 10 elogios e foca na única crítica. O positivo é "sorte", o negativo é "realidade".</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">⚠️</span>
-                    <h4>Medo do Erro</h4>
-                    <p>A crença de que um passo em falso vai causar uma ruína financeira, humilhação ou perda irreparável.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="paper-card" style="transform: rotate(-0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-sync card-icon"></i>
-                <h2 class="card-title">Tradutor de Realidade</h2>
-            </div>
-            <p>O pessimismo mente. Vamos traduzir o "Medo" em "Probabilidade Real":</p>
-            
-            <div class="translator-area">
-                <p style="margin-bottom:15px; font-weight:700;">O que você pensa?</p>
-                <div>
-                    <button class="btn-translate" onclick="translateNeed('ruim')">"Vai dar tudo errado."</button>
-                    <button class="btn-translate" onclick="translateNeed('alegria')">"Se eu rir agora, vou chorar depois."</button>
-                    <button class="btn-translate" onclick="translateNeed('bom')">"Isso é bom demais para ser verdade."</button>
-                </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-language"></i> Tradutor de Realidade</div>
+            <div class="translator-container">
+                <p style="font-weight:700; color:#f57f17; margin-bottom:15px;">O pessimismo mente. Vamos traduzir o medo em probabilidade real:</p>
                 
-                <div id="translator-bubble" class="result-bubble">
-                    Toque em um pensamento para traduzir...
+                <div>
+                    <button class="btn-trans" onclick="translateNeed('ruim')">"Vai dar tudo errado."</button>
+                    <button class="btn-trans" onclick="translateNeed('alegria')">"Se eu rir agora, vou chorar depois."</button>
+                    <button class="btn-trans" onclick="translateNeed('bom')">"Isso é bom demais para ser verdade."</button>
+                </div>
+
+                <div class="translator-display" id="trans-res">
+                    <span style="color:#b0bec5; font-style:italic;">Clique no pensamento...</span>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-brain card-icon"></i>
-                <h2 class="card-title">Conceitos Clínicos</h2>
-            </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> Por Dentro da Mente</div>
             
-            <details>
-                <summary>🧠 Neurobiologia: O Viés Negativo <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Evolutivamente, focar no perigo (o tigre na moita) nos manteve vivos. Seu cérebro é "velcro" para experiências negativas e "teflon" para positivas. O esquema hiperativa esse mecanismo de sobrevivência.</p>
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-magnet"></i>
+                    <h4>Viés Negativo</h4>
+                    <p>Seu cérebro é "velcro" para experiências negativas e "teflon" para positivas. Evolutivamente isso servia para sobreviver, mas hoje gera ansiedade.</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>O objetivo é o <strong>Otimismo Realista</strong>. Não é ignorar problemas (pensamento mágico), mas olhar para os dados reais. Treinamos o cérebro a notar as coisas boas (Diário de Gratidão) para equilibrar a balança.</p>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-filter"></i>
+                    <h4>Filtragem</h4>
+                    <p>Você ignora 10 elogios e foca na única crítica. O positivo é visto como "sorte" ou "exceção", o negativo como "realidade".</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>⚠️ A Superstição Emocional <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Você acredita que "se preocupar" evita que coisas ruins aconteçam (pensamento mágico). Na verdade, a preocupação só rouba a sua paz hoje, ela não muda o resultado de amanhã.</p>
-                </div>
-            </details>
+            </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-adjust card-icon"></i>
-                <h2 class="card-title">Vire o Pensamento</h2>
-            </div>
-            <p>Toque no cartão quando o medo surgir:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-rotate"></i> Vire o Pensamento</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque no cartão para ativar o Adulto Saudável</p>
             
-            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Negativismo</h3>
-                        <p style="margin-top:10px;">"Não se iluda. Olha em volta, o mundo é horrível. Se isso der certo, outra coisa vai dar errado. Melhor ficar preparado para o golpe."</p>
-                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#52525b; font-size:1.5rem;"></i>
-                    </div>
-                    <div class="flashcard-back">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
-                        <p style="margin-top:10px;">"O mundo tem luz e sombra. Focar só na sombra não me protege, só me impede de viver a luz. Posso lidar com problemas se eles surgirem, não preciso sofrer por antecipação. Vou aproveitar o agora."</p>
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-umbrella" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">Voz do Negativismo</h3>
+                            <p style="margin-top:10px; font-size:0.9rem; color:#555;">"Não se iluda. O mundo é perigoso. Se isso der certo, outra coisa vai dar errado. Melhor ficar preparado para o golpe."</p>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1.1rem; margin-bottom:10px;">Adulto Saudável</h3>
+                            <p style="font-size:0.9rem;">"O mundo tem luz e sombra. Focar só na sombra não me protege, só me impede de viver a luz. Posso lidar com problemas se surgirem, não preciso sofrer por antecipação. Vou aproveitar o agora."</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <center>
+            <a href="../../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
 
     </div>
 
@@ -415,31 +371,39 @@
                 &copy; 2026 Bruno de Souza
             </div>
             <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
+
         function translateNeed(type) {
-            const bubble = document.getElementById('translator-bubble');
+            const display = document.getElementById('trans-res');
             let text = "";
+            let color = "";
             
             if (type === 'ruim') {
-                text = "✨ Tradução: 'Estou com medo, mas estatisticamente a chance de dar certo (ou ser neutro) é maior do que a catástrofe.'";
+                text = "✨ <strong>Tradução:</strong> 'Estou com medo, mas estatisticamente a chance de dar certo (ou ser neutro) é maior do que a catástrofe.'";
+                color = "#52525b";
             } else if (type === 'alegria') {
-                text = "✨ Tradução: 'Alegria não atrai desgraça. Eventos ruins acontecem aleatoriamente, não como punição por eu estar feliz.'";
+                text = "✨ <strong>Tradução:</strong> 'Alegria não atrai desgraça. Eventos ruins acontecem aleatoriamente, não como punição por eu estar feliz.'";
+                color = "#fbc02d";
             } else if (type === 'bom') {
-                text = "✨ Tradução: 'Coisas boas acontecem e eu mereço desfrutar delas. Vou aceitar esse momento sem procurar o defeito.'";
+                text = "✨ <strong>Tradução:</strong> 'Coisas boas acontecem e eu mereço desfrutar delas. Vou aceitar esse momento sem procurar o defeito.'";
+                color = "#854d0e";
             }
             
-            bubble.style.opacity = 0;
+            display.style.opacity = 0;
+            display.style.borderTop = `5px solid ${color}`;
+            
             setTimeout(() => {
-                bubble.innerHTML = text;
-                bubble.style.opacity = 1;
-                bubble.style.transition = "opacity 0.3s";
+                display.innerHTML = `<p style="font-size:1.1rem; color:#2d3436;">${text}</p>`;
+                display.style.opacity = 1;
             }, 200);
         }
     </script>
