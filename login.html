@@ -3,200 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Restrito | Bruno de Souza</title>
-    
+    <title>Login | Área Restrita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-color: #f0f8ff;
-            --primary: #6c5ce7; /* Roxo principal do sistema */
-            --primary-dark: #5649b9;
-            --text: #2d3436;
-            --error: #ff7675;
-        }
-
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Quicksand', sans-serif;
-            background-color: var(--bg-color);
+            background-color: #f0f8ff;
             background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
             background-size: 20px 20px;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--text);
         }
 
         .login-card {
             background: white;
             padding: 40px;
-            border-radius: 25px;
-            border: 3px dashed #b2bec3;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            text-align: center;
-            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 100%;
-            transition: transform 0.3s ease;
-            position: relative;
+            max-width: 400px;
+            text-align: center;
+            border: 3px dashed #6c5ce7;
         }
 
-        .login-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        /* Ícone de Cadeado Animado */
-        .icon-lock {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            background: #f0f3ff;
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        h2 { margin: 0 0 10px 0; font-weight: 800; color: var(--text); }
-        p { margin: 0 0 25px 0; color: #636e72; font-weight: 500; }
+        h1 { color: #6c5ce7; margin-bottom: 5px; font-weight: 800; }
+        p { color: #636e72; margin-bottom: 30px; font-size: 0.95rem; }
 
         .input-group {
             position: relative;
             margin-bottom: 20px;
         }
 
-        .login-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #dfe6e9;
-            border-radius: 15px;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box; /* Garante que o padding não aumente a largura */
-            text-align: center;
-        }
-
-        .login-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
-        }
-
-        .btn-login {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-            box-shadow: 0 4px 0 var(--primary-dark);
-        }
-
-        .btn-login:hover {
-            background: var(--primary-dark);
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #483d8b;
-        }
-
-        .btn-login:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-
-        .error-msg {
-            color: var(--error);
-            font-weight: 700;
-            margin-top: 15px;
-            display: none;
-            animation: shake 0.3s;
-        }
-
-        .footer-text {
-            margin-top: 30px;
-            font-size: 0.8rem;
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
             color: #b2bec3;
         }
 
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+        input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
         }
+
+        input:focus { border-color: #6c5ce7; }
+
+        button {
+            width: 100%;
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover { background: #5b4cc4; transform: translateY(-2px); }
+
+        .error { color: #ef5350; font-size: 0.9rem; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
 
     <div class="login-card">
-        <div class="icon-lock"><i class="fa-solid fa-lock"></i></div>
-        <h2>Área Restrita</h2>
-        <p>Olá, Psi Bruno! Digite sua chave.</p>
+        <h1>Área do Psicólogo</h1>
+        <p>Insira sua senha para acessar as ferramentas.</p>
         
-        <div class="input-group">
-            <input type="password" id="password" class="login-input" placeholder="Senha de acesso">
-        </div>
-        
-        <button type="button" class="btn-login" onclick="checkLogin()">
-            <i class="fa-solid fa-key"></i> ACESSAR
-        </button>
-        
-        <div class="error-msg" id="error">
-            <i class="fa-solid fa-circle-xmark"></i> Senha incorreta.
-        </div>
-
-        <div class="footer-text">
-            Uso exclusivo profissional
-        </div>
+        <form onsubmit="realizarLogin(event)">
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="senha" placeholder="Senha de acesso" required>
+            </div>
+            <button type="submit">Entrar</button>
+            <div class="error" id="msg-erro">Senha incorreta. Tente novamente.</div>
+        </form>
     </div>
 
     <script>
-        const SENHA_CORRETA = "psi123"; 
-
-        function checkLogin() {
-            var input = document.getElementById('password');
-            var error = document.getElementById('error');
+        function realizarLogin(e) {
+            e.preventDefault();
+            const senha = document.getElementById('senha').value;
             
-            if (input.value === SENHA_CORRETA) {
-                // Efeito visual de sucesso antes de redirecionar
-                var btn = document.querySelector('.btn-login');
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> SUCESSO!';
-                btn.style.backgroundColor = '#00b894';
-                btn.style.boxShadow = '0 4px 0 #008f72';
-                
-                setTimeout(() => {
-                    // Ajuste o caminho conforme sua estrutura de pastas
-                    window.location.href = "ferramentas/listaferramentas.html"; 
-                }, 500);
+            // SENHA SIMPLES (Você pode alterar aqui)
+            if (senha === "psi2026") { 
+                localStorage.setItem('psi_logged_in', 'true');
+                window.location.href = "ferramentas/listaferramentas.html";
             } else {
-                error.style.display = 'block';
-                input.value = '';
-                input.style.borderColor = '#ff7675';
-                input.focus();
-                
-                // Remove o erro após 3 segundos
-                setTimeout(() => {
-                    error.style.display = 'none';
-                    input.style.borderColor = '#dfe6e9';
-                }, 3000);
+                const erro = document.getElementById('msg-erro');
+                erro.style.display = 'block';
+                // Animação de erro
+                const card = document.querySelector('.login-card');
+                card.style.transform = 'translateX(5px)';
+                setTimeout(() => card.style.transform = 'translateX(-5px)', 100);
+                setTimeout(() => card.style.transform = 'none', 200);
             }
         }
-
-        // Permitir apertar Enter para entrar
-        document.getElementById('password').addEventListener("keypress", function(e) {
-            if (e.key === "Enter") checkLogin();
-        });
     </script>
 
 </body>
