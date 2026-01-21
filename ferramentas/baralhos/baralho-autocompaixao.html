@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocompaixão | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta "Abraço Quente" */
+            --bg-color: #fff1f2;      /* Rosa muito pálido */
+            --primary: #f43f5e;       /* Rosa Vibrante (Amor) */
+            --primary-dark: #be123c;
+            --accent: #fca5a5;        /* Rosa Suave */
+            --text: #2d3436;
+            --card-front: #ffffff;
+            --card-back: #fda4af;     /* Rosa Médio */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#fecdd3 2px, transparent 2px);
+            background-size: 25px 25px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(244, 63, 94, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- ÁREA DA CARTA --- */
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+            height: 550px;
+            perspective: 1000px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* LADOS DA CARTA */
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 25px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            border: 8px solid white;
+        }
+
+        /* VERSO (CAPA) */
+        .face-back {
+            background: linear-gradient(135deg, var(--primary) 0%, #fda4af 100%);
+            color: white;
+            transform: rotateY(0deg);
+        }
+
+        .icon-box {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+            background: rgba(255,255,255,0.2);
+            width: 120px; height: 120px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .deck-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .tap-hint {
+            margin-top: 30px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        /* FRENTE (PERGUNTA) */
+        .face-front {
+            transform: rotateY(180deg);
+            background-color: #fff;
+            /* Padrão sutil de corações */
+            background-image: radial-gradient(#ffe4e6 20%, transparent 20%);
+            background-size: 15px 15px;
+        }
+
+        .decoration {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            filter: drop-shadow(0 2px 0 rgba(0,0,0,0.1));
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3436;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 0.9rem;
+            color: #b2bec3;
+            font-weight: 700;
+            background: #f8f9fa;
+            padding: 5px 12px;
+            border-radius: 12px;
+            border: 1px solid #dfe6e9;
+        }
+
+        /* BOTÃO E FOOTER */
+        .btn-draw {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #e11d48;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .btn-draw:hover { transform: translateY(-3px); background-color: #f43f5e; }
+        .btn-draw:active { transform: translateY(2px); box-shadow: none; }
+
+        .back-link {
+            color: #b2bec3;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: auto;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* Responsividade */
+        @media (max-width: 400px) {
+            .card-container { width: 100%; height: 450px; }
+            h1 { font-size: 1.6rem; }
+            .question-text { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Autocompaixão</h1>
+        <div class="subtitle">Gentileza consigo mesmo 💖</div>
+    </header>
+
+    <div class="card-container" onclick="flipCard()" data-aos="zoom-in">
+        <div class="card" id="card">
+            
+            <div class="card-face face-back">
+                <div class="icon-box"><i class="fa-solid fa-hand-holding-heart"></i></div> 
+                <div class="deck-title">CUIDAR<br>DE SI</div>
+                <div class="tap-hint">Toque para um convite</div>
+            </div>
+
+            <div class="card-face face-front">
+                <div class="decoration"><i class="fa-solid fa-spa"></i></div>
+                <div class="card-number" id="counter">∞</div>
+                <div class="question-text" id="q-text">
+                    Clique no botão abaixo para retirar uma carta de autocompaixão.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="btn-draw" onclick="drawCard(event)">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Nova Carta
+    </button>
+
+    <a href="../listaferramentas.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const questions = [
+            [cite_start]"O que você entende por autocompaixão? [cite: 1956]",
+            [cite_start]"Como você pode mostrar para os outros a importância da autocompaixão? [cite: 1841]",
+            "Quem foi a pessoa que lhe mostrou alguma lição importante sobre autocompaixão? [cite_start]Comente. [cite: 1842]",
+            [cite_start]"O que pode fazer você sentir compaixão por si mesmo? [cite: 1843]",
+            [cite_start]"O que faz você se sentir seguro? [cite: 1844]",
+            "Quais são os ingredientes fundamentais para o seu bem-estar? [cite_start]Comente. [cite: 1845]",
+            [cite_start]"Como você pode lidar de forma mais generosa com o que sente no seu corpo? [cite: 1846]",
+            [cite_start]"Quais são os benefícios da aceitação daquilo que não se pode mudar? [cite: 1847]",
+            [cite_start]"O que você deve e o que não deve aceitar na sua vida? [cite: 1848]",
+            "Quando você sente seu coração aquecido? [cite_start]Como pode aumentar essa experiência? [cite: 1849]",
+            "O que é empatia para você? [cite_start]Como usá-la a seu favor? [cite: 1850]",
+            "Quais foram os principais atos de bondade que já teve com você mesmo? [cite_start]E com os outros? [cite: 1851]",
+            "Você pratica atenção no momento presente? [cite_start]Quais são os benefícios disso? [cite: 1854]",
+            [cite_start]"Como você pode encarar os acontecimentos da vida sem julgá-los? [cite: 1855]",
+            [cite_start]"O que você precisa fazer para sentir orgulho da vida que leva? [cite: 1856]",
+            [cite_start]"Como você pode encontrar mais equilíbrio na sua vida? [cite: 1857]",
+            "Quais são as coisas que mais acalmam você? [cite_start]Comente. [cite: 1858]",
+            [cite_start]"Ser mais tolerante impactaria positivamente a sua vida? [cite: 1859]",
+            "Você se sente parte do universo? Tem momentos de conexão com a natureza? [cite_start]Como se sente? [cite: 1860]",
+            "Você já fez carinho em si mesmo? [cite_start]Quais benefícios esse ato pode oferecer? [cite: 1862]",
+            "Você dedica um tempo para massagear seu corpo? [cite_start]Qual é a importância desse ato? [cite: 1863]",
+            "Você já ficou descalço e sentiu a sensação dos pés no chão? [cite_start]A que essa sensação remete? [cite: 1864]",
+            [cite_start]"O que você pode fazer para aumentar seu autocuidado? [cite: 1865]",
+            "Quais são seus autocuidados? [cite_start]O que eles lhe proporcionam? [cite: 1866]",
+            [cite_start]"Qual presente você gostaria de comprar para si mesmo? [cite: 1867]",
+            "Ao final do dia, você já refletiu sobre as coisas boas que aconteceram? [cite_start]Como se sentiu? [cite: 1868]",
+            [cite_start]"Quais atividades desagradáveis você poderia eliminar da sua vida a partir de hoje? [cite: 1869]",
+            "Se você pudesse escolher coisas agradáveis para fazer na semana, quais atividades seriam? [cite_start]Comente. [cite: 1870]",
+            [cite_start]"Quais coisas você pode começar a fazer por si mesmo a partir de hoje? [cite: 1873]",
+            [cite_start]"Se você fosse escrever uma carta bondosa para si mesmo, o que escreveria? [cite: 1874]",
+            [cite_start]"Como você pode falar de forma bondosa e construtiva sobre seus defeitos? [cite: 1875]",
+            [cite_start]"Se precisasse convencer outra pessoa sobre seu valor, o que você falaria? [cite: 1876]",
+            "Em quais atividades você costuma dar o seu melhor? [cite_start]Por quê? [cite: 1877]",
+            [cite_start]"Quais são as principais coisas que você acha que as pessoas admiram em você? [cite: 1878]",
+            "Quais são seus sonhos? [cite_start]Você se acha merecedor de alcançá-los? [cite: 1879]",
+            [cite_start]"Quanto tempo você dedica para passar com si mesmo? [cite: 1880]",
+            [cite_start]"Se tivesse que falar cinco frases bondosas para você, quais seriam? [cite: 1881]",
+            [cite_start]"Quais são suas principais habilidades? [cite: 1883]",
+            [cite_start]"Quais são as coisas que você merece? [cite: 1884]",
+            "Quais foram os momentos mais especiais da sua vida? [cite_start]Por quê? [cite: 1885]",
+            "Quando você se sente leve? [cite_start]O que você faz para se sentir leve? [cite: 1886]",
+            [cite_start]"Quais atos de bondade você pode começar a fazer por você? [cite: 1887]",
+            "O que o faz se sentir bem fazendo? [cite_start]Por quê? [cite: 1888]",
+            [cite_start]"Quais são as coisas que lhe fazem bem? [cite: 1889]",
+            "Você se considera resiliente? [cite_start]Como você pode se tornar ainda mais resiliente? [cite: 1890]",
+            [cite_start]"Qual momento difícil da sua vida você viveria novamente pelo aprendizado que lhe proporcionou? [cite: 1891]",
+            [cite_start]"De que forma os momentos difíceis da sua vida fizeram você evoluir? [cite: 1893]",
+            [cite_start]"Se você pudesse viver algo novamente, o que seria? [cite: 1896]",
+            "Com quais pessoas você se sente seguro hoje? [cite_start]Por quê? [cite: 1897]",
+            "Com quais pessoas você se sentia seguro quando era criança? [cite_start]Por quê? [cite: 1898]",
+            "Em quais lugares você se sente seguro hoje? [cite_start]Como são esses lugares? [cite: 1899]",
+            "Em quais lugares você se sentia seguro quando era criança? [cite_start]Como eram esses lugares? [cite: 1900]",
+            "Quem é a pessoa que mais ama você? [cite_start]Por quê? [cite: 1901]",
+            "Você se considera merecedor de ser amado? [cite_start]Por quê? [cite: 1902]",
+            "Como o medo limita sua vida? [cite_start]Como seria se você enfrentasse seus medos? [cite: 1903]",
+            "O que você faz para se proteger do que tem medo? Isso funciona? [cite_start]Quais benefícios isso lhe traz? [cite: 1905]",
+            "Quais coisas você tem medo de mudar? [cite_start]Por quê? [cite: 1906]",
+            "Você se aceita ou se despreza na maior parte do tempo? [cite_start]O que isso gera na sua vida? [cite: 1907]",
+            "Você aceita seu sofrimento? [cite_start]O que acontece? [cite: 1908]",
+            [cite_start]"O que você faz quando está sofrendo? [cite: 1909]",
+            "Por que você acha que a crítica e a punição são utilizadas? [cite_start]Existem estratégias mais adequadas? [cite: 1910]",
+            [cite_start]"Como você se sente após ser punitivo e crítico demais consigo mesmo? [cite: 1911]",
+            [cite_start]"Quando você se critica de forma dura e grosseira, o que acontece? [cite: 1912]",
+            "Você utiliza uma postura punitiva com você mesmo? [cite_start]Ela é a melhor forma de mudar as coisas? [cite: 1913]",
+            "O que lhe faz mal hoje? [cite_start]Existe algo que possa fazer para isso mudar? [cite: 1915]",
+            "Do que você precisa se libertar? [cite_start]O que isso proporcionará na sua vida? [cite: 1916]",
+            "Quais coisas da vida lhe trazem alívio? [cite_start]São coisas benéficas para sua vida? [cite: 1917]",
+            [cite_start]"O que afasta você de viver hoje a vida que gostaria? [cite: 1918]",
+            [cite_start]"Se você se encontrasse com sua versão atual daqui a 20 anos, o que diria? [cite: 1919]",
+            [cite_start]"Se você se encontrasse com sua criança interior, o que ela lhe diria? [cite: 1920]",
+            [cite_start]"Do que você se arrepende? [cite: 1921]",
+            [cite_start]"Quais são as barreiras que você cria na sua vida? [cite: 1922]",
+            "Do que você se culpa hoje? [cite_start]Você fez de maneira intencional? [cite: 1923]",
+            "Você se culpa pelas coisas que aconteceram na sua infância? [cite_start]Por quê? [cite: 1925]",
+            "Quais são as marcas que seu corpo carrega? [cite_start]O que elas dizem sobre a sua história? [cite: 1926]",
+            [cite_start]"Se você pudesse se encontrar com você na sua infância, qual seria a gentileza que faria para esse seu eu criança? [cite: 1927]",
+            [cite_start]"Como é a relação com seu corpo? [cite: 1928]",
+            "Você se compara com os outros? [cite_start]Usa essas comparações como motivação ou como desencorajamento? [cite: 1929]",
+            [cite_start]"Por que é importante aceitar a vulnerabilidade? [cite: 1930]",
+            [cite_start]"Por que é importante aceitar a imperfeição? [cite: 1931]",
+            [cite_start]"O que a vergonha realmente pode causar na vida das pessoas? [cite: 1932]",
+            [cite_start]"Por que você acha que muitas pessoas têm medo da vergonha? [cite: 1933]",
+            [cite_start]"O que você pensa sobre vergonha? [cite: 1935]",
+            "Quais são seus defeitos? [cite_start]Só você tem defeitos? [cite: 1936]",
+            "Quais são as coisas que lhe fazem mal? [cite_start]O que faz você continuar com elas? [cite: 1937]",
+            "Como você critica os outros? [cite_start]Como você critica a si mesmo? [cite: 1938]",
+            "Você faz o que realmente quer? [cite_start]O que o influencia? [cite: 1939]",
+            "Você diz não aos outros? [cite_start]O que isso gera na sua vida? [cite: 1940]",
+            "Você faz o que realmente quer ou o que agrada aos outros? [cite_start]Por quê? [cite: 1941]",
+            "Quais são suas prioridades? [cite_start]Elas estão direcionadas a você ou aos outros? [cite: 1942]",
+            "Você luta para que seus direitos sejam respeitados? [cite_start]Como? [cite: 1943]",
+            "Você acha que tem mais ou menos direitos que os outros? [cite_start]Por quê? [cite: 1945]",
+            "O que você permite que os outros façam com você? [cite_start]É justo? [cite: 1948]",
+            "Se uma pessoa importante comete algum erro, o que você faz? [cite_start]E quando essa pessoa é você? [cite: 1949]",
+            "Se uma pessoa importante está passando por alguma dificuldade, o que você faz? [cite_start]E quando essa pessoa é você? [cite: 1950]",
+            "Você se trata como trata os outros? [cite_start]Por quê? [cite: 1951]",
+            "O que costuma fazer de bom por você? [cite_start]Como se sente nessas horas? [cite: 1952]",
+            "Você cuida mais de si ou dos outros? [cite_start]Por quê? [cite: 1953]",
+            "Você ama mais a si mesmo ou mais os outros? [cite_start]Por quê? [cite: 1954]",
+            "O que você enxerga de bom em si mesmo? [cite_start]E de ruim? [cite: 1955]"
+        ];
+
+        let availableCards = [...questions];
+        const cardElement = document.getElementById('card');
+        const textElement = document.getElementById('q-text');
+        const counterElement = document.getElementById('counter');
+
+        function drawCard(event) {
+            // Evita propagação do clique
+            if(event) event.stopPropagation();
+
+            // Se acabou, reinicia
+            if (availableCards.length === 0) {
+                alert("Você percorreu todo o caminho da autocompaixão! O baralho será reembaralhado.");
+                availableCards = [...questions];
+            }
+
+            // Animação de troca
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
+                
+                setTimeout(() => {
+                    updateContent();
+                    cardElement.classList.add('flipped');
+                }, 600);
+            } else {
+                updateContent();
+                cardElement.classList.add('flipped');
+            }
+        }
+
+        function updateContent() {
+            const randomIndex = Math.floor(Math.random() * availableCards.length);
+            const question = availableCards[randomIndex];
+            
+            availableCards.splice(randomIndex, 1);
+
+            textElement.innerText = question;
+            counterElement.innerText = `Restam: ${availableCards.length}`;
+        }
+
+        function flipCard() {
+            cardElement.classList.toggle('flipped');
+        }
+    </script>
+
+</body>
+</html>
