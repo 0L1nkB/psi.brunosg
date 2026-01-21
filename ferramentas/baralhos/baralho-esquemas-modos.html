@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esquemas e Modos | Bruno de Souza</title>
     
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../login.html";
+        }
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -17,7 +23,6 @@
             /* Cores dos Tipos */
             --color-esquema: #ef4444; /* Vermelho para Esquemas (Alerta) */
             --color-modo: #3b82f6;    /* Azul para Modos (Estados) */
-            --color-saudavel: #10b981; /* Verde para Adulto Saudável */
             
             --card-front: #ffffff;
             --card-back-esquema: #fca5a5;
@@ -114,7 +119,7 @@
         .card-container {
             width: 100%;
             max-width: 450px;
-            height: 580px; /* Cartas mais altas para caber o texto */
+            height: 580px;
             perspective: 1000px;
             margin-bottom: 30px;
             cursor: pointer;
@@ -145,7 +150,7 @@
             background: white;
         }
 
-        /* FRENTE (TÍTULO) */
+        /* FRENTE */
         .face-front {
             background-image: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);
         }
@@ -188,11 +193,11 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* VERSO (DESCRIÇÃO) */
+        /* VERSO */
         .face-back {
             transform: rotateY(180deg);
             background: white;
-            border-top: 10px solid var(--color-esquema); /* Cor dinâmica */
+            border-top: 10px solid var(--color-esquema);
             justify-content: flex-start;
             padding-top: 50px;
             text-align: left;
@@ -271,17 +276,17 @@
     <div class="card-container" onclick="flipCard()" data-aos="zoom-in">
         <div class="card" id="card">
             
-            <div class="card-face face-front">
+            <div class="face face-front">
                 <div class="card-tag" id="cardTag">Esquema #1</div>
                 <div class="card-icon" id="cardIcon"><i class="fa-solid fa-person-falling-burst"></i></div>
-                <div class="card-title" id="cardTitle">ABANDONO / INSTABILIDADE</div>
+                <div class="card-title" id="cardTitle">ABANDONO</div>
                 <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Toque para ler a descrição</div>
             </div>
 
-            <div class="card-face face-back" id="cardBackFace">
+            <div class="face face-back" id="cardBackFace">
                 <div class="back-title" id="backTitle">ABANDONO</div>
                 <div class="description-box" id="cardDesc">
-                    Acho que as pessoas são instáveis e indignas de confiança. Tenho medo de perder quem amo ou ser abandonado. As pessoas são imprevisíveis. Fico incomodado se deixado sozinho.
+                    Acho que as pessoas são instáveis e indignas de confiança. Tenho medo de perder quem amo.
                 </div>
             </div>
 
@@ -298,39 +303,39 @@
     <script>
         AOS.init();
 
-        // --- BANCO DE DADOS (Extraído do PDF) ---
+        // --- BANCO DE DADOS ---
         const db = {
             esquemas: [
-                { id: 1, title: "Abandono / Instabilidade", icon: "fa-person-falling-burst", text: "Acho que as pessoas são instáveis e indignas de confiança. Tenho medo de perder quem amo ou ser abandonado. As pessoas são imprevisíveis. Fico incomodado se deixado sozinho. Se eu for eu mesmo me deixarão." },
-                { id: 2, title: "Desconfiança / Abuso", icon: "fa-shield-halved", text: "Penso que as pessoas irão me machucar, abusar, humilhar, enganar, manipular ou aproveitar-se de modo a me prejudicar intencionalmente. Estou sempre alerta. Desconfio das intenções dos outros." },
-                { id: 3, title: "Privação Emocional", icon: "fa-glass-water-droplet", text: "Acho que as pessoas não serão capazes de suprir minhas necessidades de atenção, afeto, carinho. Na maior parte do tempo, não tenho ninguém para me compreender, escutar ou dar uma força. 'Não posso contar com as pessoas'." },
-                { id: 4, title: "Defectividade / Vergonha", icon: "fa-face-frown-open", text: "Sinto que sou defeituoso, mau, indesejado, inferior e que não mereço amor. Sinto-me rejeitado, hipersensível a críticas e comparações, inseguro e com vergonha se me apontam defeitos. Ninguém vai querer estar comigo se me conhecer bem." },
-                { id: 5, title: "Isolamento Social / Alienação", icon: "fa-user-astronaut", text: "Sinto-me diferente dos outros, não me encaixo ou pertenço a grupos ou comunidade. Ninguém me entende realmente. Minha família sempre foi diferente. Sinto-me alienado das pessoas." },
-                { id: 6, title: "Dependência / Incompetência", icon: "fa-baby-carriage", text: "Sinto que não consigo dar conta das responsabilidades do cotidiano, problemas do dia a dia e decisões sem considerável ajuda. Sinto-me desamparado. Preciso de ajuda, não confio na minha capacidade para resolver problemas." },
-                { id: 7, title: "Vulnerabilidade ao Dano", icon: "fa-house-crack", text: "Sinto que algo ruim irá acontecer a qualquer momento (doença, perda financeira, catástrofe). Tenho muitos medos. O mundo é perigoso. Sinto com frequência que terei um ataque de ansiedade." },
-                { id: 8, title: "Emaranhamento", icon: "fa-people-arrows", text: "Tenho relação extremamente próxima e íntima com pessoas importantes (pais/parceiro), a ponto de perder minha individualidade. Tenho medo do afastamento. Sinto-me vazio, sem direção ou sufocado sem eles." },
-                { id: 9, title: "Fracasso", icon: "fa-stairs", text: "Sinto que sou inadequado em relação aos outros em conquistas (escola, trabalho). Acredito que sou inferior, menos exitoso e que os outros são melhores. Sinto-me um fracasso." },
-                { id: 10, title: "Arrogo / Grandiosidade", icon: "fa-crown", text: "Acredito que sou superior às outras pessoas e não deveria estar sujeito às mesmas regras. Sou competitivo e gosto de dominar. Não tolero que me digam o que fazer. Tenho dificuldade de aceitar um 'não'." },
-                { id: 11, title: "Autocontrole Insuficiente", icon: "fa-traffic-light", text: "Não controlo a expressão das minhas emoções ou impulsos. Se uma atividade me desagrada, tento evitar. Não tolero bem a frustração. Tenho dificuldade de concretizar metas de longo prazo. Não tenho disciplina." },
-                { id: 12, title: "Subjugação", icon: "fa-hands-bound", text: "Prefiro não manifestar a raiva, tenho receio de retaliação ou abandono. Deixo que os outros decidam e acabo fazendo o que querem. Aguento ofensas e controle até não poder mais." },
-                { id: 13, title: "Autossacrifício", icon: "fa-hand-holding-heart", text: "Ocupo-me em atender às necessidades de outros à custa da minha satisfação. Sinto-me culpado quando faço algo para mim. Só me sinto feliz quando os outros estão felizes. Ressinto-me por não ter retorno." },
-                { id: 14, title: "Busca de Aprovação", icon: "fa-award", text: "Busco me enquadrar no que é esperado. Preciso da aprovação alheia para sentir que tenho valor. Fico hipersensível com a rejeição. Minha autoestima depende da reação dos outros." },
-                { id: 15, title: "Negativismo / Pessimismo", icon: "fa-cloud-showers-heavy", text: "Sinto que algo pode dar errado a qualquer momento. Não vejo eventos positivos. Tenho medo de cometer erros que levem a situações ruins. Fico sempre vigilante e preocupado." },
-                { id: 16, title: "Inibição Emocional", icon: "fa-face-meh", text: "Tenho dificuldade em demonstrar emoções (raiva, afeto, tristeza). Prefiro manter o controle e a racionalidade para não passar vergonha. Me acham fechado ou frio." },
-                { id: 17, title: "Padrões Inflexíveis", icon: "fa-ruler-combined", text: "Tenho altos padrões de desempenho. Sou perfeccionista e crítico. Preocupo-me em fazer sempre mais e melhor. Sinto uma pressão constante, quase não relaxo." },
-                { id: 18, title: "Postura Punitiva", icon: "fa-gavel", text: "Penso que quem erra deve ser punido. Fico impaciente e com raiva quando não correspondem aos meus padrões. Tenho dificuldade de perdoar erros (meus e dos outros). Costumo me punir." }
+                { id: 1, title: "Abandono / Instabilidade", icon: "fa-person-falling-burst", text: "Acho que as pessoas são instáveis e indignas de confiança. Tenho medo de perder quem amo ou ser abandonado. As pessoas são imprevisíveis. Fico incomodado se deixado sozinho." },
+                { id: 2, title: "Desconfiança / Abuso", icon: "fa-shield-halved", text: "Penso que as pessoas irão me machucar, abusar, humilhar, enganar, manipular ou aproveitar-se de modo a me prejudicar intencionalmente. Estou sempre alerta." },
+                { id: 3, title: "Privação Emocional", icon: "fa-glass-water-droplet", text: "Acho que as pessoas não serão capazes de suprir minhas necessidades de atenção, afeto e carinho. Na maior parte do tempo, não tenho ninguém para me compreender." },
+                { id: 4, title: "Defectividade / Vergonha", icon: "fa-face-frown-open", text: "Sinto que sou defeituoso, mau, indesejado, inferior e que não mereço amor. Sinto-me rejeitado, hipersensível a críticas e comparações." },
+                { id: 5, title: "Isolamento Social", icon: "fa-user-astronaut", text: "Sinto-me diferente dos outros, não me encaixo ou pertenço a grupos ou comunidade. Ninguém me entende realmente." },
+                { id: 6, title: "Dependência / Incompetência", icon: "fa-baby-carriage", text: "Sinto que não consigo dar conta das responsabilidades do cotidiano sem ajuda considerável. Sinto-me desamparado." },
+                { id: 7, title: "Vulnerabilidade ao Dano", icon: "fa-house-crack", text: "Sinto que algo ruim irá acontecer a qualquer momento (doença, perda financeira, catástrofe). Tenho muitos medos." },
+                { id: 8, title: "Emaranhamento", icon: "fa-people-arrows", text: "Tenho relação extremamente próxima e íntima com pessoas importantes, a ponto de perder minha individualidade." },
+                { id: 9, title: "Fracasso", icon: "fa-stairs", text: "Sinto que sou inadequado em relação aos outros em conquistas (escola, trabalho). Acredito que sou inferior e fracassado." },
+                { id: 10, title: "Arrogo / Grandiosidade", icon: "fa-crown", text: "Acredito que sou superior às outras pessoas e não deveria estar sujeito às mesmas regras. Sou competitivo." },
+                { id: 11, title: "Autocontrole Insuficiente", icon: "fa-traffic-light", text: "Não controlo a expressão das minhas emoções ou impulsos. Tenho dificuldade de concretizar metas de longo prazo." },
+                { id: 12, title: "Subjugação", icon: "fa-hands-bound", text: "Prefiro não manifestar a raiva, tenho receio de retaliação ou abandono. Deixo que os outros decidam por mim." },
+                { id: 13, title: "Autossacrifício", icon: "fa-hand-holding-heart", text: "Ocupo-me em atender às necessidades de outros à custa da minha satisfação. Sinto-me culpado quando faço algo para mim." },
+                { id: 14, title: "Busca de Aprovação", icon: "fa-award", text: "Preciso da aprovação alheia para sentir que tenho valor. Minha autoestima depende da reação dos outros." },
+                { id: 15, title: "Negativismo / Pessimismo", icon: "fa-cloud-showers-heavy", text: "Sinto que algo pode dar errado a qualquer momento. Fico sempre vigilante e preocupado com o pior." },
+                { id: 16, title: "Inibição Emocional", icon: "fa-face-meh", text: "Tenho dificuldade em demonstrar emoções (raiva, afeto, tristeza). Prefiro manter o controle e a racionalidade." },
+                { id: 17, title: "Padrões Inflexíveis", icon: "fa-ruler-combined", text: "Tenho altos padrões de desempenho. Sou perfeccionista e crítico. Sinto uma pressão constante." },
+                { id: 18, title: "Postura Punitiva", icon: "fa-gavel", text: "Penso que quem erra deve ser punido. Tenho dificuldade de perdoar erros (meus e dos outros). Costumo me punir." }
             ],
             modos: [
-                { id: 'm1', title: "Criança Vulnerável", icon: "fa-child-reaching", text: "Sente-se solitária, isolada, triste, incompreendida, desamparada, defeituosa, inútil ou vítima. Sente medo, tristeza e desamparo.", type: "criança" },
-                { id: 'm2', title: "Criança Zangada", icon: "fa-face-angry", text: "Sente-se injustiçada por suas necessidades não serem atendidas. Demonstra raiva e até fúria. Percepções de traição e abandono.", type: "criança" },
-                { id: 'm3', title: "Criança Impulsiva", icon: "fa-bolt", text: "Age impulsivamente para satisfazer desejos egoístas e imediatos. Não considera limites ou sentimentos alheios.", type: "criança" },
-                { id: 'm4', title: "Criança Feliz", icon: "fa-face-laugh-beam", text: "Sente-se amada, conectada, compreendida e validada. É espontânea, otimista e sente-se encorajada.", type: "saudavel" },
-                { id: 'm5', title: "Pai/Mãe Punitivo", icon: "fa-user-ninja", text: "Mostra-se agressivo, intolerante e crítico consigo mesmo. Está sempre se culpando e punindo erros. Réplica do cuidador internalizado.", type: "pai" },
-                { id: 'm6', title: "Pai/Mãe Exigente", icon: "fa-user-tie", text: "Sente que precisa agir de acordo com regras rígidas e padrões elevados. Busca competência e eficiência. Nunca se sente satisfeito.", type: "pai" },
-                { id: 'm7', title: "Protetor Desligado", icon: "fa-robot", text: "Foge de emoções negativas. Desconecta-se, agindo de modo robótico ou desligado da realidade. Sente-se indiferente, vazio e distante. Evitação.", type: "enfrentamento" },
-                { id: 'm8', title: "Capitulador Complacente", icon: "fa-flag", text: "Age de forma obediente ou dependente para evitar conflito. Submete-se aos desejos dos outros, desconsiderando os seus próprios. Medo de represálias.", type: "enfrentamento" },
-                { id: 'm9', title: "Hipercompensador", icon: "fa-khanda", text: "Age como se o oposto do esquema fosse verdade. Usa contra-ataque, controle e busca superioridade para aliviar o desconforto.", type: "enfrentamento" },
-                { id: 'm10', title: "Adulto Saudável", icon: "fa-user-check", text: "Busca relações positivas. Identifica e neutraliza pensamentos negativos. Cuida da Criança Vulnerável. Estabelece limites e modera os modos disfuncionais.", type: "saudavel" }
+                { id: 'm1', title: "Criança Vulnerável", icon: "fa-child-reaching", text: "Sente-se solitária, isolada, triste, incompreendida, desamparada. Sentimentos de medo e tristeza.", type: "criança" },
+                { id: 'm2', title: "Criança Zangada", icon: "fa-face-angry", text: "Sente-se injustiçada por suas necessidades não serem atendidas. Demonstra raiva e até fúria.", type: "criança" },
+                { id: 'm3', title: "Criança Impulsiva", icon: "fa-bolt", text: "Age impulsivamente para satisfazer desejos egoístas e imediatos. Não considera limites.", type: "criança" },
+                { id: 'm4', title: "Criança Feliz", icon: "fa-face-laugh-beam", text: "Sente-se amada, conectada, compreendida e validada. É espontânea e otimista.", type: "saudavel" },
+                { id: 'm5', title: "Pai/Mãe Punitivo", icon: "fa-user-ninja", text: "Agressivo, intolerante e crítico consigo mesmo. Está sempre se culpando e punindo erros.", type: "pai" },
+                { id: 'm6', title: "Pai/Mãe Exigente", icon: "fa-user-tie", text: "Sente que precisa agir de acordo com regras rígidas e padrões elevados. Nunca se sente satisfeito.", type: "pai" },
+                { id: 'm7', title: "Protetor Desligado", icon: "fa-robot", text: "Foge de emoções negativas. Desconecta-se, agindo de modo robótico. Sente-se indiferente e vazio.", type: "enfrentamento" },
+                { id: 'm8', title: "Capitulador Complacente", icon: "fa-flag", text: "Age de forma obediente ou dependente para evitar conflito. Submete-se aos desejos dos outros.", type: "enfrentamento" },
+                { id: 'm9', title: "Hipercompensador", icon: "fa-khanda", text: "Age como se o oposto do esquema fosse verdade. Usa contra-ataque e controle para aliviar o desconforto.", type: "enfrentamento" },
+                { id: 'm10', title: "Adulto Saudável", icon: "fa-user-check", text: "Busca relações positivas. Cuida da Criança Vulnerável. Estabelece limites e modera os modos disfuncionais.", type: "saudavel" }
             ]
         };
 
@@ -338,7 +343,7 @@
         const card = document.getElementById('card');
         const root = document.documentElement;
 
-        // Elements
+        // Elementos DOM
         const elTag = document.getElementById('cardTag');
         const elIcon = document.getElementById('cardIcon');
         const elTitle = document.getElementById('cardTitle');
@@ -381,16 +386,16 @@
             card.style.transform = "scale(0.95)";
             setTimeout(() => {
                 card.style.transform = "scale(1)";
-                if (card.classList.contains('flipped')) card.style.transform = "rotateY(180deg)";
+                // Se estiver virado, garante que a transformação de rotação seja mantida se necessário
+                // Mas aqui queremos resetar a rotação se formos sortear
+                if (card.classList.contains('flipped')) {
+                    card.classList.remove('flipped');
+                    // Aguarda virar para atualizar
+                    setTimeout(() => updateCardContent(item), 300);
+                } else {
+                    updateCardContent(item);
+                }
             }, 150);
-
-            // Se estiver virado, desvira primeiro
-            if (card.classList.contains('flipped')) {
-                card.classList.remove('flipped');
-                setTimeout(() => updateCardContent(item), 300);
-            } else {
-                updateCardContent(item);
-            }
         }
 
         function updateCardContent(item) {
@@ -399,7 +404,7 @@
             elIcon.innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
             elTitle.innerText = item.title;
             
-            // Cor do ícone
+            // Cor do ícone e borda
             if (currentDeckType === 'esquemas') {
                 elIcon.style.color = '#ef4444';
                 elBackFace.style.borderTopColor = '#ef4444';
@@ -421,9 +426,6 @@
         function flipCard() {
             card.classList.toggle('flipped');
         }
-
-        // Inicializar
-        drawCard();
 
     </script>
 
