@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Clínica 300 | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --primary: #475569;
+            --accent: #3b82f6;
+            --text: #1e293b;
+            --border: #e2e8f0;
+            --card-width: 500px;
+            --card-height: 380px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .menu-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            padding: 12px 15px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 5px;
+        }
+
+        .nav-btn:hover { background-color: #f1f5f9; color: var(--accent); }
+        
+        .nav-btn.active {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- CONTEÚDO --- */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- CARD --- */
+        .card-container {
+            width: 100%;
+            max-width: var(--card-width);
+            height: var(--card-height);
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .card.flipped { transform: rotateY(180deg); }
+
+        .face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 40px;
+            text-align: center;
+            background: white;
+            border: 1px solid white;
+        }
+
+        /* FRENTE (CAPA) */
+        .face-front {
+            background: linear-gradient(135deg, var(--theme-color) 0%, #ffffff 100%);
+            color: white;
+        }
+
+        .theme-icon { font-size: 5rem; margin-bottom: 20px; opacity: 0.9; text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .theme-title { font-size: 2rem; font-weight: 800; text-transform: uppercase; line-height: 1.2; text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tap-hint { margin-top: 20px; font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; backdrop-filter: blur(5px); }
+
+        /* VERSO (PERGUNTA) */
+        .face-back {
+            transform: rotateY(180deg);
+            border-top: 8px solid var(--theme-color);
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .question-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .q-number { font-weight: 800; color: #94a3b8; font-size: 0.9rem; text-transform: uppercase; }
+        .q-tag { background: #f1f5f9; padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; color: var(--theme-color); }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options {
+            width: 100%;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.8;
+        }
+
+        .options strong { color: var(--theme-color); }
+
+        /* CONTROLES */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            color: #64748b;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+
+        .control-btn:hover { border-color: var(--theme-color); color: var(--theme-color); transform: translateY(-2px); }
+        .control-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress { font-weight: 700; color: #94a3b8; min-width: 80px; text-align: center; }
+
+        /* Mobile */
+        @media (max-width: 800px) {
+            body { flex-direction: column; overflow-y: auto; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 10px; border-bottom: 1px solid var(--border); border-right: none; gap: 10px; }
+            .logo, .menu-label { display: none; }
+            .nav-btn { padding: 8px 15px; white-space: nowrap; font-size: 0.8rem; }
+            .main-content { padding: 20px; }
+            .card-container { height: 420px; }
+            .question-text { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo"><i class="fa-solid fa-clipboard-check"></i> Avaliação 300</div>
+        
+        <div class="menu-label">Transtornos</div>
+        <button class="nav-btn active" onclick="loadCategory('depressao')"><i class="fa-solid fa-cloud-rain"></i> Depressão</button>
+        <button class="nav-btn" onclick="loadCategory('ansiedade')"><i class="fa-solid fa-wind"></i> Ansiedade</button>
+        <button class="nav-btn" onclick="loadCategory('burnout')"><i class="fa-solid fa-battery-empty"></i> Burnout</button>
+        <button class="nav-btn" onclick="loadCategory('fobiasocial')"><i class="fa-solid fa-users-slash"></i> Fobia Social</button>
+        <button class="nav-btn" onclick="loadCategory('panico')"><i class="fa-solid fa-bolt"></i> Pânico</button>
+        <button class="nav-btn" onclick="loadCategory('bipolaridade')"><i class="fa-solid fa-masks-theater"></i> Bipolaridade</button>
+        <button class="nav-btn" onclick="loadCategory('toc')"><i class="fa-solid fa-rotate"></i> TOC</button>
+        <button class="nav-btn" onclick="loadCategory('tdah')"><i class="fa-solid fa-brain"></i> TDAH</button>
+        <button class="nav-btn" onclick="loadCategory('autismo')"><i class="fa-solid fa-puzzle-piece"></i> Autismo</button>
+        <button class="nav-btn" onclick="loadCategory('trauma')"><i class="fa-solid fa-heart-crack"></i> Trauma</button>
+
+        <div style="margin-top: auto; padding-top: 20px; border-top: 1px dashed #e2e8f0;">
+            <a href="../listaferramentas.html" class="nav-btn" style="color: #64748b;"><i class="fa-solid fa-arrow-left"></i> Sair</a>
+        </div>
+    </nav>
+
+    <div class="main-content" id="mainArea">
+        
+        <div class="card-container" onclick="flipCard()">
+            <div class="card" id="card">
+                
+                <div class="face face-front">
+                    <div class="theme-icon" id="coverIcon"><i class="fa-solid fa-cloud-rain"></i></div>
+                    <div class="theme-title" id="coverTitle">Depressão</div>
+                    <div class="tap-hint">Toque para iniciar avaliação</div>
+                </div>
+
+                <div class="face face-back">
+                    <div class="question-header">
+                        <span class="q-number" id="qNumber">Questão 1</span>
+                        <span class="q-tag" id="qTag">Depressão</span>
+                    </div>
+                    
+                    <div class="question-text" id="qText">
+                        Eu me sinto triste ou desanimado.
+                    </div>
+
+                    <div class="options">
+                        <strong>a)</strong> Nunca ou quase nunca<br>
+                        <strong>b)</strong> Algumas vezes<br>
+                        <strong>c)</strong> Frequentemente<br>
+                        <strong>d)</strong> Quase sempre
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" onclick="prevQuestion()" id="btnPrev"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="progress" id="progress">1 / 30</div>
+            <button class="control-btn" onclick="nextQuestion()" id="btnNext"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- DADOS (Extraídos do PDF) ---
+        const db = {
+            depressao: {
+                title: "Depressão",
+                color: "#3b82f6", // Azul
+                icon: "fa-cloud-rain",
+                questions: [
+                    "Eu me sinto triste ou desanimado.",
+                    "Eu perdi o interesse ou alegria em coisas que costumavam me dar prazer.",
+                    "Eu tenho dificuldade para dormir (acordar no meio da noite, muito cedo) ou durmo muito.",
+                    "Eu me sinto cansado ou sem energia.",
+                    "Eu tenho dificuldade para me concentrar ou tomar decisões.",
+                    "Eu me sinto inútil ou culpo-me muito.",
+                    "Eu tenho pensamentos de morte ou suicídio.",
+                    "Eu sinto-me ansioso, nervoso ou tenho ataques de pânico.",
+                    "Eu me sinto sem esperança ou sem perspectiva.",
+                    "Eu tenho dificuldade de me relacionar com os outros.",
+                    "Eu evito o contato social ou reuniões.",
+                    "Eu sinto que não sou boa/o o suficiente.",
+                    "Eu não tenho interesse sexual.",
+                    "Eu me sinto sozinho/a, mesmo estando rodeado/a de pessoas.",
+                    "Eu me sinto desconectado/a dos meus sentimentos.",
+                    "Eu me sinto desconectado/a dos meus pensamentos.",
+                    "Eu me sinto desconectado/a dos meus sentimentos.",
+                    "Eu tenho dificuldade em sentir emoções positivas.",
+                    "Eu me sinto vazio/a.",
+                    "Eu me sinto sem sentido.",
+                    "Eu sinto que não sou capaz de alcançar meus objetivos.",
+                    "Eu me sinto sem controle sobre minha vida.",
+                    "Eu sinto que minhas preocupações nunca acabam.",
+                    "Eu me sinto incontrolavelmente irritado/a.",
+                    "Eu me sinto cansado o tempo todo, mesmo após uma noite de sono adequada.",
+                    "Eu tenho dificuldade para me alimentar, seja por falta ou excesso de apetite.",
+                    "Eu me sinto desconectado/a do meu corpo.",
+                    "Eu tenho problemas para me concentrar.",
+                    "Eu tenho dificuldade de seguir com minhas responsabilidades diárias.",
+                    "Eu me sinto desesperado/a ou sem saída."
+                ]
+            },
+            ansiedade: {
+                title: "Ansiedade",
+                color: "#f59e0b", // Laranja
+                icon: "fa-wind",
+                questions: [
+                    "Eu me sinto ansioso ou preocupado.",
+                    "Eu tenho medo sem motivo aparente.",
+                    "Eu evito situações que me deixam ansioso.",
+                    "Eu me sinto tensa ou com os músculos tensos.",
+                    "Eu tenho dificuldade para relaxar ou descansar.",
+                    "Eu tenho dificuldade para dormir devido à ansiedade.",
+                    "Eu sinto-me irritado ou com raiva devido à ansiedade.",
+                    "Eu tenho pensamentos ou preocupações recorrentes e difíceis de controlar.",
+                    "Eu tenho dificuldade para manter a concentração devido à ansiedade.",
+                    "Eu sinto náusea, suor frio ou respiração acelerada quando ansioso.",
+                    "Eu me sinto inquieto ou inquieto com ansiedade.",
+                    "Eu tenho pesadelos ou flashbacks relacionados ao medo ou ansiedade.",
+                    "Eu tenho medo de perder o controle ou fazer algo embaraçoso devido à ansiedade.",
+                    "Eu me sinto desconectado ou distante das pessoas devido à ansiedade.",
+                    "Eu me sinto exausto ou sem energia devido à ansiedade.",
+                    "Eu tenho dificuldade para tomar decisões devido à ansiedade.",
+                    "Eu tenho medo de sair de casa ou ficar sozinho devido à ansiedade.",
+                    "Eu me sinto sobrecarregado com responsabilidades devido à ansiedade.",
+                    "Eu evito eventos sociais devido à ansiedade.",
+                    "Eu tenho dificuldade para lidar com situações estressantes devido à ansiedade.",
+                    "Eu tenho dificuldade para manter relacionamentos devido à ansiedade.",
+                    "Eu me sinto inseguro sobre minha aparência devido à ansiedade.",
+                    "Eu me sinto preocupado com o futuro devido à ansiedade.",
+                    "Eu me sinto inseguro sobre minhas habilidades devido à ansiedade.",
+                    "Eu tenho medo de falhar devido à ansiedade.",
+                    "Eu me sinto preocupado com minha saúde devido à ansiedade.",
+                    "Eu tenho pensamentos negativos ou auto-críticos devido à ansiedade.",
+                    "Eu me sinto desanimado ou sem esperança devido à ansiedade.",
+                    "Eu tenho dificuldade para me divertir ou se sentir feliz devido à ansiedade.",
+                    "Eu me sinto desesperado ou sem saída devido à ansiedade."
+                ]
+            },
+            burnout: {
+                title: "Burnout",
+                color: "#795548", // Marrom
+                icon: "fa-battery-empty",
+                questions: [
+                    "Eu me sinto esgotado (física e emocionalmente).",
+                    "Eu tenho dificuldade para concentrar-me ou tomar decisões.",
+                    "Eu sinto que minha autoestima e confiança diminuíram.",
+                    "Eu me sinto desmotivado ou sem entusiasmo pelo meu trabalho.",
+                    "Eu tenho dificuldade para desligar-me do trabalho, mesmo quando não estou lá.",
+                    "Eu me sinto cínico ou desligado dos meus colegas de trabalho ou clientes.",
+                    "Eu me sinto como se eu estivesse fracassando no meu trabalho.",
+                    "Eu me sinto desconectado ou desapegado do meu trabalho.",
+                    "Eu tenho dificuldade para relaxar ou desfrutar das coisas fora do trabalho.",
+                    "Eu me sinto estressado ou pressionado pelo meu trabalho.",
+                    "Eu me sinto desanimado ou sem esperança em relação ao meu trabalho.",
+                    "Eu tenho dificuldade para dormir devido ao meu trabalho.",
+                    "Eu sinto que meu trabalho está afetando minha saúde física ou emocional.",
+                    "Eu me sinto sobrecarregado com minhas responsabilidades de trabalho.",
+                    "Eu me sinto desvalorizado ou pouco respeitado no meu trabalho.",
+                    "Eu me sinto como se estivesse no piloto automático, sem sentir emoções no trabalho.",
+                    "Eu tenho pensamentos de deixar meu trabalho.",
+                    "Eu tenho problemas para encontrar significado ou propósito no meu trabalho.",
+                    "Eu me sinto desconfortável quando outros elogiam meu trabalho.",
+                    "Eu me sinto como se estivesse falhando em equilibrar trabalho e vida pessoal.",
+                    "Eu me sinto desconectado pelas coisas que antes me davam prazer.",
+                    "Eu tenho dificuldade para lidar com críticas ou feedback negativo no trabalho.",
+                    "Eu me sinto desconfortável ou desmotivado em relação a minhas metas profissionais.",
+                    "Eu me sinto desapontado ou desconectado com meus colegas de trabalho.",
+                    "Eu tenho dificuldade para relaxar ou desconectar-me do trabalho na folga.",
+                    "Eu me sinto desconectado ou desinteressado em relação a minha carreira.",
+                    "Eu me sinto desconfortável em relação a minhas responsabilidades de trabalho.",
+                    "Eu sinto que meu trabalho está afetando negativamente minhas relações pessoais.",
+                    "Eu me sinto desinteressado em relação a minhas metas de vida fora do trabalho.",
+                    "Eu me sinto desmotivado em relação a minha vida em geral devido ao meu trabalho."
+                ]
+            },
+            fobiasocial: {
+                title: "Fobia Social",
+                color: "#8e44ad", // Roxo
+                icon: "fa-users-slash",
+                questions: [
+                    "Eu sinto medo ou ansiedade intensa quando estou em situações sociais.",
+                    "Eu evito situações sociais, como jantares ou festas, devido ao meu medo.",
+                    "Eu sinto ansiedade ou medo de falar em público ou ser o centro das atenções.",
+                    "Eu sinto ansiedade de ser julgado ou rejeitado por outras pessoas.",
+                    "Eu me sinto desconfortável em situações sociais, mesmo sem ser julgado.",
+                    "Eu evito contato visual com outras pessoas em situações sociais.",
+                    "Eu tenho dificuldade para fazer amizades devido ao medo em situações sociais.",
+                    "Eu sinto ansiedade ou medo de ser julgado no ambiente de trabalho.",
+                    "Eu evito reuniões ou atividades no trabalho devido ao medo social.",
+                    "Eu sinto ansiedade ao falar ao telefone ou enviar e-mails para desconhecidos.",
+                    "Eu tenho dificuldade para seguir meus objetivos devido à ansiedade social.",
+                    "Eu me sinto desconfortável em situações sociais mesmo com amigos ou familiares.",
+                    "Eu evito atividades que exigem interação social, como dançar ou ir ao cinema.",
+                    "Eu sinto ansiedade de ser julgado ou rejeitado em situações românticas.",
+                    "Eu evito situações sociais que envolvem atividades físicas (esportes/academia).",
+                    "Eu sinto ansiedade em situações com autoridade (superiores/chefes).",
+                    "Eu me sinto envergonhado ou humilhado em situações sociais.",
+                    "Eu tenho dificuldade para fazer novos amigos devido à ansiedade.",
+                    "Eu sinto ansiedade ao contatar pessoas que não vejo há muito tempo.",
+                    "Eu sinto ansiedade ao fazer perguntas ou dar opiniões em público.",
+                    "Eu me sinto nervoso em situações sociais mesmo sem rejeição aparente.",
+                    "Eu me sinto ansioso quando não consigo prever o que vai acontecer socialmente.",
+                    "Eu sinto ansiedade em situações de compras ou serviços.",
+                    "Eu evito situações de performance ou apresentação.",
+                    "Eu sinto ansiedade em situações que envolvem desconhecidos.",
+                    "Eu me sinto ansioso em ambientes com muita gente (shoppings, transporte).",
+                    "Eu sinto ansiedade em situações que envolvem contato físico (abraços).",
+                    "Eu sinto ansiedade ao falar em língua estrangeira ou com estrangeiros.",
+                    "Eu evito atividades divertidas devido à ansiedade social.",
+                    "Eu me sinto ansioso em situações sociais, mesmo sem motivo aparente."
+                ]
+            },
+            panico: {
+                title: "Síndrome do Pânico",
+                color: "#e74c3c", // Vermelho
+                icon: "fa-bolt",
+                questions: [
+                    "Você já teve ataques de pânico?",
+                    "Você se sente ansioso ou tem medo de ter outro ataque de pânico?",
+                    "Você evita lugares ou situações por medo de ter um ataque de pânico?",
+                    "Você tem medo de perder o controle ou ficar louco durante um ataque?",
+                    "Você tem medo de morrer ou ter doença cardíaca durante um ataque?",
+                    "Você tem tonturas, sudorese ou tremores durante um ataque?",
+                    "Você sente-se desesperado devido à sua ansiedade de pânico?",
+                    "Você tem dificuldade para controlar seu medo de ataques de pânico?",
+                    "Sua ansiedade ou medo de ataques de pânico afeta sua vida diária?",
+                    "Você tem dificuldade para dormir devido ao medo de ataques de pânico?",
+                    "Você sente-se cansado ou exausto devido ao medo de ataques?",
+                    "Sua ansiedade afeta sua capacidade de se divertir?",
+                    "Você tem dificuldade para se concentrar devido ao medo de ataques?",
+                    "Você sente medo ou ansiedade intensa sem motivo aparente?",
+                    "Você tem medo de sair de casa devido ao medo de ter um ataque?",
+                    "Você tem medo de viajar (carro, avião) devido ao medo de um ataque?",
+                    "Você tem medo de ficar sozinho devido ao medo de um ataque?",
+                    "Você sente dificuldade para respirar ou sufocamento durante um ataque?",
+                    "Você sente dor ou desconforto no peito durante um ataque?",
+                    "Você sente tontura, fraqueza ou desmaio durante um ataque?",
+                    "Você sente vermelhidão ou suor excessivo durante um ataque?",
+                    "Você sente tremores ou espasmos musculares durante um ataque?",
+                    "Você sente náusea ou desconforto estomacal durante um ataque?",
+                    "Você sente formigamento ou dormência em mãos/pés durante um ataque?",
+                    "Você sente desrealização ou despersonalização durante um ataque?",
+                    "Você tem pensamentos obsessivos sobre ter um ataque de pânico?",
+                    "Você evita situações que lembrem um ataque anterior?",
+                    "Você sente medo constante devido ao medo de ter um ataque?",
+                    "Você tem problemas para realizar tarefas diárias devido a essa preocupação?",
+                    "Você tem problemas para se relacionar devido a preocupações com pânico?"
+                ]
+            },
+            bipolaridade: {
+                title: "Bipolaridade",
+                color: "#16a085", // Verde/Azul
+                icon: "fa-masks-theater",
+                questions: [
+                    "Eu me sinto eufórico ou com aumento de energia sem motivo aparente.",
+                    "Eu tenho mudanças bruscas de humor.",
+                    "Eu tenho dificuldade em controlar minhas emoções.",
+                    "Eu tenho pensamentos acelerados ou dificuldade em parar de pensar.",
+                    "Eu tenho dificuldade em dormir, mesmo quando estou cansado.",
+                    "Eu tenho dificuldade em manter relacionamentos interpessoais.",
+                    "Eu tenho dificuldade em manter um trabalho ou uma rotina diária.",
+                    "Eu sinto que minhas emoções são incontroláveis.",
+                    "Eu sinto que minhas emoções estão fora de proporção com a situação.",
+                    "Eu tenho impulsividade, fazendo coisas sem pensar.",
+                    "Eu tenho mudanças bruscas de interesses ou atividades.",
+                    "Eu tenho pensamentos suicidas.",
+                    "Eu tenho dificuldade em concentrar-me ou tomar decisões.",
+                    "Eu me sinto inseguro sobre minha própria identidade.",
+                    "Eu tenho dificuldade em entender os sentimentos dos outros.",
+                    "Eu me sinto ansioso ou tenso sem motivo aparente.",
+                    "Eu tenho dificuldade em iniciar ou completar tarefas.",
+                    "Eu me sinto isolado ou sem amigos.",
+                    "Eu tenho dificuldade em expressar minhas necessidades e desejos.",
+                    "Eu tenho dificuldade em me relacionar com os outros.",
+                    "Eu tenho mudanças bruscas de comportamento sem motivo aparente.",
+                    "Eu tenho dificuldade em compreender a lógica ou a razão.",
+                    "Eu me sinto desconectado da realidade.",
+                    "Eu tenho dificuldade em controlar minhas ações.",
+                    "Eu tenho mudanças bruscas de interesses ou atividades.",
+                    "Eu me sinto desanimado ou sem esperança.",
+                    "Eu tenho períodos de desinteresse ou apatia.",
+                    "Eu tenho sentimentos de inutilidade ou culpa.",
+                    "Eu tenho dificuldade em sentir ou mostrar emoções.",
+                    "Eu tenho mudanças no apetite ou no peso sem motivo aparente."
+                ]
+            },
+            toc: {
+                title: "TOC",
+                color: "#2c3e50", // Azul Escuro
+                icon: "fa-rotate",
+                questions: [
+                    "Eu tenho pensamentos ou imagens repetitivas que eu não consigo parar.",
+                    "Eu realizo atos repetitivos ou rituais para me sentir seguro.",
+                    "Eu me sinto ansioso ou tenso se eu não realizar meus rituais.",
+                    "Eu tenho dificuldade em parar de verificar coisas (portas, aparelhos).",
+                    "Eu tenho dificuldade em jogar fora objetos, mesmo inúteis.",
+                    "Eu tenho dificuldade em controlar minhas preocupações ou medos.",
+                    "Eu me sinto responsável por coisas que não posso controlar.",
+                    "Eu me sinto inseguro sobre minhas decisões, mesmo com informações.",
+                    "Eu me sinto ansioso antes de realizar tarefas simples.",
+                    "Eu tenho dificuldade em relaxar ou descansar.",
+                    "Eu me sinto ansioso se não realizar tarefas da maneira certa.",
+                    "Eu tenho pensamentos ou imagens indesejadas que causam ansiedade.",
+                    "Eu tenho dificuldade em parar de me preocupar com o futuro.",
+                    "Eu me sinto ansioso se não realizar as coisas da maneira certa.",
+                    "Eu me sinto ansioso se não realizar as coisas na ordem certa.",
+                    "Eu tenho dificuldade em me desapegar de objetos.",
+                    "Eu me sinto ansioso se não realizar tarefas de maneira perfeita.",
+                    "Eu me sinto ansioso se não realizar tarefas dentro de um tempo certo.",
+                    "Eu me sinto ansioso se não realizar tarefas de acordo com regras.",
+                    "Eu me sinto ansioso se não realizar tarefas de acordo com regras (repetido).",
+                    "Eu tenho dificuldade em me concentrar devido a pensamentos repetitivos.",
+                    "Eu me sinto ansioso se não realizar tarefas de maneira exata.",
+                    "Eu me sinto ansioso se não realizar tarefas de acordo com certos padrões.",
+                    "Eu tenho dificuldade em me desapegar de pensamentos ou ideias.",
+                    "Eu me sinto ansioso se não seguir certos números ou séries.",
+                    "Eu me sinto ansioso se não seguir certas cores ou formas.",
+                    "Eu tenho dificuldade em parar de me preocupar com o passado.",
+                    "Eu me sinto ansioso se não seguir certos sons ou palavras.",
+                    "Eu me sinto ansioso se não seguir certas sensações.",
+                    "Eu me sinto ansioso se não seguir certas imagens mentais."
+                ]
+            },
+            tdah: {
+                title: "TDAH",
+                color: "#d35400", // Abóbora
+                icon: "fa-bolt",
+                questions: [
+                    "Eu tenho dificuldade em prestar atenção por períodos prolongados.",
+                    "Eu tenho dificuldade em seguir instruções ou completar tarefas.",
+                    "Eu me distraio facilmente por coisas irrelevantes.",
+                    "Eu esqueço facilmente de informações ou detalhes importantes.",
+                    "Eu tenho dificuldade em organizar minhas tarefas ou espaço.",
+                    "Eu tenho dificuldade em começar tarefas ou projetos.",
+                    "Eu tenho dificuldade em terminar tarefas ou projetos.",
+                    "Eu me sinto desorganizado e sem rumo.",
+                    "Eu tenho dificuldade em gerenciar minhas tarefas e responsabilidades.",
+                    "Eu tenho dificuldade em me concentrar por longo período de tempo.",
+                    "Eu tenho dificuldade em me lembrar de compromissos importantes.",
+                    "Eu me sinto facilmente distraído por sons ou estímulos visuais.",
+                    "Eu tenho dificuldade em controlar minhas emoções ou impulsos.",
+                    "Eu tenho dificuldade em se adaptar a mudanças ou situações novas.",
+                    "Eu me sinto facilmente frustrado ou irritado.",
+                    "Eu tenho dificuldade em lidar com o stress ou pressão.",
+                    "Eu tenho dificuldade em se relacionar com outras pessoas.",
+                    "Eu tenho dificuldade em expressar emoções/pensamentos de forma eficaz.",
+                    "Eu tenho dificuldade em compreender as necessidades dos outros.",
+                    "Eu me sinto facilmente aborrecido ou sem interesse em atividades.",
+                    "Eu tenho dificuldade em manter relacionamentos interpessoais estáveis.",
+                    "Eu tenho dificuldade em manter um bom desempenho acadêmico/profissional.",
+                    "Eu tenho dificuldade em me concentrar em tarefas de esforço mental.",
+                    "Eu tenho dificuldade em me concentrar em tarefas de esforço físico.",
+                    "Eu me sinto facilmente cansado ou desanimado.",
+                    "Eu tenho dificuldade de concentração (Repetido no PDF original - Q26).",
+                    "Eu tenho dificuldade de concentração (Repetido no PDF original - Q27).",
+                    "Eu me sinto preocupado com a possibilidade de algo ruim acontecer.",
+                    "Eu me sinto obrigado a realizar certas ações repetidamente.",
+                    "Eu me sinto ansioso quando não posso realizar ações rápido ou perfeito."
+                ]
+            },
+            autismo: {
+                title: "Autismo",
+                color: "#2980b9", // Azul
+                icon: "fa-puzzle-piece",
+                questions: [
+                    "Eu tenho dificuldade em entender as intenções e emoções das pessoas.",
+                    "Eu tenho dificuldade em fazer amizades e manter relacionamentos.",
+                    "Eu tenho dificuldade em compreender e seguir convenções sociais.",
+                    "Eu tenho interesses restritos e fixos.",
+                    "Eu tenho dificuldade em entender e seguir instruções verbais.",
+                    "Eu tenho dificuldade em se comunicar de forma clara e eficaz.",
+                    "Eu tenho dificuldade em entender o contexto de uma conversa.",
+                    "Eu tenho dificuldade em se adaptar a mudanças no meu ambiente.",
+                    "Eu tenho dificuldade em lidar com sensações físicas (toques, sons).",
+                    "Eu tenho dificuldade em entender e expressar minhas próprias emoções.",
+                    "Eu tenho dificuldade em entender as necessidades/desejos dos outros.",
+                    "Eu tenho dificuldade em expressar minhas necessidades e desejos.",
+                    "Eu tenho dificuldade em reconhecer sinais sociais (gestos, expressões).",
+                    "Eu tenho dificuldade em se adaptar a mudanças ou situações novas.",
+                    "Eu tenho dificuldade em compreender e usar tom de voz e inflexão.",
+                    "Eu tenho dificuldade em lidar com imprevistos ou mudanças de rotina.",
+                    "Eu tenho dificuldade em entender e responder às expectativas sociais.",
+                    "Eu tenho dificuldade em imitar o comportamento dos outros.",
+                    "Eu tenho dificuldade em lidar com diferentes tipos de estímulos sensoriais.",
+                    "Eu tenho dificuldade em criar e manter uma conversa.",
+                    "Eu tenho dificuldade em entender e seguir as normas sociais.",
+                    "Eu tenho dificuldade em compreender sinais não verbais.",
+                    "Eu tenho dificuldade em entender e seguir expectativas sociais.",
+                    "Eu tenho dificuldade em lidar com a ambiguidade e incerteza.",
+                    "Eu tenho dificuldade em entender normas não verbais (Q25).",
+                    "Eu tenho dificuldade em compreender e responder ao tom de voz (Q26).",
+                    "Eu tenho dificuldade em entender normas de etiqueta social.",
+                    "Eu tenho dificuldade em lidar com a ambiguidade (Q28).",
+                    "Eu tenho dificuldade em lidar com a ambiguidade (Q29).",
+                    "Eu tenho dificuldade em compreender expectativas sociais (Q30)."
+                ]
+            },
+            trauma: {
+                title: "Trauma",
+                color: "#006266", // Verde Escuro
+                icon: "fa-heart-crack",
+                questions: [
+                    "Eu tenho flashbacks ou lembranças perturbadoras de um evento traumático.",
+                    "Eu me sinto inseguro ou nervoso em situações que lembram o trauma.",
+                    "Eu evito lugares ou atividades que me lembram um evento traumático.",
+                    "Eu me sinto irritável ou com raiva com facilidade.",
+                    "Eu me sinto desconectado ou distante de outras pessoas.",
+                    "Eu tenho dificuldade para dormir ou tenho pesadelos sobre o trauma.",
+                    "Eu me sinto cansado ou sem energia.",
+                    "Eu tenho dificuldade para se concentrar ou me lembrar de coisas.",
+                    "Eu me sinto responsável ou culposo por um evento traumático.",
+                    "Eu me sinto desesperançado sobre meu futuro.",
+                    "Eu me sinto como se eu não posso confiar em outras pessoas.",
+                    "Eu me sinto como se eu não posso controlar minhas emoções.",
+                    "Eu me sinto como se eu não posso superar um evento traumático.",
+                    "Eu me sinto como se eu não posso me relacionar normalmente.",
+                    "Eu tenho medo de ficar sozinho.",
+                    "Eu me sinto desconectado ou distante de meus sentimentos.",
+                    "Eu me sinto como se eu não posso amar ou ser amado.",
+                    "Eu me sinto como se eu não posso ser feliz novamente.",
+                    "Eu me sinto como se não posso me relacionar normalmente (Repetido Q19).",
+                    "Eu me sinto como se não posso controlar minhas emoções (Repetido Q20).",
+                    "Eu me sinto ansioso ou com medo sem motivo aparente.",
+                    "Eu me sinto como se eu não posso confiar em mim mesmo.",
+                    "Eu tenho dificuldade para tomar decisões.",
+                    "Eu me sinto como se eu não posso lidar com situações estressantes.",
+                    "Eu me sinto como se não posso controlar emoções (Repetido Q25).",
+                    "Eu me sinto inseguro ou vulnerável.",
+                    "Eu me sinto como se não pudesse confiar nas pessoas.",
+                    "Eu me sinto com medo ou ansioso em situações sociais.",
+                    "Eu me sinto como se não pudesse controlar minhas emoções (Repetido Q29).",
+                    "Eu me sinto como se estivesse em constante alerta ou tensão."
+                ]
+            }
+        };
+
+        // Estado do App
+        let currentCategory = 'depressao';
+        let currentQuestionIndex = 0;
+
+        // Elementos DOM
+        const root = document.documentElement;
+        const mainArea = document.getElementById('mainArea');
+        const card = document.getElementById('card');
+        
+        // Elementos do Card
+        const coverIcon = document.getElementById('coverIcon');
+        const coverTitle = document.getElementById('coverTitle');
+        const qNumber = document.getElementById('qNumber');
+        const qTag = document.getElementById('qTag');
+        const qText = document.getElementById('qText');
+        const progress = document.getElementById('progress');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+
+        function loadCategory(key) {
+            currentCategory = key;
+            currentQuestionIndex = 0;
+            const data = db[key];
+
+            // Atualiza botões do menu
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Atualiza cores e tema
+            root.style.setProperty('--theme-color', data.color);
+            
+            // Reseta Card (Volta para a capa se estiver virada)
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+                setTimeout(() => updateCardContent(data), 300);
+            } else {
+                updateCardContent(data);
+            }
+        }
+
+        function updateCardContent(data) {
+            // Capa
+            coverIcon.className = `theme-icon fa-solid ${data.icon}`;
+            coverTitle.innerText = data.title;
+
+            // Pergunta Inicial
+            loadQuestion(0);
+        }
+
+        function loadQuestion(index) {
+            const data = db[currentCategory];
+            const question = data.questions[index];
+
+            qNumber.innerText = `Questão ${index + 1}`;
+            qTag.innerText = data.title;
+            qText.innerText = question;
+            progress.innerText = `${index + 1} / ${data.questions.length}`;
+
+            // Controle de Botões
+            btnPrev.disabled = index === 0;
+            btnNext.disabled = index === data.questions.length - 1;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < db[currentCategory].questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function flipCard() {
+            card.classList.toggle('flipped');
+        }
+
+        // Inicialização
+        window.onload = () => {
+            // Marca o primeiro botão como ativo visualmente
+            document.querySelector('.nav-btn').classList.add('active');
+            // Carrega cor inicial
+            root.style.setProperty('--theme-color', db['depressao'].color);
+        };
+
+    </script>
+
+</body>
+</html>
