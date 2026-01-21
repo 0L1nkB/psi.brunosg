@@ -3,69 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoeducação das Emoções</title>
+    <title>Psicoeducação das Emoções | Bruno de Souza</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
         :root {
-            /* Paleta Lúdica */
-            --bg-color: #f0f8ff;
-            --paper: #ffffff;
-            --primary: #6c5ce7;
+            /* Paleta "Divertida Mente" */
+            --bg-color: #f8fafc;
+            --primary: #6c5ce7;       /* Roxo (Base) */
             --text: #2d3436;
-            --shadow: rgba(0,0,0,0.1);
+            --card-border: #dfe6e9;
+            
+            /* Cores das Emoções */
+            --joy: #fbbf24;
+            --sadness: #3b82f6;
+            --anger: #ef4444;
+            --disgust: #10b981;
+            --fear: #a855f7;
+            --anxiety: #f97316;
+            --envy: #06b6d4;
+            --ennui: #64748b;
+            --embarrassment: #ec4899;
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
-            background-size: 20px 20px;
+            background-image: radial-gradient(#e2e8f0 2px, transparent 2px);
+            background-size: 25px 25px;
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            color: var(--text);
         }
 
-        /* CABEÇALHO LÚDICO */
+        /* --- CABEÇALHO --- */
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin: 20px auto 40px auto;
             background: white;
-            padding: 20px 40px;
-            border-radius: 20px;
+            padding: 30px 20px;
+            border-radius: 25px;
             border: 3px dashed var(--primary);
             box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
             position: relative;
-            max-width: 90%;
+            max-width: 800px;
+            width: 100%;
         }
 
         header::before {
-            content: ""; position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
-            width: 120px; height: 30px; background-color: rgba(255, 234, 167, 0.9);
-            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(108, 92, 231, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        h1 { margin: 0; color: var(--primary); font-size: 1.8rem; text-transform: uppercase; }
-        .subtitle { margin-top: 5px; color: #636e72; font-weight: bold; }
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+        }
 
-        /* ÁREA DA CARTA 3D */
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
+
+        /* --- ÁREA DO CARD --- */
         .deck-container {
-            position: relative;
-            width: 320px;
-            height: 500px;
+            width: 100%;
+            max-width: 350px;
+            height: 520px;
             perspective: 1000px;
             margin-bottom: 30px;
+            position: relative;
         }
 
         .card {
             width: 100%;
             height: 100%;
             position: relative;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
 
@@ -77,130 +105,161 @@
             width: 100%; height: 100%;
             backface-visibility: hidden;
             border-radius: 25px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             display: flex; flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 20px;
             box-sizing: border-box;
-            border: 8px solid white;
             background: white;
-            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* FRENTE (Personagem) */
+        /* FRENTE (PERSONAGEM) */
         .face-front {
-            justify-content: center;
-            padding: 10px;
-            background-image: linear-gradient(135deg, #fff 0%, #f7f1e3 100%);
+            background-image: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
         }
 
         .character-img {
-            width: 100%;
-            height: 350px;
+            width: 90%;
+            height: 280px;
             object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
             transition: transform 0.3s;
+            margin-bottom: 20px;
         }
         
         .card:hover .character-img { transform: scale(1.05); }
 
         .emotion-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
             text-transform: uppercase;
-            margin-top: 10px;
+            letter-spacing: 2px;
             color: var(--text);
-            /* Borda no texto para leitura */
-            text-shadow: 2px 2px 0px white, -1px -1px 0 white; 
         }
 
         .tap-hint {
             position: absolute; bottom: 20px;
-            font-size: 0.8rem; color: #aaa;
-            background: rgba(255,255,255,0.8);
-            padding: 5px 10px; border-radius: 20px;
+            font-size: 0.85rem; color: #94a3b8;
+            background: #f1f5f9;
+            padding: 6px 15px; border-radius: 20px;
+            font-weight: 600;
         }
 
-        /* VERSO (Texto Educativo) */
+        /* VERSO (TEXTO) */
         .face-back {
             transform: rotateY(180deg);
-            padding: 30px 20px;
-            justify-content: flex-start;
+            align-items: flex-start;
             text-align: left;
-            border-color: var(--primary); /* Borda colorida no verso */
+            border-top: 8px solid; /* Cor dinâmica */
         }
 
         .back-header {
             width: 100%;
-            border-bottom: 2px dashed #ccc;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #f1f5f9;
+            padding-bottom: 10px;
         }
 
         .back-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 800;
             text-transform: uppercase;
         }
 
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
         .definition-box {
-            background: #fdf5e6; /* Papel amarelado */
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #ffeaa7;
-            margin-bottom: 20px;
             font-size: 1rem;
-            line-height: 1.5;
-            color: #2d3436;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 25px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 4px solid; /* Cor dinâmica */
         }
 
         .prompt-box {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px dashed #90caf9;
             width: 100%;
+            background: #fffbeb; /* Amarelo muito suave */
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed #fcd34d;
             text-align: center;
         }
 
-        .prompt-label { display: block; font-size: 0.9rem; color: #1976d2; font-weight: bold; margin-bottom: 5px; }
-        .prompt-text { font-size: 1.2rem; font-weight: bold; color: #2d3436; font-style: italic; }
+        .prompt-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #b45309;
+            font-style: italic;
+        }
 
         /* CONTROLES */
         .controls {
             display: flex; gap: 20px; align-items: center;
+            margin-top: 20px;
         }
 
         .btn-nav {
-            background: white; border: 2px solid var(--text);
+            background: white; border: 2px solid #e2e8f0;
             width: 50px; height: 50px; border-radius: 50%;
-            font-size: 1.2rem; cursor: pointer;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
-            transition: transform 0.1s;
+            font-size: 1.2rem; cursor: pointer; color: var(--text);
+            box-shadow: 0 4px 0 #e2e8f0;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn-nav:active { transform: translate(2px, 2px); box-shadow: none; }
+        .btn-nav:hover { background: #f8fafc; transform: translateY(-2px); }
+        .btn-nav:active { transform: translateY(2px); box-shadow: none; }
 
-        .counter { font-size: 1.2rem; font-weight: bold; color: #636e72; background: white; padding: 5px 15px; border-radius: 15px; }
+        .counter {
+            font-size: 1.1rem; font-weight: 700; color: #64748b;
+            background: white; padding: 8px 20px; border-radius: 20px;
+            border: 1px solid #e2e8f0;
+        }
 
-        /* Cores Dinâmicas */
-        .style-alegria { color: #e67e22; border-color: #f1c40f; }
-        .style-tristeza { color: #2980b9; border-color: #3498db; }
-        .style-raiva { color: #c0392b; border-color: #e74c3c; }
-        .style-medo { color: #8e44ad; border-color: #9b59b6; }
-        .style-nojo { color: #27ae60; border-color: #2ecc71; }
-        .style-ansiedade { color: #d35400; border-color: #e67e22; }
-        .style-inveja { color: #16a085; border-color: #1abc9c; }
-        .style-vergonha { color: #d63031; border-color: #ff7675; }
-        .style-tedio { color: #2c3e50; border-color: #34495e; }
+        .back-link {
+            color: #b2bec3;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: 40px;
+        }
+        .back-link:hover { color: var(--primary); }
 
+        /* CORES DINÂMICAS */
+        .style-alegria { color: var(--joy); border-color: var(--joy); }
+        .style-tristeza { color: var(--sadness); border-color: var(--sadness); }
+        .style-raiva { color: var(--anger); border-color: var(--anger); }
+        .style-medo { color: var(--fear); border-color: var(--fear); }
+        .style-nojo { color: var(--disgust); border-color: var(--disgust); }
+        .style-ansiedade { color: var(--anxiety); border-color: var(--anxiety); }
+        .style-inveja { color: var(--envy); border-color: var(--envy); }
+        .style-vergonha { color: var(--embarrassment); border-color: var(--embarrassment); }
+        .style-tedio { color: var(--ennui); border-color: var(--ennui); }
+
+        @media (max-width: 400px) {
+            .deck-container { height: 480px; }
+            h1 { font-size: 1.6rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>O que são Emoções?</h1>
-        <div class="subtitle">Toque na carta para descobrir!</div>
+    <header data-aos="fade-down">
+        <h1>Psicoeducação das Emoções</h1>
+        <div class="subtitle">Conhecendo o que sentimos</div>
     </header>
 
     <div class="deck-container">
@@ -209,7 +268,7 @@
             <div class="card-face face-front" id="front-face">
                 <img src="" alt="Personagem" class="character-img" id="char-img">
                 <div class="emotion-title" id="char-name">...</div>
-                <div class="tap-hint">👆 Toque para virar</div>
+                <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Toque para virar</div>
             </div>
 
             <div class="card-face face-back" id="back-face">
@@ -217,13 +276,11 @@
                     <div class="back-title" id="def-title">...</div>
                 </div>
                 
-                <span style="font-weight:bold; color:#aaa; font-size:0.8rem;">O QUE É?</span>
-                <div class="definition-box" id="def-text">
-                    ...
-                </div>
+                <span class="section-label">O que é?</span>
+                <div class="definition-box" id="def-text">...</div>
 
                 <div class="prompt-box">
-                    <span class="prompt-label">COMPLETE A FRASE:</span>
+                    <span class="section-label" style="color:#b45309">Complete a frase:</span>
                     <div class="prompt-text" id="prompt-text">...</div>
                 </div>
             </div>
@@ -237,95 +294,100 @@
         <button class="btn-nav" onclick="nextCard()"><i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
+    <a href="../listaferramentas.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // CAMINHOS DAS IMAGENS (Pasta 'img' dentro de 'ferramentas')
+        AOS.init();
+
         const emotions = [
             {
                 id: "joy",
                 name: "Alegria",
-                img: "https://psibrunosg.github.io/site/img/Poster-Alegria-PNG.png",
-                def: "Sentir-se satisfeito, valorizado e aceito. É a energia que nos motiva a continuar e celebrar.",
-                prompt: "Sinto alegria quando...",
+                img: "../img/Poster-Alegria-PNG.png", // Ajuste o caminho se necessário
+                def: "Sentir-se satisfeito, valorizado e aceito. É a energia que nos motiva a continuar e celebrar a vida.",
+                prompt: "Eu sinto alegria quando...",
                 style: "style-alegria"
             },
             {
                 id: "sadness",
                 name: "Tristeza",
-                img: "https://psibrunosg.github.io/site/Poster-Tristeza-PNG.png",
-                def: "Sentir que perdeu algo importante ou foi deixado de lado. Ela nos ajuda a parar para processar perdas.",
-                prompt: "Fico triste quando...",
+                img: "../img/Poster-Tristeza-PNG.png",
+                def: "A sensação de perda ou desapontamento. Ela nos ajuda a parar, refletir e processar o que aconteceu.",
+                prompt: "Eu fico triste quando...",
                 style: "style-tristeza"
             },
             {
                 id: "anger",
                 name: "Raiva",
-                img: "https://psibrunosg.github.io/site/Poster-Raiva-PNG.png",
-                def: "Sentir-se ofendido, injustiçado ou bloqueado. É uma defesa para proteger nossos limites.",
-                prompt: "Sinto raiva quando...",
+                img: "../img/Poster-Raiva-PNG.png",
+                def: "Sentir-se ofendido, injustiçado ou bloqueado. É uma defesa natural para proteger nossos limites.",
+                prompt: "Eu sinto raiva quando...",
                 style: "style-raiva"
             },
             {
                 id: "fear",
                 name: "Medo",
-                img: "https://psibrunosg.github.io/site/img/Poster-Medo-PNG.png",
-                def: "Sentir-se desprotegido ou em perigo. É um alerta importante para nos mantermos seguros.",
-                prompt: "Sinto medo quando...",
+                img: "../img/Poster-Medo-PNG.png",
+                def: "Sentir-se desprotegido ou em perigo. É um alerta vital do nosso cérebro para nos manter seguros.",
+                prompt: "Eu sinto medo quando...",
                 style: "style-medo"
             },
             {
                 id: "disgust",
                 name: "Nojo",
-                img: "https://psibrunosg.github.io/site/img/Poster-Nojinho-PNG.png",
-                def: "Recusa ou enjoo. É uma defesa para nos afastar de coisas (ou atitudes) que podem ser tóxicas.",
-                prompt: "Sinto nojo quando...",
+                img: "../img/Poster-Nojinho-PNG.png",
+                def: "Uma reação de recusa. Serve para nos afastar de coisas (físicas ou sociais) que podem nos fazer mal.",
+                prompt: "Eu sinto nojo quando...",
                 style: "style-nojo"
             },
             {
                 id: "anxiety",
                 name: "Ansiedade",
-                img: "https://psibrunosg.github.io/site/img/Poster-Ansiedade-PNG.png",
-                def: "Preocupação com o futuro. É tentar prever e controlar tudo o que pode dar errado.",
-                prompt: "Fico ansioso se...",
+                img: "../img/Poster-Ansiedade-PNG.png",
+                def: "Preocupação com o futuro. É a tentativa da mente de prever e controlar tudo o que pode dar errado.",
+                prompt: "Eu fico ansioso se...",
                 style: "style-ansiedade"
             },
             {
                 id: "envy",
                 name: "Inveja",
-                img: "https://psibrunosg.github.io/site/img/Poster-Inveja-PNG.png",
-                def: "Desconforto ao ver alguém ter algo que você queria. É o desejo de possuir a conquista do outro.",
-                prompt: "Sinto inveja de...",
+                img: "../img/Poster-Inveja-PNG.png",
+                def: "Desconforto ao ver alguém ter algo que desejamos. Pode nos mostrar o que realmente valorizamos.",
+                prompt: "Eu sinto inveja de...",
                 style: "style-inveja"
             },
             {
                 id: "embarrassment",
                 name: "Vergonha",
-                img: "https://psibrunosg.github.io/site/img/Poster-Vergonha-PNG.png",
-                def: "Sentir que está exposto ou inadequado. Dá vontade de se esconder dos olhares.",
-                prompt: "Sinto vergonha quando...",
+                img: "../img/Poster-Vergonha-PNG.png",
+                def: "Sentir-se exposto ou inadequado. Dá vontade de se esconder para proteger nossa imagem social.",
+                prompt: "Eu sinto vergonha quando...",
                 style: "style-vergonha"
             },
             {
                 id: "ennui",
                 name: "Tédio",
-                img: "https://psibrunosg.github.io/site/img/Poster-Tedio-PNG.png",
-                def: "Desinteresse e falta de energia. Quando nada parece divertido ou vale o esforço.",
-                prompt: "Fico entediado quando...",
+                img: "../img/Poster-Tedio-PNG.png",
+                def: "Falta de interesse e energia. É um sinal de que precisamos de novos estímulos ou descanso.",
+                prompt: "Eu fico entediado quando...",
                 style: "style-tedio"
             },
             {
                 id: "love",
                 name: "Amor",
-                img: "vimg/Bing-Bong-Divertidamente-2-PNG.png", // Sem imagem no pacote enviado, usará fallback ou emoji se quiser
-                def: "Sentir-se protegido, acolhido e conectado. É o cuidado profundo por alguém ou algo.",
-                prompt: "Sinto amor por...",
-                style: "style-alegria"
+                img: "", // Fallback (sem imagem definida no original)
+                emoji: "❤️",
+                def: "Sentir-se protegido, acolhido e conectado. É o cuidado profundo e o vínculo com alguém.",
+                prompt: "Eu sinto amor por...",
+                style: "style-alegria" // Reusa estilo da alegria
             }
         ];
 
         let currentIndex = 0;
         const card = document.getElementById('card');
         
-        // Elementos
+        // Elementos DOM
         const elImg = document.getElementById('char-img');
         const elName = document.getElementById('char-name');
         const elBackTitle = document.getElementById('def-title');
@@ -338,32 +400,58 @@
         function updateCard(index) {
             const data = emotions[index];
 
-            // 1. Atualizar Imagem (Ou Emoji se não tiver imagem)
+            // 1. Atualizar Imagem da Frente
             if (data.img) {
                 elImg.style.display = 'block';
                 elImg.src = data.img;
+                // Reseta conteúdo HTML caso tenha sido alterado pelo emoji
+                if (!elFrontFace.querySelector('.character-img')) {
+                     elFrontFace.innerHTML = `
+                        <img src="${data.img}" class="character-img" id="char-img">
+                        <div class="emotion-title" id="char-name" style="color:${getColor(data.style)}">${data.name}</div>
+                        <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Toque para virar</div>
+                     `;
+                } else {
+                    document.getElementById('char-name').innerText = data.name;
+                    document.getElementById('char-name').style.color = getColor(data.style);
+                }
             } else {
                 // Fallback para Amor (Emoji)
-                elImg.style.display = 'none';
-                elFrontFace.innerHTML = `<div style="font-size:6rem; margin-bottom:20px;">${data.emoji}</div><div class="emotion-title" style="${data.style}">${data.name}</div><div class="tap-hint">👆 Toque para virar</div>`;
+                elFrontFace.innerHTML = `
+                    <div style="font-size:8rem; margin-bottom:30px; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.1))">${data.emoji}</div>
+                    <div class="emotion-title" style="color:#fbbf24">${data.name}</div>
+                    <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Toque para virar</div>
+                `;
             }
 
-            // Se tiver imagem, reseta o HTML normal da frente
-            if(data.img) {
-                elFrontFace.innerHTML = `<img src="${data.img}" class="character-img"><div class="emotion-title" style="color:var(--text)">${data.name}</div><div class="tap-hint">👆 Toque para virar</div>`;
-            }
-
-            // 2. Atualizar Textos
+            // 2. Atualizar Verso
             elBackTitle.innerText = data.name;
-            elBackTitle.className = `back-title ${data.style}`; // Aplica cor
+            elBackTitle.className = `back-title ${data.style}`;
             elDef.innerText = data.def;
+            elDef.className = `definition-box ${data.style}`; // Borda colorida
             elPrompt.innerText = `"${data.prompt}"`;
             
-            // 3. Estilo da Borda do Verso
+            // Estilo da borda do verso inteiro
             elBackFace.className = `card-face face-back ${data.style}`;
 
-            // 4. Contador
+            // 3. Contador
             elCounter.innerText = `${index + 1} / ${emotions.length}`;
+        }
+
+        // Função auxiliar para pegar a cor baseada na classe (apenas para o título da frente)
+        function getColor(styleClass) {
+            const colors = {
+                'style-alegria': '#fbbf24',
+                'style-tristeza': '#3b82f6',
+                'style-raiva': '#ef4444',
+                'style-medo': '#a855f7',
+                'style-nojo': '#10b981',
+                'style-ansiedade': '#f97316',
+                'style-inveja': '#06b6d4',
+                'style-vergonha': '#ec4899',
+                'style-tedio': '#64748b'
+            };
+            return colors[styleClass] || '#2d3436';
         }
 
         function flipCard() {
@@ -372,6 +460,7 @@
 
         function nextCard() {
             if (card.classList.contains('flipped')) card.classList.remove('flipped');
+            
             setTimeout(() => {
                 currentIndex = (currentIndex + 1) % emotions.length;
                 updateCard(currentIndex);
@@ -380,6 +469,7 @@
 
         function prevCard() {
             if (card.classList.contains('flipped')) card.classList.remove('flipped');
+            
             setTimeout(() => {
                 currentIndex = (currentIndex - 1 + emotions.length) % emotions.length;
                 updateCard(currentIndex);
