@@ -3,415 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padrões Inflexíveis - Caderno Terapêutico</title>
+    <title>Padrões Inflexíveis | Bruno de Souza</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Paleta "O Peso da Perfeição" */
-            --paper-line: #f1f5f9;    /* Linhas cinza azulado */
-            --paper-bg: #ffffff;      
-            --ink-color: #334155;
+            /* Identidade Visual - Tema "Rigidez/Fluidez" */
+            --bg-color: #f1f5f9;      /* Cinza Azulado muito pálido */
+            --primary: #334155;       /* Azul Ardósia (A Regra/Rigidez) */
+            --primary-dark: #0f172a;
+            --accent: #2dd4bf;        /* Verde Água (Fluidez/Relaxamento) */
+            --text: #2d3436;
+            --card-border: #cbd5e1;
             
-            /* Cores do Esquema (Rigidez -> Flexibilidade) */
-            --primary: #334155;       /* Azul Ardósia (A Regra Dura) */
-            --primary-hover: #1e293b;
-            --flow: #2dd4bf;          /* Verde Água (O Relaxamento) */
-            
-            /* Tags de Personas */
-            --tag-vitor-bg: #e2e8f0; --tag-vitor-text: #1e293b; /* Cinza (Máquina) */
-            --tag-helena-bg: #ccfbf1; --tag-helena-text: #115e59; /* Verde (Regradora) */
-
-            --radius: 16px;
-            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.06);
+            /* Cores Específicas */
+            --work-color: #475569;    /* Cinza (Workaholic/Vitor) */
+            --rules-color: #0d9488;   /* Teal Escuro (Regras/Helena) */
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            color: var(--ink-color);
-            line-height: 1.6;
-            background-color: var(--paper-bg);
-            /* Efeito Papel Pautado */
-            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
-            background-size: 100% 2rem;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e2e8f0 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Patrick Hand', cursive;
-            color: #1e293b;
-        }
-
-        /* --- HEADER --- */
+        /* --- CABEÇALHO --- */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-bottom: 2px dashed #94a3b8;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
-        }
-
-        .header-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
             text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
         }
 
-        .header-title {
-            font-size: 2.5rem;
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(51, 65, 85, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0px #e2e8f0;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
         }
 
-        .header-subtitle {
-            font-size: 1.2rem;
-            color: #64748b;
-            font-family: 'Patrick Hand', cursive;
-        }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
 
         /* --- CONTAINER --- */
         .main-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+            max-width: 850px;
             width: 100%;
-            display: grid;
-            gap: 35px;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
-        /* --- CARDS (PAPEL) --- */
-        .paper-card {
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: var(--shadow-paper);
-            border: 1px solid #cbd5e1;
-            padding: 2rem;
-            position: relative;
-            transform: rotate(-0.5deg);
-            transition: transform 0.3s;
-        }
-        
-        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
-        
-        /* Régua Decorativa */
-        .paper-card::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 25px;
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            background-image: repeating-linear-gradient(90deg, #94a3b8 0, #94a3b8 1px, transparent 1px, transparent 10px);
-            opacity: 0.8;
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
         }
 
-        .card-header {
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--paper-line);
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
             padding-bottom: 10px;
         }
 
-        .card-icon { font-size: 1.8rem; color: var(--flow); }
-        .card-title { font-size: 1.8rem; margin: 0; }
-
-        /* --- POST-IT (DEFINIÇÃO) --- */
-        .post-it {
-            background-color: #f1f5f9; /* Cinza Gelo */
-            padding: 1.5rem;
-            border-radius: 2px 2px 16px 2px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.3rem;
-            color: #334155;
-            transform: rotate(1deg);
-            margin: 20px 0;
-            border-left: 5px solid #475569;
-        }
-
-        /* --- PERSONAS --- */
-        .persona-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .persona-card {
-            background: #fff;
+        .highlight-box {
+            background: #f0fdfa; /* Verde água muito suave */
+            border-left: 5px solid var(--primary);
             padding: 20px;
-            border: 2px dashed #94a3b8;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #334155;
+        }
+
+        /* --- GRID DE PERSONAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 12px;
+            display: flex; flex-direction: column; gap: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
         }
         
-        .persona-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .persona-name { font-size: 1.4rem; font-weight: 700; color: #0f172a; }
-        .persona-tag { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
-        
-        .tag-vitor { background: var(--tag-vitor-bg); color: var(--tag-vitor-text); }
-        .tag-helena { background: var(--tag-helena-bg); color: var(--tag-helena-text); }
+        .style-work { border-color: var(--work-color); }
+        .style-rules { border-color: var(--rules-color); }
 
-        /* --- STICKERS (3 DIMENSÕES) --- */
-        .sticker-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        .persona-tag {
+            font-size: 0.75rem; text-transform: uppercase; font-weight: 800;
+            padding: 4px 10px; border-radius: 20px; width: fit-content;
         }
-        
-        .sticker-box {
-            background: white; padding: 1.5rem; border-radius: 12px;
-            border: 2px solid #f8fafc; text-align: center;
-            transition: all 0.3s;
-        }
-        .sticker-box:hover { border-color: var(--flow); transform: scale(1.02); }
-        .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .tag-vitor { background: #e2e8f0; color: var(--work-color); }
+        .tag-helena { background: #ccfbf1; color: var(--rules-color); }
 
-        /* --- TRADUTOR INTERATIVO --- */
-        .translator-area {
-            background-color: #f0fdfa; /* Verde água muito claro */
-            padding: 2rem; border-radius: 20px;
-            border: 2px dashed #5eead4; text-align: center;
+        /* --- WIDGET: TRADUTOR DE LEVEZA --- */
+        .translator-container {
+            text-align: center;
+            background: #e2e8f0;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #94a3b8;
         }
 
-        .btn-translate {
-            background: white; border: 2px solid #ccfbf1;
-            padding: 10px 20px; margin: 5px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; font-weight: 700; color: #0f766e;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 0 #ccfbf1;
-        }
-        
-        .btn-translate:active { box-shadow: 0 0 0 #ccfbf1; transform: translateY(4px); }
-        .btn-translate:hover { background: #fff; border-color: var(--primary); color: var(--primary); }
-
-        .result-bubble {
-            background: white; padding: 20px; border-radius: 20px;
-            margin-top: 20px; border: 2px solid #cbd5e1;
-            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
-            color: #334155; min-height: 100px; display: flex; align-items: center; justify-content: center;
+        .translator-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
 
-        /* --- ACCORDIONS --- */
-        details {
-            background: #f8fafc; border-radius: 12px; margin-bottom: 10px;
-            border: 1px solid #cbd5e1;
+        .btn-trans {
+            background: white; border: 2px solid #cbd5e1; color: #334155;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
         }
-        summary {
-            padding: 15px; font-weight: 700; cursor: pointer; list-style: none;
-            display: flex; justify-content: space-between; color: #475569;
-        }
-        summary:hover { background: #f1f5f9; border-radius: 12px; }
-        .details-content { padding: 20px; border-top: 1px dashed #cbd5e1; color: #475569; }
+        .btn-trans:hover { border-color: var(--accent); background: var(--accent); color: white; }
 
-        /* --- FLASHCARD (FLIP) --- */
-        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
-        .flashcard-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.6s; transform-style: preserve-3d;
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;
         }
-        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
-        
-        .flashcard-front, .flashcard-back {
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin: 0 auto;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
             position: absolute; width: 100%; height: 100%;
             -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 16px; padding: 2rem;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-paper); border: 2px solid;
-        }
-        
-        .flashcard-front {
-            background: #f1f5f9; border-color: #cbd5e1; color: #1e293b;
-        }
-        .flashcard-back {
-            background: #f0fdfa; border-color: #5eead4; color: #0f766e;
-            transform: rotateY(180deg);
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
         }
 
-        /* --- FOOTER PADRÃO --- */
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--accent); color: white; transform: rotateY(180deg); border-color: var(--accent); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        /* --- FOOTER ADAPTADO --- */
         footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            padding: 2rem 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px dashed #b2bec3;
+            padding: 30px 20px;
             margin-top: auto;
         }
         .footer-container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
-        .social-links { display: flex; gap: 1.5rem; }
-        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
-        .social-links a:hover { color: var(--primary); }
+        .footer-brand { color: #636e72; font-weight: 700; font-size: 0.95rem; }
+        .social-links { display: flex; gap: 20px; }
+        .social-links a { color: #b2bec3; font-size: 1.4rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
 
-        @media (max-width: 640px) {
-            .footer-container { flex-direction: column; gap: 1rem; }
-            .persona-grid, .sticker-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .footer-container { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <h1 class="header-title">Padrões Inflexíveis</h1>
-            <p class="header-subtitle">Caderno de Psicoeducação</p>
-        </div>
+    <header data-aos="fade-down">
+        <h1>Padrões Inflexíveis</h1>
+        <div class="subtitle">O tirano interior</div>
     </header>
 
     <div class="main-container">
-
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-gavel card-icon"></i>
-                <h2 class="card-title">O Tirano Interior</h2>
-            </div>
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-gavel"></i> O Peso da Perfeição</div>
             <p>Este esquema é a crença de que você deve se esforçar para atingir padrões de desempenho extremamente altos, geralmente para evitar críticas. É a incapacidade de relaxar e se sentir satisfeito.</p>
-            
-            <div class="post-it">
-                <i class="fas fa-thumbtack" style="color:#475569; margin-right:10px;"></i>
-                "Nunca é bom o suficiente. Eu poderia ter feito melhor. Se eu parar para descansar, as coisas vão desmoronar."
+            <div class="highlight-box">
+                <i class="fa-solid fa-list-check"></i> <strong>A Regra Rígida:</strong> "Nunca é bom o suficiente. Eu poderia ter feito melhor. Se eu parar para descansar, as coisas vão desmoronar."
             </div>
         </div>
 
-        <div class="paper-card" style="transform: rotate(0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-users card-icon"></i>
-                <h2 class="card-title">Espelhos da Vida Real</h2>
-            </div>
-            <p>Como a rigidez e o perfeccionismo aparecem:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-users"></i> Formas de Enfrentamento</div>
             
-            <div class="persona-grid">
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Vitor</span>
-                        <span class="persona-tag tag-vitor">A Máquina</span>
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <div class="symptom-item style-work">
+                        <span class="persona-tag tag-vitor">Vitor (A Máquina)</span>
+                        <div><strong>Comportamento:</strong> Trabalha 12h/dia, leva notebook para férias. Se tira 95%, foca nos 5% que faltaram. Não saboreia conquistas.</div>
                     </div>
-                    <p>Vitor trabalha 12h por dia e leva o notebook para as férias. Se ele tira 95% de aprovação, ele foca obsessivamente nos 5% que faltaram. Ele não saboreia conquistas, já parte para a próxima meta.</p>
-                    <p style="font-size:0.85rem; color:#334155;"><strong>Comportamento:</strong> Workaholic (Esforço)</p>
-                </div>
-
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Helena</span>
-                        <span class="persona-tag tag-helena">A Regradora</span>
+                    <div class="symptom-item style-work">
+                        <div><strong>Consequência:</strong> Burnout, distanciamento da família, anedonia (falta de prazer).</div>
                     </div>
-                    <p>Helena tem o "jeito certo" de fazer tudo: dobrar a toalha, lavar a louça, estacionar. Ela critica o marido e os filhos constantemente porque eles são "desleixados". Ela vive tensa e irritada.</p>
-                    <p style="font-size:0.85rem; color:#115e59;"><strong>Comportamento:</strong> Hipercrítica (Controle)</p>
+                </div>
+
+                <div class="symptom-column">
+                    <div class="symptom-item style-rules">
+                        <span class="persona-tag tag-helena">Helena (A Regradora)</span>
+                        <div><strong>Comportamento:</strong> Tem o "jeito certo" para tudo. Critica o marido e filhos constantemente por serem "desleixados".</div>
+                    </div>
+                    <div class="symptom-item style-rules">
+                        <div><strong>Consequência:</strong> Ambiente familiar tenso, irritabilidade crônica, sensação de carregar o mundo.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-shapes card-icon"></i>
-                <h2 class="card-title">Sintomas da Rigidez</h2>
-            </div>
-            <div class="sticker-grid">
-                <div class="sticker-box">
-                    <span class="sticker-icon">📏</span>
-                    <h4>Perfeccionismo</h4>
-                    <p>Preocupação excessiva com detalhes e medo paralisante de cometer erros.</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">⏱️</span>
-                    <h4>Pressão de Tempo</h4>
-                    <p>A sensação de que "não há tempo a perder". Ficar irritado com a lentidão dos outros.</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🧱</span>
-                    <h4>Regras Rígidas</h4>
-                    <p>Muitos "deverias" morais, culturais ou religiosos. Inflexibilidade diante de mudanças.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="paper-card" style="transform: rotate(-0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-sync card-icon"></i>
-                <h2 class="card-title">Tradutor de Leveza</h2>
-            </div>
-            <p>O esquema diz "Mais!". O adulto saudável diz "Basta". Vamos traduzir:</p>
-            
-            <div class="translator-area">
-                <p style="margin-bottom:15px; font-weight:700;">O que o tirano diz?</p>
-                <div>
-                    <button class="btn-translate" onclick="translateNeed('quase')">"Não ficou perfeito, que lixo."</button>
-                    <button class="btn-translate" onclick="translateNeed('descanso')">"Descansar é perda de tempo."</button>
-                    <button class="btn-translate" onclick="translateNeed('erro')">"Como você pôde errar isso?"</button>
-                </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-language"></i> Tradutor de Leveza</div>
+            <div class="translator-container">
+                <p style="font-weight:700; color:#334155; margin-bottom:15px;">O tirano diz "Mais!". O adulto diz "Basta". Vamos traduzir:</p>
                 
-                <div id="translator-bubble" class="result-bubble">
-                    Toque em uma cobrança para traduzir...
+                <div>
+                    <button class="btn-trans" onclick="translateNeed('quase')">"Não ficou perfeito, que lixo."</button>
+                    <button class="btn-trans" onclick="translateNeed('descanso')">"Descansar é perda de tempo."</button>
+                    <button class="btn-trans" onclick="translateNeed('erro')">"Como você pôde errar isso?"</button>
+                </div>
+
+                <div class="translator-display" id="trans-res">
+                    <span style="color:#b0bec5; font-style:italic;">Clique na cobrança...</span>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-brain card-icon"></i>
-                <h2 class="card-title">Conceitos Clínicos</h2>
-            </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> A Esteira Sem Fim</div>
             
-            <details>
-                <summary>🧠 Neurobiologia: A Esteira Hedônica <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Seu sistema de dopamina é viciado na <em>antecipação</em> da meta, não na conquista. Assim que você alcança o objetivo, a satisfação dura segundos e o cérebro já grita "Próximo!". Você nunca chega lá.</p>
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-person-running"></i>
+                    <h4>Esteira Hedônica</h4>
+                    <p>Seu sistema de dopamina viciou na <em>antecipação</em> da meta, não na conquista. Ao atingir o objetivo, a satisfação dura segundos e o cérebro já grita "Próximo!".</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>O foco é aprender o conceito de <strong>"Bom o Bastante"</strong>. É trocar a perfeição (impossível) pela excelência saudável. Trabalhamos a capacidade de brincar, relaxar e aceitar a imperfeição humana.</p>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-battery-empty"></i>
+                    <h4>Sucesso Vazio</h4>
+                    <p>Você pode ter muitas conquistas externas, mas sente-se internamente exausto. O esquema rouba sua capacidade de sentir prazer no presente.</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>⚠️ O Sucesso Vazio <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Você pode ter muitas conquistas externas (dinheiro, títulos), mas se sente internamente exausto e vazio. O esquema rouba sua capacidade de sentir prazer no presente em nome de um futuro idealizado.</p>
-                </div>
-            </details>
+            </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-adjust card-icon"></i>
-                <h2 class="card-title">Vire o Pensamento</h2>
-            </div>
-            <p>Toque no cartão quando sentir que deveria estar trabalhando:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-rotate"></i> Vire o Pensamento</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque no cartão para ativar o Adulto Saudável</p>
             
-            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz dos Padrões</h3>
-                        <p style="margin-top:10px;">"O que você está fazendo parado? Tem tanta coisa pendente! Você é preguiçoso. Se não correr agora, vai fracassar lá na frente. Mexa-se!"</p>
-                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#334155; font-size:1.5rem;"></i>
-                    </div>
-                    <div class="flashcard-back">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
-                        <p style="margin-top:10px;">"Eu fiz o meu melhor hoje e isso é suficiente. Descansar faz parte da produtividade. Eu tenho valor pelo que SOU, não apenas pelo que PRODUZO. Posso relaxar sem culpa."</p>
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-stopwatch" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">Voz dos Padrões</h3>
+                            <p style="margin-top:10px; font-size:0.9rem; color:#555;">"O que você está fazendo parado? Tem tanta coisa pendente! Você é preguiçoso. Se não correr agora, vai fracassar lá na frente."</p>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1.1rem; margin-bottom:10px;">Adulto Saudável</h3>
+                            <p style="font-size:0.9rem;">"Eu fiz o meu melhor hoje e isso é suficiente. Descansar faz parte da produtividade. Eu tenho valor pelo que SOU, não apenas pelo que PRODUZO. Posso relaxar sem culpa."</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <center>
+            <a href="../../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
 
     </div>
 
@@ -421,31 +371,39 @@
                 &copy; 2026 Bruno de Souza
             </div>
             <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
+
         function translateNeed(type) {
-            const bubble = document.getElementById('translator-bubble');
+            const display = document.getElementById('trans-res');
             let text = "";
+            let color = "";
             
             if (type === 'quase') {
-                text = "✨ Tradução: 'Ficou muito bom. O perfeccionismo está me cegando para a qualidade do que fiz. Vou focar no que está feito.'";
+                text = "✨ <strong>Tradução:</strong> 'Ficou muito bom. O perfeccionismo está me cegando para a qualidade do que fiz. Vou focar no que está feito.'";
+                color = "#334155";
             } else if (type === 'descanso') {
-                text = "✨ Tradução: 'Meu corpo precisa recarregar. Se eu não descansar agora, vou pifar depois e perder mais tempo.'";
+                text = "✨ <strong>Tradução:</strong> 'Meu corpo precisa recarregar. Se eu não descansar agora, vou pifar depois e perder mais tempo.'";
+                color = "#2dd4bf";
             } else if (type === 'erro') {
-                text = "✨ Tradução: 'Erros são oportunidades de aprendizado, não atestados de incompetência. Sou humano e posso falhar.'";
+                text = "✨ <strong>Tradução:</strong> 'Erros são oportunidades de aprendizado, não atestados de incompetência. Sou humano e posso falhar.'";
+                color = "#0d9488";
             }
             
-            bubble.style.opacity = 0;
+            display.style.opacity = 0;
+            display.style.borderTop = `5px solid ${color}`;
+            
             setTimeout(() => {
-                bubble.innerHTML = text;
-                bubble.style.opacity = 1;
-                bubble.style.transition = "opacity 0.3s";
+                display.innerHTML = `<p style="font-size:1.1rem; color:#2d3436;">${text}</p>`;
+                display.style.opacity = 1;
             }, 200);
         }
     </script>
