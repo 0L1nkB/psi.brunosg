@@ -3,410 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merecimento e Grandiosidade - Caderno Terapêutico</title>
+    <title>Merecimento e Grandiosidade | Bruno de Souza</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            /* Paleta "O Rei/Rainha" */
-            --paper-line: #f3e8ff;    /* Linhas lilás */
-            --paper-bg: #faf5ff;      
-            --ink-color: #4c1d95;
+            /* Identidade Visual - Tema "Realeza/Realidade" */
+            --bg-color: #f3e5f5;      /* Lilás muito pálido */
+            --primary: #7b1fa2;       /* Roxo Real (Status/Exigência) */
+            --primary-dark: #4a148c;
+            --accent: #ffb300;        /* Dourado (Privilégio/Destaque) */
+            --text: #2d3436;
+            --card-border: #d1c4e9;
             
-            /* Cores do Esquema (Roxo Real -> Dourado) */
-            --primary: #7c3aed;       /* Roxo Vibrante */
-            --primary-hover: #5b21b6;
-            --highlight: #f59e0b;     /* Dourado/Ouro */
-            
-            /* Tags de Personas */
-            --tag-cesar-bg: #fef3c7; --tag-cesar-text: #b45309; /* Dourado (VIP) */
-            --tag-paula-bg: #ede9fe; --tag-paula-text: #5b21b6; /* Roxo (Competitiva) */
-
-            --radius: 16px;
-            --shadow-paper: 3px 3px 10px rgba(0,0,0,0.06);
+            /* Cores Específicas */
+            --arrogance-color: #d32f2f; /* Vermelho (Arrogo/César) */
+            --compete-color: #512da8;   /* Roxo Escuro (Competição/Paula) */
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            color: var(--ink-color);
-            line-height: 1.6;
-            background-color: var(--paper-bg);
-            /* Efeito Papel Pautado */
-            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
-            background-size: 100% 2rem;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e1bee7 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Patrick Hand', cursive;
-            color: #4c1d95;
-        }
-
-        /* --- HEADER --- */
+        /* --- CABEÇALHO --- */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-bottom: 2px dashed #d8b4fe;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
-        }
-
-        .header-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
             text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
         }
 
-        .header-title {
-            font-size: 2.5rem;
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; 
+            background-color: rgba(123, 31, 162, 0.2); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0px #f3e8ff;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
         }
 
-        .header-subtitle {
-            font-size: 1.2rem;
-            color: #6b7280;
-            font-family: 'Patrick Hand', cursive;
-        }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
 
         /* --- CONTAINER --- */
         .main-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+            max-width: 850px;
             width: 100%;
-            display: grid;
-            gap: 35px;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
 
-        /* --- CARDS (PAPEL) --- */
-        .paper-card {
-            background-color: #ffffff;
-            border-radius: 2px;
-            box-shadow: var(--shadow-paper);
-            border: 1px solid #e9d5ff;
-            padding: 2rem;
-            position: relative;
-            transform: rotate(-0.5deg);
-            transition: transform 0.3s;
-        }
-        
-        .paper-card:hover { transform: rotate(0deg) translateY(-3px); }
-        
-        /* Coroa Decorativa (Símbolo) */
-        .paper-card::before {
-            content: '👑';
-            position: absolute;
-            top: -20px;
-            right: 20px;
-            font-size: 2rem;
-            transform: rotate(15deg);
-            z-index: 2;
+        /* --- CARDS DE CONTEÚDO --- */
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
         }
 
-        .card-header {
+        .content-card:hover {
+            border-color: var(--card-border);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--paper-line);
+            gap: 10px;
+            border-bottom: 2px dashed #eee;
             padding-bottom: 10px;
         }
 
-        .card-icon { font-size: 1.8rem; color: var(--highlight); }
-        .card-title { font-size: 1.8rem; margin: 0; }
-
-        /* --- POST-IT (DEFINIÇÃO) --- */
-        .post-it {
-            background-color: #fef3c7; /* Amarelo Ouro */
-            padding: 1.5rem;
-            border-radius: 2px 2px 16px 2px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            font-family: 'Patrick Hand', cursive;
-            font-size: 1.3rem;
-            color: #78350f;
-            transform: rotate(1deg);
-            margin: 20px 0;
-            border-left: 5px solid #f59e0b;
-        }
-
-        /* --- PERSONAS --- */
-        .persona-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .persona-card {
-            background: #fff;
+        .highlight-box {
+            background: #fff8e1; /* Fundo Dourado Suave */
+            border-left: 5px solid var(--accent);
             padding: 20px;
-            border: 2px dashed #d8b4fe;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #5d4037;
+        }
+
+        /* --- GRID DE PERSONAS (DUAL) --- */
+        .dual-symptoms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .symptom-column h4 {
+            text-align: center; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem;
+        }
+
+        .symptom-item {
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 12px;
+            display: flex; flex-direction: column; gap: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
         }
         
-        .persona-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .persona-name { font-size: 1.4rem; font-weight: 700; color: #4c1d95; }
-        .persona-tag { font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
-        
-        .tag-cesar { background: var(--tag-cesar-bg); color: var(--tag-cesar-text); }
-        .tag-paula { background: var(--tag-paula-bg); color: var(--tag-paula-text); }
+        .style-arrogance { border-color: var(--arrogance-color); }
+        .style-compete { border-color: var(--compete-color); }
 
-        /* --- STICKERS (3 DIMENSÕES) --- */
-        .sticker-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        .persona-tag {
+            font-size: 0.75rem; text-transform: uppercase; font-weight: 800;
+            padding: 4px 10px; border-radius: 20px; width: fit-content;
         }
-        
-        .sticker-box {
-            background: white; padding: 1.5rem; border-radius: 12px;
-            border: 2px solid #faf5ff; text-align: center;
-            transition: all 0.3s;
-        }
-        .sticker-box:hover { border-color: var(--primary); transform: scale(1.02); }
-        .sticker-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .tag-cesar { background: #ffebee; color: var(--arrogance-color); }
+        .tag-paula { background: #ede7f6; color: var(--compete-color); }
 
-        /* --- TRADUTOR INTERATIVO --- */
-        .translator-area {
-            background-color: #f3e8ff; /* Roxo muito claro */
-            padding: 2rem; border-radius: 20px;
-            border: 2px dashed #a855f7; text-align: center;
+        /* --- WIDGET: TRADUTOR DE IGUALDADE --- */
+        .translator-container {
+            text-align: center;
+            background: #ede7f6; /* Roxo muito claro */
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px dashed #b39ddb;
         }
 
-        .btn-translate {
-            background: white; border: 2px solid #d8b4fe;
-            padding: 10px 20px; margin: 5px; border-radius: 30px;
-            font-family: 'Nunito', sans-serif; font-weight: 700; color: #6b21a8;
-            cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 0 #d8b4fe;
-        }
-        
-        .btn-translate:active { box-shadow: 0 0 0 #d8b4fe; transform: translateY(4px); }
-        .btn-translate:hover { background: #fff; border-color: var(--primary); color: var(--primary); }
-
-        .result-bubble {
-            background: white; padding: 20px; border-radius: 20px;
-            margin-top: 20px; border: 2px solid #e9d5ff;
-            font-family: 'Patrick Hand', cursive; font-size: 1.3rem;
-            color: #4c1d95; min-height: 100px; display: flex; align-items: center; justify-content: center;
+        .translator-display {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
 
-        /* --- ACCORDIONS --- */
-        details {
-            background: #faf5ff; border-radius: 12px; margin-bottom: 10px;
-            border: 1px solid #d8b4fe;
+        .btn-trans {
+            background: white; border: 2px solid #d1c4e9; color: #673ab7;
+            padding: 10px 20px; border-radius: 30px; font-weight: 700;
+            cursor: pointer; margin: 5px; transition: 0.2s; font-family: 'Quicksand';
         }
-        summary {
-            padding: 15px; font-weight: 700; cursor: pointer; list-style: none;
-            display: flex; justify-content: space-between; color: #7c3aed;
-        }
-        summary:hover { background: #f3e8ff; border-radius: 12px; }
-        .details-content { padding: 20px; border-top: 1px dashed #d8b4fe; color: #4b5563; }
+        .btn-trans:hover { border-color: var(--accent); background: var(--accent); color: white; }
 
-        /* --- FLASHCARD (FLIP) --- */
-        .flashcard-container { perspective: 1000px; width: 100%; height: 280px; cursor: pointer; }
-        .flashcard-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.6s; transform-style: preserve-3d;
+        /* --- NEUROBIOLOGIA --- */
+        .neuro-box {
+            display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px;
         }
-        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
-        
-        .flashcard-front, .flashcard-back {
+        .neuro-item {
+            flex: 1; min-width: 200px;
+            background: #fafafa; border: 1px solid #eee;
+            padding: 20px; border-radius: 15px;
+            text-align: center;
+        }
+        .neuro-item i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .neuro-item h4 { margin: 5px 0; font-size: 1rem; color: var(--primary-dark); }
+        .neuro-item p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* --- FLIP CARDS --- */
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin: 0 auto;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-front, .flip-back {
             position: absolute; width: 100%; height: 100%;
             -webkit-backface-visibility: hidden; backface-visibility: hidden;
-            border-radius: 16px; padding: 2rem;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: var(--shadow-paper); border: 2px solid;
-        }
-        
-        .flashcard-front {
-            background: #faf5ff; border-color: #d8b4fe; color: #5b21b6;
-        }
-        .flashcard-back {
-            background: #fffbeb; border-color: #fcd34d; color: #92400e;
-            transform: rotateY(180deg);
+            padding: 25px; border-radius: 15px; border: 2px solid #dfe6e9;
+            box-sizing: border-box;
         }
 
-        /* --- FOOTER PADRÃO --- */
+        .flip-front { background-color: white; color: #2d3436; }
+        .flip-back { background-color: var(--accent); color: white; transform: rotateY(180deg); border-color: var(--accent); }
+
+        /* Botão Voltar */
+        .btn-back {
+            display: block; margin: 30px auto; text-align: center; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back:hover { color: var(--primary); }
+
+        /* --- FOOTER ADAPTADO --- */
         footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            padding: 2rem 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px dashed #b2bec3;
+            padding: 30px 20px;
             margin-top: auto;
         }
         .footer-container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .footer-brand { color: #64748b; font-size: 0.9rem; font-weight: 600; }
-        .social-links { display: flex; gap: 1.5rem; }
-        .social-links a { color: #94a3b8; font-size: 1.2rem; transition: color 0.2s; }
-        .social-links a:hover { color: var(--primary); }
+        .footer-brand { color: #636e72; font-weight: 700; font-size: 0.95rem; }
+        .social-links { display: flex; gap: 20px; }
+        .social-links a { color: #b2bec3; font-size: 1.4rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
 
-        @media (max-width: 640px) {
-            .footer-container { flex-direction: column; gap: 1rem; }
-            .persona-grid, .sticker-grid { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
+            .dual-symptoms { grid-template-columns: 1fr; }
+            .footer-container { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-content">
-            <h1 class="header-title">Merecimento</h1>
-            <p class="header-subtitle">Caderno de Psicoeducação</p>
-        </div>
+    <header data-aos="fade-down">
+        <h1>Merecimento</h1>
+        <div class="subtitle">A armadilha da grandiosidade</div>
     </header>
 
     <div class="main-container">
-
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-crown card-icon"></i>
-                <h2 class="card-title">O Rei do Castelo</h2>
-            </div>
+        
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-crown"></i> O Rei do Castelo</div>
             <p>O Esquema de Merecimento (Grandiosidade) é a crença de que você é superior aos outros, merece privilégios especiais e não precisa seguir as regras comuns da sociedade.</p>
-            
-            <div class="post-it">
-                <i class="fas fa-thumbtack" style="color:#d97706; margin-right:10px;"></i>
-                "As regras são para pessoas comuns. Eu sou especial. Eu quero o que eu quero, e quero agora."
+            <div class="highlight-box">
+                <i class="fa-solid fa-gem"></i> <strong>A Crença Central:</strong> "As regras são para pessoas comuns. Eu sou especial. Eu quero o que eu quero, e quero agora."
             </div>
         </div>
 
-        <div class="paper-card" style="transform: rotate(0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-users card-icon"></i>
-                <h2 class="card-title">Espelhos da Vida Real</h2>
-            </div>
-            <p>Como o sentimento de superioridade se manifesta:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-users"></i> Formas de Enfrentamento</div>
             
-            <div class="persona-grid">
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">César</span>
-                        <span class="persona-tag tag-cesar">O VIP</span>
+            <div class="dual-symptoms">
+                <div class="symptom-column">
+                    <div class="symptom-item style-arrogance">
+                        <span class="persona-tag tag-cesar">César (O VIP)</span>
+                        <div><strong>Comportamento:</strong> Não suporta esperar. Fura filas, trata garçons com desdém e fica furioso se ouve um "não". Acredita que seu tempo vale mais.</div>
                     </div>
-                    <p>César não suporta esperar. Ele fura filas, trata garçons com desdém e fica furioso se ouve um "não". Ele acredita genuinamente que seu tempo vale mais que o dos outros.</p>
-                    <p style="font-size:0.85rem; color:#b45309;"><strong>Comportamento:</strong> Arrogo (Exigência)</p>
-                </div>
-
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <span class="persona-name">Paula</span>
-                        <span class="persona-tag tag-paula">A Competitiva</span>
+                    <div class="symptom-item style-arrogance">
+                        <div><strong>Consequência:</strong> Conflitos frequentes, fama de arrogante, frustração intensa quando contrariado.</div>
                     </div>
-                    <p>Paula precisa ser a melhor em tudo. Ela domina as conversas, interrompe os outros e transforma tudo numa disputa. Ela vê as pessoas como degraus para o seu sucesso, não como iguais.</p>
-                    <p style="font-size:0.85rem; color:#5b21b6;"><strong>Comportamento:</strong> Falta de Empatia</p>
+                </div>
+
+                <div class="symptom-column">
+                    <div class="symptom-item style-compete">
+                        <span class="persona-tag tag-paula">Paula (A Competitiva)</span>
+                        <div><strong>Comportamento:</strong> Precisa ser a melhor em tudo. Domina conversas, interrompe e transforma tudo em disputa. Vê pessoas como degraus.</div>
+                    </div>
+                    <div class="symptom-item style-compete">
+                        <div><strong>Consequência:</strong> Falta de conexões reais, inveja dos outros, solidão no topo.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-shapes card-icon"></i>
-                <h2 class="card-title">Sintomas do Arrogo</h2>
-            </div>
-            <div class="sticker-grid">
-                <div class="sticker-box">
-                    <span class="sticker-icon">🏆</span>
-                    <h4>Superioridade</h4>
-                    <p>Sentir-se mais inteligente, talentoso ou importante que a "média", exigindo reconhecimento constante.</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🚧</span>
-                    <h4>Sem Limites</h4>
-                    <p>Dificuldade em aceitar regras, limites ou a palavra "não". Baixa tolerância à frustração.</p>
-                </div>
-                <div class="sticker-box">
-                    <span class="sticker-icon">🧊</span>
-                    <h4>Falta de Empatia</h4>
-                    <p>Focar tanto nas próprias necessidades que ignora ou atropela os sentimentos dos outros.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="paper-card" style="transform: rotate(-0.5deg);">
-            <div class="card-header">
-                <i class="fas fa-sync card-icon"></i>
-                <h2 class="card-title">Tradutor de Igualdade</h2>
-            </div>
-            <p>Vamos descer do pedestal para o chão firme. Traduza a "Exigência" em "Reciprocidade":</p>
-            
-            <div class="translator-area">
-                <p style="margin-bottom:15px; font-weight:700;">O que você pensa?</p>
-                <div>
-                    <button class="btn-translate" onclick="translateNeed('esperar')">"Eu não deveria ter que esperar!"</button>
-                    <button class="btn-translate" onclick="translateNeed('especial')">"Eles não sabem com quem estão falando."</button>
-                    <button class="btn-translate" onclick="translateNeed('agora')">"Eu quero isso agora!"</button>
-                </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-language"></i> Tradutor de Igualdade</div>
+            <div class="translator-container">
+                <p style="font-weight:700; color:#7b1fa2; margin-bottom:15px;">Vamos descer do pedestal para o chão firme. Traduza a exigência:</p>
                 
-                <div id="translator-bubble" class="result-bubble">
-                    Toque em um pensamento para traduzir...
+                <div>
+                    <button class="btn-trans" onclick="translateNeed('esperar')">"Eu não deveria ter que esperar!"</button>
+                    <button class="btn-trans" onclick="translateNeed('especial')">"Eles não sabem com quem estão falando."</button>
+                    <button class="btn-trans" onclick="translateNeed('agora')">"Eu quero isso agora!"</button>
+                </div>
+
+                <div class="translator-display" id="trans-res">
+                    <span style="color:#b0bec5; font-style:italic;">Clique na frase...</span>
                 </div>
             </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-brain card-icon"></i>
-                <h2 class="card-title">Conceitos Clínicos</h2>
-            </div>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-brain"></i> Por Dentro da Mente</div>
             
-            <details>
-                <summary>🧠 Neurobiologia: O Vício em Recompensa <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>O cérebro grandioso pode ter uma atividade reduzida nas áreas de empatia e uma hiperativação no sistema de dopamina (busca por recompensa imediata). É como um vício em ser validado e servido.</p>
+            <div class="neuro-box">
+                <div class="neuro-item">
+                    <i class="fa-solid fa-candy-cane"></i>
+                    <h4>Vício em Recompensa</h4>
+                    <p>O cérebro grandioso pode ter hiperativação no sistema de dopamina (busca por recompensa imediata) e baixa atividade nas áreas de empatia. É um vício em ser validado.</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>🌱 Como a Terapia Ajuda? <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Usamos o <strong>Confronto Empático</strong>. O terapeuta mostra (com carinho, mas firmeza) como o comportamento arrogante afasta as pessoas e gera solidão. O objetivo é aprender a <strong>Reciprocidade</strong>: dar e receber na mesma medida.</p>
+                <div class="neuro-item">
+                    <i class="fa-solid fa-shield-cat"></i>
+                    <h4>A Casca Fina</h4>
+                    <p>Muitas vezes, a grandiosidade é uma "armadura" para proteger uma criança frágil que se sente defeituosa ou carente. A arrogância esconde o medo.</p>
                 </div>
-            </details>
-
-            <details>
-                <summary>⚠️ A Casca Fina <i class="fas fa-chevron-down"></i></summary>
-                <div class="details-content">
-                    <p>Muitas vezes, a grandiosidade é uma "armadura" para proteger uma criança frágil que se sente defeituosa ou carente. Se tirarmos a coroa, encontramos alguém com medo de não ser amado pelo que é, apenas pelo que tem.</p>
-                </div>
-            </details>
+            </div>
         </div>
 
-        <div class="paper-card">
-            <div class="card-header">
-                <i class="fas fa-adjust card-icon"></i>
-                <h2 class="card-title">Vire o Pensamento</h2>
-            </div>
-            <p>Toque no cartão quando sentir raiva de um limite:</p>
+        <div class="content-card" data-aos="fade-up">
+            <div class="card-title"><i class="fa-solid fa-rotate"></i> Vire o Pensamento</div>
+            <p style="margin-bottom:20px; text-align:center; font-size:0.9rem; color:#aaa;">Toque no cartão para ativar o Adulto Saudável</p>
             
-            <div class="flashcard-container" onclick="this.classList.toggle('flipped')">
-                <div class="flashcard-inner">
-                    <div class="flashcard-front">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Merecimento</h3>
-                        <p style="margin-top:10px;">"Isso é ridículo! Por que eu tenho que seguir essas regras estúpidas? Eu mereço mais do que isso. Eles deveriam me priorizar!"</p>
-                        <i class="fas fa-hand-pointer" style="margin-top:20px; color:#7c3aed; font-size:1.5rem;"></i>
-                    </div>
-                    <div class="flashcard-back">
-                        <h3 style="font-family:'Patrick Hand'; font-size:1.5rem;">Voz do Adulto Saudável</h3>
-                        <p style="margin-top:10px;">"Eu sou humano como todos os outros. Tenho os mesmos direitos, não mais. Respeitar as regras e as necessidades alheias é o que constrói relacionamentos reais. Posso tolerar a frustração."</p>
+            <div class="flip-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <i class="fa-solid fa-gavel" style="font-size:2.5rem; color:#dfe6e9; margin-bottom:15px;"></i>
+                            <h3 style="font-size:1.1rem; color:#2d3436;">Voz do Merecimento</h3>
+                            <p style="margin-top:10px; font-size:0.9rem; color:#555;">"Isso é ridículo! Por que eu tenho que seguir essas regras estúpidas? Eu mereço mais do que isso. Eles deveriam me priorizar!"</p>
+                        </div>
+                        <div class="flip-back">
+                            <h3 style="font-size:1.1rem; margin-bottom:10px;">Adulto Saudável</h3>
+                            <p style="font-size:0.9rem;">"Eu sou humano como todos os outros. Tenho os mesmos direitos, não mais. Respeitar as regras e as necessidades alheias é o que constrói relacionamentos reais. Posso tolerar a frustração."</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <center>
+            <a href="../../listaferramentas.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+        </center>
 
     </div>
 
@@ -416,31 +371,39 @@
                 &copy; 2026 Bruno de Souza
             </div>
             <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/psi.brunosg/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5553991898309" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init();
+
         function translateNeed(type) {
-            const bubble = document.getElementById('translator-bubble');
+            const display = document.getElementById('trans-res');
             let text = "";
+            let color = "";
             
             if (type === 'esperar') {
-                text = "✨ Tradução: 'O tempo dos outros é tão valioso quanto o meu. Esperar é chato, mas eu consigo lidar com isso.'";
+                text = "✨ <strong>Tradução:</strong> 'O tempo dos outros é tão valioso quanto o meu. Esperar é chato, mas eu consigo lidar com isso com educação.'";
+                color = "#7b1fa2";
             } else if (type === 'especial') {
-                text = "✨ Tradução: 'Não preciso provar que sou superior para ter valor. Sou digno de respeito sendo uma pessoa comum.'";
+                text = "✨ <strong>Tradução:</strong> 'Não preciso provar que sou superior para ter valor. Sou digno de respeito sendo uma pessoa comum, igual a todos.'";
+                color = "#ffb300";
             } else if (type === 'agora') {
-                text = "✨ Tradução: 'Eu posso adiar a gratificação. Nem tudo gira em torno dos meus desejos imediatos.'";
+                text = "✨ <strong>Tradução:</strong> 'Eu posso adiar a gratificação. Nem tudo gira em torno dos meus desejos imediatos. O mundo não me deve nada.'";
+                color = "#d32f2f";
             }
             
-            bubble.style.opacity = 0;
+            display.style.opacity = 0;
+            display.style.borderTop = `5px solid ${color}`;
+            
             setTimeout(() => {
-                bubble.innerHTML = text;
-                bubble.style.opacity = 1;
-                bubble.style.transition = "opacity 0.3s";
+                display.innerHTML = `<p style="font-size:1.1rem; color:#2d3436;">${text}</p>`;
+                display.style.opacity = 1;
             }, 200);
         }
     </script>
