@@ -3,17 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minhas Ferramentas | Bruno de Souza</title>
+    <title>Esquemas e Modos | Bruno de Souza</title>
     
     <script>
-        // Verifica se o usuário está logado (chave 'logado' = 'sim')
         if(localStorage.getItem('logado') !== 'sim') {
-            // Se não estiver, redireciona para o login na pasta anterior
-            window.location.href = "../login.html";
-        }
-
-        function sair() {
-            localStorage.removeItem('logado');
             window.location.href = "../login.html";
         }
     </script>
@@ -24,809 +17,422 @@
 
     <style>
         :root {
-            --bg-color: #f0f8ff;
-            --primary: #6c5ce7;
-            --secondary: #00b894;
-            --accent: #fdcb6e;
-            --text: #2d3436;
+            --bg-body: #f8fafc;
+            --text-main: #334155;
             
-            /* Cores das Seções */
-            --c-esquema: #a29bfe;
-            --c-tcc: #0984e3;
-            --c-aval: #00b894;
-            --c-baralho: #e17055;
-            --c-jogo: #fd79a8;
+            /* Cores dos Tipos */
+            --color-esquema: #ef4444; /* Vermelho para Esquemas (Alerta) */
+            --color-modo: #3b82f6;    /* Azul para Modos (Estados) */
+            --color-saudavel: #10b981; /* Verde para Adulto Saudável */
+            
+            --card-front: #ffffff;
+            --card-back-esquema: #fca5a5;
+            --card-back-modo: #93c5fd;
         }
 
-        * { box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Quicksand', sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
-            background-size: 20px 20px;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 25px 25px;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
-            color: var(--text);
-            overflow-x: hidden;
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
 
-        /* --- CABEÇALHO --- */
+        /* --- HEADER --- */
         header {
             text-align: center;
-            margin: 30px auto 60px auto;
+            margin: 20px auto 40px auto;
             background: white;
-            padding: 40px 20px;
+            padding: 30px 40px;
             border-radius: 25px;
-            border: 3px dashed var(--primary);
+            border: 3px dashed var(--color-esquema);
             box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
-            position: relative;
-            max-width: 900px;
+            max-width: 800px;
             width: 100%;
-            z-index: 10;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 160px; height: 35px; 
+            background-color: rgba(239, 68, 68, 0.1); 
+            border: 1px solid rgba(0,0,0,0.05); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         header h1 {
-            font-size: 2.2rem;
-            color: var(--primary);
+            font-size: 2rem;
+            color: var(--text-main);
             text-transform: uppercase;
             margin: 0;
             font-weight: 800;
         }
 
-        .subtitle { margin-top: 8px; color: #636e72; font-weight: 600; font-size: 1.1rem; }
+        .subtitle { margin-top: 5px; color: #64748b; font-weight: 600; }
 
-        #btn-sair {
-            position: absolute; top: 20px; right: 25px;
-            text-decoration: none; color: #b2bec3;
-            font-size: 0.95rem; font-weight: 700; transition: 0.3s;
-            cursor: pointer; background: none; border: none;
-            display: flex; align-items: center; gap: 5px;
-        }
-        #btn-sair:hover { color: var(--c-baralho); }
-
-        /* --- CONTAINER E GRID --- */
-        .dashboard-container {
-            max-width: 1250px;
-            width: 100%;
-            margin: 0 auto;
-            flex: 1;
-        }
-
-        .section-label {
-            font-size: 1.5rem; font-weight: 800;
-            margin: 60px 0 30px;
-            display: flex; align-items: center; gap: 15px;
-            padding-left: 10px; text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 2px dashed rgba(0,0,0,0.1);
-            padding-bottom: 15px;
-        }
-
-        .domain-label {
-            font-size: 1.1rem; font-weight: 700; color: #636e72;
-            margin: 30px 0 15px; text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px; 
-            width: 100%;
-        }
-
-        /* --- CARDS --- */
-        .tool-card {
+        /* --- SELETOR DE DECK --- */
+        .deck-toggle {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
             background: white;
-            border: 2px dashed #b2bec3;
-            border-radius: 20px;
-            padding: 35px 20px;
-            text-decoration: none;
-            color: var(--text);
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
-            box-shadow: 0 5px 0 rgba(0,0,0,0.05);
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            position: relative;
+            padding: 8px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .toggle-btn {
+            border: none;
+            background: transparent;
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active-esquema {
+            background-color: var(--color-esquema);
+            color: white;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .toggle-btn.active-modo {
+            background-color: var(--color-modo);
+            color: white;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- CARD --- */
+        .card-container {
+            width: 100%;
+            max-width: 450px;
+            height: 580px; /* Cartas mais altas para caber o texto */
+            perspective: 1000px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .card {
+            width: 100%;
             height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        .tool-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border-color: var(--primary);
-            z-index: 5;
-        }
+        .card.flipped { transform: rotateY(180deg); }
 
-        .card-icon { font-size: 2.5rem; margin-bottom: 15px; transition: 0.3s; }
-        .tool-card:hover .card-icon { transform: scale(1.1) rotate(5deg); }
-
-        .card-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; color: #2d3436; }
-        .card-desc { font-size: 0.9rem; color: #636e72; line-height: 1.5; }
-
-        /* Badge Novo */
-        .new-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: #ff7675; color: white;
-            font-size: 0.7rem; font-weight: 800;
-            padding: 3px 8px; border-radius: 10px;
-            text-transform: uppercase;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            margin: 80px auto 40px auto;
+        .face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 25px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.05);
             background: white;
-            border: 2px dashed #b2bec3;
+        }
+
+        /* FRENTE (TÍTULO) */
+        .face-front {
+            background-image: linear-gradient(135deg, #fff 0%, #f1f5f9 100%);
+        }
+
+        .card-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+            transition: color 0.3s;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.2;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .card-tag {
+            background: #e2e8f0;
+            color: #64748b;
+            padding: 5px 15px;
             border-radius: 20px;
-            padding: 25px 40px;
-            width: 100%;
-            max-width: 900px;
-            box-shadow: 0 5px 0 rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
         }
 
-        .footer-info {
-            font-size: 0.95rem;
-            color: #636e72;
+        .tap-hint {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #94a3b8;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .social-links { display: flex; gap: 20px; }
-        .social-links a { color: #b2bec3; font-size: 1.5rem; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
+        /* VERSO (DESCRIÇÃO) */
+        .face-back {
+            transform: rotateY(180deg);
+            background: white;
+            border-top: 10px solid var(--color-esquema); /* Cor dinâmica */
+            justify-content: flex-start;
+            padding-top: 50px;
+            text-align: left;
+        }
 
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; row-gap: 30px; }
-            header { padding: 30px 15px; }
-            footer { flex-direction: column; text-align: center; }
+        .description-box {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #475569;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            border-left: 4px solid #cbd5e1;
+        }
+
+        .back-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-align: center;
+            width: 100%;
+            color: var(--text-main);
+        }
+
+        /* CONTROLES */
+        .btn-draw {
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-draw:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .btn-draw:active { transform: translateY(2px); box-shadow: none; }
+
+        .btn-back-home {
+            margin-top: 40px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn-back-home:hover { color: var(--text-main); }
+
+        @media (max-width: 500px) {
+            .card-container { height: 500px; }
+            .card-title { font-size: 1.5rem; }
+            .description-box { font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
 
     <header data-aos="fade-down">
-        <button id="btn-sair" onclick="sair()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
-        <h1><i class="fa-solid fa-toolbox"></i> Central de Ferramentas</h1>
-        <div class="subtitle">Psicólogo Bruno de Souza • CRP 07/44472</div>
+        <h1>Terapia do Esquema</h1>
+        <div class="subtitle">Identificando padrões e modos de funcionamento</div>
     </header>
 
-    <div class="dashboard-container">
-
-        <div class="section-label" style="color: var(--c-baralho);">
-            <i class="fa-solid fa-layer-group"></i> Baralhos Terapêuticos
-        </div>
-        <div class="grid">
-            <a href="baralhos/baralho-avaliacao-300.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-clipboard-list"></i></div>
-                <div class="card-title">Avaliação 300</div>
-                <div class="card-desc">300 Perguntas Clínicas</div>
-            </a>
-            <a href="baralhos/baralho-esquemas-modos.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="card-title">Baralho TE</div>
-                <div class="card-desc">Esquemas & Modos</div>
-            </a>
-            <a href="baralhos/jogo-reparentalizacao.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-user-shield"></i></div>
-                <div class="card-title">Reparentalização</div>
-                <div class="card-desc">Jogo para Pais e Filhos</div>
-            </a>
-            <a href="baralhos/baralho-se-liga.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-wifi"></i></div>
-                <div class="card-title">Se Liga</div>
-                <div class="card-desc">Uso Consciente de Telas</div>
-            </a>
-            <a href="baralhos/baralho-stop.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-hand-paper"></i></div>
-                <div class="card-title">Baralho STOP</div>
-                <div class="card-desc">Controle de Ansiedade</div>
-            </a>
-            <a href="baralhos/baralho-autocompaixao.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                <div class="card-title">Autocompaixão</div>
-                <div class="card-desc">Gentileza consigo mesmo</div>
-            </a>
-            <a href="baralhos/baralho-assertividade.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-bullhorn"></i></div>
-                <div class="card-title">Assertividade</div>
-                <div class="card-desc">Comunicação Clara</div>
-            </a>
-            <a href="baralhos/baralho-inseguranca.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-lock-open"></i></div>
-                <div class="card-title">Insegurança</div>
-                <div class="card-desc">Chave da Confiança</div>
-            </a>
-            <a href="baralhos/baralho-luto.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-feather-pointed"></i></div>
-                <div class="card-title">Luto</div>
-                <div class="card-desc">Memórias e Afetos</div>
-            </a>
-            <a href="baralhos/baralho-enfrentamento.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-shield-cat"></i></div>
-                <div class="card-title">Enfrentamento</div>
-                <div class="card-desc">Cartões de Coping</div>
-            </a>
-            <a href="baralhos/baralho-puxa-conversa.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-comments"></i></div>
-                <div class="card-title">Puxa Conversa</div>
-                <div class="card-desc">Quebra-Gelo</div>
-            </a>
-            <a href="baralhos/baralho-100-perguntas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-circle-question"></i></div>
-                <div class="card-title">100 Perguntas</div>
-                <div class="card-desc">Exploração Pessoal</div>
-            </a>
-            <a href="baralhos/baralho-autoconhecimento.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-mirror"></i></div>
-                <div class="card-title">Autoconhecimento</div>
-                <div class="card-desc">Jornada Interior</div>
-            </a>
-            <a href="baralhos/baralho-dialogando-casal.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-heart-pulse"></i></div>
-                <div class="card-title">Dialogando Casal</div>
-                <div class="card-desc">Perguntas para dois</div>
-            </a>
-            <a href="baralhos/baralho-100-cards-relacionamento.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-infinity"></i></div>
-                <div class="card-title">Relacionamento</div>
-                <div class="card-desc">100 Cards</div>
-            </a>
-            <a href="baralhos/baralho-adolescentes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-headset"></i></div>
-                <div class="card-title">Adolescentes</div>
-                <div class="card-desc">Papo Jovem</div>
-            </a>
-            <a href="baralhos/baralho-emocoes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-face-smile"></i></div>
-                <div class="card-title">Emoções</div>
-                <div class="card-desc">Identificação</div>
-            </a>
-            <a href="baralhos/baralho-distorcoescognitivas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-glasses"></i></div>
-                <div class="card-title">Distorções</div>
-                <div class="card-desc">Erros Cognitivos</div>
-            </a>
-            <a href="baralhos/baralho-modelo-cognitivo.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-brain"></i></div>
-                <div class="card-title">Modelo Cognitivo</div>
-                <div class="card-desc">Baralho Prático</div>
-            </a>
-            <a href="baralhos/baralhotdah.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-bolt"></i></div>
-                <div class="card-title">Baralho TDAH</div>
-                <div class="card-desc">Psicoeducação TDAH</div>
-            </a>
-            <a href="baralhos/baralho-tres-solucoes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-lightbulb"></i></div>
-                <div class="card-title">Baralho 3 Soluções</div>
-                <div class="card-desc">Flexibilidade Cognitiva</div>
-            </a>
-        </div>
-
-        <div class="section-label" style="color: var(--c-esquema);">
-            <i class="fa-solid fa-puzzle-piece"></i> Terapia do Esquema
-        </div>
-        
-        <div class="domain-label"><i class="fa-solid fa-book"></i> Guias Gerais</div>
-        <div class="grid">
-            <a href="../psicoeducacao/te/esquema.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-book-open"></i></div>
-                <div class="card-title">Guia dos Esquemas</div>
-                <div class="card-desc">Visão Geral</div>
-            </a>
-            <a href="../psicoeducacao/te/modos.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-masks-theater"></i></div>
-                <div class="card-title">Guia dos Modos</div>
-                <div class="card-desc">Criança, Pais e Adulto</div>
-            </a>
-        </div>
-
-        <div class="domain-label">I. Desconexão e Rejeição</div>
-        <div class="grid">
-            <a href="../psicoeducacao/te/esquema-abandono.html" class="tool-card">
-                <div class="card-icon" style="color: #ef5350;"><i class="fa-solid fa-heart-crack"></i></div>
-                <div class="card-title">Abandono</div>
-                <div class="card-desc">Instabilidade</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-desconfianca.html" class="tool-card">
-                <div class="card-icon" style="color: #ef5350;"><i class="fa-solid fa-shield-halved"></i></div>
-                <div class="card-title">Desconfiança</div>
-                <div class="card-desc">Abuso</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-privacao.html" class="tool-card">
-                <div class="card-icon" style="color: #ef5350;"><i class="fa-solid fa-battery-quarter"></i></div>
-                <div class="card-title">Privação Emocional</div>
-                <div class="card-desc">Vazio de Cuidado</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-defectividade.html" class="tool-card">
-                <div class="card-icon" style="color: #ef5350;"><i class="fa-solid fa-mask"></i></div>
-                <div class="card-title">Defectividade</div>
-                <div class="card-desc">Vergonha</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-isolamento.html" class="tool-card">
-                <div class="card-icon" style="color: #ef5350;"><i class="fa-solid fa-user-astronaut"></i></div>
-                <div class="card-title">Isolamento Social</div>
-                <div class="card-desc">Alienação</div>
-            </a>
-        </div>
-
-        <div class="domain-label">II. Autonomia e Desempenho</div>
-        <div class="grid">
-            <a href="../psicoeducacao/te/esquema-dependencia.html" class="tool-card">
-                <div class="card-icon" style="color: #42a5f5;"><i class="fa-solid fa-baby-carriage"></i></div>
-                <div class="card-title">Dependência</div>
-                <div class="card-desc">Incompetência</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-vulnerabilidade.html" class="tool-card">
-                <div class="card-icon" style="color: #42a5f5;"><i class="fa-solid fa-shield-virus"></i></div>
-                <div class="card-title">Vulnerabilidade</div>
-                <div class="card-desc">Medo de Catástrofe</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-emaranhamento.html" class="tool-card">
-                <div class="card-icon" style="color: #42a5f5;"><i class="fa-solid fa-people-arrows"></i></div>
-                <div class="card-title">Emaranhamento</div>
-                <div class="card-desc">Self Subdesenvolvido</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-fracasso.html" class="tool-card">
-                <div class="card-icon" style="color: #42a5f5;"><i class="fa-solid fa-arrow-trend-down"></i></div>
-                <div class="card-title">Fracasso</div>
-                <div class="card-desc">Sensação de Atraso</div>
-            </a>
-        </div>
-
-        <div class="domain-label">III. Limites Prejudicados</div>
-        <div class="grid">
-            <a href="../psicoeducacao/te/esquema-merecimento.html" class="tool-card">
-                <div class="card-icon" style="color: #ec407a;"><i class="fa-solid fa-crown"></i></div>
-                <div class="card-title">Merecimento</div>
-                <div class="card-desc">Grandiosidade</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-autocontrole.html" class="tool-card">
-                <div class="card-icon" style="color: #ec407a;"><i class="fa-solid fa-gamepad"></i></div>
-                <div class="card-title">Autocontrole</div>
-                <div class="card-desc">Insuficiente</div>
-            </a>
-        </div>
-
-        <div class="domain-label">IV. Direcionamento para o Outro</div>
-        <div class="grid">
-            <a href="../psicoeducacao/te/esquema-subjugacao.html" class="tool-card">
-                <div class="card-icon" style="color: #66bb6a;"><i class="fa-solid fa-lock"></i></div>
-                <div class="card-title">Subjugação</div>
-                <div class="card-desc">Sacrifício do Eu</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-autossacrificio.html" class="tool-card">
-                <div class="card-icon" style="color: #66bb6a;"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                <div class="card-title">Autossacrifício</div>
-                <div class="card-desc">Cuidar Demais</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-busca-aprovacao.html" class="tool-card">
-                <div class="card-icon" style="color: #66bb6a;"><i class="fa-solid fa-star"></i></div>
-                <div class="card-title">Busca de Aprovação</div>
-                <div class="card-desc">Reconhecimento</div>
-            </a>
-        </div>
-
-        <div class="domain-label">V. Supervigilância e Inibição</div>
-        <div class="grid">
-            <a href="../psicoeducacao/te/esquema-negativismo.html" class="tool-card">
-                <div class="card-icon" style="color: #78909c;"><i class="fa-solid fa-cloud-showers-heavy"></i></div>
-                <div class="card-title">Negativismo</div>
-                <div class="card-desc">Pessimismo</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-inibicao.html" class="tool-card">
-                <div class="card-icon" style="color: #78909c;"><i class="fa-solid fa-snowflake"></i></div>
-                <div class="card-title">Inibição Emocional</div>
-                <div class="card-desc">Bloqueio Afetivo</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-padroes.html" class="tool-card">
-                <div class="card-icon" style="color: #78909c;"><i class="fa-solid fa-ruler-combined"></i></div>
-                <div class="card-title">Padrões Inflexíveis</div>
-                <div class="card-desc">Perfeccionismo</div>
-            </a>
-            <a href="../psicoeducacao/te/esquema-punicao.html" class="tool-card">
-                <div class="card-icon" style="color: #78909c;"><i class="fa-solid fa-gavel"></i></div>
-                <div class="card-title">Punição</div>
-                <div class="card-desc">Intolerância ao Erro</div>
-            </a>
-        </div>
-
-        <div class="domain-label">Inventários TE</div>
-        <div class="grid">
-            <a href="../escalas-te/ysqs3.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-list-ol"></i></div>
-                <div class="card-title">YSQ-S3</div>
-                <div class="card-desc">Esquemas (Adulto)</div>
-            </a>
-            <a href="../escalas-te/smi.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-chart-pie"></i></div>
-                <div class="card-title">SMI</div>
-                <div class="card-desc">Inventário de Modos</div>
-            </a>
-            <a href="../escalas-te/yci.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-child-reaching"></i></div>
-                <div class="card-title">YCI</div>
-                <div class="card-desc">Inventário para Crianças</div>
-            </a>
-            <a href="../escalas-te/ypi.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-user-group"></i></div>
-                <div class="card-title">YPI</div>
-                <div class="card-desc">Estilos Parentais</div>
-            </a>
-            <a href="../escalas-te/yrai.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-esquema);"><i class="fa-solid fa-person-running"></i></div>
-                <div class="card-title">YRAI</div>
-                <div class="card-desc">Evitação</div>
-            </a>
-        </div>
-
-        <div class="section-label" style="color: var(--c-tcc);">
-            <i class="fa-solid fa-book-open"></i> Psicoeducação Geral
-        </div>
-        <div class="grid">
-            <a href="../psicoeducacao/psicoeducacao-tag.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-wind"></i></div>
-                <div class="card-title">TAG</div>
-                <div class="card-desc">Ansiedade Generalizada</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tdah.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-bolt"></i></div>
-                <div class="card-title">TDAH</div>
-                <div class="card-desc">Neurobiologia e Foco</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tp.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-wave-square"></i></div>
-                <div class="card-title">Pânico</div>
-                <div class="card-desc">O alarme falso</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-users-viewfinder"></i></div>
-                <div class="card-title">Ansiedade Social</div>
-                <div class="card-desc">Medo do julgamento</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tdm.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-cloud-showers-heavy"></i></div>
-                <div class="card-title">Depressão</div>
-                <div class="card-desc">Ativação Comportamental</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tab.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-masks-theater"></i></div>
-                <div class="card-title">Bipolaridade</div>
-                <div class="card-desc">Ciclos e Estabilidade</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tca.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-cookie-bite"></i></div>
-                <div class="card-title">Compulsão (TCAP)</div>
-                <div class="card-desc">Cérebro e Alimento</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-bn.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-arrows-rotate"></i></div>
-                <div class="card-title">Bulimia</div>
-                <div class="card-desc">Ciclo Compulsão-Purgação</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-an.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-scale-unbalanced"></i></div>
-                <div class="card-title">Anorexia</div>
-                <div class="card-desc">Distorção e Restrição</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-toc.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-rotate"></i></div>
-                <div class="card-title">TOC</div>
-                <div class="card-desc">Obsessão e Compulsão</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tpoc.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-ruler-combined"></i></div>
-                <div class="card-title">TPOC</div>
-                <div class="card-desc">Perfeccionismo Rígido</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tept.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                <div class="card-title">TEPT</div>
-                <div class="card-desc">Trauma e Memória</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-burnout.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-battery-empty"></i></div>
-                <div class="card-title">Burnout</div>
-                <div class="card-desc">Esgotamento Profissional</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-insonia.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-moon"></i></div>
-                <div class="card-title">Insônia</div>
-                <div class="card-desc">Higiene do Sono</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-esquizofrenia.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-puzzle-piece"></i></div>
-                <div class="card-title">Esquizofrenia</div>
-                <div class="card-desc">Mente e Realidade</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-alzheimer.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-brain"></i></div>
-                <div class="card-title">Alzheimer</div>
-                <div class="card-desc">Memória e Cuidado</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tpb.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-fire-flame-curved"></i></div>
-                <div class="card-title">Borderline</div>
-                <div class="card-desc">Regulação Emocional</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-tpas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-mask"></i></div>
-                <div class="card-title">TPAS</div>
-                <div class="card-desc">Antissocial</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-ahsd.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-lightbulb"></i></div>
-                <div class="card-title">AH/SD</div>
-                <div class="card-desc">Altas Habilidades</div>
-            </a>
-            <a href="../psicoeducacao/psicoeducacao-luto.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-heart-crack"></i></div>
-                <div class="card-title">Luto</div>
-                <div class="card-desc">Processo de Perda</div>
-            </a>
-            <a href="../psicoeducacao/tcc/tcc.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-circle-info"></i></div>
-                <div class="card-title">Sobre a TCC</div>
-                <div class="card-desc">Fundamentos</div>
-            </a>
-            <a href="../psicoeducacao/tcc/pensamentos-automaticos.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-comments"></i></div>
-                <div class="card-title">Pensamentos</div>
-                <div class="card-desc">Automáticos</div>
-            </a>
-            <a href="../psicoeducacao/tcc/crencas-intermediarias.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="card-title">Regras</div>
-                <div class="card-desc">Crenças Intermediárias</div>
-            </a>
-            <a href="../psicoeducacao/tcc/crencas-centrais.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-bullseye"></i></div>
-                <div class="card-title">Crenças Nucleares</div>
-                <div class="card-desc">Centrais</div>
-            </a>
-            <a href="../psicoeducacao/tcc/crenca-desamor.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-heart-crack"></i></div>
-                <div class="card-title">Desamor</div>
-                <div class="card-desc">Psicoeducação</div>
-            </a>
-            <a href="../psicoeducacao/tcc/crenca-desamparo.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-person-falling"></i></div>
-                <div class="card-title">Desamparo</div>
-                <div class="card-desc">Psicoeducação</div>
-            </a>
-            <a href="../psicoeducacao/tcc/crenca-desvalor.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-tcc);"><i class="fa-solid fa-thumbs-down"></i></div>
-                <div class="card-title">Desvalor</div>
-                <div class="card-desc">Psicoeducação</div>
-            </a>
-        </div>
-
-        <div class="section-label" style="color: var(--c-aval);">
-            <i class="fa-solid fa-clipboard-check"></i> Escalas & Inventários
-        </div>
-        <div class="grid">
-            <a href="../escalas/asrs18.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-user-check"></i></div><div class="card-title">ASRS-18</div><div class="card-desc">TDAH Adulto</div></a>
-            <a href="../escalas/bai.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-wind"></i></div><div class="card-title">BAI</div><div class="card-desc">Ansiedade (Beck)</div></a>
-            <a href="../escalas/bdi.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-face-frown"></i></div><div class="card-title">BDI</div><div class="card-desc">Depressão (Beck)</div></a>
-            <a href="../escalas/bes.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-pizza-slice"></i></div><div class="card-title">BES</div><div class="card-desc">Compulsão Alimentar</div></a>
-            <a href="../escalas/bhs.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-cloud-rain"></i></div><div class="card-title">BHS</div><div class="card-desc">Desesperança</div></a>
-            <a href="../escalas/bpq.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-clipboard-question"></i></div><div class="card-title">BPQ</div><div class="card-desc">Borderline</div></a>
-            <a href="../escalas/brums.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-masks-theater"></i></div><div class="card-title">BRUMS</div><div class="card-desc">Escala de Humor</div></a>
-            <a href="../escalas/coopersmith.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-star"></i></div><div class="card-title">Coopersmith</div><div class="card-desc">Autoestima Escolar</div></a>
-            <a href="../escalas/dass21.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-heart-pulse"></i></div><div class="card-title">DASS-21</div><div class="card-desc">Depressão/Ansiedade</div></a>
-            <a href="../escalas/ebep.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-seedling"></i></div><div class="card-title">EBEP</div><div class="card-desc">Bem-Estar (Ryff)</div></a>
-            <a href="../escalas/eq-empatia.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-heart"></i></div><div class="card-title">EQ (Empatia)</div><div class="card-desc">Quociente Empático</div></a>
-            <a href="../escalas/esaf-felicidade.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-sun"></i></div><div class="card-title">ESAF</div><div class="card-desc">Escala de Felicidade</div></a>
-            <a href="../escalas/etpc.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-face-smile-wink"></i></div><div class="card-title">ETPC</div><div class="card-desc">Personalidade Infantil</div></a>
-            <a href="../escalas/felicidade.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-face-grin-beam"></i></div><div class="card-title">SHS</div><div class="card-desc">Felicidade Subjetiva</div></a>
-            <a href="../escalas/habilidades-sociais.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-users"></i></div><div class="card-title">IHS-Del-Prette</div><div class="card-desc">Habilidades Sociais</div></a>
-            <a href="../escalas/ham-a.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-stethoscope"></i></div><div class="card-title">HAM-A</div><div class="card-desc">Ansiedade (Hamilton)</div></a>
-            <a href="../escalas/hcl32.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-bolt"></i></div><div class="card-title">HCL-32</div><div class="card-desc">Hipomania</div></a>
-            <a href="../escalas/lchs.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-handshake"></i></div><div class="card-title">LCHS</div><div class="card-desc">Hab. Sociais (Goldstein)</div></a>
-            <a href="../escalas/masc.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-shapes"></i></div><div class="card-title">MASC</div><div class="card-desc">Ansiedade Infantil</div></a>
-            <a href="../escalas/mdq.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-chart-line"></i></div><div class="card-title">MDQ</div><div class="card-desc">Transtorno de Humor</div></a>
-            <a href="../escalas/neo-ffi-20.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-dna"></i></div><div class="card-title">NEO-FFI-20</div><div class="card-desc">Big Five (Reduzido)</div></a>
-            <a href="../escalas/pbq-sf.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-brain"></i></div><div class="card-title">PBQ-SF</div><div class="card-desc">Crenças (Beck)</div></a>
-            <a href="../escalas/qa-autismo.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-puzzle-piece"></i></div><div class="card-title">QA (Autismo)</div><div class="card-desc">Quociente Espectro</div></a>
-            <a href="../escalas/quati.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-fingerprint"></i></div><div class="card-title">QUATI</div><div class="card-desc">Tipologia Junguiana</div></a>
-            <a href="../escalas/rmh22.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-shield-halved"></i></div><div class="card-title">RMH-22</div><div class="card-desc">Resiliência</div></a>
-            <a href="../escalas/rosenberg.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-gem"></i></div><div class="card-title">Rosenberg</div><div class="card-desc">Autoestima Global</div></a>
-            <a href="../escalas/scared.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-child-reaching"></i></div><div class="card-title">SCARED</div><div class="card-desc">Ansiedade Infantil</div></a>
-            <a href="../escalas/snap-iv.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-child"></i></div><div class="card-title">SNAP-IV</div><div class="card-desc">TDAH (Crianças)</div></a>
-            <a href="../escalas/spin.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-users-slash"></i></div><div class="card-title">SPIN</div><div class="card-desc">Fobia Social</div></a>
-            <a href="../escalas/thomas-kilmann.html" class="tool-card"><div class="card-icon" style="color: var(--c-aval);"><i class="fa-solid fa-scale-balanced"></i></div><div class="card-title">Thomas-Kilmann</div><div class="card-desc">Conflitos (TKI)</div></a>
-        </div>
-
-        <div class="section-label" style="color: var(--c-jogo);">
-            <i class="fa-solid fa-gamepad"></i> Jogos & Autoestima
-        </div>
-        <div class="grid">
-            <a href="../jogo-memoria-emocoes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-puzzle-piece"></i></div>
-                <div class="card-title">Memória</div>
-                <div class="card-desc">Jogo das Emoções</div>
-            </a>
-            <a href="../baralhos/vencendo-dragao.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-dragon"></i></div>
-                <div class="card-title">Vencendo o Dragão</div>
-                <div class="card-desc">Manejo da Raiva</div>
-            </a>
-            <a href="../estrela.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-star"></i></div>
-                <div class="card-title">Respiração</div>
-                <div class="card-desc">Técnica da Estrela</div>
-            </a>
-            <a href="../diario-conquistas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-book-open-reader"></i></div>
-                <div class="card-title">Diário Conquistas</div>
-                <div class="card-desc">Registro positivo</div>
-            </a>
-            <a href="../minhas-conquistas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-trophy"></i></div>
-                <div class="card-title">Minhas Conquistas</div>
-                <div class="card-desc">Pote de Ouro</div>
-            </a>
-            <a href="../termometro-autoestima.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-temperature-half"></i></div>
-                <div class="card-title">Termômetro</div>
-                <div class="card-desc">Nível de Autoestima</div>
-            </a>
-            <a href="../mindfulness-video.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-jogo);"><i class="fa-solid fa-spa"></i></div>
-                <div class="card-title">Mindfulness</div>
-                <div class="card-desc">Vídeo Guiado</div>
-            </a>
-        </div>
-
-        <div class="section-label" style="color: var(--c-baralho);">
-            <i class="fa-solid fa-layer-group"></i> Baralhos Terapêuticos
-        </div>
-        <div class="grid">
-            <a href="../baralhos/baralho-avaliacao-300.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-clipboard-list"></i></div>
-                <div class="card-title">Avaliação 300</div>
-                <div class="card-desc">300 Perguntas Clínicas</div>
-            </a>
-            <a href="../baralhos/baralho-se-liga.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-wifi"></i></div>
-                <div class="card-title">Se Liga</div>
-                <div class="card-desc">Uso Consciente de Telas</div>
-            </a>
-            <a href="../baralhos/baralho-stop.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-hand-paper"></i></div>
-                <div class="card-title">Baralho STOP</div>
-                <div class="card-desc">Controle de Ansiedade</div>
-            </a>
-            <a href="../baralhos/baralho-autocompaixao.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                <div class="card-title">Autocompaixão</div>
-                <div class="card-desc">Gentileza consigo</div>
-            </a>
-            <a href="../baralhos/baralho-assertividade.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-bullhorn"></i></div>
-                <div class="card-title">Assertividade</div>
-                <div class="card-desc">Comunicação Clara</div>
-            </a>
-            <a href="../baralhos/baralho-inseguranca.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-lock-open"></i></div>
-                <div class="card-title">Insegurança</div>
-                <div class="card-desc">Chave da Confiança</div>
-            </a>
-            <a href="../baralhos/baralho-luto.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-feather-pointed"></i></div>
-                <div class="card-title">Luto</div>
-                <div class="card-desc">Memórias e Afetos</div>
-            </a>
-            <a href="../baralhos/baralho-enfrentamento.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-shield-cat"></i></div>
-                <div class="card-title">Enfrentamento</div>
-                <div class="card-desc">Cartões de Coping</div>
-            </a>
-            <a href="../baralhos/baralho-puxa-conversa.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-comments"></i></div>
-                <div class="card-title">Puxa Conversa</div>
-                <div class="card-desc">Quebra-Gelo</div>
-            </a>
-            <a href="../baralhos/baralho-100-perguntas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-circle-question"></i></div>
-                <div class="card-title">100 Perguntas</div>
-                <div class="card-desc">Exploração Pessoal</div>
-            </a>
-            <a href="../baralhos/baralho-autoconhecimento.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-mirror"></i></div>
-                <div class="card-title">Autoconhecimento</div>
-                <div class="card-desc">Jornada Interior</div>
-            </a>
-            <a href="../baralhos/baralho-dialogando-casal.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-heart-pulse"></i></div>
-                <div class="card-title">Dialogando Casal</div>
-                <div class="card-desc">Perguntas para dois</div>
-            </a>
-            <a href="../baralhos/baralho-100-cards-relacionamento.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-infinity"></i></div>
-                <div class="card-title">Relacionamento</div>
-                <div class="card-desc">100 Cards</div>
-            </a>
-            <a href="../baralhos/baralho-adolescentes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-headset"></i></div>
-                <div class="card-title">Adolescentes</div>
-                <div class="card-desc">Papo Jovem</div>
-            </a>
-            <a href="../baralhos/baralho-emocoes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-face-smile"></i></div>
-                <div class="card-title">Emoções</div>
-                <div class="card-desc">Identificação</div>
-            </a>
-            <a href="../baralhos/baralho-distorcoescognitivas.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-glasses"></i></div>
-                <div class="card-title">Distorções</div>
-                <div class="card-desc">Erros Cognitivos</div>
-            </a>
-            <a href="../baralhos/baralho-modelo-cognitivo.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-brain"></i></div>
-                <div class="card-title">Modelo Cognitivo</div>
-                <div class="card-desc">Baralho Prático</div>
-            </a>
-            <a href="../baralhos/baralhotdah.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-bolt"></i></div>
-                <div class="card-title">Baralho TDAH</div>
-                <div class="card-desc">Psicoeducação TDAH</div>
-            </a>
-            <a href="../baralhos/baralho-tres-solucoes.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-lightbulb"></i></div>
-                <div class="card-title">Baralho 3 Soluções</div>
-                <div class="card-desc">Flexibilidade Cognitiva</div>
-            </a>
-            <a href="../baralhos/jogo-reparentalizacao.html" class="tool-card">
-                <div class="new-badge">Novo</div>
-                <div class="card-icon" style="color: var(--c-baralho);"><i class="fa-solid fa-user-shield"></i></div>
-                <div class="card-title">Reparentalização</div>
-                <div class="card-desc">Jogo para Pais e Filhos</div>
-            </a>
-        </div>
-
-        <footer>
-            <div class="footer-info">
-                &copy; 2026 Bruno de Souza • <i class="fa-solid fa-heart" style="color:#e17055;"></i> Feito com carinho
-            </div>
-            <div class="social-links">
-                <a href="https://www.instagram.com/psi.brunosg/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5553991898309" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.linkedin.com/in/psi-bsouza/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </footer>
+    <div class="deck-toggle" data-aos="fade-up">
+        <button class="toggle-btn active-esquema" id="btnEsquemas" onclick="setDeck('esquemas')">ESQUEMAS</button>
+        <button class="toggle-btn" id="btnModos" onclick="setDeck('modos')">MODOS</button>
     </div>
+
+    <div class="card-container" onclick="flipCard()" data-aos="zoom-in">
+        <div class="card" id="card">
+            
+            <div class="face face-front">
+                <div class="card-tag" id="cardTag">Esquema #1</div>
+                <div class="card-icon" id="cardIcon"><i class="fa-solid fa-person-falling-burst"></i></div>
+                <div class="card-title" id="cardTitle">ABANDONO / INSTABILIDADE</div>
+                <div class="tap-hint"><i class="fa-solid fa-rotate"></i> Toque para ler a descrição</div>
+            </div>
+
+            <div class="face face-back" id="cardBackFace">
+                <div class="back-title" id="backTitle">ABANDONO</div>
+                <div class="description-box" id="cardDesc">
+                    Acho que as pessoas são instáveis e indignas de confiança. Tenho medo de perder quem amo ou ser abandonado. As pessoas são imprevisíveis. Fico incomodado se deixado sozinho.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="btn-draw" onclick="drawCard()">
+        <i class="fa-solid fa-shuffle"></i> SORTEAR CARTA
+    </button>
+
+    <a href="../listaferramentas.html" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        // Inicializa AOS e o App
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init();
+            
+            // Variáveis Globais
+            window.currentDeckType = 'esquemas';
+            window.card = document.getElementById('card');
+            window.root = document.documentElement;
+
+            // Elementos DOM
+            window.elTag = document.getElementById('cardTag');
+            window.elIcon = document.getElementById('cardIcon');
+            window.elTitle = document.getElementById('cardTitle');
+            window.elBackFace = document.getElementById('cardBackFace');
+            window.elBackTitle = document.getElementById('backTitle');
+            window.elDesc = document.getElementById('cardDesc');
+            window.btnEsquemas = document.getElementById('btnEsquemas');
+            window.btnModos = document.getElementById('btnModos');
+
+            // --- BANCO DE DADOS ---
+            window.db = {
+                esquemas: [
+                    { id: 1, title: "Abandono / Instabilidade", icon: "fa-person-falling-burst", text: "Acho que as pessoas são instáveis e indignas de confiança. Tenho medo de perder quem amo ou ser abandonado. As pessoas são imprevisíveis. Fico incomodado se deixado sozinho." },
+                    { id: 2, title: "Desconfiança / Abuso", icon: "fa-shield-halved", text: "Penso que as pessoas irão me machucar, abusar, humilhar, enganar, manipular ou aproveitar-se de modo a me prejudicar intencionalmente. Estou sempre alerta." },
+                    { id: 3, title: "Privação Emocional", icon: "fa-glass-water-droplet", text: "Acho que as pessoas não serão capazes de suprir minhas necessidades de atenção, afeto e carinho. Na maior parte do tempo, não tenho ninguém para me compreender." },
+                    { id: 4, title: "Defectividade / Vergonha", icon: "fa-face-frown-open", text: "Sinto que sou defeituoso, mau, indesejado, inferior e que não mereço amor. Sinto-me rejeitado, hipersensível a críticas e comparações." },
+                    { id: 5, title: "Isolamento Social", icon: "fa-user-astronaut", text: "Sinto-me diferente dos outros, não me encaixo ou pertenço a grupos ou comunidade. Ninguém me entende realmente." },
+                    { id: 6, title: "Dependência / Incompetência", icon: "fa-baby-carriage", text: "Sinto que não consigo dar conta das responsabilidades do cotidiano sem ajuda considerável. Sinto-me desamparado." },
+                    { id: 7, title: "Vulnerabilidade ao Dano", icon: "fa-house-crack", text: "Sinto que algo ruim irá acontecer a qualquer momento (doença, perda financeira, catástrofe). Tenho muitos medos." },
+                    { id: 8, title: "Emaranhamento", icon: "fa-people-arrows", text: "Tenho relação extremamente próxima e íntima com pessoas importantes, a ponto de perder minha individualidade." },
+                    { id: 9, title: "Fracasso", icon: "fa-stairs", text: "Sinto que sou inadequado em relação aos outros em conquistas (escola, trabalho). Acredito que sou inferior e fracassado." },
+                    { id: 10, title: "Arrogo / Grandiosidade", icon: "fa-crown", text: "Acredito que sou superior às outras pessoas e não deveria estar sujeito às mesmas regras. Sou competitivo." },
+                    { id: 11, title: "Autocontrole Insuficiente", icon: "fa-traffic-light", text: "Não controlo a expressão das minhas emoções ou impulsos. Tenho dificuldade de concretizar metas de longo prazo." },
+                    { id: 12, title: "Subjugação", icon: "fa-hands-bound", text: "Prefiro não manifestar a raiva, tenho receio de retaliação ou abandono. Deixo que os outros decidam por mim." },
+                    { id: 13, title: "Autossacrifício", icon: "fa-hand-holding-heart", text: "Ocupo-me em atender às necessidades de outros à custa da minha satisfação. Sinto-me culpado quando faço algo para mim." },
+                    { id: 14, title: "Busca de Aprovação", icon: "fa-award", text: "Preciso da aprovação alheia para sentir que tenho valor. Minha autoestima depende da reação dos outros." },
+                    { id: 15, title: "Negativismo / Pessimismo", icon: "fa-cloud-showers-heavy", text: "Sinto que algo pode dar errado a qualquer momento. Fico sempre vigilante e preocupado com o pior." },
+                    { id: 16, title: "Inibição Emocional", icon: "fa-face-meh", text: "Tenho dificuldade em demonstrar emoções (raiva, afeto, tristeza). Prefiro manter o controle e a racionalidade." },
+                    { id: 17, title: "Padrões Inflexíveis", icon: "fa-ruler-combined", text: "Tenho altos padrões de desempenho. Sou perfeccionista e crítico. Sinto uma pressão constante." },
+                    { id: 18, title: "Postura Punitiva", icon: "fa-gavel", text: "Penso que quem erra deve ser punido. Tenho dificuldade de perdoar erros (meus e dos outros). Costumo me punir." }
+                ],
+                modos: [
+                    { id: 'm1', title: "Criança Vulnerável", icon: "fa-child-reaching", text: "Sente-se solitária, isolada, triste, incompreendida, desamparada. Sentimentos de medo e tristeza.", type: "criança" },
+                    { id: 'm2', title: "Criança Zangada", icon: "fa-face-angry", text: "Sente-se injustiçada por suas necessidades não serem atendidas. Demonstra raiva e até fúria.", type: "criança" },
+                    { id: 'm3', title: "Criança Impulsiva", icon: "fa-bolt", text: "Age impulsivamente para satisfazer desejos egoístas e imediatos. Não considera limites.", type: "criança" },
+                    { id: 'm4', title: "Criança Feliz", icon: "fa-face-laugh-beam", text: "Sente-se amada, conectada, compreendida e validada. É espontânea e otimista.", type: "saudavel" },
+                    { id: 'm5', title: "Pai/Mãe Punitivo", icon: "fa-user-ninja", text: "Agressivo, intolerante e crítico consigo mesmo. Está sempre se culpando e punindo erros.", type: "pai" },
+                    { id: 'm6', title: "Pai/Mãe Exigente", icon: "fa-user-tie", text: "Sente que precisa agir de acordo com regras rígidas e padrões elevados. Nunca se sente satisfeito.", type: "pai" },
+                    { id: 'm7', title: "Protetor Desligado", icon: "fa-robot", text: "Foge de emoções negativas. Desconecta-se, agindo de modo robótico. Sente-se indiferente e vazio.", type: "enfrentamento" },
+                    { id: 'm8', title: "Capitulador Complacente", icon: "fa-flag", text: "Age de forma obediente ou dependente para evitar conflito. Submete-se aos desejos dos outros.", type: "enfrentamento" },
+                    { id: 'm9', title: "Hipercompensador", icon: "fa-khanda", text: "Age como se o oposto do esquema fosse verdade. Usa contra-ataque e controle para aliviar o desconforto.", type: "enfrentamento" },
+                    { id: 'm10', title: "Adulto Saudável", icon: "fa-user-check", text: "Busca relações positivas. Cuida da Criança Vulnerável. Estabelece limites e modera os modos disfuncionais.", type: "saudavel" }
+                ]
+            };
+        });
+
+        // Funções Globais (acessíveis pelo HTML)
+        function setDeck(type) {
+            currentDeckType = type;
+            
+            // UI Toggle
+            if (type === 'esquemas') {
+                btnEsquemas.classList.add('active-esquema');
+                btnModos.classList.remove('active-modo');
+                root.style.setProperty('--color-esquema', '#ef4444');
+                document.querySelector('header').style.borderColor = '#ef4444';
+            } else {
+                btnEsquemas.classList.remove('active-esquema');
+                btnModos.classList.add('active-modo');
+                root.style.setProperty('--color-esquema', '#3b82f6'); 
+                document.querySelector('header').style.borderColor = '#3b82f6';
+            }
+
+            // Reset Card
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+                setTimeout(drawCard, 300);
+            } else {
+                drawCard();
+            }
+        }
+
+        function drawCard() {
+            const list = db[currentDeckType];
+            const item = list[Math.floor(Math.random() * list.length)];
+
+            // Animação leve
+            card.style.transform = "scale(0.95)";
+            setTimeout(() => {
+                card.style.transform = "scale(1)";
+                if (card.classList.contains('flipped')) card.style.transform = "rotateY(180deg)";
+            }, 150);
+
+            // Se estiver virado, desvira primeiro
+            if (card.classList.contains('flipped')) {
+                card.classList.remove('flipped');
+                setTimeout(() => updateCardContent(item), 300);
+            } else {
+                updateCardContent(item);
+            }
+        }
+
+        function updateCardContent(item) {
+            // Frente
+            elTag.innerText = currentDeckType === 'esquemas' ? `Esquema #${item.id}` : "Modo";
+            elIcon.innerHTML = `<i class="fa-solid ${item.icon}"></i>`;
+            elTitle.innerText = item.title;
+            
+            // Cor do ícone e borda
+            if (currentDeckType === 'esquemas') {
+                elIcon.style.color = '#ef4444';
+                elBackFace.style.borderTopColor = '#ef4444';
+            } else {
+                // Cores específicas para Modos
+                if (item.type === 'criança') elIcon.style.color = '#f59e0b';
+                else if (item.type === 'pai') elIcon.style.color = '#7c3aed';
+                else if (item.type === 'enfrentamento') elIcon.style.color = '#64748b';
+                else if (item.type === 'saudavel') elIcon.style.color = '#10b981';
+                
+                elBackFace.style.borderTopColor = elIcon.style.color;
+            }
+
+            // Verso
+            elBackTitle.innerText = item.title;
+            elDesc.innerText = item.text;
+        }
+
+        function flipCard() {
+            card.classList.toggle('flipped');
+        }
     </script>
+
 </body>
 </html>
