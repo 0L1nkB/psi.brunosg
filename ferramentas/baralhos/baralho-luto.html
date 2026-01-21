@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baralho do Luto | Bruno de Souza</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Paleta "Acolhimento e Memória" */
+            --bg-color: #f5f3ff;      /* Lavanda muito pálido */
+            --primary: #8b5cf6;       /* Roxo Suave */
+            --primary-dark: #6d28d9;
+            --accent: #ddd6fe;        /* Lilás Claro */
+            --text: #4b5563;          /* Cinza Escuro (Suave para leitura) */
+            --card-front: #ffffff;
+            --card-back: #a78bfa;     /* Roxo Médio */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e0e7ff 2px, transparent 2px);
+            background-size: 30px 30px;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            text-align: center;
+            margin: 20px auto 40px auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.05);
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header::before {
+            content: ""; 
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 6px; 
+            background-color: var(--primary);
+            border-radius: 10px;
+            opacity: 0.5;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .subtitle { margin-top: 8px; color: #9ca3af; font-weight: 600; }
+
+        /* --- ÁREA DA CARTA --- */
+        .card-container {
+            width: 100%;
+            max-width: 400px;
+            height: 550px;
+            perspective: 1000px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* LADOS DA CARTA */
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 30px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+            border: 8px solid white;
+        }
+
+        /* VERSO (CAPA) */
+        .face-back {
+            background: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%);
+            color: white;
+            transform: rotateY(0deg);
+        }
+
+        .icon-box {
+            font-size: 4.5rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            background: rgba(255,255,255,0.15);
+            width: 130px; height: 130px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .deck-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tap-hint {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* FRENTE (PERGUNTA) */
+        .face-front {
+            transform: rotateY(180deg);
+            background-color: #fff;
+            /* Padrão sutil de nuvens/penas */
+            background-image: radial-gradient(#f3e8ff 20%, transparent 20%);
+            background-size: 20px 20px;
+        }
+
+        .decoration {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+        }
+
+        .question-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #4b5563;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: 700;
+            background: #f9fafb;
+            padding: 6px 14px;
+            border-radius: 15px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* BOTÃO E FOOTER */
+        .btn-draw {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .btn-draw:hover { transform: translateY(-3px); background-color: var(--primary-dark); box-shadow: 0 15px 25px rgba(139, 92, 246, 0.3); }
+        .btn-draw:active { transform: translateY(2px); box-shadow: none; }
+
+        .back-link {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: auto;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        /* Responsividade */
+        @media (max-width: 400px) {
+            .card-container { width: 100%; height: 480px; }
+            h1 { font-size: 1.6rem; }
+            .question-text { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <h1>Baralho do Luto</h1>
+        <div class="subtitle">Processando a perda com respeito e amor 🕊️</div>
+    </header>
+
+    <div class="card-container" onclick="flipCard()" data-aos="zoom-in">
+        <div class="card" id="card">
+            
+            <div class="card-face face-back">
+                <div class="icon-box"><i class="fa-solid fa-feather-pointed"></i></div> 
+                <div class="deck-title">MEMÓRIAS<br>& AFETOS</div>
+                <div class="tap-hint">Toque para refletir</div>
+            </div>
+
+            <div class="card-face face-front">
+                <div class="decoration"><i class="fa-solid fa-cloud"></i></div>
+                <div class="card-number" id="counter">∞</div>
+                <div class="question-text" id="q-text">
+                    Clique no botão abaixo para retirar uma carta de reflexão.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="btn-draw" onclick="drawCard(event)">
+        <i class="fa-solid fa-hands-holding-circle"></i> NOVA CARTA
+    </button>
+
+    <a href="../listaferramentas.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const questions = [
+            "Quem ou o que você perdeu?",
+            "Com que frequência você pensa sobre isso durante o dia?",
+            "Qual é a hora mais difícil do seu dia?",
+            "Qual é a cor dessa situação ou pessoa para você?",
+            "Qual é o aroma das suas lembranças?",
+            "Qual é o som das suas lembranças?",
+            "Qual atividade ajuda a aliviar seus pensamentos?",
+            "Qual lembrança te faz sorrir?",
+            "Qual lembrança te faz chorar?",
+            "O que você tem evitado fazer ou pensar?",
+            "Qual é o seu desejo hoje?",
+            "Quais sentimentos essa situação despertou dentro de você?",
+            "O que ou quando tem sido mais difícil ao passar dos dias?",
+            "Do que você mais sente falta?",
+            "Qual é a sua memória favorita?",
+            "O que você gostaria que seus parentes ou amigos fizessem?",
+            "Quem são as pessoas que te apoiam?",
+            "Como as pessoas que você conhece estão lidando com a situação?",
+            "O que você faz e pensa quando está sozinho(a)?",
+            "O que mais te ajuda nesse momento?",
+            "Você acha difícil falar sobre isso?"
+        ];
+
+        let availableCards = [...questions];
+        const cardElement = document.getElementById('card');
+        const textElement = document.getElementById('q-text');
+        const counterElement = document.getElementById('counter');
+
+        function drawCard(event) {
+            if(event) event.stopPropagation();
+
+            if (availableCards.length === 0) {
+                alert("Você percorreu todas as cartas. O baralho será reembaralhado.");
+                availableCards = [...questions];
+            }
+
+            if (cardElement.classList.contains('flipped')) {
+                cardElement.classList.remove('flipped');
+                setTimeout(() => {
+                    updateContent();
+                    cardElement.classList.add('flipped');
+                }, 800); // Tempo para fechar e abrir
+            } else {
+                updateContent();
+                cardElement.classList.add('flipped');
+            }
+        }
+
+        function updateContent() {
+            const randomIndex = Math.floor(Math.random() * availableCards.length);
+            const question = availableCards[randomIndex];
+            
+            availableCards.splice(randomIndex, 1);
+
+            textElement.innerText = question;
+            counterElement.innerText = `Restam ${availableCards.length}`;
+        }
+
+        function flipCard() {
+            cardElement.classList.toggle('flipped');
+        }
+    </script>
+
+</body>
+</html>
