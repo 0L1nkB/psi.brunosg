@@ -52,7 +52,7 @@
         .brand {
             font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: var(--primary);
             text-transform: uppercase;
             text-align: center;
@@ -275,13 +275,29 @@
             <span class="score-badge" id="score-F_SOCIAL">0</span>
         </div>
         <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD">
-            <span><i class="fa-solid fa-head-side-virus"></i> TAG (Ans. Gen.)</span>
+            <span><i class="fa-solid fa-head-side-virus"></i> TAG</span>
             <span class="score-badge" id="score-F_GAD">0</span>
+        </div>
+
+        <div class="menu-section">Módulo G: TOC e Trauma</div>
+        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC">
+            <span><i class="fa-solid fa-rotate"></i> TOC</span>
+            <span class="score-badge" id="score-G_TOC">0</span>
+        </div>
+        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT">
+            <span><i class="fa-solid fa-land-mine-on"></i> TEPT (Trauma)</span>
+            <span class="score-badge" id="score-G_TEPT">0</span>
+        </div>
+
+        <div class="menu-section">Módulo H: TDAH Adulto</div>
+        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD">
+            <span><i class="fa-solid fa-bolt-lightning"></i> TDAH</span>
+            <span class="score-badge" id="score-H_ADHD">0/18</span>
         </div>
 
         <div class="menu-section">Módulo I: Rastreio Geral</div>
         <div class="nav-item" onclick="switchModule('I_SCREEN')" id="nav-I_SCREEN">
-            <span><i class="fa-solid fa-list-check"></i> Outros Transtornos</span>
+            <span><i class="fa-solid fa-list-check"></i> Outros</span>
             <span class="score-badge" id="score-I_SCREEN">0</span>
         </div>
 
@@ -355,42 +371,79 @@
                 { id: "C9", text: "Comportamentos de risco (gastos, sexo, velocidade)?", criteria: "7. Risco excessivo." }
             ],
             'F_PANIC': [
-                { id: "F1", text: "No último mês, você teve um ataque de pânico inesperado (pico súbito de medo intenso)?", sub: "Isso veio 'do nada', ou seja, não foi causado por uma situação específica?", criteria: "A. Ataques de pânico recorrentes e inesperados." },
+                { id: "F1", text: "No último mês, você teve um ataque de pânico inesperado (pico súbito de medo intenso)?", criteria: "A. Ataques de pânico recorrentes." },
                 { type: 'logic', check: (s) => s['F1']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F2", text: "Você ficou preocupado com a possibilidade de ter outro ataque?", criteria: "B. Preocupação persistente acerca de novos ataques." },
-                { id: "F3", text: "Você mudou seu comportamento por causa dos ataques (ex: evitar sair)?", criteria: "B. Mudança desadaptativa de comportamento." }
+                { id: "F2", text: "Preocupação persistente sobre ter novos ataques?", criteria: "B. Preocupação/Mudança comportamento." }
             ],
             'F_AGORA': [
-                { id: "F23", text: "Nos últimos 6 meses, você sentiu medo ou ansiedade intensa em situações como: usar transporte público, espaços abertos, locais fechados, filas ou sair de casa sozinho?", criteria: "A. Medo/ansiedade em 2+ situações." },
+                { id: "F23", text: "Medo intenso de usar transporte, espaços abertos/fechados, filas ou sair sozinho?", criteria: "A. Medo/ansiedade em 2+ situações." },
                 { type: 'logic', check: (s) => s['F23']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F24", text: "Você teme essas situações porque acha que seria difícil escapar ou obter ajuda?", criteria: "B. Medo de não ter escape/socorro." },
-                { id: "F26", text: "Você evita ativamente essas situações ou precisa de companhia para enfrentá-las?", criteria: "D. Evitação ativa ou necessidade de companhia." }
+                { id: "F24", text: "Você teme não conseguir escapar ou obter ajuda?", criteria: "B. Cognição agorafóbica." }
             ],
             'F_SOCIAL': [
-                { id: "F32", text: "Nos últimos 6 meses, você sentiu medo ou ansiedade acentuada em situações sociais (conversar, ser observado, palestrar)?", criteria: "A. Medo/ansiedade de exposição social." },
+                { id: "F32", text: "Medo ou ansiedade acentuada em situações sociais (palestrar, conversar)?", criteria: "A. Medo de exposição social." },
                 { type: 'logic', check: (s) => s['F32']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F33", text: "Você teme ser avaliado negativamente, humilhado ou rejeitado nessas situações?", criteria: "B. Medo de avaliação negativa." },
-                { id: "F36", text: "Você evita essas situações sociais ou as suporta com intenso sofrimento?", criteria: "D. Evitação ou sofrimento intenso." }
+                { id: "F33", text: "Medo de ser avaliado negativamente ou humilhado?", criteria: "B. Medo de avaliação negativa." }
             ],
             'F_GAD': [
-                { id: "F42", text: "Nos últimos 6 meses, você tem se sentido muito ansioso e preocupado na maioria dos dias?", sub: "Preocupado com diversas coisas (trabalho, escola, família)?", criteria: "A. Ansiedade e preocupação excessivas (expectativa apreensiva)." },
+                { id: "F42", text: "Ansiedade e preocupação excessiva na maioria dos dias (6 meses)?", criteria: "A. Ansiedade generalizada." },
                 { type: 'logic', check: (s) => s['F42']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F43", text: "Você acha difícil controlar essa preocupação?", criteria: "B. Dificuldade em controlar a preocupação." },
-                { id: "F44", text: "Essa ansiedade vem acompanhada de sintomas como inquietação, fadiga ou tensão muscular? (Pelo menos 3)", criteria: "C. Sintomas físicos/cognitivos." }
+                { id: "F43", text: "Difícil controlar a preocupação?", criteria: "B. Difícil controle." },
+                { id: "F44", text: "Sintomas físicos (tensão, fadiga, sono, concentração)?", criteria: "C. Sintomas associados (3+)." }
+            ],
+            'G_TOC': [
+                { id: "G1", text: "Pensamentos, impulsos ou imagens recorrentes indesejados (Obsessões)?", criteria: "A. Obsessões." },
+                { id: "G2", text: "Comportamentos repetitivos que sente que DEVE fazer (Compulsões)?", criteria: "A. Compulsões." },
+                { type: 'logic', check: (s) => (s['G1']==='+' || s['G2']==='+') ? 'NEXT' : 'STOP' },
+                { id: "G3", text: "Tomam muito tempo (1h+) ou causam sofrimento?", criteria: "B. Gravidade clínica." }
+            ],
+            'G_TEPT': [
+                { id: "G4", text: "Exposição a evento traumático grave (risco de vida, violência)?", criteria: "A. Evento Traumático." },
+                { type: 'logic', check: (s) => s['G4']==='+' ? 'NEXT' : 'STOP' },
+                { id: "G5", text: "Lembranças, sonhos ou flashbacks intrusivos?", criteria: "B. Intrusão." },
+                { id: "G6", text: "Evita coisas que lembrem o trauma?", criteria: "C. Evitação." },
+                { id: "G7", text: "Humor negativo, culpa ou medo constante?", criteria: "D. Humor/Cognição." },
+                { id: "G8", text: "Hipervigilância ou sustos fáceis?", criteria: "E. Excitação." }
+            ],
+            'H_ADHD': [
+                { id: "H1", text: "DESATENÇÃO: Frequentemente deixa de prestar atenção a detalhes ou comete erros por descuido?", criteria: "A1. Desatenção." },
+                { id: "H2", text: "DESATENÇÃO: Dificuldade em manter a atenção em tarefas?", criteria: "A1. Desatenção." },
+                { id: "H3", text: "DESATENÇÃO: Parece não escutar quando lhe dirigem a palavra?", criteria: "A1. Desatenção." },
+                { id: "H4", text: "DESATENÇÃO: Não segue instruções até o fim?", criteria: "A1. Desatenção." },
+                { id: "H5", text: "DESATENÇÃO: Dificuldade para organizar tarefas e atividades?", criteria: "A1. Desatenção." },
+                { id: "H6", text: "DESATENÇÃO: Evita tarefas que exigem esforço mental constante?", criteria: "A1. Desatenção." },
+                { id: "H7", text: "DESATENÇÃO: Perde coisas necessárias para tarefas?", criteria: "A1. Desatenção." },
+                { id: "H8", text: "DESATENÇÃO: É facilmente distraído por estímulos externos?", criteria: "A1. Desatenção." },
+                { id: "H9", text: "DESATENÇÃO: É esquecido em relação a atividades cotidianas?", criteria: "A1. Desatenção." },
+                
+                { id: "H10", text: "HIPERATIVIDADE: Frequentemente remexe ou batuca as mãos/pés ou se contorce?", criteria: "A2. Hiperatividade." },
+                { id: "H11", text: "HIPERATIVIDADE: Levanta-se em situações onde deveria ficar sentado?", criteria: "A2. Hiperatividade." },
+                { id: "H12", text: "HIPERATIVIDADE: Sente-se inquieto (como se tivesse um motor ligado)?", criteria: "A2. Hiperatividade." },
+                { id: "H13", text: "HIPERATIVIDADE: Dificuldade em brincar ou lazer calmamente?", criteria: "A2. Hiperatividade." },
+                { id: "H14", text: "HIPERATIVIDADE: Está frequentemente 'a mil por hora'?", criteria: "A2. Hiperatividade." },
+                { id: "H15", text: "HIPERATIVIDADE: Fala em demasia?", criteria: "A2. Hiperatividade." },
+                { id: "H16", text: "HIPERATIVIDADE: Deixa escapar respostas antes da pergunta acabar?", criteria: "A2. Hiperatividade." },
+                { id: "H17", text: "HIPERATIVIDADE: Dificuldade em esperar sua vez?", criteria: "A2. Hiperatividade." },
+                { id: "H18", text: "HIPERATIVIDADE: Interrompe ou se intromete?", criteria: "A2. Hiperatividade." },
+                
+                { id: "H19", text: "Alguns desses sintomas estavam presentes antes dos 12 anos?", criteria: "B. Início na infância." },
+                { id: "H20", text: "Os sintomas causam prejuízo em dois ou mais ambientes (trabalho, casa)?", criteria: "C. Prejuízo." }
             ],
             'I_SCREEN': [
-                { id: "I1", text: "ALIMENTAR: Você já teve episódios de comer muito mais comida do que o normal em pouco tempo e sentiu que perdeu o controle?", criteria: "Rastreio de Compulsão Alimentar (Binge)." },
-                { id: "I2", text: "ALIMENTAR: Você faz coisas para compensar ou evitar ganho de peso (vomitar, laxantes, exercício exagerado)?", criteria: "Rastreio de Comportamento Compensatório (Bulimia)." },
-                { id: "I3", text: "ALIMENTAR: Você se acha gordo ou tem medo intenso de engordar, mesmo estando abaixo do peso?", criteria: "Rastreio de Anorexia Nervosa." },
-                { id: "I4", text: "TDAH: Você frequentemente tem dificuldade de prestar atenção em detalhes ou comete erros por descuido?", criteria: "Rastreio de Desatenção (Adulto)." },
-                { id: "I5", text: "TDAH: Você frequentemente se sente inquieto, como se estivesse 'com um motor ligado'?", criteria: "Rastreio de Hiperatividade (Adulto)." },
-                { id: "I6", text: "TOC: Você tem pensamentos intrusivos e desagradáveis que não saem da cabeça (obsessões) ou precisa repetir atos (lavar, checar)?", criteria: "Rastreio de TOC." }
+                { id: "I1", text: "ALIMENTAR: Episódios de compulsão (comer muito e perder controle)?", criteria: "Rastreio de Compulsão." },
+                { id: "I2", text: "ALIMENTAR: Comportamentos para não engordar (vômito, laxante)?", criteria: "Rastreio de Bulimia." },
+                { id: "I3", text: "ALIMENTAR: Medo intenso de engordar mesmo estando magro?", criteria: "Rastreio de Anorexia." }
             ]
         };
 
         let currentModule = 'A_DEP';
         let moduleIndex = 0;
-        let globalScores = { 'A_DEP':{}, 'A_MANIA':{}, 'F_PANIC':{}, 'F_AGORA':{}, 'F_SOCIAL':{}, 'F_GAD':{}, 'I_SCREEN':{} };
+        let globalScores = { 
+            'A_DEP':{}, 'A_MANIA':{}, 
+            'F_PANIC':{}, 'F_AGORA':{}, 'F_SOCIAL':{}, 'F_GAD':{}, 
+            'G_TOC':{}, 'G_TEPT':{}, 
+            'H_ADHD':{}, 'I_SCREEN':{} 
+        };
 
         function switchModule(modId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -405,7 +458,9 @@
             const titles = {
                 'A_DEP': 'Módulo A: Depressão', 'A_MANIA': 'Módulo A: Mania',
                 'F_PANIC': 'Módulo F: Pânico', 'F_AGORA': 'Módulo F: Agorafobia',
-                'F_SOCIAL': 'Módulo F: Ansiedade Social', 'F_GAD': 'Módulo F: TAG',
+                'F_SOCIAL': 'Módulo F: Ans. Social', 'F_GAD': 'Módulo F: TAG',
+                'G_TOC': 'Módulo G: TOC', 'G_TEPT': 'Módulo G: TEPT',
+                'H_ADHD': 'Módulo H: TDAH Adulto',
                 'I_SCREEN': 'Módulo I: Rastreio Geral'
             };
             document.getElementById('module-title').innerText = titles[currentModule];
@@ -478,16 +533,24 @@
                 { id: 'F_PANIC', title: 'Pânico', min: 1, crit: ['F1'] },
                 { id: 'F_AGORA', title: 'Agorafobia', min: 2, crit: ['F23'] },
                 { id: 'F_SOCIAL', title: 'Ansiedade Social', min: 2, crit: ['F32'] },
-                { id: 'F_GAD', title: 'TAG (Ansiedade Gen.)', min: 3, crit: ['F42'] }
+                { id: 'F_GAD', title: 'TAG', min: 3, crit: ['F42'] },
+                { id: 'G_TOC', title: 'TOC', min: 1, crit: ['G3'] },
+                { id: 'G_TEPT', title: 'TEPT', min: 3, crit: ['G5','G6','G7','G8'] }
             ];
 
-            // Renderiza Módulos Principais
             results.forEach(r => {
                 let scores = globalScores[r.id];
                 let count = 0;
                 let critMet = false;
                 Object.keys(scores).forEach(k => { if(scores[k] === '+') count++; });
-                r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
+                
+                if(r.id === 'G_TOC') {
+                   if((scores['G1']==='+' || scores['G2']==='+') && scores['G3']==='+') critMet = true;
+                } else if (r.id === 'G_TEPT') {
+                   if(scores['G4']==='+') critMet = true;
+                } else {
+                   r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
+                }
 
                 let status = (critMet && count >= r.min) ? 'Positivo' : 'Negativo';
                 let cssClass = status === 'Positivo' ? 'positive' : 'negative';
@@ -507,24 +570,49 @@
                 `;
             });
 
-            // Renderiza Alertas do Módulo I
-            let iScores = globalScores['I_SCREEN'];
-            if(Object.values(iScores).includes('+')) {
-                let alertas = [];
-                if(iScores['I1']==='+' || iScores['I2']==='+' || iScores['I3']==='+') alertas.push("Transtorno Alimentar");
-                if(iScores['I4']==='+' || iScores['I5']==='+') alertas.push("TDAH (Rastreio)");
-                if(iScores['I6']==='+') alertas.push("TOC (Rastreio)");
+            // TDAH (Lógica Específica)
+            let hScores = globalScores['H_ADHD'];
+            let inatt = 0, hyper = 0;
+            for(let i=1; i<=9; i++) if(hScores['H'+i] === '+') inatt++;
+            for(let i=10; i<=18; i++) if(hScores['H'+i] === '+') hyper++;
+            
+            let adhdStatus = "Negativo";
+            let adhdType = "";
+            // Adulto exige 5+ em um dos domínios + início infância + prejuízo
+            if(hScores['H19']==='+' && hScores['H20']==='+') {
+                if(inatt >= 5 && hyper >= 5) { adhdStatus = "Positivo"; adhdType = "Combinado"; }
+                else if(inatt >= 5) { adhdStatus = "Positivo"; adhdType = "Desatento"; }
+                else if(hyper >= 5) { adhdStatus = "Positivo"; adhdType = "Hiperativo"; }
+            }
 
-                if(alertas.length > 0) {
-                    dash.innerHTML += `
-                        <div class="result-card positive" style="border-left-color:#fdcb6e; background:#fffbf0">
-                            <div>
-                                <h3 style="color:#d35400"><i class="fa-solid fa-triangle-exclamation"></i> Alertas de Rastreio (Módulo I)</h3>
-                                <div style="margin-top:5px; color:#555">${alertas.join(', ')}</div>
-                            </div>
+            let adhdClass = adhdStatus === 'Positivo' ? 'positive' : 'negative';
+            dash.innerHTML += `
+                <div class="result-card ${adhdClass}">
+                    <div>
+                        <h3>TDAH Adulto</h3>
+                        <span class="status-tag ${adhdStatus === 'Positivo' ? 'status-pos' : 'status-neg'}">${adhdStatus}</span>
+                        ${adhdType ? `<div style="font-size:0.8rem; margin-top:5px; color:#555">Tipo: ${adhdType}</div>` : ''}
+                    </div>
+                    <div style="text-align:right">
+                        <div>D: <b>${inatt}</b> / H: <b>${hyper}</b></div>
+                        <small>Sintomas</small>
+                    </div>
+                </div>
+            `;
+
+            // Alertas Módulo I
+            let iScores = globalScores['I_SCREEN'];
+            let alertas = [];
+            if(iScores['I1']==='+' || iScores['I2']==='+' || iScores['I3']==='+') alertas.push("Alimentar");
+            if(alertas.length > 0) {
+                dash.innerHTML += `
+                    <div class="result-card positive" style="border-left-color:#fdcb6e; background:#fffbf0">
+                        <div>
+                            <h3 style="color:#d35400"><i class="fa-solid fa-triangle-exclamation"></i> Rastreios Positivos</h3>
+                            <div style="margin-top:5px; color:#555">${alertas.join(', ')}</div>
                         </div>
-                    `;
-                }
+                    </div>
+                `;
             }
         }
 
