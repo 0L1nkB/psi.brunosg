@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCID-5-CV: Sistema Completo | Bruno de Souza</title>
+    <title>SCID-5-CV: Versão Final | Bruno de Souza</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,10 +14,8 @@
             --bg-color: #f0f8ff;
             --sidebar-bg: #2d3436;
             --primary: #6c5ce7;
-            --active-item: #a29bfe;
             --text: #2d3436;
             --card-bg: #ffffff;
-            
             --positive: #ef5350;
             --negative: #00b894;
             --neutral: #fdcb6e;
@@ -62,27 +60,28 @@
         }
 
         .menu-section {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            color: #636e72;
+            color: #b2bec3;
             margin-top: 15px;
             margin-bottom: 5px;
             font-weight: 700;
             padding-left: 10px;
+            letter-spacing: 1px;
         }
 
         .nav-item {
-            padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.2s;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            color: #b2bec3;
-            font-size: 0.9rem;
+            color: #dfe6e9;
+            font-size: 0.85rem;
         }
 
         .nav-item:hover { background-color: rgba(255,255,255,0.1); color: white; }
@@ -92,7 +91,7 @@
             background: rgba(0,0,0,0.3);
             padding: 2px 8px;
             border-radius: 10px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
         /* MAIN CONTENT */
@@ -216,6 +215,7 @@
             display: none;
             width: 100%;
             max-width: 900px;
+            padding-bottom: 50px;
         }
 
         .result-card {
@@ -230,7 +230,6 @@
             align-items: center;
         }
 
-        .result-card h3 { margin: 0 0 5px 0; font-size: 1.1rem; }
         .result-card.positive { border-left-color: var(--positive); }
         .result-card.negative { border-left-color: var(--negative); }
         
@@ -244,82 +243,63 @@
         .status-pos { background: #ffebee; color: var(--positive); }
         .status-neg { background: #e0f2f1; color: var(--negative); }
 
+        /* PRINT STYLES */
+        @media print {
+            #sidebar, .action-panel, button { display: none !important; }
+            #dashboard-view { display: block !important; }
+            body, #main-content { overflow: visible; height: auto; background: white; }
+            .result-card { box-shadow: none; border: 1px solid #eee; break-inside: avoid; }
+        }
+
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <div class="brand"><i class="fa-solid fa-brain"></i> SCID-5-CV</div>
+        <div class="brand"><i class="fa-solid fa-brain"></i> SCID-5 FINAL</div>
         
         <div class="menu-section">Módulo A: Humor</div>
         <div class="nav-item active" onclick="switchModule('A_DEP')" id="nav-A_DEP">
             <span><i class="fa-solid fa-cloud-rain"></i> Depressão</span>
-            <span class="score-badge" id="score-A_DEP">0/9</span>
+            <span class="score-badge" id="score-A_DEP">0</span>
         </div>
         <div class="nav-item" onclick="switchModule('A_MANIA')" id="nav-A_MANIA">
             <span><i class="fa-solid fa-bolt"></i> Mania</span>
-            <span class="score-badge" id="score-A_MANIA">0/7</span>
+            <span class="score-badge" id="score-A_MANIA">0</span>
         </div>
 
         <div class="menu-section">Módulo B: Psicose</div>
         <div class="nav-item" onclick="switchModule('B_PSYCH')" id="nav-B_PSYCH">
-            <span><i class="fa-solid fa-eye"></i> Psicose (Rastreio)</span>
+            <span><i class="fa-solid fa-eye"></i> Rastreio Psicose</span>
             <span class="score-badge" id="score-B_PSYCH">0</span>
         </div>
 
-        <div class="menu-section">Módulo E: Substâncias</div>
-        <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST">
-            <span><i class="fa-solid fa-wine-bottle"></i> Álcool/Drogas</span>
-            <span class="score-badge" id="score-E_SUBST">0/11</span>
+        <div class="menu-section">Módulo D: Diferencial</div>
+        <div class="nav-item" onclick="switchModule('D_DIFF')" id="nav-D_DIFF" style="color:#fdcb6e">
+            <span><i class="fa-solid fa-scale-balanced"></i> O Grande Juiz</span>
+            <span class="score-badge" id="score-D_DIFF">-</span>
         </div>
 
-        <div class="menu-section">Módulo F: Ansiedade</div>
-        <div class="nav-item" onclick="switchModule('F_PANIC')" id="nav-F_PANIC">
-            <span><i class="fa-solid fa-person-falling-burst"></i> Pânico</span>
-            <span class="score-badge" id="score-F_PANIC">0</span>
-        </div>
-        <div class="nav-item" onclick="switchModule('F_AGORA')" id="nav-F_AGORA">
-            <span><i class="fa-solid fa-house-lock"></i> Agorafobia</span>
-            <span class="score-badge" id="score-F_AGORA">0</span>
-        </div>
-        <div class="nav-item" onclick="switchModule('F_SOCIAL')" id="nav-F_SOCIAL">
-            <span><i class="fa-solid fa-users-slash"></i> Ans. Social</span>
-            <span class="score-badge" id="score-F_SOCIAL">0</span>
-        </div>
-        <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD">
-            <span><i class="fa-solid fa-head-side-virus"></i> TAG</span>
-            <span class="score-badge" id="score-F_GAD">0</span>
-        </div>
-
-        <div class="menu-section">Módulo G/H: Outros</div>
-        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC">
-            <span><i class="fa-solid fa-rotate"></i> TOC</span>
-            <span class="score-badge" id="score-G_TOC">0</span>
-        </div>
-        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT">
-            <span><i class="fa-solid fa-land-mine-on"></i> TEPT (Trauma)</span>
-            <span class="score-badge" id="score-G_TEPT">0</span>
-        </div>
-        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD">
-            <span><i class="fa-solid fa-bolt-lightning"></i> TDAH</span>
-            <span class="score-badge" id="score-H_ADHD">0/18</span>
-        </div>
-
-        <div class="menu-section">Diagnóstico Final</div>
-        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST">
-            <span><i class="fa-solid fa-scale-unbalanced"></i> Adaptação</span>
-            <span class="score-badge" id="score-J_ADJUST">0</span>
-        </div>
+        <div class="menu-section">Módulo E/F/G/H</div>
+        <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST"><span><i class="fa-solid fa-wine-bottle"></i> Substâncias</span><span class="score-badge" id="score-E_SUBST">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_PANIC')" id="nav-F_PANIC"><span><i class="fa-solid fa-person-falling-burst"></i> Pânico</span><span class="score-badge" id="score-F_PANIC">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_AGORA')" id="nav-F_AGORA"><span><i class="fa-solid fa-house-lock"></i> Agorafobia</span><span class="score-badge" id="score-F_AGORA">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_SOCIAL')" id="nav-F_SOCIAL"><span><i class="fa-solid fa-users-slash"></i> Ans. Social</span><span class="score-badge" id="score-F_SOCIAL">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD"><span><i class="fa-solid fa-head-side-virus"></i> TAG</span><span class="score-badge" id="score-F_GAD">0</span></div>
+        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC"><span><i class="fa-solid fa-rotate"></i> TOC</span><span class="score-badge" id="score-G_TOC">0</span></div>
+        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT"><span><i class="fa-solid fa-land-mine-on"></i> TEPT</span><span class="score-badge" id="score-G_TEPT">0</span></div>
+        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD"><span><i class="fa-solid fa-bolt-lightning"></i> TDAH</span><span class="score-badge" id="score-H_ADHD">0</span></div>
+        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST"><span><i class="fa-solid fa-scale-unbalanced"></i> Adaptação</span><span class="score-badge" id="score-J_ADJUST">0</span></div>
 
         <div class="nav-item" onclick="showDashboard()" style="margin-top:auto; background:#2d3436; border:1px solid #636e72; justify-content:center;">
-            <span><i class="fa-solid fa-clipboard-check"></i> RESULTADOS</span>
+            <span><i class="fa-solid fa-clipboard-check"></i> RELATÓRIO FINAL</span>
         </div>
     </div>
 
     <div id="main-content">
         
         <header id="interview-header">
-            <h2 id="module-title">Módulo A: Episódio Depressivo</h2>
+            <h2 id="module-title">SCID-5-CV Digital</h2>
             <div style="font-weight:bold; color:#636e72; background:white; padding:5px 15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05)" id="progress-display">Item 1</div>
         </header>
 
@@ -344,9 +324,17 @@
         </div>
 
         <div id="dashboard-view">
-            <h2 style="margin-bottom:30px">Sumário Diagnóstico</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2>Relatório Clínico</h2>
+                <button onclick="window.print()" style="background:#6c5ce7; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;"><i class="fa-solid fa-print"></i> Salvar PDF</button>
+            </div>
+            
+            <div id="differential-alert"></div>
             <div id="dashboard-content"></div>
-            <button onclick="location.reload()" style="padding:15px 30px; cursor:pointer; margin-top:20px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:bold;">Nova Avaliação</button>
+            
+            <div style="margin-top:40px; padding-top:20px; border-top:2px solid #eee; text-align:center; color:#999; font-size:0.8rem;">
+                Ferramenta Didática baseada na SCID-5-CV. Não substitui avaliação médica profissional.
+            </div>
         </div>
 
     </div>
@@ -357,127 +345,127 @@
 
         const database = {
             'A_DEP': [
-                { id: "A1", text: "No último mês, houve um período em que você se sentiu deprimido ou abatido na maior parte do dia, quase todos os dias?", sub: "Alguém comentou que você parecia triste ou 'para baixo'?", criteria: "A. Humor deprimido." },
-                { id: "A2", text: "No último mês, você perdeu o interesse ou prazer nas coisas que gosta?", criteria: "B. Anedonia (perda de prazer)." },
+                { id: "A1", text: "No último mês, sentiu-se deprimido na maior parte do dia?", criteria: "A. Humor deprimido." },
+                { id: "A2", text: "Perdeu o interesse ou prazer nas coisas?", criteria: "B. Anedonia." },
                 { type: 'logic', check: (s) => (s['A1']==='+' || s['A2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "A3", text: "Mudança significativa de apetite ou peso?", criteria: "C. Perda/ganho de peso ou apetite." },
-                { id: "A4", text: "Problemas com sono (insônia ou dormir demais)?", criteria: "D. Insônia/Hipersonia." },
-                { id: "A5", text: "Agitação ou lentidão motora?", criteria: "E. Agitação/Retardo psicomotor." },
-                { id: "A6", text: "Fadiga ou perda de energia?", criteria: "F. Fadiga." },
-                { id: "A7", text: "Sentimentos de inutilidade ou culpa excessiva?", criteria: "G. Inutilidade/Culpa." },
-                { id: "A8", text: "Dificuldade para pensar ou concentrar?", criteria: "H. Concentração diminuída." },
-                { id: "A9", text: "Pensamentos de morte ou suicídio?", criteria: "I. Ideação suicida.", inst: "AVALIE RISCO IMEDIATO SE POSITIVO." }
+                { id: "A3", text: "Mudança de apetite ou peso?", criteria: "C. Peso/Apetite." },
+                { id: "A4", text: "Problemas de sono?", criteria: "D. Sono." },
+                { id: "A5", text: "Agitação ou lentidão?", criteria: "E. Psicomotor." },
+                { id: "A6", text: "Fadiga ou perda de energia?", criteria: "F. Energia." },
+                { id: "A7", text: "Inutilidade ou culpa?", criteria: "G. Culpa." },
+                { id: "A8", text: "Dificuldade de concentração?", criteria: "H. Cognição." },
+                { id: "A9", text: "Pensamentos de morte?", criteria: "I. Suicídio." }
             ],
             'A_MANIA': [
-                { id: "C1", text: "Você já teve um período em que se sentiu muito eufórico, 'no topo do mundo' ou hiperativo?", criteria: "A. Humor elevado/expansivo." },
-                { id: "C2", text: "Se não eufórico, houve um período em que ficou extremamente irritado ou agressivo?", criteria: "A (Alt). Humor irritável." },
+                { id: "C1", text: "Já teve período de euforia ou humor elevado?", criteria: "A. Humor Elevado." },
+                { id: "C2", text: "Ou período de extrema irritabilidade?", criteria: "A. Irritabilidade." },
                 { type: 'logic', check: (s) => (s['C1']==='+' || s['C2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "C3", text: "Sentiu-se grandioso ou com superpoderes?", criteria: "1. Grandiosidade." },
-                { id: "C4", text: "Precisou dormir menos e acordou descansado?", criteria: "2. Menor necessidade de sono." },
-                { id: "C5", text: "Estava mais falante que o habitual?", criteria: "3. Loquacidade." },
+                { id: "C3", text: "Grandiosidade?", criteria: "1. Autoestima." },
+                { id: "C4", text: "Menor necessidade de sono?", criteria: "2. Sono reduzido." },
+                { id: "C5", text: "Mais falante?", criteria: "3. Loquacidade." },
                 { id: "C6", text: "Pensamentos acelerados?", criteria: "4. Fuga de ideias." },
-                { id: "C7", text: "Distraía-se facilmente?", criteria: "5. Distratibilidade." },
-                { id: "C8", text: "Aumento de atividades ou agitação?", criteria: "6. Aumento da atividade dirigida." },
-                { id: "C9", text: "Comportamentos de risco (gastos, sexo, velocidade)?", criteria: "7. Risco excessivo." }
+                { id: "C7", text: "Distratibilidade?", criteria: "5. Atenção." },
+                { id: "C8", text: "Aumento de atividades?", criteria: "6. Atividade dirigida." },
+                { id: "C9", text: "Comportamentos de risco?", criteria: "7. Risco." }
             ],
             'B_PSYCH': [
-                { id: "B1", text: "Você já ouviu coisas que outras pessoas não ouviam, como vozes?", criteria: "A. Alucinações Auditivas." },
-                { id: "B2", text: "Você já viu coisas que outras pessoas não viam?", criteria: "A. Alucinações Visuais." },
-                { id: "B3", text: "Você já teve a sensação de que as pessoas estavam te perseguindo, te espionando ou querendo te fazer mal?", criteria: "A. Delírios Persecutórios." },
-                { id: "B4", text: "Você já acreditou ter poderes especiais ou uma missão especial que ninguém mais entende?", criteria: "A. Delírios de Grandeza." },
-                { id: "B5", text: "Já sentiu que seus pensamentos estavam sendo controlados ou lidos por outros?", criteria: "A. Delírios de Controle/Inserção." }
+                { id: "B1", text: "Ouve vozes que outros não ouvem?", criteria: "Alucinação Auditiva." },
+                { id: "B2", text: "Vê coisas que outros não veem?", criteria: "Alucinação Visual." },
+                { id: "B3", text: "Sente-se perseguido ou espionado?", criteria: "Delírio Persecutório." },
+                { id: "B4", text: "Acredita ter poderes especiais?", criteria: "Delírio de Grandeza." },
+                { id: "B5", text: "Sente que leem ou controlam sua mente?", criteria: "Delírio de Controle." }
+            ],
+            'D_DIFF': [
+                { id: "D1", text: "(Se houve Psicose + Depressão): As alucinações/delírios acontecem APENAS quando você está deprimido?", sub: "Ou elas continuam acontecendo mesmo quando seu humor está normal?", criteria: "Diferencial: T. Humor com Psicose vs Esquizoafetivo." },
+                { id: "D2", text: "(Se houve Substâncias + Sintomas): Os sintomas começaram APENAS depois que você começou a usar drogas/álcool?", criteria: "Diferencial: Induzido por Substância." },
+                { id: "D3", text: "(Se houve Doença Médica): Você tem alguma doença (ex: tireoide) que o médico disse que causa isso?", criteria: "Diferencial: Condição Médica Geral." }
             ],
             'E_SUBST': [
-                { id: "E1", text: "Nos últimos 12 meses, você bebeu álcool frequentemente ou em grandes quantidades?", sub: "Isso causou problemas para você?", criteria: "Rastreio de Álcool." },
-                { id: "E2", text: "Nos últimos 12 meses, usou drogas (cannabis, cocaína, remédios sem receita) para 'ficar alto' ou relaxar?", criteria: "Rastreio de Drogas." },
+                { id: "E1", text: "Uso frequente de álcool?", criteria: "Rastreio Álcool." },
+                { id: "E2", text: "Uso de drogas?", criteria: "Rastreio Drogas." },
                 { type: 'logic', check: (s) => (s['E1']==='+' || s['E2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "E3", text: "Você consumiu a substância em quantidades maiores ou por mais tempo do que pretendia?", criteria: "1. Uso excessivo." },
-                { id: "E4", text: "Você quis parar ou controlar o uso, mas não conseguiu?", criteria: "2. Desejo persistente/fracasso em controlar." },
-                { id: "E5", text: "Você gastou muito tempo para conseguir a substância, usá-la ou se recuperar?", criteria: "3. Tempo dispendido." },
-                { id: "E6", text: "Você teve 'fissura' ou uma vontade incontrolável de usar?", criteria: "4. Fissura (Craving)." },
-                { id: "E7", text: "O uso prejudicou seu trabalho, escola ou casa?", criteria: "5. Fracasso em obrigações." },
-                { id: "E8", text: "Continuou usando mesmo tendo problemas sociais ou interpessoais causados por isso?", criteria: "6. Problemas sociais." },
-                { id: "E9", text: "Deixou de fazer atividades importantes (lazer, social) por causa do uso?", criteria: "7. Abandono de atividades." },
-                { id: "E10", text: "Usou em situações fisicamente perigosas (ex: dirigir)?", criteria: "8. Uso perigoso." },
-                { id: "E11", text: "Continuou usando mesmo sabendo que tinha um problema físico ou psicológico causado pela substância?", criteria: "9. Uso apesar de problemas." },
-                { id: "E12", text: "Precisou de quantidades maiores para ter o mesmo efeito? (Tolerância)", criteria: "10. Tolerância." },
-                { id: "E13", text: "Sentiu sintomas de abstinência (tremores, suor, ansiedade) ao parar?", criteria: "11. Abstinência." }
+                { id: "E3", text: "Uso maior que o pretendido?", criteria: "1. Controle." },
+                { id: "E4", text: "Desejo de parar sem sucesso?", criteria: "2. Controle." },
+                { id: "E5", text: "Muito tempo gasto com uso?", criteria: "3. Tempo." },
+                { id: "E6", text: "Fissura (Craving)?", criteria: "4. Fissura." },
+                { id: "E7", text: "Prejuízo no trabalho/casa?", criteria: "5. Obrigações." },
+                { id: "E8", text: "Problemas sociais pelo uso?", criteria: "6. Social." },
+                { id: "E9", text: "Abandonou atividades?", criteria: "7. Lazer." },
+                { id: "E10", text: "Uso em situações perigosas?", criteria: "8. Risco físico." },
+                { id: "E11", text: "Uso apesar de problemas de saúde?", criteria: "9. Saúde." },
+                { id: "E12", text: "Tolerância?", criteria: "10. Tolerância." },
+                { id: "E13", text: "Abstinência?", criteria: "11. Abstinência." }
             ],
             'F_PANIC': [
-                { id: "F1", text: "No último mês, você teve um ataque de pânico inesperado (pico súbito de medo intenso)?", criteria: "A. Ataques de pânico recorrentes." },
+                { id: "F1", text: "Ataque de pânico inesperado?", criteria: "A. Ataque." },
                 { type: 'logic', check: (s) => s['F1']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F2", text: "Preocupação persistente sobre ter novos ataques?", criteria: "B. Preocupação/Mudança comportamento." }
+                { id: "F2", text: "Preocupação com novos ataques?", criteria: "B. Preocupação." }
             ],
             'F_AGORA': [
-                { id: "F23", text: "Medo intenso de usar transporte, espaços abertos/fechados, filas ou sair sozinho?", criteria: "A. Medo/ansiedade em 2+ situações." },
+                { id: "F23", text: "Medo de transporte, lugares abertos/fechados?", criteria: "A. Situações." },
                 { type: 'logic', check: (s) => s['F23']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F24", text: "Você teme não conseguir escapar ou obter ajuda?", criteria: "B. Cognição agorafóbica." }
+                { id: "F24", text: "Medo de não ter escape?", criteria: "B. Cognição." }
             ],
             'F_SOCIAL': [
-                { id: "F32", text: "Medo ou ansiedade acentuada em situações sociais (palestrar, conversar)?", criteria: "A. Medo de exposição social." },
+                { id: "F32", text: "Medo de situações sociais?", criteria: "A. Exposição." },
                 { type: 'logic', check: (s) => s['F32']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F33", text: "Medo de ser avaliado negativamente ou humilhado?", criteria: "B. Medo de avaliação negativa." }
+                { id: "F33", text: "Medo de julgamento negativo?", criteria: "B. Julgamento." }
             ],
             'F_GAD': [
-                { id: "F42", text: "Ansiedade e preocupação excessiva na maioria dos dias (6 meses)?", criteria: "A. Ansiedade generalizada." },
+                { id: "F42", text: "Ansiedade excessiva (6 meses)?", criteria: "A. Ansiedade." },
                 { type: 'logic', check: (s) => s['F42']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F43", text: "Difícil controlar a preocupação?", criteria: "B. Difícil controle." },
-                { id: "F44", text: "Sintomas físicos (tensão, fadiga, sono, concentração)?", criteria: "C. Sintomas associados (3+)." }
+                { id: "F43", text: "Difícil controlar?", criteria: "B. Controle." },
+                { id: "F44", text: "Sintomas físicos (tensão, sono)?", criteria: "C. Físicos." }
             ],
             'G_TOC': [
-                { id: "G1", text: "Pensamentos, impulsos ou imagens recorrentes indesejados (Obsessões)?", criteria: "A. Obsessões." },
-                { id: "G2", text: "Comportamentos repetitivos que sente que DEVE fazer (Compulsões)?", criteria: "A. Compulsões." },
+                { id: "G1", text: "Obsessões (pensamentos intrusivos)?", criteria: "A. Obsessões." },
+                { id: "G2", text: "Compulsões (rituais)?", criteria: "A. Compulsões." },
                 { type: 'logic', check: (s) => (s['G1']==='+' || s['G2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "G3", text: "Tomam muito tempo (1h+) ou causam sofrimento?", criteria: "B. Gravidade clínica." }
+                { id: "G3", text: "Toma tempo ou causa sofrimento?", criteria: "B. Gravidade." }
             ],
             'G_TEPT': [
-                { id: "G4", text: "Exposição a evento traumático grave (risco de vida, violência)?", criteria: "A. Evento Traumático." },
+                { id: "G4", text: "Trauma grave (risco vida/violência)?", criteria: "A. Trauma." },
                 { type: 'logic', check: (s) => s['G4']==='+' ? 'NEXT' : 'STOP' },
-                { id: "G5", text: "Lembranças, sonhos ou flashbacks intrusivos?", criteria: "B. Intrusão." },
-                { id: "G6", text: "Evita coisas que lembrem o trauma?", criteria: "C. Evitação." },
-                { id: "G7", text: "Humor negativo, culpa ou medo constante?", criteria: "D. Humor/Cognição." },
-                { id: "G8", text: "Hipervigilância ou sustos fáceis?", criteria: "E. Excitação." }
+                { id: "G5", text: "Flashbacks/Pesadelos?", criteria: "B. Intrusão." },
+                { id: "G6", text: "Evitação?", criteria: "C. Evitação." },
+                { id: "G7", text: "Humor negativo/culpa?", criteria: "D. Humor." },
+                { id: "G8", text: "Hipervigilância?", criteria: "E. Excitação." }
             ],
             'H_ADHD': [
-                { id: "H1", text: "DESATENÇÃO: Frequentemente deixa de prestar atenção a detalhes ou comete erros por descuido?", criteria: "A1. Desatenção." },
-                { id: "H2", text: "DESATENÇÃO: Dificuldade em manter a atenção em tarefas?", criteria: "A1. Desatenção." },
-                { id: "H3", text: "DESATENÇÃO: Parece não escutar quando lhe dirigem a palavra?", criteria: "A1. Desatenção." },
-                { id: "H4", text: "DESATENÇÃO: Não segue instruções até o fim?", criteria: "A1. Desatenção." },
-                { id: "H5", text: "DESATENÇÃO: Dificuldade para organizar tarefas e atividades?", criteria: "A1. Desatenção." },
-                { id: "H6", text: "DESATENÇÃO: Evita tarefas que exigem esforço mental constante?", criteria: "A1. Desatenção." },
-                { id: "H7", text: "DESATENÇÃO: Perde coisas necessárias para tarefas?", criteria: "A1. Desatenção." },
-                { id: "H8", text: "DESATENÇÃO: É facilmente distraído por estímulos externos?", criteria: "A1. Desatenção." },
-                { id: "H9", text: "DESATENÇÃO: É esquecido em relação a atividades cotidianas?", criteria: "A1. Desatenção." },
-                
-                { id: "H10", text: "HIPERATIVIDADE: Frequentemente remexe ou batuca as mãos/pés ou se contorce?", criteria: "A2. Hiperatividade." },
-                { id: "H11", text: "HIPERATIVIDADE: Levanta-se em situações onde deveria ficar sentado?", criteria: "A2. Hiperatividade." },
-                { id: "H12", text: "HIPERATIVIDADE: Sente-se inquieto (como se tivesse um motor ligado)?", criteria: "A2. Hiperatividade." },
-                { id: "H13", text: "HIPERATIVIDADE: Dificuldade em brincar ou lazer calmamente?", criteria: "A2. Hiperatividade." },
-                { id: "H14", text: "HIPERATIVIDADE: Está frequentemente 'a mil por hora'?", criteria: "A2. Hiperatividade." },
-                { id: "H15", text: "HIPERATIVIDADE: Fala em demasia?", criteria: "A2. Hiperatividade." },
-                { id: "H16", text: "HIPERATIVIDADE: Deixa escapar respostas antes da pergunta acabar?", criteria: "A2. Hiperatividade." },
-                { id: "H17", text: "HIPERATIVIDADE: Dificuldade em esperar sua vez?", criteria: "A2. Hiperatividade." },
-                { id: "H18", text: "HIPERATIVIDADE: Interrompe ou se intromete?", criteria: "A2. Hiperatividade." },
-                
-                { id: "H19", text: "Alguns desses sintomas estavam presentes antes dos 12 anos?", criteria: "B. Início na infância." },
-                { id: "H20", text: "Os sintomas causam prejuízo em dois ou mais ambientes (trabalho, casa)?", criteria: "C. Prejuízo." }
+                { id: "H1", text: "Erros por descuido?", criteria: "Desatenção." },
+                { id: "H2", text: "Difícil manter atenção?", criteria: "Desatenção." },
+                { id: "H3", text: "Não escuta?", criteria: "Desatenção." },
+                { id: "H4", text: "Não finaliza tarefas?", criteria: "Desatenção." },
+                { id: "H5", text: "Desorganizado?", criteria: "Desatenção." },
+                { id: "H6", text: "Evita esforço mental?", criteria: "Desatenção." },
+                { id: "H7", text: "Perde coisas?", criteria: "Desatenção." },
+                { id: "H8", text: "Distrai-se fácil?", criteria: "Desatenção." },
+                { id: "H9", text: "Esquecido?", criteria: "Desatenção." },
+                { id: "H10", text: "Inquieto (mãos/pés)?", criteria: "Hiperatividade." },
+                { id: "H11", text: "Levanta-se?", criteria: "Hiperatividade." },
+                { id: "H12", text: "Motor ligado?", criteria: "Hiperatividade." },
+                { id: "H13", text: "Lazer barulhento?", criteria: "Hiperatividade." },
+                { id: "H14", text: "A mil por hora?", criteria: "Hiperatividade." },
+                { id: "H15", text: "Fala muito?", criteria: "Hiperatividade." },
+                { id: "H16", text: "Responde antes?", criteria: "Impulsividade." },
+                { id: "H17", text: "Não espera vez?", criteria: "Impulsividade." },
+                { id: "H18", text: "Interrompe?", criteria: "Impulsividade." },
+                { id: "H19", text: "Presente na infância?", criteria: "B. Infância." },
+                { id: "H20", text: "Prejuízo em 2 ambientes?", criteria: "C. Prejuízo." }
             ],
             'J_ADJUST': [
-                { id: "J1", text: "Nos últimos 3 meses, você passou por algum evento muito estressante (separação, demissão, doença, mudança)?", criteria: "A. Estressor identificável." },
+                { id: "J1", text: "Estressor recente (3 meses)?", criteria: "A. Estressor." },
                 { type: 'logic', check: (s) => s['J1']==='+' ? 'NEXT' : 'STOP' },
-                { id: "J2", text: "O sofrimento é desproporcional à gravidade do evento ou causa prejuízo no trabalho/social?", criteria: "B. Significância clínica." },
-                { id: "J3", text: "Os sintomas persistem por mais de 6 meses após o término do evento estressor?", criteria: "E. Duração (não deve persistir)." }
+                { id: "J2", text: "Sofrimento desproporcional?", criteria: "B. Gravidade." },
+                { id: "J3", text: "Sintomas persistem 6 meses pós-término?", criteria: "E. Duração (Deve ser Não)." }
             ]
         };
 
         let currentModule = 'A_DEP';
         let moduleIndex = 0;
-        let globalScores = { 
-            'A_DEP':{}, 'A_MANIA':{}, 'B_PSYCH':{}, 'E_SUBST':{},
-            'F_PANIC':{}, 'F_AGORA':{}, 'F_SOCIAL':{}, 'F_GAD':{}, 
-            'G_TOC':{}, 'G_TEPT':{}, 
-            'H_ADHD':{}, 'J_ADJUST':{} 
-        };
+        let globalScores = {};
+        // Inicializa scores vazios
+        Object.keys(database).forEach(k => globalScores[k] = {});
 
         function switchModule(modId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -491,13 +479,11 @@
             
             const titles = {
                 'A_DEP': 'Módulo A: Depressão', 'A_MANIA': 'Módulo A: Mania',
-                'B_PSYCH': 'Módulo B: Psicose (Rastreio)',
-                'E_SUBST': 'Módulo E: Substâncias',
+                'B_PSYCH': 'Módulo B: Psicose', 'D_DIFF': 'Módulo D: Diferencial', 'E_SUBST': 'Módulo E: Substâncias',
                 'F_PANIC': 'Módulo F: Pânico', 'F_AGORA': 'Módulo F: Agorafobia',
                 'F_SOCIAL': 'Módulo F: Ans. Social', 'F_GAD': 'Módulo F: TAG',
                 'G_TOC': 'Módulo G: TOC', 'G_TEPT': 'Módulo G: TEPT',
-                'H_ADHD': 'Módulo H: TDAH Adulto',
-                'J_ADJUST': 'Módulo J: Adaptação'
+                'H_ADHD': 'Módulo H: TDAH', 'J_ADJUST': 'Módulo J: Adaptação'
             };
             document.getElementById('module-title').innerText = titles[currentModule];
             loadQuestion();
@@ -505,18 +491,16 @@
 
         function loadQuestion() {
             const questions = database[currentModule];
-            
             if (moduleIndex >= questions.length) {
-                alert("Módulo concluído. Selecione o próximo no menu.");
+                alert("Módulo concluído.");
                 return;
             }
 
             const q = questions[moduleIndex];
-
             if (q.type === 'logic') {
                 const action = q.check(globalScores[currentModule]);
                 if (action === 'STOP') {
-                    alert("Critérios de rastreio não atendidos. Módulo encerrado.");
+                    alert("Critérios não atendidos. Módulo encerrado.");
                     updateSidebarScore(currentModule);
                     return; 
                 } else {
@@ -534,10 +518,10 @@
             const subDiv = document.getElementById('q-sub');
             if (q.sub) { subDiv.style.display = 'block'; subDiv.innerText = q.sub; } 
             else { subDiv.style.display = 'none'; }
-
+            
             const instDiv = document.getElementById('q-inst');
-            if (q.inst) { instDiv.style.display = 'block'; instDiv.innerText = "NOTA: " + q.inst; } 
-            else { instDiv.style.display = 'none'; }
+            instDiv.style.display = q.inst ? 'block' : 'none';
+            if (q.inst) instDiv.innerText = "NOTA: " + q.inst;
         }
 
         function registerScore(val) {
@@ -562,105 +546,108 @@
 
             const dash = document.getElementById('dashboard-content');
             dash.innerHTML = '';
+            const diffAlert = document.getElementById('differential-alert');
+            diffAlert.innerHTML = '';
 
-            const results = [
+            // 1. Definição dos Módulos Principais
+            const modules = [
                 { id: 'A_DEP', title: 'Depressão Maior', min: 5, crit: ['A1','A2'] },
-                { id: 'A_MANIA', title: 'Mania', min: 3, crit: ['C1','C2'] },
-                { id: 'B_PSYCH', title: 'Rastreio de Psicose', min: 1, crit: ['B1','B2','B3','B4','B5'] },
-                { id: 'E_SUBST', title: 'Uso de Substâncias', min: 2, crit: ['E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13'] },
+                { id: 'A_MANIA', title: 'Episódio Maníaco', min: 3, crit: ['C1','C2'] },
+                { id: 'B_PSYCH', title: 'Sintomas Psicóticos (Rastreio)', min: 1, crit: ['B1','B2','B3','B4','B5'] },
+                { id: 'E_SUBST', title: 'Transtorno por Uso de Substâncias', min: 2, crit: [] }, // Critério especial
                 { id: 'F_PANIC', title: 'Pânico', min: 1, crit: ['F1'] },
                 { id: 'F_AGORA', title: 'Agorafobia', min: 2, crit: ['F23'] },
                 { id: 'F_SOCIAL', title: 'Ansiedade Social', min: 2, crit: ['F32'] },
                 { id: 'F_GAD', title: 'TAG', min: 3, crit: ['F42'] },
                 { id: 'G_TOC', title: 'TOC', min: 1, crit: ['G3'] },
-                { id: 'G_TEPT', title: 'TEPT', min: 3, crit: ['G5','G6','G7','G8'] }
+                { id: 'G_TEPT', title: 'TEPT', min: 3, crit: ['G4'] }
             ];
 
-            let anyMajorPositive = false;
+            let activeDiagnoses = [];
 
-            results.forEach(r => {
+            // 2. Processamento dos Módulos Normais
+            modules.forEach(r => {
                 let scores = globalScores[r.id];
                 let count = 0;
                 let critMet = false;
-                Object.keys(scores).forEach(k => { if(scores[k] === '+') count++; });
                 
-                if(r.id === 'G_TOC') {
-                   if((scores['G1']==='+' || scores['G2']==='+') && scores['G3']==='+') critMet = true;
-                } else if (r.id === 'G_TEPT') {
-                   if(scores['G4']==='+') critMet = true;
-                } else if (r.id === 'E_SUBST') {
+                Object.keys(scores).forEach(k => { if(scores[k] === '+') count++; });
+
+                if(r.id === 'E_SUBST') {
                     let sym = 0;
                     for(let i=3; i<=13; i++) if(scores['E'+i] === '+') sym++;
                     if(sym >= 2) critMet = true;
-                    count = sym; 
+                    count = sym;
+                } else if(r.id === 'G_TOC') {
+                    if((scores['G1']==='+' || scores['G2']==='+') && scores['G3']==='+') critMet = true;
                 } else {
-                   r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
+                    r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
                 }
 
                 let status = (critMet && count >= r.min) ? 'Positivo' : 'Negativo';
                 if(r.id === 'E_SUBST' && critMet) status = 'Positivo';
-                if(status === 'Positivo') anyMajorPositive = true;
+                
+                if(status === 'Positivo') activeDiagnoses.push(r.title);
 
-                let cssClass = status === 'Positivo' ? 'positive' : 'negative';
-                let tagClass = status === 'Positivo' ? 'status-pos' : 'status-neg';
-
-                dash.innerHTML += `
-                    <div class="result-card ${cssClass}">
-                        <div>
-                            <h3>${r.title}</h3>
-                            <span class="status-tag ${tagClass}">${status}</span>
-                        </div>
-                        <div style="text-align:right">
-                            <div style="font-size:1.5rem; font-weight:bold;">${count}</div>
-                            <small>Sintomas</small>
-                        </div>
-                    </div>
-                `;
+                dash.innerHTML += createCard(r.title, status, count);
             });
 
-            // TDAH
-            let hScores = globalScores['H_ADHD'];
+            // 3. Processamento TDAH
+            let hS = globalScores['H_ADHD'];
             let inatt = 0, hyper = 0;
-            for(let i=1; i<=9; i++) if(hScores['H'+i] === '+') inatt++;
-            for(let i=10; i<=18; i++) if(hScores['H'+i] === '+') hyper++;
-            
+            for(let i=1; i<=9; i++) if(hS['H'+i] === '+') inatt++;
+            for(let i=10; i<=18; i++) if(hS['H'+i] === '+') hyper++;
             let adhdStatus = "Negativo";
-            if(hScores['H19']==='+' && hScores['H20']==='+') {
-                if(inatt >= 5 || hyper >= 5) { adhdStatus = "Positivo"; anyMajorPositive = true; }
+            if(hS['H19']==='+' && hS['H20']==='+') {
+                if(inatt >= 5 || hyper >= 5) { adhdStatus = "Positivo"; activeDiagnoses.push("TDAH"); }
             }
-            dash.innerHTML += `
-                <div class="result-card ${adhdStatus === 'Positivo' ? 'positive' : 'negative'}">
+            dash.innerHTML += createCard("TDAH Adulto", adhdStatus, `D:${inatt} H:${hyper}`);
+
+            // 4. Módulo J (Exclusão)
+            let jS = globalScores['J_ADJUST'];
+            let adjustStatus = "Negativo";
+            if(activeDiagnoses.length === 0 && jS['J1']==='+' && jS['J2']==='+' && jS['J3']==='-') {
+                adjustStatus = "Positivo";
+            } else if (activeDiagnoses.length > 0 && jS['J1']==='+') {
+                adjustStatus = "Descartado (Hierarquia)";
+            }
+            dash.innerHTML += createCard("Transtorno de Adaptação", adjustStatus, "-");
+
+            // 5. Módulo D: O GRANDE JUIZ (Lógica de Diferencial)
+            // Se houver Depressão E Psicose
+            let hasDep = activeDiagnoses.includes("Depressão Maior");
+            let hasPsych = activeDiagnoses.includes("Sintomas Psicóticos (Rastreio)");
+            let hasMania = activeDiagnoses.includes("Episódio Maníaco");
+            
+            if(hasDep && hasPsych) {
+                let dScore = globalScores['D_DIFF']['D1'];
+                let conclusao = "";
+                if(dScore === '+') conclusao = "Provável DEPRESSÃO COM CARACTERÍSTICAS PSICÓTICAS (Sintomas ocorrem apenas durante episódios de humor).";
+                else if(dScore === '-') conclusao = "Provável TRANSTORNO ESQUIZOAFETIVO ou ESQUIZOFRENIA (Psicose ocorre mesmo sem depressão).";
+                else conclusao = "Necessário aplicar Módulo D (Diferencial) para distinguir.";
+                
+                diffAlert.innerHTML += `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:10px; margin-bottom:20px; border-left:5px solid #ffc107"><strong>⚠️ Conflito Detectado:</strong> Depressão + Psicose.<br>${conclusao}</div>`;
+            }
+
+            if(hasMania) {
+                diffAlert.innerHTML += `<div style="background:#fdcb6e; color:#d35400; padding:15px; border-radius:10px; margin-bottom:20px; border-left:5px solid #e67e22"><strong>⚠️ Alerta Bipolar:</strong> A presença de Mania anula o diagnóstico de Depressão Unipolar. Considere <strong>TRANSTORNO BIPOLAR TIPO I</strong>.</div>`;
+            }
+        }
+
+        function createCard(title, status, count) {
+            let css = status === 'Positivo' ? 'positive' : 'negative';
+            if(status.includes('Descartado')) css = 'negative';
+            let tag = status === 'Positivo' ? 'status-pos' : 'status-neg';
+            
+            return `
+                <div class="result-card ${css}">
                     <div>
-                        <h3>TDAH Adulto</h3>
-                        <span class="status-tag ${adhdStatus === 'Positivo' ? 'status-pos' : 'status-neg'}">${adhdStatus}</span>
+                        <h3>${title}</h3>
+                        <span class="status-tag ${tag}">${status}</span>
                     </div>
                     <div style="text-align:right">
-                        <div>D: <b>${inatt}</b> / H: <b>${hyper}</b></div>
+                        <div style="font-size:1.2rem; font-weight:bold;">${count}</div>
                         <small>Sintomas</small>
-                    </div>
-                </div>
-            `;
-
-            // Módulo J: Adaptação (Diagnóstico de Exclusão)
-            let jScores = globalScores['J_ADJUST'];
-            let adjustStatus = "Negativo";
-            
-            // Só considera Adaptação se NÃO houver nenhum outro diagnóstico maior positivo
-            if (!anyMajorPositive && jScores['J1']==='+' && jScores['J2']==='+' && jScores['J3']==='-') {
-                adjustStatus = "Positivo";
-            } else if (anyMajorPositive && jScores['J1']==='+') {
-                 adjustStatus = "Descartado (Hierarquia)";
-            }
-
-            let jCss = adjustStatus === 'Positivo' ? 'positive' : 'negative';
-            let jTag = adjustStatus === 'Positivo' ? 'status-pos' : 'status-neg';
-            
-            dash.innerHTML += `
-                <div class="result-card ${jCss}">
-                    <div>
-                        <h3>Transtorno de Adaptação</h3>
-                        <span class="status-tag ${jTag}">${adjustStatus}</span>
-                        ${adjustStatus === 'Descartado (Hierarquia)' ? '<div style="font-size:0.7rem; color:#555">Outro transtorno explica melhor</div>' : ''}
                     </div>
                 </div>
             `;
