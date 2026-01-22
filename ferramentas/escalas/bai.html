@@ -70,6 +70,29 @@
             margin-top: 10px; color: #636e72; font-weight: 600; font-size: 1.05rem;
         }
 
+        /* Botão Imprimir */
+        .btn-print {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary-dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-print:hover {
+            background: var(--primary);
+            color: white;
+        }
+
         /* --- CONTAINER PRINCIPAL --- */
         .main-container {
             max-width: 850px;
@@ -171,6 +194,18 @@
             white-space: nowrap;
         }
 
+        /* Área de Score para Impressão (Escondida na tela) */
+        #print-score-area {
+            display: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 2px solid #2d3436;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
         @keyframes slideUp {
             from { transform: translate(-50%, 100px); }
             to { transform: translate(-50%, 0); }
@@ -192,15 +227,80 @@
             .question-text { font-size: 1rem; }
             .option-label { font-size: 0.85rem; padding: 10px 5px; }
             .result-bar { font-size: 1.1rem; padding: 12px 30px; width: 90%; }
+            .btn-print span { display: none; } /* Só ícone no mobile */
+        }
+
+        /* --- ESTILOS DE IMPRESSÃO --- */
+        @media print {
+            body { 
+                background: white; 
+                color: black; 
+                display: block; /* Remove flex para imprimir corretamente */
+            }
+            
+            header {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin-bottom: 20px;
+            }
+            header::before, .btn-print, .btn-back, .result-bar {
+                display: none !important;
+            }
+
+            .main-container {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .question-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid; /* Evita quebrar a pergunta no meio da página */
+                padding: 15px;
+                margin-bottom: 10px;
+                /* Remove animações AOS na impressão */
+                transform: none !important;
+                opacity: 1 !important;
+            }
+
+            .option-label {
+                border: 1px solid #ccc;
+                background: white;
+                color: black;
+            }
+
+            /* Destacar opção selecionada na impressão */
+            .option-label:has(input:checked) {
+                background-color: #ddd !important;
+                color: black !important;
+                border: 2px solid black !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-weight: bold;
+            }
+
+            /* Mostrar Score no topo */
+            #print-score-area {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
 
     <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> <span>Imprimir</span>
+        </button>
+        
         <h1>BAI - Escala de Ansiedade</h1>
         <div class="instruction">
             Indique o quanto cada sintoma incomodou você <strong>na última semana</strong>.
+        </div>
+        
+        <div id="print-score-area">
+            Pontuação Total: <span id="print-score-val">0</span>
         </div>
     </header>
 
@@ -292,10 +392,12 @@
 
             const resultBar = document.getElementById('resultBar');
             const scoreSpan = document.getElementById('score');
+            const printScoreSpan = document.getElementById('print-score-val');
             
             if(count > 0) {
                 resultBar.style.display = 'block';
                 scoreSpan.innerText = total;
+                printScoreSpan.innerText = total; // Atualiza também o score da impressão
             }
         }
     </script>
