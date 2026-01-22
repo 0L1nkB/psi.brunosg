@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escala de Autoestima de Rosenberg | Bruno de Souza</title>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -83,6 +83,30 @@
             border-left: 5px solid var(--primary);
         }
 
+        /* Botão Imprimir */
+        .btn-print {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--primary-dark);
+            color: var(--primary-dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-print:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         /* --- CONTAINER --- */
         .main-container {
             max-width: 800px;
@@ -102,6 +126,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            page-break-inside: avoid;
         }
 
         .question-card:hover {
@@ -164,16 +189,16 @@
 
         /* Cores Específicas */
         .btn-dt:hover { background: #ffebee; border-color: var(--btn-disagree); color: var(--btn-disagree); }
-        .btn-dt:has(input:checked) { background: var(--btn-disagree); color: white; border-color: var(--btn-disagree); box-shadow: 0 4px 0 #c0392b; }
+        .btn-dt:has(input:checked) { background: var(--btn-disagree); color: white; border-color: var(--btn-disagree); box-shadow: 0 4px 0 #c0392b; transform: translateY(-2px); }
 
         .btn-d:hover { background: #fff5f5; border-color: #fab1a0; color: #e17055; }
-        .btn-d:has(input:checked) { background: #fab1a0; color: white; border-color: #fab1a0; box-shadow: 0 4px 0 #e17055; }
+        .btn-d:has(input:checked) { background: #fab1a0; color: white; border-color: #fab1a0; box-shadow: 0 4px 0 #e17055; transform: translateY(-2px); }
 
         .btn-c:hover { background: #e0f2f1; border-color: #81ecec; color: #00cec9; }
-        .btn-c:has(input:checked) { background: #81ecec; color: white; border-color: #81ecec; box-shadow: 0 4px 0 #00cec9; }
+        .btn-c:has(input:checked) { background: #81ecec; color: white; border-color: #81ecec; box-shadow: 0 4px 0 #00cec9; transform: translateY(-2px); }
 
         .btn-ct:hover { background: #e6fffa; border-color: var(--btn-agree); color: var(--btn-agree); }
-        .btn-ct:has(input:checked) { background: var(--btn-agree); color: white; border-color: var(--btn-agree); box-shadow: 0 4px 0 #006266; }
+        .btn-ct:has(input:checked) { background: var(--btn-agree); color: white; border-color: var(--btn-agree); box-shadow: 0 4px 0 #006266; transform: translateY(-2px); }
 
         input[type="radio"] { display: none; }
 
@@ -207,6 +232,19 @@
 
         .score-big { font-size: 1.5rem; color: var(--primary); }
 
+        /* Área de Score para Impressão */
+        #print-score-area {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #2d3436;
+            border-radius: 10px;
+            background: #fff;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         @keyframes slideUp {
             from { transform: translate(-50%, 100px); }
             to { transform: translate(-50%, 0); }
@@ -221,14 +259,52 @@
         @media (max-width: 600px) {
             .options-row { grid-template-columns: 1fr 1fr; }
             .option-label { font-size: 0.75rem; padding: 10px; }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        @media print {
+            body { background: white; color: black; display: block; padding: 10px; margin: 0; }
+            header { border: none; box-shadow: none; padding: 0; margin-bottom: 20px; }
+            header::before, .btn-print, .btn-back, .result-bar, .instruction-box { display: none !important; }
+            
+            .main-container { max-width: 100%; margin: 0; }
+
+            .question-card {
+                box-shadow: none; border: 1px solid #ddd;
+                padding: 10px; margin-bottom: 10px;
+                transform: none !important; opacity: 1 !important;
+                break-inside: avoid; page-break-inside: avoid;
+            }
+
+            .option-label { border: 1px solid #ccc; background: white; color: black; padding: 5px; }
+
+            /* Destacar opção selecionada */
+            .btn-dt:has(input:checked), .btn-d:has(input:checked),
+            .btn-c:has(input:checked), .btn-ct:has(input:checked) {
+                background-color: #ddd !important; color: black !important;
+                border: 2px solid black !important; box-shadow: none !important;
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+                font-weight: bold;
+            }
+
+            #print-score-area { display: block; }
         }
     </style>
 </head>
 <body>
 
     <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> <span>Imprimir</span>
+        </button>
+
         <h1>Autoestima</h1>
         <div class="subtitle">Escala de Rosenberg</div>
+
+        <div id="print-score-area">
+            Resultado: <span id="print-score-val">0</span> | <span id="print-text-val">...</span>
+        </div>
     </header>
 
     <div class="main-container">
@@ -259,11 +335,6 @@
     <script>
         AOS.init();
 
-        /* ITENS DA ESCALA
-           type: 'P' (Positivo) ou 'N' (Negativo/Invertido)
-           Positivo: CT=3, C=2, D=1, DT=0
-           Negativo: CT=0, C=1, D=2, DT=3
-        */
         const questions = [
             { t: "Sinto que sou uma pessoa de valor, pelo menos tanto quanto as outras.", type: 'P' },
             { t: "Acho que tenho várias boas qualidades.", type: 'P' },
@@ -293,7 +364,6 @@
 
             let optionsHTML = '';
             options.forEach(opt => {
-                // Passamos o valor bruto (0-3) para o HTML. A lógica JS trata a inversão.
                 optionsHTML += `
                     <label class="option-label ${opt.class}">
                         <input type="radio" name="q${index}" value="${opt.val}" onchange="calculateScore()">
@@ -319,13 +389,12 @@
             const formData = new FormData(form);
 
             for (let pair of formData.entries()) {
-                const index = parseInt(pair[0].substring(1)); // q0 -> 0
-                let rawVal = parseInt(pair[1]); // 0, 1, 2, 3
+                const index = parseInt(pair[0].substring(1)); 
+                let rawVal = parseInt(pair[1]); 
                 
                 // Lógica de Inversão
                 let finalVal = rawVal;
                 if (questions[index].type === 'N') {
-                    // Se for negativo: 0->3, 1->2, 2->1, 3->0
                     if(rawVal === 0) finalVal = 3;
                     else if(rawVal === 1) finalVal = 2;
                     else if(rawVal === 2) finalVal = 1;
@@ -340,21 +409,33 @@
             const scoreVal = document.getElementById('scoreVal');
             const scoreText = document.getElementById('scoreText');
             
+            // Elementos de impressão
+            const printScore = document.getElementById('print-score-val');
+            const printText = document.getElementById('print-text-val');
+            
             if (answered > 0) {
                 resultBar.style.display = 'block';
                 scoreVal.innerText = total;
+                printScore.innerText = total;
 
-                // Interpretação Rápida (Referência comum)
+                let classification = "";
+                let color = "";
+
                 if (total < 15) {
-                    scoreText.innerText = "Baixa";
-                    scoreText.style.color = "#ff7675";
+                    classification = "Baixa";
+                    color = "#ff7675";
                 } else if (total <= 25) {
-                    scoreText.innerText = "Média/Saudável";
-                    scoreText.style.color = "#fdcb6e";
+                    classification = "Média/Saudável";
+                    color = "#fdcb6e";
                 } else {
-                    scoreText.innerText = "Alta";
-                    scoreText.style.color = "#00b894";
+                    classification = "Alta";
+                    color = "#00b894";
                 }
+
+                scoreText.innerText = classification;
+                scoreText.style.color = color;
+                
+                printText.innerText = classification; // Atualiza impressão
             }
         }
     </script>
