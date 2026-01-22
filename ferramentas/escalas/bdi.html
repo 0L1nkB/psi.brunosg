@@ -17,12 +17,9 @@
 
     <style>
         :root {
-            /* Identidade Visual */
             --bg-color: #f0f8ff;
-            --primary: #2980b9;       /* Azul principal do BDI */
-            --primary-dark: #1f618d;
-            --primary-light: #d4e6f1; /* Fundo selecionado */
-            --accent: #fdcb6e;        /* Detalhes (amarelo) */
+            --primary: #2980b9;       
+            --primary-light: #d4e6f1; 
             --text: #2d3436;
             --card-border: #b2bec3;
             --option-bg: #f8f9fa;
@@ -33,16 +30,13 @@
             background-color: var(--bg-color);
             background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
             background-size: 20px 20px;
-            margin: 0;
-            padding: 20px;
+            margin: 0; padding: 20px;
             min-height: 100vh;
             color: var(--text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- CABEÇALHO (Estilo Fita Adesiva) --- */
+        /* --- HEADER --- */
         header {
             text-align: center;
             margin: 20px auto 40px auto;
@@ -57,237 +51,119 @@
         }
 
         header::before {
-            content: ""; 
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
-            width: 140px; height: 35px; 
-            background-color: rgba(41, 128, 185, 0.2); /* Azul translúcido */
-            border: 1px solid rgba(0,0,0,0.05); 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            content: ""; position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+            width: 140px; height: 35px; background-color: rgba(41, 128, 185, 0.2);
+            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         header h1 {
-            font-size: 2rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            margin: 0;
-            font-weight: 800;
+            font-size: 2rem; color: var(--primary); margin: 0; font-weight: 800;
         }
 
-        .subtitle {
-            margin-top: 5px; color: #636e72; font-weight: 600; font-size: 1.1rem;
-        }
+        .subtitle { margin-top: 5px; color: #636e72; font-weight: 600; }
 
         /* Botão Imprimir */
         .btn-print {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-family: inherit;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid var(--primary); color: var(--primary);
+            padding: 8px 15px; border-radius: 20px;
+            font-family: inherit; font-weight: 700; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 5px;
         }
-        .btn-print:hover {
-            background: var(--primary);
-            color: white;
-        }
+        .btn-print:hover { background: var(--primary); color: white; }
 
-        /* --- CONTAINER PRINCIPAL --- */
-        .main-container {
-            max-width: 800px;
-            width: 100%;
-            margin-bottom: 80px; /* Espaço para a barra fixa */
-        }
+        /* Container Principal */
+        .main-container { max-width: 800px; width: 100%; margin-bottom: 80px; }
 
-        /* --- CARTÃO DE PERGUNTA --- */
+        /* Cards */
         .group-container {
-            background: white;
-            border: 2px dashed var(--card-border);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            page-break-inside: avoid; /* Evita quebra na impressão */
+            background: white; border: 2px dashed var(--card-border);
+            border-radius: 20px; padding: 25px; margin-bottom: 25px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05); transition: all 0.3s ease;
+            page-break-inside: avoid;
         }
-
-        .group-container:hover {
-            border-color: var(--primary);
-            box-shadow: 0 8px 0 rgba(0,0,0,0.05);
-            transform: translateY(-2px);
-        }
+        .group-container:hover { border-color: var(--primary); transform: translateY(-2px); }
         
         .group-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f1f2f6;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.1rem; font-weight: 800; color: var(--primary);
+            text-transform: uppercase; margin-bottom: 15px;
+            padding-bottom: 10px; border-bottom: 2px solid #f1f2f6;
+            display: flex; align-items: center; gap: 10px;
         }
 
-        .group-title i { font-size: 1.3rem; }
-
-        /* --- OPÇÕES DE RESPOSTA --- */
+        /* Opções */
         .option-label {
-            display: flex;
-            align-items: center; /* Alinha bolinha e texto verticalmente */
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            background: var(--option-bg);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-            font-weight: 500;
-            color: #636e72;
-            font-size: 0.95rem;
+            display: flex; align-items: center; padding: 12px 15px; margin-bottom: 10px;
+            background: var(--option-bg); border-radius: 12px; cursor: pointer;
+            transition: all 0.2s; border: 2px solid transparent;
+            font-weight: 500; color: #636e72; font-size: 0.95rem;
         }
+        .option-label:hover { background: #eaf2f8; border-color: #a9cce3; }
 
-        .option-label:hover { 
-            background: #eaf2f8; 
-            border-color: #a9cce3; 
-        }
-
-        /* Input Customizado */
-        input[type="radio"] { 
-            margin-right: 15px; 
-            transform: scale(1.3); 
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
+        input[type="radio"] { margin-right: 15px; transform: scale(1.3); accent-color: var(--primary); cursor: pointer; }
         
-        /* Estilo Selecionado */
         .option-label:has(input:checked) {
-            background-color: var(--primary-light);
-            border-color: var(--primary);
-            color: #154360;
-            font-weight: 700;
-            box-shadow: 0 2px 5px rgba(41, 128, 185, 0.2);
+            background-color: var(--primary-light); border-color: var(--primary);
+            color: #154360; font-weight: 700;
         }
 
-        /* --- BARRA DE RESULTADOS (Fixa) --- */
+        /* Barra de Resultado (Tela) */
         .result-bar {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2c3e50;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            display: none; /* Só aparece ao começar */
-            z-index: 100;
-            border: 2px solid white;
-            animation: slideUp 0.3s ease-out;
-            white-space: nowrap;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #2c3e50; color: white; padding: 15px 40px;
+            border-radius: 50px; text-align: center; font-size: 1.3rem; font-weight: 700;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: none; z-index: 100;
+            border: 2px solid white; animation: slideUp 0.3s ease-out;
         }
 
-        /* Área de Score para Impressão (Escondida na tela) */
-        #print-score-area {
-            display: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border: 2px solid #2d3436;
-            padding: 10px;
-            text-align: center;
-            border-radius: 10px;
-        }
+        @keyframes slideUp { from { transform: translate(-50%, 100px); } to { transform: translate(-50%, 0); } }
 
-        @keyframes slideUp {
-            from { transform: translate(-50%, 100px); }
-            to { transform: translate(-50%, 0); }
-        }
-
-        /* Botão Voltar */
         .btn-back {
-            display: inline-block;
-            margin-top: 20px;
-            color: #b2bec3;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
+            display: inline-block; margin-top: 20px; color: #b2bec3;
+            text-decoration: none; font-weight: 600; transition: 0.3s;
         }
         .btn-back:hover { color: var(--primary); }
 
-        /* Responsividade */
+        /* Área de Impressão (Escondida na tela) */
+        #print-result-area { display: none; }
+
         @media (max-width: 600px) {
-            header h1 { font-size: 1.5rem; }
-            .group-container { padding: 15px; }
-            .result-bar { width: 90%; font-size: 1.1rem; padding: 15px; }
-            .btn-print span { display: none; } /* Só ícone no mobile */
+            .btn-print span { display: none; }
+            .result-bar { width: 90%; font-size: 1.1rem; }
         }
 
-        /* --- ESTILOS DE IMPRESSÃO --- */
+        /* --- IMPRESSÃO --- */
         @media print {
-            body { 
-                background: white; 
-                color: black; 
-                display: block; 
-            }
+            body { background: white; color: black; display: block; }
+            header { border: none; box-shadow: none; padding: 0; margin-bottom: 20px; }
+            header::before, .btn-print, .btn-back, .result-bar { display: none !important; }
             
-            header {
-                border: none;
-                box-shadow: none;
-                padding: 0;
-                margin-bottom: 20px;
-            }
-            header::before, .btn-print, .btn-back, .result-bar {
-                display: none !important;
-            }
-
-            .main-container {
-                max-width: 100%;
-                margin: 0;
-            }
-
+            .main-container { max-width: 100%; margin: 0; }
+            
             .group-container {
-                box-shadow: none;
-                border: 1px solid #ddd;
-                padding: 10px;
-                margin-bottom: 10px;
-                transform: none !important;
+                box-shadow: none; border: 1px solid #ccc;
+                padding: 10px; margin-bottom: 10px; transform: none !important;
             }
 
-            .option-label {
-                border: 1px solid #ccc;
-                background: white;
-                color: black;
-                padding: 5px;
-                margin-bottom: 5px;
-            }
-
-            /* Destacar opção selecionada na impressão */
+            .option-label { border: 1px solid #eee; background: white; color: black; padding: 5px; }
+            
             .option-label:has(input:checked) {
-                background-color: #ddd !important;
-                color: black !important;
-                border: 2px solid black !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                font-weight: bold;
+                background-color: #ddd !important; color: black !important;
+                border: 2px solid black !important; -webkit-print-color-adjust: exact; font-weight: bold;
             }
 
-            /* Mostrar Score no topo */
-            #print-score-area {
+            /* Exibir resultado na impressão */
+            #print-result-area {
                 display: block;
+                border: 2px solid #2c3e50;
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+                text-align: center;
+                background-color: #f8f9fa;
             }
+            #print-result-area h3 { margin: 0 0 5px 0; color: #2c3e50; }
+            #print-result-area p { margin: 0; font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -301,8 +177,9 @@
         <h1>BDI - Inventário de Depressão</h1>
         <div class="subtitle">Como você se sentiu na última semana?</div>
 
-        <div id="print-score-area">
-            Pontuação Total: <span id="print-score-val">0</span>
+        <div id="print-result-area">
+            <h3>Resultado da Avaliação</h3>
+            <p>Pontuação: <strong id="print-score">0</strong> - <span id="print-class">Aguardando preenchimento</span></p>
         </div>
     </header>
 
@@ -317,7 +194,7 @@
     </div>
 
     <div class="result-bar" id="resultBar">
-        <i class="fa-solid fa-calculator"></i> Pontuação Total: <span id="scoreVal">0</span>
+        <i class="fa-solid fa-calculator"></i> Total: <span id="scoreVal">0</span>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -325,237 +202,45 @@
         AOS.init();
 
         const bdiData = [
-            {
-                title: "1. Tristeza",
-                icon: "fa-face-frown",
-                options: [
-                    "0 - Não me sinto triste.",
-                    "1 - Eu me sinto triste.",
-                    "2 - Estou sempre triste e não consigo sair disto.",
-                    "3 - Estou tão triste ou infeliz que não consigo suportar."
-                ]
-            },
-            {
-                title: "2. Pessimismo",
-                icon: "fa-cloud-rain",
-                options: [
-                    "0 - Não estou especialmente desanimado quanto ao futuro.",
-                    "1 - Eu me sinto desanimado quanto ao futuro.",
-                    "2 - Acho que nada tenho a esperar.",
-                    "3 - Acho o futuro sem esperança e tenho a impressão de que as coisas não podem melhorar."
-                ]
-            },
-            {
-                title: "3. Fracasso",
-                icon: "fa-thumbs-down",
-                options: [
-                    "0 - Não me sinto um fracasso.",
-                    "1 - Acho que fracassei mais do que uma pessoa comum.",
-                    "2 - Quando olho para trás, na minha vida, tudo o que posso ver é um monte de fracassos.",
-                    "3 - Acho que, como pessoa, sou um completo fracasso."
-                ]
-            },
-            {
-                title: "4. Insatisfação",
-                icon: "fa-face-meh",
-                options: [
-                    "0 - Tenho tanto prazer em tudo como antes.",
-                    "1 - Não sinto mais prazer nas coisas como antes.",
-                    "2 - Não encontro um prazer real em mais nada.",
-                    "3 - Estou insatisfeito ou aborrecido com tudo."
-                ]
-            },
-            {
-                title: "5. Culpa",
-                icon: "fa-gavel",
-                options: [
-                    "0 - Não me sinto especialmente culpado.",
-                    "1 - Eu me sinto culpado grande parte do tempo.",
-                    "2 - Eu me sinto culpado na maior parte do tempo.",
-                    "3 - Eu me sinto sempre culpado."
-                ]
-            },
-            {
-                title: "6. Punição",
-                icon: "fa-handcuffs",
-                options: [
-                    "0 - Não acho que esteja sendo punido.",
-                    "1 - Acho que posso ser punido.",
-                    "2 - Creio que vou ser punido.",
-                    "3 - Acho que estou sendo punido."
-                ]
-            },
-            {
-                title: "7. Auto-aversão",
-                icon: "fa-user-slash",
-                options: [
-                    "0 - Não me sinto decepcionado comigo mesmo.",
-                    "1 - Estou decepcionado comigo mesmo.",
-                    "2 - Estou enojado de mim.",
-                    "3 - Eu me odeio."
-                ]
-            },
-            {
-                title: "8. Auto-acusações",
-                icon: "fa-bullseye",
-                options: [
-                    "0 - Não me sinto de qualquer modo pior que os outros.",
-                    "1 - Sou crítico em relação a mim por minhas fraquezas ou erros.",
-                    "2 - Eu me culpo sempre por minhas falhas.",
-                    "3 - Eu me culpo por tudo de mal que acontece."
-                ]
-            },
-            {
-                title: "9. Ideias Suicidas",
-                icon: "fa-skull",
-                options: [
-                    "0 - Não tenho quaisquer ideias de me matar.",
-                    "1 - Tenho ideias de me matar, mas não as executaria.",
-                    "2 - Gostaria de me matar.",
-                    "3 - Eu me mataria se tivesse oportunidade."
-                ]
-            },
-            {
-                title: "10. Choro",
-                icon: "fa-droplet",
-                options: [
-                    "0 - Não choro mais que o habitual.",
-                    "1 - Choro mais agora do que costumava.",
-                    "2 - Agora, choro o tempo todo.",
-                    "3 - Costumava ser capaz de chorar, mas agora não consigo, mesmo que o queira."
-                ]
-            },
-            {
-                title: "11. Irritabilidade",
-                icon: "fa-face-angry",
-                options: [
-                    "0 - Não sou mais irritado agora do que já fui.",
-                    "1 - Fico aborrecido ou irritado mais facilmente do que costumava.",
-                    "2 - Agora, eu me sinto irritado o tempo todo.",
-                    "3 - Não me irrito mais com coisas que costumavam me irritar."
-                ]
-            },
-            {
-                title: "12. Retraimento Social",
-                icon: "fa-person-shelter",
-                options: [
-                    "0 - Não perdi o interesse pelas outras pessoas.",
-                    "1 - Estou menos interessado pelas outras pessoas do que costumava estar.",
-                    "2 - Perdi a maior parte do meu interesse pelas outras pessoas.",
-                    "3 - Perdi todo o interesse pelas outras pessoas."
-                ]
-            },
-            {
-                title: "13. Indecisão",
-                icon: "fa-arrows-split-up-and-left",
-                options: [
-                    "0 - Tomo decisões tão bem quanto antes.",
-                    "1 - Adio as tomadas de decisões mais do que costumava.",
-                    "2 - Tenho mais dificuldades de tomar decisões do que antes.",
-                    "3 - Absolutamente não consigo mais tomar decisões."
-                ]
-            },
-            {
-                title: "14. Mudança na Autoimagem",
-                icon: "fa-image-portrait",
-                options: [
-                    "0 - Não acho que de qualquer modo pareço pior do que antes.",
-                    "1 - Estou preocupado em estar parecendo velho ou sem atrativo.",
-                    "2 - Acho que há mudanças permanentes na minha aparência, que me fazem parecer sem atrativo.",
-                    "3 - Acredito que pareço feio."
-                ]
-            },
-            {
-                title: "15. Dificuldade de Trabalhar",
-                icon: "fa-briefcase",
-                options: [
-                    "0 - Posso trabalhar tão bem quanto antes.",
-                    "1 - É preciso algum esforço extra para fazer alguma coisa.",
-                    "2 - Tenho que me esforçar muito para fazer alguma coisa.",
-                    "3 - Não consigo mais fazer qualquer trabalho."
-                ]
-            },
-            {
-                title: "16. Alterações no Sono",
-                icon: "fa-bed",
-                options: [
-                    "0 - Consigo dormir tão bem como o habitual.",
-                    "1 - Não durmo tão bem como costumava.",
-                    "2 - Acordo 1 a 2 horas mais cedo do que habitualmente e acho difícil voltar a dormir.",
-                    "3 - Acordo várias horas mais cedo do que costumava e não consigo voltar a dormir."
-                ]
-            },
-            {
-                title: "17. Fadiga",
-                icon: "fa-battery-quarter",
-                options: [
-                    "0 - Não fico mais cansado do que o habitual.",
-                    "1 - Fico cansado mais facilmente do que costumava.",
-                    "2 - Fico cansado em fazer qualquer coisa.",
-                    "3 - Estou cansado demais para fazer qualquer coisa."
-                ]
-            },
-            {
-                title: "18. Perda de Apetite",
-                icon: "fa-utensils",
-                options: [
-                    "0 - O meu apetite não está pior do que o habitual.",
-                    "1 - Meu apetite não é tão bom como costumava ser.",
-                    "2 - Meu apetite é muito pior agora.",
-                    "3 - Absolutamente não tenho mais apetite."
-                ]
-            },
-            {
-                title: "19. Perda de Peso",
-                icon: "fa-weight-scale",
-                options: [
-                    "0 - Não tenho perdido muito peso, se é que perdi algum recentemente.",
-                    "1 - Perdi mais do que 2,5 kg.",
-                    "2 - Perdi mais do que 5 kg.",
-                    "3 - Perdi mais do que 7 kg."
-                ]
-            },
-            {
-                title: "20. Preocupações Somáticas",
-                icon: "fa-heart-pulse",
-                options: [
-                    "0 - Não estou mais preocupado com a minha saúde do que o habitual.",
-                    "1 - Estou preocupado com problemas físicos (dores, estômago, etc.).",
-                    "2 - Estou muito preocupado com problemas físicos e é difícil pensar em outra coisa.",
-                    "3 - Estou tão preocupado com meus problemas físicos que não consigo pensar em qualquer outra coisa."
-                ]
-            },
-            {
-                title: "21. Perda de Libido",
-                icon: "fa-venus-mars",
-                options: [
-                    "0 - Não notei qualquer mudança recente no meu interesse por sexo.",
-                    "1 - Estou menos interessado por sexo do que costumava.",
-                    "2 - Estou muito menos interessado por sexo agora.",
-                    "3 - Perdi completamente o interesse por sexo."
-                ]
-            }
+            { title: "1. Tristeza", icon: "fa-face-frown", options: ["0 - Não me sinto triste.", "1 - Eu me sinto triste.", "2 - Estou sempre triste e não consigo sair disto.", "3 - Estou tão triste ou infeliz que não consigo suportar."] },
+            { title: "2. Pessimismo", icon: "fa-cloud-rain", options: ["0 - Não estou especialmente desanimado quanto ao futuro.", "1 - Eu me sinto desanimado quanto ao futuro.", "2 - Acho que nada tenho a esperar.", "3 - Acho o futuro sem esperança e tenho a impressão de que as coisas não podem melhorar."] },
+            { title: "3. Fracasso", icon: "fa-thumbs-down", options: ["0 - Não me sinto um fracasso.", "1 - Acho que fracassei mais do que uma pessoa comum.", "2 - Quando olho para trás, na minha vida, tudo o que posso ver é um monte de fracassos.", "3 - Acho que, como pessoa, sou um completo fracasso."] },
+            { title: "4. Insatisfação", icon: "fa-face-meh", options: ["0 - Tenho tanto prazer em tudo como antes.", "1 - Não sinto mais prazer nas coisas como antes.", "2 - Não encontro um prazer real em mais nada.", "3 - Estou insatisfeito ou aborrecido com tudo."] },
+            { title: "5. Culpa", icon: "fa-gavel", options: ["0 - Não me sinto especialmente culpado.", "1 - Eu me sinto culpado grande parte do tempo.", "2 - Eu me sinto culpado na maior parte do tempo.", "3 - Eu me sinto sempre culpado."] },
+            { title: "6. Punição", icon: "fa-handcuffs", options: ["0 - Não acho que esteja sendo punido.", "1 - Acho que posso ser punido.", "2 - Creio que vou ser punido.", "3 - Acho que estou sendo punido."] },
+            { title: "7. Auto-aversão", icon: "fa-user-slash", options: ["0 - Não me sinto decepcionado comigo mesmo.", "1 - Estou decepcionado comigo mesmo.", "2 - Estou enojado de mim.", "3 - Eu me odeio."] },
+            { title: "8. Auto-acusações", icon: "fa-bullseye", options: ["0 - Não me sinto de qualquer modo pior que os outros.", "1 - Sou crítico em relação a mim por minhas fraquezas ou erros.", "2 - Eu me culpo sempre por minhas falhas.", "3 - Eu me culpo por tudo de mal que acontece."] },
+            { title: "9. Ideias Suicidas", icon: "fa-skull", options: ["0 - Não tenho quaisquer ideias de me matar.", "1 - Tenho ideias de me matar, mas não as executaria.", "2 - Gostaria de me matar.", "3 - Eu me mataria se tivesse oportunidade."] },
+            { title: "10. Choro", icon: "fa-droplet", options: ["0 - Não choro mais que o habitual.", "1 - Choro mais agora do que costumava.", "2 - Agora, choro o tempo todo.", "3 - Costumava ser capaz de chorar, mas agora não consigo, mesmo que o queira."] },
+            { title: "11. Irritabilidade", icon: "fa-face-angry", options: ["0 - Não sou mais irritado agora do que já fui.", "1 - Fico aborrecido ou irritado mais facilmente do que costumava.", "2 - Agora, eu me sinto irritado o tempo todo.", "3 - Não me irrito mais com coisas que costumavam me irritar."] },
+            { title: "12. Retraimento Social", icon: "fa-person-shelter", options: ["0 - Não perdi o interesse pelas outras pessoas.", "1 - Estou menos interessado pelas outras pessoas do que costumava estar.", "2 - Perdi a maior parte do meu interesse pelas outras pessoas.", "3 - Perdi todo o interesse pelas outras pessoas."] },
+            { title: "13. Indecisão", icon: "fa-arrows-split-up-and-left", options: ["0 - Tomo decisões tão bem quanto antes.", "1 - Adio as tomadas de decisões mais do que costumava.", "2 - Tenho mais dificuldades de tomar decisões do que antes.", "3 - Absolutamente não consigo mais tomar decisões."] },
+            { title: "14. Mudança na Autoimagem", icon: "fa-image-portrait", options: ["0 - Não acho que de qualquer modo pareço pior do que antes.", "1 - Estou preocupado em estar parecendo velho ou sem atrativo.", "2 - Acho que há mudanças permanentes na minha aparência, que me fazem parecer sem atrativo.", "3 - Acredito que pareço feio."] },
+            { title: "15. Dificuldade de Trabalhar", icon: "fa-briefcase", options: ["0 - Posso trabalhar tão bem quanto antes.", "1 - É preciso algum esforço extra para fazer alguma coisa.", "2 - Tenho que me esforçar muito para fazer alguma coisa.", "3 - Não consigo mais fazer qualquer trabalho."] },
+            { title: "16. Alterações no Sono", icon: "fa-bed", options: ["0 - Consigo dormir tão bem como o habitual.", "1 - Não durmo tão bem como costumava.", "2 - Acordo 1 a 2 horas mais cedo do que habitualmente e acho difícil voltar a dormir.", "3 - Acordo várias horas mais cedo do que costumava e não consigo voltar a dormir."] },
+            { title: "17. Fadiga", icon: "fa-battery-quarter", options: ["0 - Não fico mais cansado do que o habitual.", "1 - Fico cansado mais facilmente do que costumava.", "2 - Fico cansado em fazer qualquer coisa.", "3 - Estou cansado demais para fazer qualquer coisa."] },
+            { title: "18. Perda de Apetite", icon: "fa-utensils", options: ["0 - O meu apetite não está pior do que o habitual.", "1 - Meu apetite não é tão bom como costumava ser.", "2 - Meu apetite é muito pior agora.", "3 - Absolutamente não tenho mais apetite."] },
+            { title: "19. Perda de Peso", icon: "fa-weight-scale", options: ["0 - Não tenho perdido muito peso, se é que perdi algum recentemente.", "1 - Perdi mais do que 2,5 kg.", "2 - Perdi mais do que 5 kg.", "3 - Perdi mais do que 7 kg."] },
+            { title: "20. Preocupações Somáticas", icon: "fa-heart-pulse", options: ["0 - Não estou mais preocupado com a minha saúde do que o habitual.", "1 - Estou preocupado com problemas físicos (dores, estômago, etc.).", "2 - Estou muito preocupado com problemas físicos e é difícil pensar em outra coisa.", "3 - Estou tão preocupado com meus problemas físicos que não consigo pensar em qualquer outra coisa."] },
+            { title: "21. Perda de Libido", icon: "fa-venus-mars", options: ["0 - Não notei qualquer mudança recente no meu interesse por sexo.", "1 - Estou menos interessado por sexo do que costumava.", "2 - Estou muito menos interessado por sexo agora.", "3 - Perdi completamente o interesse por sexo."] }
         ];
 
         const area = document.getElementById('questions-area');
 
-        // Gerar Perguntas
+        // Renderizar Perguntas
         bdiData.forEach((item, index) => {
             const groupDiv = document.createElement('div');
             groupDiv.className = 'group-container';
             groupDiv.setAttribute('data-aos', 'fade-up');
             
-            // Título do Grupo com Ícone
             const title = document.createElement('div');
             title.className = 'group-title';
             title.innerHTML = `<i class="fa-solid ${item.icon}"></i> ${item.title}`;
             groupDiv.appendChild(title);
 
-            // Opções
             item.options.forEach((optText, optIndex) => {
                 const label = document.createElement('label');
                 label.className = 'option-label';
-                
                 label.innerHTML = `
                     <input type="radio" name="g${index}" value="${optIndex}" onchange="calcScore()">
                     ${optText}
@@ -577,15 +262,27 @@
                 count++;
             }
 
+            // Atualiza Barra Flutuante
             const bar = document.getElementById('resultBar');
             const span = document.getElementById('scoreVal');
-            const printSpan = document.getElementById('print-score-val');
             
             if (count > 0) {
                 bar.style.display = 'block';
                 span.innerText = total;
-                printSpan.innerText = total; // Atualiza para impressão
             }
+
+            // Atualiza Área de Impressão com Classificação
+            const printScore = document.getElementById('print-score');
+            const printClass = document.getElementById('print-class');
+            printScore.innerText = total;
+
+            let classification = "";
+            if (total <= 13) classification = "Mínima";
+            else if (total <= 19) classification = "Leve";
+            else if (total <= 28) classification = "Moderada";
+            else classification = "Grave";
+
+            printClass.innerText = classification;
         }
     </script>
 
