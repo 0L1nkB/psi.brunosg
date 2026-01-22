@@ -285,6 +285,60 @@
                 criteria: "9. Pensamentos recorrentes de morte (não somente medo de morrer), ideação suicida recorrente sem um plano específico, tentativa de suicídio ou plano específico.",
                 inst: "ALERTA DE SEGURANÇA: Se responder SIM, avalie o risco de suicídio imediato."
             }
+                        // --- LÓGICA DE CONTAGEM (A10) ---
+            {
+                id: "CHECK_A10",
+                type: "logic",
+                check: function(scores) {
+                    let count = 0;
+                    // Conta quantos sintomas de A1 a A9 foram marcados como positivos
+                    ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9'].forEach(key => {
+                        if (scores[key] === '+') count++;
+                    });
+                    
+                    // REGRA DO DSM-5: Pelo menos 5 sintomas são necessários.
+                    if (count < 5) {
+                        return 'SKIP_TO_END'; // Não é depressão maior, encerra módulo.
+                    }
+                    return 'NEXT'; // Tem 5+ sintomas, continua para avaliar gravidade.
+                }
+            },
+            
+            // --- CRITÉRIO B: PREJUÍZO FUNCIONAL (A11) ---
+            {
+                id: "A10", 
+                text: "Esses sintomas lhe causaram sofrimento clinicamente significativo ou prejuízo no funcionamento?",
+                sub: "Isso atrapalhou seu trabalho, seus estudos ou sua vida social? Como você tem lidado com suas responsabilidades em casa?",
+                criteria: "B. Os sintomas causam sofrimento clinicamente significativo ou prejuízo no funcionamento social, profissional ou em outras áreas importantes.",
+                inst: "Se o prejuízo for evidente (ex: parou de trabalhar), marque (+) sem perguntar excessivamente."
+            },
+
+            // --- CRITÉRIO C: EXCLUSÃO DE CAUSAS MÉDICAS/SUBSTÂNCIAS (A12) ---
+            {
+                id: "A11",
+                text: "Você estava fisicamente doente ou usando algum medicamento/droga quando esses sintomas começaram?",
+                sub: "Houve alguma mudança na medicação? Você estava bebendo ou usando drogas mais do que o habitual?",
+                criteria: "C. O episódio não é atribuível aos efeitos fisiológicos de uma substância ou a outra condição médica.",
+                inst: "ATENÇÃO: Se os sintomas forem causados por drogas ou doença (ex: hipotireoidismo), marque (-) aqui, pois NÃO é Depressão Maior primária."
+            },
+
+            // --- DADOS DO EPISÓDIO (A13) ---
+            {
+                id: "A12",
+                text: "Quando esse período atual de sintomas começou?",
+                sub: "Há quanto tempo você se sente assim sem parar?",
+                criteria: "Registro da cronologia para definir se é Agudo ou Crônico.",
+                inst: "Registre a data aproximada (Mês/Ano)."
+            },
+
+            // --- FIM DO MÓDULO A (ATUAL) ---
+            {
+                id: "FIM_MODULO_A",
+                text: "Fim da avaliação do Episódio Atual.",
+                criteria: "Clique em Prosseguir para ver o diagnóstico.",
+                type: "info" // Apenas informativo
+            }
+
         ];
 
         // ============================================================
