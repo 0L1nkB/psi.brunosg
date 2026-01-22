@@ -3,131 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conceituação Esquema + IA | Caderno Incrível</title>
+    <title>Conceitualização de Caso - Terapia do Esquema</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
-            /* Paleta Esquema */
-            --bg-color: #f0f8ff;
-            --paper: #ffffff;
-            --child: #ffaf40; /* Criança (Laranja) */
-            --parent: #ff5252; /* Pais (Vermelho) */
-            --coping: #70a1ff; /* Enfrentamento (Azul) */
-            --adult: #33d9b2; /* Adulto (Verde) */
-            --text: #2d3436;
-            --ai-btn: #a29bfe; /* Cor do botão IA */
-            --shadow: rgba(0,0,0,0.1);
+            --primary: #4a90e2;
+            --secondary: #50e3c2;
+            --child-mode: #ffecb3; /* Amarelo */
+            --coping-mode: #ffccbc; /* Laranja/Vermelho */
+            --parent-mode: #d1c4e9; /* Roxo */
+            --healthy-mode: #c8e6c9; /* Verde */
+            --bg: #f4f7f6;
+            --text: #333;
         }
 
         body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
-            background-size: 20px 20px;
-            margin: 0; padding: 20px; color: var(--text);
-            display: flex; justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
         }
 
         .container {
-            width: 100%; max-width: 1100px;
-            background: var(--paper); padding: 40px;
-            border-radius: 25px; box-shadow: 10px 10px 0 var(--shadow);
-            border: 3px solid var(--text); position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
-        /* CONFIGURAÇÃO IA */
-        .ai-settings {
-            position: absolute; top: 20px; right: 20px;
-        }
-        .btn-config {
-            background: #2d3436; color: white; border: none; padding: 8px 15px;
-            border-radius: 20px; cursor: pointer; font-size: 0.9rem; font-family: inherit;
-            display: flex; align-items: center; gap: 5px;
-        }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff7675; }
-        .status-dot.active { background: #55efc4; box-shadow: 0 0 8px #55efc4; }
-
-        /* HEADER */
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { margin: 0; color: #40407a; font-size: 2.2rem; text-transform: uppercase; }
-        .info-inputs { margin-top: 15px; display: flex; justify-content: center; gap: 20px; }
-        .info-field {
-            border: none; border-bottom: 2px dashed #ccc; background: transparent;
-            padding: 5px; font-family: inherit; font-size: 1rem; width: 200px; text-align: center;
+        /* Cabeçalho */
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        /* SEÇÕES */
-        .section-box {
-            border: 2px dashed #b2bec3; border-radius: 15px; padding: 20px;
-            margin-bottom: 30px; background: #fff; position: relative;
-        }
-        .sec-title {
-            font-size: 1.2rem; font-weight: 800; color: #2c2c54; text-transform: uppercase;
-            margin-bottom: 15px; display: flex; align-items: center; gap: 10px;
+        h1 { margin: 0; color: var(--primary); }
+        h2 { font-size: 1.2rem; color: #666; margin-top: 5px; }
+
+        /* Seções */
+        .section-title {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* TAGS (NECESSIDADES/ESQUEMAS) */
-        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-        .tag {
-            padding: 6px 12px; border: 1px solid #ccc; border-radius: 20px; font-size: 0.85rem;
-            cursor: pointer; background: white; transition: 0.2s; user-select: none;
+        /* Inputs Gerais */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
-        .tag:hover { border-color: var(--child); }
-        .tag.selected { background: var(--child); color: white; border-color: var(--child); font-weight: bold; }
-        .tag span { outline: none; } /* Editável */
 
-        /* INPUT WRAPPER E TEXTAREA */
-        .input-wrapper { position: relative; width: 100%; margin-top: 10px; }
+        .form-group { margin-bottom: 15px; }
         
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            box-sizing: border-box; /* Garante que padding não quebre o layout */
+        }
+
         textarea {
-            width: 100%; border: none; background: rgba(240,240,240,0.5); border-bottom: 2px dashed #ccc;
-            font-family: inherit; font-size: 1rem; resize: vertical; padding: 10px; padding-bottom: 40px;
-            min-height: 80px; border-radius: 10px; box-sizing: border-box;
+            resize: vertical;
+            min-height: 80px;
         }
-        textarea:focus { outline: none; border-bottom-color: #40407a; background: #fff; }
 
-        /* BOTÃO MÁGICO (IA) */
-        .btn-magic {
-            position: absolute; bottom: 10px; right: 10px;
-            background: var(--ai-btn); color: white; border: none;
-            width: 30px; height: 30px; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; opacity: 0.7;
+        /* INTERATIVIDADE: ESQUEMAS */
+        .domain-block {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #fafafa;
         }
-        .btn-magic:hover { opacity: 1; transform: scale(1.1) rotate(15deg); background: var(--primary); }
-        .btn-magic.loading { animation: pulse 1s infinite; cursor: wait; background: #b2bec3; }
-        @keyframes pulse { 0% {transform: scale(0.9);} 50% {transform: scale(1.1);} 100% {transform: scale(0.9);} }
 
-        /* MODOS GRID */
-        .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .domain-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 800;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .schema-grid, .mode-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .selectable-item {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            background: white;
+            user-select: none;
+        }
+
+        .selectable-item:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
-        .mode-card {
-            padding: 20px; border-radius: 15px; border: 3px solid; position: relative;
-            background: rgba(255,255,255,0.9);
+        /* Estados Ativos */
+        .selectable-item.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: bold;
         }
-        .child { border-color: var(--child); background: #fff8e1; }
-        .parent { border-color: var(--parent); background: #ffebee; }
-        .coping { border-color: var(--coping); background: #e3f2fd; }
-        .adult { border-color: var(--adult); background: #e0f2f1; grid-column: span 2; }
 
-        .card-header { font-weight: 800; text-transform: uppercase; margin-bottom: 5px; display: flex; justify-content: space-between; font-size: 0.9rem; }
-        .card-desc { font-size: 0.8rem; color: #666; margin-bottom: 5px; font-style: italic; }
+        /* Cores Específicas para Modos */
+        .mode-child.active { background-color: #fbc02d; color: #333; border-color: #fbc02d; }
+        .mode-coping.active { background-color: #d84315; color: white; border-color: #d84315; }
+        .mode-parent.active { background-color: #7b1fa2; color: white; border-color: #7b1fa2; }
+        .mode-healthy.active { background-color: #388e3c; color: white; border-color: #388e3c; }
 
-        /* RODAPÉ */
-        .action-bar { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
-        .btn-float {
-            border: none; width: 50px; height: 50px; border-radius: 50%; color: white; font-size: 1.2rem;
-            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
-            transition: 0.2s;
+        /* Botão Flutuante PDF */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #e74c3c;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+            z-index: 1000;
+            border: none;
         }
-        .btn-float:hover { transform: translateY(-3px); }
-        .btn-print { background: #2d3436; }
-        .btn-clear { background: #d63031; }
 
-        #save-status { position: fixed; bottom: 80px; right: 30px; color: #00b894; font-weight: bold; opacity: 0; transition: opacity 0.5s; }
+        .fab:hover { transform: scale(1.1); }
+        .fab span { font-size: 10px; position: absolute; bottom: 12px; }
 
+        /* Ajustes para Impressão/PDF */
         @media print {
-            .ai-settings, .action-bar, .btn-magic { display: none !important; }
-            .container { box-shadow: none; border: none; padding: 0; }
-            .tag { border: 1px solid #aaa; }
-            .tag.selected { background: #ddd !important; color: black
+            .fab { display: none; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; }
+            .selectable-item { border: 1px solid #999; }
+            /* Forçar cores de fundo na impressão */
+            .selectable-item.active { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="fab" onclick="generatePDF()" title="Salvar como PDF">
+        <i class="fa-solid fa-file-pdf"></i>
+    </button>
+
+    <div class="container" id="form-content">
+        
+        <header>
+            <h1>Conceitualização de Caso</h1>
+            <h2>Terapia do Esquema</h2>
+        </header>
+
+        <div class="section-title"><i class="fa-solid fa-user"></i> I. Informações do Paciente</div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Nome do Paciente:</label>
+                <input type="text" placeholder="Digite o nome...">
+            </div>
+            <div class="form-group">
+                <label>Data:</label>
+                <input type="date">
+            </div>
+            <div class="form-group">
+                <label>Idade:</label>
+                <input type="number" style="width: 80px;">
+            </div>
+            <div class="form-group">
+                <label>Terapeuta:</label>
+                <input type="text" placeholder="Seu nome...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Motivo da Consulta (Queixas Principais):</label>
+            <textarea placeholder="Descreva os sintomas atuais e problemas de vida..."></textarea>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-baby"></i> II. Origens e História de Vida</div>
+        <div class="form-group">
+            <label>Atmosfera Familiar e Infância:</label>
+            <textarea placeholder="Como era o ambiente em casa? Necessidades emocionais não atendidas (segurança, afeto, limites, etc.)..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Eventos Traumáticos ou Significativos:</label>
+            <textarea placeholder="Bullying, abusos, negligência, perdas..."></textarea>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-brain"></i> III. Esquemas Iniciais Desadaptativos (EIDs)</div>
+        <p style="font-size:0.9rem; color:#666; font-style:italic;">Clique para selecionar os esquemas identificados.</p>
+
+        <div class="domain-block">
+            <div class="domain-title">1. Desconexão e Rejeição</div>
+            <div class="schema-grid">
+                <div class="selectable-item" onclick="toggleItem(this)">Abandono/Instabilidade</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Desconfiança/Abuso</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Privação Emocional</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Defectividade/Vergonha</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Isolamento Social/Alienação</div>
+            </div>
+        </div>
+
+        <div class="domain-block">
+            <div class="domain-title">2. Autonomia e Desempenho Prejudicados</div>
+            <div class="schema-grid">
+                <div class="selectable-item" onclick="toggleItem(this)">Dependência/Incompetência</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Vulnerabilidade ao Dano</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Emaranhamento/Self Subdesenvolvido</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Fracasso</div>
+            </div>
+        </div>
+
+        <div class="domain-block">
+            <div class="domain-title">3. Limites Prejudicados</div>
+            <div class="schema-grid">
+                <div class="selectable-item" onclick="toggleItem(this)">Arrogo/Grandiosidade</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Autocontrole Insuficiente</div>
+            </div>
+        </div>
+
+        <div class="domain-block">
+            <div class="domain-title">4. Orientação para o Outro</div>
+            <div class="schema-grid">
+                <div class="selectable-item" onclick="toggleItem(this)">Subjugação</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Auto-sacrifício</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Busca de Aprovação</div>
+            </div>
+        </div>
+
+        <div class="domain-block">
+            <div class="domain-title">5. Supervigilância e Inibição</div>
+            <div class="schema-grid">
+                <div class="selectable-item" onclick="toggleItem(this)">Negativismo/Pessimismo</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Inibição Emocional</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Padrões Inflexíveis/Crítica Exagerada</div>
+                <div class="selectable-item" onclick="toggleItem(this)">Postura Punitiva</div>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-masks-theater"></i> IV. Modos Esquemáticos</div>
+        <p style="font-size:0.9rem; color:#666; font-style:italic;">Selecione os modos predominantes.</p>
+
+        <div class="domain-block" style="border-left: 5px solid #fbc02d;">
+            <div class="domain-title" style="color: #f9a825;">Modos Criança</div>
+            <div class="mode-grid">
+                <div class="selectable-item mode-child" onclick="toggleItem(this)">Criança Vulnerável</div>
+                <div class="selectable-item mode-child" onclick="toggleItem(this)">Criança Zangada</div>
+                <div class="selectable-item mode-child" onclick="toggleItem(this)">Criança Enfurecida</div>
+                <div class="selectable-item mode-child" onclick="toggleItem(this)">Criança Impulsiva</div>
+                <div class="selectable-item mode-child" onclick="toggleItem(this)">Criança Indisciplinada</div>
+                <div class="selectable-item mode-child" onclick="toggleItem(this)">Criança Feliz</div>
+            </div>
+        </div>
+
+        <div class="domain-block" style="border-left: 5px solid #d84315;">
+            <div class="domain-title" style="color: #d84315;">Modos de Enfrentamento Desadaptativo</div>
+            <div class="mode-grid">
+                <div class="selectable-item mode-coping" onclick="toggleItem(this)">Capitulador Complacente (Resignação)</div>
+                <div class="selectable-item mode-coping" onclick="toggleItem(this)">Protetor Desligado (Evitação)</div>
+                <div class="selectable-item mode-coping" onclick="toggleItem(this)">Protetor Raivoso</div>
+                <div class="selectable-item mode-coping" onclick="toggleItem(this)">Autenagrandecedor (Hipercompensação)</div>
+                <div class="selectable-item mode-coping" onclick="toggleItem(this)">Intimidador e Ataque</div>
+                <div class="selectable-item mode-coping" onclick="toggleItem(this)">Controlador Obsessivo</div>
+            </div>
+        </div>
+
+        <div class="domain-block" style="border-left: 5px solid #7b1fa2;">
+            <div class="domain-title" style="color: #7b1fa2;">Modos Pais Disfuncionais</div>
+            <div class="mode-grid">
+                <div class="selectable-item mode-parent" onclick="toggleItem(this)">Pai/Mãe Punitivo(a)</div>
+                <div class="selectable-item mode-parent" onclick="toggleItem(this)">Pai/Mãe Exigente</div>
+            </div>
+        </div>
+
+        <div class="domain-block" style="border-left: 5px solid #388e3c;">
+            <div class="domain-title" style="color: #388e3c;">Modos Saudáveis</div>
+            <div class="mode-grid">
+                <div class="selectable-item mode-healthy" onclick="toggleItem(this)">Adulto Saudável</div>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fa-solid fa-bullseye"></i> V. Objetivos Terapêuticos</div>
+        <div class="form-group">
+            <label>Metas Principais:</label>
+            <textarea placeholder="Ex: Fortalecer o Adulto Saudável, acolher a Criança Vulnerável, reduzir a crítica do Pai Punitivo..."></textarea>
+        </div>
+        
+    </div>
+
+    <script>
+        // Função simples para alternar a classe 'active' ao clicar
+        function toggleItem(element) {
+            element.classList.toggle('active');
+        }
+
+        // Função para gerar PDF
+        function generatePDF() {
+            const element = document.getElementById('form-content');
+            
+            // Configurações do PDF
+            const opt = {
+                margin:       [10, 10, 10, 10], // Margens
+                filename:     'Conceitualizacao_Esquema.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Esconde temporariamente as bordas de input para o PDF ficar mais limpo
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.style.border = 'none';
+                input.style.borderBottom = '1px solid #ccc';
+                input.style.resize = 'none';
+            });
+
+            // Gera o PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restaura o estilo após gerar
+                inputs.forEach(input => {
+                    input.style.border = '1px solid #ddd';
+                    input.style.resize = 'vertical';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
