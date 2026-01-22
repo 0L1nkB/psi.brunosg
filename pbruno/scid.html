@@ -261,6 +261,12 @@
             <span class="score-badge" id="score-A_MANIA">0/7</span>
         </div>
 
+        <div class="menu-section">Módulo B: Psicose</div>
+        <div class="nav-item" onclick="switchModule('B_PSYCH')" id="nav-B_PSYCH">
+            <span><i class="fa-solid fa-eye"></i> Psicose (Rastreio)</span>
+            <span class="score-badge" id="score-B_PSYCH">0</span>
+        </div>
+
         <div class="menu-section">Módulo E: Substâncias</div>
         <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST">
             <span><i class="fa-solid fa-wine-bottle"></i> Álcool/Drogas</span>
@@ -285,7 +291,7 @@
             <span class="score-badge" id="score-F_GAD">0</span>
         </div>
 
-        <div class="menu-section">Módulo G: TOC e Trauma</div>
+        <div class="menu-section">Módulo G/H: Outros</div>
         <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC">
             <span><i class="fa-solid fa-rotate"></i> TOC</span>
             <span class="score-badge" id="score-G_TOC">0</span>
@@ -294,17 +300,15 @@
             <span><i class="fa-solid fa-land-mine-on"></i> TEPT (Trauma)</span>
             <span class="score-badge" id="score-G_TEPT">0</span>
         </div>
-
-        <div class="menu-section">Módulo H: TDAH Adulto</div>
         <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD">
             <span><i class="fa-solid fa-bolt-lightning"></i> TDAH</span>
             <span class="score-badge" id="score-H_ADHD">0/18</span>
         </div>
 
-        <div class="menu-section">Módulo I: Rastreio Geral</div>
-        <div class="nav-item" onclick="switchModule('I_SCREEN')" id="nav-I_SCREEN">
-            <span><i class="fa-solid fa-list-check"></i> Outros</span>
-            <span class="score-badge" id="score-I_SCREEN">0</span>
+        <div class="menu-section">Diagnóstico Final</div>
+        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST">
+            <span><i class="fa-solid fa-scale-unbalanced"></i> Adaptação</span>
+            <span class="score-badge" id="score-J_ADJUST">0</span>
         </div>
 
         <div class="nav-item" onclick="showDashboard()" style="margin-top:auto; background:#2d3436; border:1px solid #636e72; justify-content:center;">
@@ -375,6 +379,13 @@
                 { id: "C7", text: "Distraía-se facilmente?", criteria: "5. Distratibilidade." },
                 { id: "C8", text: "Aumento de atividades ou agitação?", criteria: "6. Aumento da atividade dirigida." },
                 { id: "C9", text: "Comportamentos de risco (gastos, sexo, velocidade)?", criteria: "7. Risco excessivo." }
+            ],
+            'B_PSYCH': [
+                { id: "B1", text: "Você já ouviu coisas que outras pessoas não ouviam, como vozes?", criteria: "A. Alucinações Auditivas." },
+                { id: "B2", text: "Você já viu coisas que outras pessoas não viam?", criteria: "A. Alucinações Visuais." },
+                { id: "B3", text: "Você já teve a sensação de que as pessoas estavam te perseguindo, te espionando ou querendo te fazer mal?", criteria: "A. Delírios Persecutórios." },
+                { id: "B4", text: "Você já acreditou ter poderes especiais ou uma missão especial que ninguém mais entende?", criteria: "A. Delírios de Grandeza." },
+                { id: "B5", text: "Já sentiu que seus pensamentos estavam sendo controlados ou lidos por outros?", criteria: "A. Delírios de Controle/Inserção." }
             ],
             'E_SUBST': [
                 { id: "E1", text: "Nos últimos 12 meses, você bebeu álcool frequentemente ou em grandes quantidades?", sub: "Isso causou problemas para você?", criteria: "Rastreio de Álcool." },
@@ -451,20 +462,21 @@
                 { id: "H19", text: "Alguns desses sintomas estavam presentes antes dos 12 anos?", criteria: "B. Início na infância." },
                 { id: "H20", text: "Os sintomas causam prejuízo em dois ou mais ambientes (trabalho, casa)?", criteria: "C. Prejuízo." }
             ],
-            'I_SCREEN': [
-                { id: "I1", text: "ALIMENTAR: Episódios de compulsão (comer muito e perder controle)?", criteria: "Rastreio de Compulsão." },
-                { id: "I2", text: "ALIMENTAR: Comportamentos para não engordar (vômito, laxante)?", criteria: "Rastreio de Bulimia." },
-                { id: "I3", text: "ALIMENTAR: Medo intenso de engordar mesmo estando magro?", criteria: "Rastreio de Anorexia." }
+            'J_ADJUST': [
+                { id: "J1", text: "Nos últimos 3 meses, você passou por algum evento muito estressante (separação, demissão, doença, mudança)?", criteria: "A. Estressor identificável." },
+                { type: 'logic', check: (s) => s['J1']==='+' ? 'NEXT' : 'STOP' },
+                { id: "J2", text: "O sofrimento é desproporcional à gravidade do evento ou causa prejuízo no trabalho/social?", criteria: "B. Significância clínica." },
+                { id: "J3", text: "Os sintomas persistem por mais de 6 meses após o término do evento estressor?", criteria: "E. Duração (não deve persistir)." }
             ]
         };
 
         let currentModule = 'A_DEP';
         let moduleIndex = 0;
         let globalScores = { 
-            'A_DEP':{}, 'A_MANIA':{}, 'E_SUBST':{},
+            'A_DEP':{}, 'A_MANIA':{}, 'B_PSYCH':{}, 'E_SUBST':{},
             'F_PANIC':{}, 'F_AGORA':{}, 'F_SOCIAL':{}, 'F_GAD':{}, 
             'G_TOC':{}, 'G_TEPT':{}, 
-            'H_ADHD':{}, 'I_SCREEN':{} 
+            'H_ADHD':{}, 'J_ADJUST':{} 
         };
 
         function switchModule(modId) {
@@ -479,12 +491,13 @@
             
             const titles = {
                 'A_DEP': 'Módulo A: Depressão', 'A_MANIA': 'Módulo A: Mania',
+                'B_PSYCH': 'Módulo B: Psicose (Rastreio)',
                 'E_SUBST': 'Módulo E: Substâncias',
                 'F_PANIC': 'Módulo F: Pânico', 'F_AGORA': 'Módulo F: Agorafobia',
                 'F_SOCIAL': 'Módulo F: Ans. Social', 'F_GAD': 'Módulo F: TAG',
                 'G_TOC': 'Módulo G: TOC', 'G_TEPT': 'Módulo G: TEPT',
                 'H_ADHD': 'Módulo H: TDAH Adulto',
-                'I_SCREEN': 'Módulo I: Rastreio Geral'
+                'J_ADJUST': 'Módulo J: Adaptação'
             };
             document.getElementById('module-title').innerText = titles[currentModule];
             loadQuestion();
@@ -553,7 +566,8 @@
             const results = [
                 { id: 'A_DEP', title: 'Depressão Maior', min: 5, crit: ['A1','A2'] },
                 { id: 'A_MANIA', title: 'Mania', min: 3, crit: ['C1','C2'] },
-                { id: 'E_SUBST', title: 'Transtorno por Uso de Substâncias', min: 2, crit: ['E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13'] },
+                { id: 'B_PSYCH', title: 'Rastreio de Psicose', min: 1, crit: ['B1','B2','B3','B4','B5'] },
+                { id: 'E_SUBST', title: 'Uso de Substâncias', min: 2, crit: ['E3','E4','E5','E6','E7','E8','E9','E10','E11','E12','E13'] },
                 { id: 'F_PANIC', title: 'Pânico', min: 1, crit: ['F1'] },
                 { id: 'F_AGORA', title: 'Agorafobia', min: 2, crit: ['F23'] },
                 { id: 'F_SOCIAL', title: 'Ansiedade Social', min: 2, crit: ['F32'] },
@@ -561,6 +575,8 @@
                 { id: 'G_TOC', title: 'TOC', min: 1, crit: ['G3'] },
                 { id: 'G_TEPT', title: 'TEPT', min: 3, crit: ['G5','G6','G7','G8'] }
             ];
+
+            let anyMajorPositive = false;
 
             results.forEach(r => {
                 let scores = globalScores[r.id];
@@ -573,18 +589,17 @@
                 } else if (r.id === 'G_TEPT') {
                    if(scores['G4']==='+') critMet = true;
                 } else if (r.id === 'E_SUBST') {
-                    // Substâncias: precisa de 2 critérios positivos na lista E3-E13
                     let sym = 0;
                     for(let i=3; i<=13; i++) if(scores['E'+i] === '+') sym++;
                     if(sym >= 2) critMet = true;
-                    count = sym; // Ajusta contagem para mostrar apenas critérios diagnósticos
+                    count = sym; 
                 } else {
                    r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
                 }
 
                 let status = (critMet && count >= r.min) ? 'Positivo' : 'Negativo';
-                // Override para Substâncias (se critMet true, já é positivo pois min é 2)
                 if(r.id === 'E_SUBST' && critMet) status = 'Positivo';
+                if(status === 'Positivo') anyMajorPositive = true;
 
                 let cssClass = status === 'Positivo' ? 'positive' : 'negative';
                 let tagClass = status === 'Positivo' ? 'status-pos' : 'status-neg';
@@ -603,27 +618,21 @@
                 `;
             });
 
-            // TDAH e Alertas
+            // TDAH
             let hScores = globalScores['H_ADHD'];
             let inatt = 0, hyper = 0;
             for(let i=1; i<=9; i++) if(hScores['H'+i] === '+') inatt++;
             for(let i=10; i<=18; i++) if(hScores['H'+i] === '+') hyper++;
             
             let adhdStatus = "Negativo";
-            let adhdType = "";
             if(hScores['H19']==='+' && hScores['H20']==='+') {
-                if(inatt >= 5 && hyper >= 5) { adhdStatus = "Positivo"; adhdType = "Combinado"; }
-                else if(inatt >= 5) { adhdStatus = "Positivo"; adhdType = "Desatento"; }
-                else if(hyper >= 5) { adhdStatus = "Positivo"; adhdType = "Hiperativo"; }
+                if(inatt >= 5 || hyper >= 5) { adhdStatus = "Positivo"; anyMajorPositive = true; }
             }
-
-            let adhdClass = adhdStatus === 'Positivo' ? 'positive' : 'negative';
             dash.innerHTML += `
-                <div class="result-card ${adhdClass}">
+                <div class="result-card ${adhdStatus === 'Positivo' ? 'positive' : 'negative'}">
                     <div>
                         <h3>TDAH Adulto</h3>
                         <span class="status-tag ${adhdStatus === 'Positivo' ? 'status-pos' : 'status-neg'}">${adhdStatus}</span>
-                        ${adhdType ? `<div style="font-size:0.8rem; margin-top:5px; color:#555">Tipo: ${adhdType}</div>` : ''}
                     </div>
                     <div style="text-align:right">
                         <div>D: <b>${inatt}</b> / H: <b>${hyper}</b></div>
@@ -632,19 +641,29 @@
                 </div>
             `;
 
-            let iScores = globalScores['I_SCREEN'];
-            let alertas = [];
-            if(iScores['I1']==='+' || iScores['I2']==='+' || iScores['I3']==='+') alertas.push("Alimentar");
-            if(alertas.length > 0) {
-                dash.innerHTML += `
-                    <div class="result-card positive" style="border-left-color:#fdcb6e; background:#fffbf0">
-                        <div>
-                            <h3 style="color:#d35400"><i class="fa-solid fa-triangle-exclamation"></i> Rastreios Positivos</h3>
-                            <div style="margin-top:5px; color:#555">${alertas.join(', ')}</div>
-                        </div>
-                    </div>
-                `;
+            // Módulo J: Adaptação (Diagnóstico de Exclusão)
+            let jScores = globalScores['J_ADJUST'];
+            let adjustStatus = "Negativo";
+            
+            // Só considera Adaptação se NÃO houver nenhum outro diagnóstico maior positivo
+            if (!anyMajorPositive && jScores['J1']==='+' && jScores['J2']==='+' && jScores['J3']==='-') {
+                adjustStatus = "Positivo";
+            } else if (anyMajorPositive && jScores['J1']==='+') {
+                 adjustStatus = "Descartado (Hierarquia)";
             }
+
+            let jCss = adjustStatus === 'Positivo' ? 'positive' : 'negative';
+            let jTag = adjustStatus === 'Positivo' ? 'status-pos' : 'status-neg';
+            
+            dash.innerHTML += `
+                <div class="result-card ${jCss}">
+                    <div>
+                        <h3>Transtorno de Adaptação</h3>
+                        <span class="status-tag ${jTag}">${adjustStatus}</span>
+                        ${adjustStatus === 'Descartado (Hierarquia)' ? '<div style="font-size:0.7rem; color:#555">Outro transtorno explica melhor</div>' : ''}
+                    </div>
+                </div>
+            `;
         }
 
         switchModule('A_DEP');
