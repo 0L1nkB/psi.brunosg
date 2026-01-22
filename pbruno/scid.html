@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCID-5-CV: Versão Acadêmica Completa | Bruno de Souza</title>
+    <title>SCID-5-CV: Versão Acadêmica Final | Bruno de Souza</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
     <style>
         :root {
             --primary: #2c3e50;
@@ -247,20 +245,20 @@
     <div id="main-content">
         <header>
             <h2 id="module-title">Módulo A: Episódio Depressivo Maior</h2>
-            <div style="font-size:0.85rem; color:#7f8c8d; font-weight:bold" id="progress-display">Item 1</div>
+            <div style="font-size:0.85rem; color:#7f8c8d; font-weight:bold" id="progress-display">Carregando...</div>
         </header>
 
         <div id="interview-area">
-            <div class="card q-card" data-aos="fade-right">
-                <span class="q-id" id="q-id">A1</span>
-                <div class="q-text" id="q-text">Carregando...</div>
+            <div class="card q-card">
+                <span class="q-id" id="q-id">...</span>
+                <div class="q-text" id="q-text">Aguardando dados...</div>
                 <div class="q-sub" id="q-sub" style="display:none;"></div>
                 <div class="q-inst" id="q-inst" style="display:none;"></div>
             </div>
 
-            <div class="card c-card" data-aos="fade-left">
+            <div class="card c-card">
                 <span class="criteria-label">Critério DSM-5</span>
-                <div class="c-text" id="c-text">Carregando...</div>
+                <div class="c-text" id="c-text">...</div>
             </div>
 
             <div class="action-panel">
@@ -286,15 +284,12 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
+        // REMOVIDO AOS.INIT() PARA PREVENIR ERROS DE RENDERIZAÇÃO
 
-        /* --- CONSTRUÇÃO SEGURA DO BANCO DE DADOS --- */
-        /* Declarando variavel vazia primeiro para evitar erros de sintaxe em bloco */
+        /* --- BANCO DE DADOS SEPARADO PARA SEGURANÇA --- */
         const database = {};
 
-        // MÓDULO A - DEPRESSÃO
         database.A_DEP = [
             { id: "A1", text: "No último mês, desde [DATA], houve algum período de tempo em que você se sentiu deprimido ou abatido na maior parte do dia, quase todos os dias?", sub: "Alguém comentou que você parecia triste, abatido ou deprimido?", criteria: "A. Humor deprimido na maior parte do dia, quase todos os dias.", inst: "SE VISIVELMENTE DEPRIMIDO, PODE CLASSIFICAR (+) MESMO SE NEGADO." },
             { id: "A2", text: "Durante esse período, você sentiu menos interesse ou prazer com coisas de que normalmente gosta?", criteria: "B. Acentuada diminuição de interesse ou prazer.", inst: "VERIFIQUE SE A1 OU A2 = (+). SE AMBOS (-), PULE O MÓDULO." },
@@ -308,7 +303,6 @@
             { id: "A9", text: "Você tem pensado em morte ou em se machucar?", criteria: "I. Pensamentos de morte ou ideação suicida.", inst: "AVALIE RISCO." }
         ];
 
-        // MÓDULO A - MANIA
         database.A_MANIA = [
             { id: "C1", text: "Já teve um período em que se sentiu muito 'elevado', eufórico ou 'no topo do mundo'?", criteria: "A. Humor anormalmente elevado/expansivo." },
             { id: "C2", text: "Se não eufórico: Teve um período em que ficou muito irritável ou raivoso?", criteria: "A (Alt). Humor anormalmente irritável." },
@@ -322,7 +316,6 @@
             { id: "C9", text: "Fez coisas arriscadas (gastos, sexo, velocidade)?", criteria: "7. Envolvimento em atividades de risco." }
         ];
 
-        // MÓDULO B - PSICOSE
         database.B_PSYCH = [
             { id: "B1", text: "Você já ouviu coisas que outras pessoas não ouviam, como barulhos ou vozes?", criteria: "A. Alucinações Auditivas." },
             { id: "B2", text: "Você já teve visões ou viu coisas que outros não viam?", criteria: "A. Alucinações Visuais." },
@@ -331,14 +324,12 @@
             { id: "B5", text: "Já sentiu que seus pensamentos eram controlados por outros ou que colocavam pensamentos na sua cabeça?", criteria: "A. Delírios de Controle." }
         ];
 
-        // MÓDULO D - DIFERENCIAL
         database.D_DIFF = [
             { id: "D1", text: "(SE HOUVE PSICOSE E DEPRESSÃO): As alucinações/delírios ocorrem APENAS quando você está deprimido/eufórico?", sub: "Ou elas acontecem mesmo quando seu humor está normal?", criteria: "Diagnóstico Diferencial: Transtorno de Humor com Psicose vs. Transtorno Psicótico (Esquizoafetivo/Esquizofrenia)." },
             { id: "D2", text: "Você acha que esses sintomas começaram por causa de drogas, álcool ou algum medicamento?", criteria: "Diagnóstico Diferencial: Perturbação Induzida por Substância." },
             { id: "D3", text: "Você tem alguma condição médica (ex: tireoide) que o médico disse que poderia causar isso?", criteria: "Diagnóstico Diferencial: Devido a Outra Condição Médica." }
         ];
 
-        // MÓDULO E - SUBSTÂNCIAS
         database.E_SUBST = [
             { id: "E1", text: "Nos últimos 12 meses, você bebeu álcool frequentemente ou em quantidades maiores do que pretendia?", criteria: "Rastreio de Uso de Álcool." },
             { id: "E2", text: "Nos últimos 12 meses, você usou drogas (maconha, cocaína, remédios sem receita) para alterar o humor?", criteria: "Rastreio de Uso de Drogas." },
@@ -356,28 +347,24 @@
             { id: "E13", text: "Você sentiu sintomas de abstinência (tremores, suor, ansiedade) ao ficar sem usar?", criteria: "11. Abstinência." }
         ];
 
-        // MÓDULO F - PÂNICO
         database.F_PANIC = [
             { id: "F1", text: "No último mês, você teve um ataque de pânico inesperado (pico de medo intenso que vem 'do nada')?", criteria: "A. Ataques de pânico recorrentes e inesperados." },
             { type: 'logic', check: function(s) { return s['F1']==='+' ? 'NEXT' : 'STOP'; } },
             { id: "F2", text: "Depois do ataque, você ficou um mês ou mais preocupado com a possibilidade de ter outro?", criteria: "B. Preocupação persistente ou mudança de comportamento." }
         ];
 
-        // MÓDULO F - AGORAFOBIA
         database.F_AGORA = [
             { id: "F23", text: "Nos últimos 6 meses, você sentiu medo ou ansiedade intensa em: transporte público, espaços abertos, locais fechados, filas ou sair sozinho?", criteria: "A. Medo/ansiedade em 2+ situações agorafóbicas." },
             { type: 'logic', check: function(s) { return s['F23']==='+' ? 'NEXT' : 'STOP'; } },
             { id: "F24", text: "Você teme essas situações porque acha que seria difícil escapar ou obter ajuda?", criteria: "B. Cognição agorafóbica." }
         ];
 
-        // MÓDULO F - SOCIAL
         database.F_SOCIAL = [
             { id: "F32", text: "Nos últimos 6 meses, sentiu medo acentuado em situações sociais onde poderia ser avaliado (falar em público, comer com outros)?", criteria: "A. Medo/ansiedade em situações sociais." },
             { type: 'logic', check: function(s) { return s['F32']==='+' ? 'NEXT' : 'STOP'; } },
             { id: "F33", text: "Você teme ser avaliado negativamente, humilhado ou rejeitado?", criteria: "B. Medo de avaliação negativa." }
         ];
 
-        // MÓDULO F - TAG
         database.F_GAD = [
             { id: "F42", text: "Nos últimos 6 meses, você tem se sentido muito ansioso e preocupado na maioria dos dias?", sub: "Preocupado com diversas coisas (trabalho, escola, finanças)?", criteria: "A. Ansiedade e preocupação excessivas (expectativa apreensiva)." },
             { type: 'logic', check: function(s) { return s['F42']==='+' ? 'NEXT' : 'STOP'; } },
@@ -385,7 +372,6 @@
             { id: "F44", text: "Essa ansiedade vem acompanhada de sintomas físicos (inquietação, fadiga, tensão muscular)?", criteria: "C. Sintomas físicos associados (3 ou mais)." }
         ];
 
-        // MÓDULO G - TOC
         database.G_TOC = [
             { id: "G1", text: "No último mês, você teve pensamentos, impulsos ou imagens indesejados que não saíam da cabeça (Obsessões)?", criteria: "A. Presença de Obsessões." },
             { id: "G2", text: "Você sentiu que precisava repetir certos atos (lavar, verificar, contar) para aliviar a ansiedade (Compulsões)?", criteria: "A. Presença de Compulsões." },
@@ -393,7 +379,6 @@
             { id: "G3", text: "Essas obsessões ou compulsões consomem muito tempo (mais de 1 hora/dia) ou causam grande sofrimento?", criteria: "B. Tempo dispendido ou sofrimento clínico." }
         ];
 
-        // MÓDULO G - TEPT
         database.G_TEPT = [
             { id: "G4", text: "Você já foi exposto a um evento traumático (risco de morte, violência sexual, lesão grave)?", criteria: "A. Exposição a evento traumático." },
             { type: 'logic', check: function(s) { return s['G4']==='+' ? 'NEXT' : 'STOP'; } },
@@ -403,7 +388,6 @@
             { id: "G8", text: "Você ficou mais 'alerta', assustado ou irritado (hipervigilância)?", criteria: "E. Alterações na excitação/reatividade." }
         ];
 
-        // MÓDULO H - TDAH
         database.H_ADHD = [
             { id: "H1", text: "Frequentemente deixa de prestar atenção a detalhes ou comete erros por descuido?", criteria: "A1. Desatenção." },
             { id: "H2", text: "Tem dificuldade para manter a atenção em tarefas ou atividades?", criteria: "A1. Desatenção." },
@@ -427,14 +411,12 @@
             { id: "H20", text: "Os sintomas interferem no seu funcionamento social, acadêmico ou profissional?", criteria: "C. Prejuízo funcional." }
         ];
 
-        // MÓDULO I - RASTREIO
         database.I_SCREEN = [
             { id: "I1", text: "ALIMENTAR: Você já teve episódios de compulsão alimentar (comer muito em pouco tempo com perda de controle)?", criteria: "Rastreio: Transtorno da Compulsão Alimentar Periódica." },
             { id: "I2", text: "ALIMENTAR: Você usa métodos para não ganhar peso (vômito, laxantes, exercício excessivo)?", criteria: "Rastreio: Bulimia Nervosa." },
             { id: "I3", text: "ALIMENTAR: Você se considera gordo ou tem medo intenso de engordar, mesmo estando com peso baixo?", criteria: "Rastreio: Anorexia Nervosa." }
         ];
 
-        // MÓDULO J - ADAPTAÇÃO
         database.J_ADJUST = [
             { id: "J1", text: "Nos últimos 3 meses, você passou por algum evento estressante (não traumático) que iniciou seus sintomas?", sub: "Ex: Divórcio, problemas financeiros, demissão?", criteria: "A. Sintomas emocionais em resposta a um estressor identificável." },
             { type: 'logic', check: function(s) { return s['J1']==='+' ? 'NEXT' : 'STOP'; } },
@@ -442,29 +424,35 @@
             { id: "J3", text: "Os sintomas persistem por mais de 6 meses após o fim do estressor?", criteria: "E. Duração (Para ser Adaptação, a resposta deve ser NÃO)." }
         ];
 
-        // ORDEM DOS MÓDULOS
+        // CONFIGURAÇÃO DO FLUXO
         const moduleOrder = [
             'A_DEP', 'A_MANIA', 'B_PSYCH', 'D_DIFF', 'E_SUBST', 
             'F_PANIC', 'F_AGORA', 'F_SOCIAL', 'F_GAD', 
             'G_TOC', 'G_TEPT', 'H_ADHD', 'I_SCREEN', 'J_ADJUST'
         ];
 
-        // VARIAVEIS GLOBAIS
+        // ESTADO GLOBAL
         let currentModule = 'A_DEP';
         let moduleIndex = 0;
         let globalScores = {};
         
-        // Inicializa scores
+        // Inicializa estrutura de scores
         Object.keys(database).forEach(k => globalScores[k] = {});
 
-        function switchModule(modId) {
-            // Se o modulo nao existe, ignora
-            if(!database[modId]) return;
+        // FUNÇÃO DE INICIALIZAÇÃO SEGURA
+        window.addEventListener('DOMContentLoaded', () => {
+            switchModule('A_DEP');
+        });
 
+        function switchModule(modId) {
+            // Limpa classes de navegação
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            // Ativa o item atual (se existir no menu)
             const navEl = document.getElementById('nav-' + modId);
             if(navEl) navEl.classList.add('active');
             
+            // Mostra tela de entrevista
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('interview-header').style.display = 'flex';
             document.getElementById('interview-area').style.display = 'grid';
@@ -484,12 +472,20 @@
                 'J_ADJUST': 'Módulo J: Transtorno de Adaptação'
             };
             document.getElementById('module-title').innerText = titles[currentModule] || modId;
+            
             loadQuestion();
         }
 
         function loadQuestion() {
+            // Garante que o módulo existe
+            if (!database[currentModule]) {
+                console.error("Módulo não encontrado:", currentModule);
+                return;
+            }
+
             const questions = database[currentModule];
             
+            // Se acabou o módulo, vai para o próximo
             if (moduleIndex >= questions.length) {
                 goToNextModule();
                 return;
@@ -497,7 +493,7 @@
 
             const q = questions[moduleIndex];
 
-            // LOGICA DE PULO
+            // Lógica de Pulo (Skip Logic)
             if (q.type === 'logic') {
                 const action = q.check(globalScores[currentModule]);
                 if (action === 'STOP') {
@@ -511,16 +507,26 @@
                 }
             }
 
-            // EXIBE PERGUNTA
+            // Renderização no DOM
             document.getElementById('q-id').innerText = q.id;
             document.getElementById('q-text').innerText = q.text;
             document.getElementById('c-text').innerText = q.criteria;
             
             const sub = document.getElementById('q-sub');
-            if(q.sub) { sub.style.display='block'; sub.innerText = q.sub; } else { sub.style.display='none'; }
+            if(q.sub) { 
+                sub.style.display='block'; 
+                sub.innerText = q.sub; 
+            } else { 
+                sub.style.display='none'; 
+            }
             
             const inst = document.getElementById('q-inst');
-            if(q.inst) { inst.style.display='block'; inst.innerText = q.inst; } else { inst.style.display='none'; }
+            if(q.inst) { 
+                inst.style.display='block'; 
+                inst.innerText = q.inst; 
+            } else { 
+                inst.style.display='none'; 
+            }
             
             document.getElementById('progress-display').innerText = `Item ${moduleIndex + 1}`;
         }
@@ -546,8 +552,8 @@
             let count = 0;
             const scores = globalScores[mod];
             Object.keys(scores).forEach(key => { if (scores[key] === '+') count++; });
-            const scoreEl = document.getElementById('score-' + mod);
-            if(scoreEl) scoreEl.innerText = count;
+            const badge = document.getElementById('score-' + mod);
+            if(badge) badge.innerText = count;
         }
 
         function showDashboard() {
@@ -590,10 +596,9 @@
                 } else if(m.id === 'G_TOC') {
                     if((scores['G1']==='+' || scores['G2']==='+') && scores['G3']==='+') critMet = true;
                 } else {
-                    if(m.crit.length > 0) {
+                    if(m.crit && m.crit.length > 0) {
                         m.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
                     } else {
-                        // Se não tem critério de entrada específico listado, considera ok se tiver contagem
                         critMet = true; 
                     }
                 }
@@ -626,7 +631,7 @@
             }
             dash.innerHTML += renderCard("Transtorno de Adaptação", adjustStatus, "-");
 
-            // Rastreio I
+            // Rastreio
             let iS = globalScores['I_SCREEN'];
             if(Object.values(iS).includes('+')) {
                 let list = [];
@@ -654,9 +659,6 @@
                 </div>
             `;
         }
-
-        // INICIAR
-        switchModule('A_DEP');
 
     </script>
 </body>
