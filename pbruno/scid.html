@@ -7,6 +7,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg-color: #f0f8ff;
@@ -32,7 +33,7 @@
             overflow: hidden;
         }
 
-        /* SIDEBAR */
+        /* --- SIDEBAR --- */
         #sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
@@ -90,10 +91,9 @@
             padding: 2px 8px;
             border-radius: 10px;
             font-size: 0.7rem;
-            font-weight: bold;
         }
 
-        /* MAIN CONTENT */
+        /* --- MAIN CONTENT --- */
         #main-content {
             flex: 1;
             padding: 30px;
@@ -114,6 +114,7 @@
 
         h2 { margin: 0; color: var(--primary); font-weight: 800; font-size: 1.4rem; }
 
+        /* INTERVIEW GRID */
         #interview-area {
             display: grid;
             grid-template-columns: 2fr 1fr 90px;
@@ -255,33 +256,42 @@
 <body>
 
     <div id="sidebar">
-        <div class="brand"><i class="fa-solid fa-brain"></i> SCID-5 OFICIAL</div>
+        <div class="brand"><i class="fa-solid fa-brain"></i> SCID-5 - CV</div>
         
-        <div class="menu-section">Módulo A: Humor</div>
-        <div class="nav-item active" onclick="switchModule('A_DEP')" id="nav-A_DEP"><span><i class="fa-solid fa-cloud-rain"></i> Depressão</span><span class="score-badge" id="score-A_DEP">0</span></div>
-        <div class="nav-item" onclick="switchModule('A_MANIA')" id="nav-A_MANIA"><span><i class="fa-solid fa-bolt"></i> Mania</span><span class="score-badge" id="score-A_MANIA">0</span></div>
+        <div class="menu-section">Módulo A: Episódios de Humor</div>
+        <div class="nav-item active" onclick="switchModule('A_DEP')" id="nav-A_DEP"><span>A. Depressão Maior</span><span class="score-badge" id="score-A_DEP">0</span></div>
+        <div class="nav-item" onclick="switchModule('A_MANIA')" id="nav-A_MANIA"><span>A. Mania/Hipomania</span><span class="score-badge" id="score-A_MANIA">0</span></div>
 
         <div class="menu-section">Módulo B: Psicose</div>
-        <div class="nav-item" onclick="switchModule('B_PSYCH')" id="nav-B_PSYCH"><span><i class="fa-solid fa-eye"></i> Rastreio Psicose</span><span class="score-badge" id="score-B_PSYCH">0</span></div>
+        <div class="nav-item" onclick="switchModule('B_PSYCH')" id="nav-B_PSYCH"><span>B. Sintomas Psicóticos</span><span class="score-badge" id="score-B_PSYCH">0</span></div>
+
+        <div class="menu-section">Módulo D: Diferencial Humor</div>
+        <div class="nav-item" onclick="switchModule('D_DIFF')" id="nav-D_DIFF" style="color:#fdcb6e"><span>D. Diag. Diferencial</span><span class="score-badge" id="score-D_DIFF">-</span></div>
 
         <div class="menu-section">Módulo E: Substâncias</div>
-        <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST"><span><i class="fa-solid fa-wine-bottle"></i> Substâncias</span><span class="score-badge" id="score-E_SUBST">0</span></div>
+        <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST"><span>E. Uso de Substâncias</span><span class="score-badge" id="score-E_SUBST">0</span></div>
 
         <div class="menu-section">Módulo F: Ansiedade</div>
-        <div class="nav-item" onclick="switchModule('F_PANIC')" id="nav-F_PANIC"><span><i class="fa-solid fa-person-falling-burst"></i> Pânico</span><span class="score-badge" id="score-F_PANIC">0</span></div>
-        <div class="nav-item" onclick="switchModule('F_AGORA')" id="nav-F_AGORA"><span><i class="fa-solid fa-house-lock"></i> Agorafobia</span><span class="score-badge" id="score-F_AGORA">0</span></div>
-        <div class="nav-item" onclick="switchModule('F_SOCIAL')" id="nav-F_SOCIAL"><span><i class="fa-solid fa-users-slash"></i> Ans. Social</span><span class="score-badge" id="score-F_SOCIAL">0</span></div>
-        <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD"><span><i class="fa-solid fa-head-side-virus"></i> TAG</span><span class="score-badge" id="score-F_GAD">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_PANIC')" id="nav-F_PANIC"><span>F. Pânico</span><span class="score-badge" id="score-F_PANIC">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_AGORA')" id="nav-F_AGORA"><span>F. Agorafobia</span><span class="score-badge" id="score-F_AGORA">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_SOCIAL')" id="nav-F_SOCIAL"><span>F. Ansiedade Social</span><span class="score-badge" id="score-F_SOCIAL">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD"><span>F. TAG</span><span class="score-badge" id="score-F_GAD">0</span></div>
 
-        <div class="menu-section">Outros</div>
-        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC"><span><i class="fa-solid fa-rotate"></i> TOC</span><span class="score-badge" id="score-G_TOC">0</span></div>
-        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT"><span><i class="fa-solid fa-land-mine-on"></i> TEPT</span><span class="score-badge" id="score-G_TEPT">0</span></div>
-        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD"><span><i class="fa-solid fa-bolt-lightning"></i> TDAH (Adulto)</span><span class="score-badge" id="score-H_ADHD">0</span></div>
-        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST"><span><i class="fa-solid fa-scale-unbalanced"></i> Adaptação</span><span class="score-badge" id="score-J_ADJUST">0</span></div>
-        <div class="nav-item" onclick="switchModule('D_DIFF')" id="nav-D_DIFF" style="color:#fdcb6e"><span><i class="fa-solid fa-scale-balanced"></i> Diferencial</span><span class="score-badge" id="score-D_DIFF">-</span></div>
+        <div class="menu-section">Módulo G: TOC e TEPT</div>
+        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC"><span>G. TOC</span><span class="score-badge" id="score-G_TOC">0</span></div>
+        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT"><span>G. TEPT (Trauma)</span><span class="score-badge" id="score-G_TEPT">0</span></div>
+
+        <div class="menu-section">Módulo H: TDAH</div>
+        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD"><span>H. TDAH Adulto</span><span class="score-badge" id="score-H_ADHD">0</span></div>
+
+        <div class="menu-section">Módulo I: Rastreio Geral</div>
+        <div class="nav-item" onclick="switchModule('I_SCREEN')" id="nav-I_SCREEN"><span>I. Outros Transtornos</span><span class="score-badge" id="score-I_SCREEN">0</span></div>
+
+        <div class="menu-section">Módulo J: Adaptação</div>
+        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST"><span>J. Transt. Adaptação</span><span class="score-badge" id="score-J_ADJUST">0</span></div>
 
         <div class="nav-item" onclick="showDashboard()" style="margin-top:auto; background:#2d3436; border:1px solid #636e72; justify-content:center;">
-            <span><i class="fa-solid fa-clipboard-check"></i> RESULTADO</span>
+            <span><i class="fa-solid fa-clipboard-check"></i> RESULTADO FINAL</span>
         </div>
     </div>
 
@@ -321,146 +331,139 @@
             <div id="dashboard-content"></div>
             
             <div style="margin-top:40px; padding-top:20px; border-top:2px solid #eee; text-align:center; color:#999; font-size:0.8rem;">
-                Ferramenta Didática baseada na SCID-5-CV (First et al., 2017).
+                Ferramenta Didática baseada na SCID-5-CV (APA).
             </div>
         </div>
     </div>
 
     <script>
-        // ORDEM DE EXECUÇÃO
+        // ORDEM DE EXECUÇÃO OFICIAL (A -> B -> D -> E -> F -> G -> H -> I -> J)
         const moduleOrder = [
-            'A_DEP', 'A_MANIA', 'B_PSYCH', 'E_SUBST', 
+            'A_DEP', 'A_MANIA', 'B_PSYCH', 'D_DIFF', 'E_SUBST', 
             'F_PANIC', 'F_AGORA', 'F_SOCIAL', 'F_GAD', 
-            'G_TOC', 'G_TEPT', 'H_ADHD', 'J_ADJUST', 'D_DIFF'
+            'G_TOC', 'G_TEPT', 'H_ADHD', 'I_SCREEN', 'J_ADJUST'
         ];
 
-        /* --- BANCO DE DADOS ATUALIZADO (TEXTOS FIDEDIGNOS SCID-5-CV) --- */
         const database = {
             'A_DEP': [
-                { 
-                    id: "A1", 
-                    text: "No último mês, desde [UM MÊS ATRÁS], houve algum período de tempo em que você se sentiu deprimido ou abatido na maior parte do dia, quase todos os dias?", 
-                    sub: "Alguém disse que você parece triste, abatido ou deprimido?",
-                    criteria: "A. Humor deprimido na maior parte do dia, quase todos os dias, indicado por relato subjetivo (p. ex., sente-se triste, vazio, sem esperança) ou por observação feita por outras pessoas (p. ex., parece choroso).",
-                    inst: "SE O PACIENTE ESTIVER VISIVELMENTE DEPRIMIDO, VOCÊ PODE CLASSIFICAR ESTE ITEM COMO (+) MESMO SE ELE NEGAR."
-                },
-                { 
-                    id: "A2", 
-                    text: "Durante esse período, você sentiu menos interesse ou prazer com coisas de que normalmente gosta?", 
-                    sub: "E houve algum período desde [UM MÊS ATRÁS] em que você perdeu o interesse ou o prazer por coisas de que normalmente gosta?",
-                    criteria: "B. Acentuada diminuição de interesse ou prazer em todas, ou quase todas, as atividades na maior parte do dia, quase todos os dias." 
-                },
-                { type: 'logic', check: (s) => (s['A1']==='+' || s['A2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "A3", text: "Como estava o seu apetite? (Você teve que se forçar a comer?) Houve perda ou ganho significativo de peso sem dieta?", criteria: "C. Perda ou ganho significativo de peso sem estar fazendo dieta ou diminuição ou aumento do apetite quase todos os dias." },
-                { id: "A4", text: "Como você tem dormido? (Problema para adormecer, acordando no meio da noite, ou dormindo demais?)", criteria: "D. Insônia ou hipersonia quase todos os dias." },
-                { id: "A5", text: "Você tem estado tão inquieto ou agitado que não consegue ficar parado? Ou o contrário: tem se sentido mais lento, como se estivesse em câmera lenta?", criteria: "E. Agitação ou retardo psicomotor quase todos os dias (observável por outras pessoas, não meramente sensações subjetivas)." },
-                { id: "A6", text: "Como tem estado o seu nível de energia? (Tem se sentido cansado o tempo todo?)", criteria: "F. Fadiga ou perda de energia quase todos os dias." },
-                { id: "A7", text: "Como você tem se sentido em relação a si mesmo? (Você tem se sentido inútil ou culpado?)", criteria: "G. Sentimentos de inutilidade ou culpa excessiva ou inapropriada (que podem ser delirantes)." },
-                { id: "A8", text: "Você tem tido dificuldade para pensar ou se concentrar? Tem sido difícil tomar decisões?", criteria: "H. Capacidade diminuída para pensar ou se concentrar, ou indecisão, quase todos os dias." },
-                { id: "A9", text: "Você tem tido pensamentos de que seria melhor se estivesse morto ou pensamentos de machucar a si mesmo?", sub: "Você pensou em suicídio? (Chegou a fazer algum plano?)", criteria: "I. Pensamentos recorrentes de morte (não somente medo de morrer), ideação suicida recorrente sem um plano específico, uma tentativa de suicídio ou plano específico.", inst: "ATENÇÃO: SE (+) AVALIE O RISCO DE SUICÍDIO IMEDIATO." }
+                { id: "A1", text: "No último mês, desde [DATA], houve algum período de tempo em que você se sentiu deprimido ou abatido na maior parte do dia, quase todos os dias?", sub: "Alguém comentou que você parecia triste, abatido ou deprimido?", criteria: "A. Humor deprimido na maior parte do dia, quase todos os dias.", inst: "SE VISIVELMENTE DEPRIMIDO, PODE CLASSIFICAR (+) MESMO SE NEGADO." },
+                { id: "A2", text: "Durante esse período, você sentiu menos interesse ou prazer com coisas de que normalmente gosta?", criteria: "B. Acentuada diminuição de interesse ou prazer.", inst: "VERIFIQUE SE A1 OU A2 = (+). SE AMBOS (-), PULE O MÓDULO." },
+                { type: 'logic', check: function(s) { return (s['A1']==='+' || s['A2']==='+') ? 'NEXT' : 'STOP'; } },
+                { id: "A3", text: "Como estava o seu apetite? Houve mudança de peso significativa?", criteria: "C. Perda ou ganho significativo de peso sem dieta." },
+                { id: "A4", text: "Como você tem dormido? (Insônia ou dormir demais?)", criteria: "D. Insônia ou hipersonia quase todos os dias." },
+                { id: "A5", text: "Você tem se sentido agitado ou, ao contrário, lento?", criteria: "E. Agitação ou retardo psicomotor (observável)." },
+                { id: "A6", text: "Como tem estado sua energia? Sente-se cansado?", criteria: "F. Fadiga ou perda de energia." },
+                { id: "A7", text: "Você tem se sentido inútil ou culpado?", criteria: "G. Sentimentos de inutilidade ou culpa excessiva." },
+                { id: "A8", text: "Dificuldade para pensar, concentrar-se ou tomar decisões?", criteria: "H. Capacidade diminuída para pensar/concentrar." },
+                { id: "A9", text: "Você tem pensado em morte ou em se machucar?", criteria: "I. Pensamentos de morte ou ideação suicida.", inst: "AVALIE RISCO." }
             ],
             'A_MANIA': [
-                { id: "C1", text: "No último mês, desde [UM MÊS ATRÁS], houve algum período de tempo em que você esteve se sentindo tão bem, 'elevado', empolgado ou 'no topo do mundo', que outras pessoas acharam que você não estava normal?", criteria: "A. Humor anormal e persistentemente elevado, expansivo ou eufórico." },
-                { id: "C2", text: "Se não eufórico: Houve um período em que você estava se sentindo irritável ou raivoso pela maior parte do dia, por pelo menos alguns dias?", criteria: "A (Alternativo). Humor anormal e persistentemente irritável." },
-                { type: 'logic', check: (s) => (s['C1']==='+' || s['C2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "C3", text: "Durante esse período, como você se sentia em relação a si mesmo? Sentia-se mais autoconfiante do que o habitual?", sub: "Sentia que tinha talentos especiais ou poderes?", criteria: "1. Autoestima inflada ou grandiosidade." },
-                { id: "C4", text: "Você precisava dormir menos do que o habitual? (Sentia-se descansado com menos horas de sono?)", criteria: "2. Redução da necessidade de sono (p. ex., sente-se repousado com apenas três horas de sono)." },
-                { id: "C5", text: "Você estava mais falante do que o habitual? (Era difícil para as outras pessoas interromperem você?)", criteria: "3. Mais loquaz que o habitual ou pressão para continuar falando." },
-                { id: "C6", text: "Você sentia que seus pensamentos estavam correndo? (Sua cabeça estava cheia de ideias?)", criteria: "4. Fuga de ideias ou experiência subjetiva de que os pensamentos estão acelerados." },
-                { id: "C7", text: "Você se distraía facilmente com coisas ao seu redor?", criteria: "5. Distratibilidade (atenção desviada muito facilmente)." },
-                { id: "C8", text: "Você estava muito mais ativo do que o habitual? (No trabalho, com amigos, sexualmente?)", criteria: "6. Aumento da atividade dirigida a objetivos ou agitação psicomotora." },
-                { id: "C9", text: "Você fez coisas que poderiam ter causado problemas para você ou sua família? (Gastar dinheiro, dirigir rápido, comportamento sexual de risco?)", criteria: "7. Envolvimento excessivo em atividades com elevado potencial para consequências dolorosas." }
+                { id: "C1", text: "Já teve um período em que se sentiu muito 'elevado', eufórico ou 'no topo do mundo'?", criteria: "A. Humor anormalmente elevado/expansivo." },
+                { id: "C2", text: "Se não eufórico: Teve um período em que ficou muito irritável ou raivoso?", criteria: "A (Alt). Humor anormalmente irritável." },
+                { type: 'logic', check: function(s) { return (s['C1']==='+' || s['C2']==='+') ? 'NEXT' : 'STOP'; } },
+                { id: "C3", text: "Sua autoestima estava inflada? Sentia-se grandioso?", criteria: "1. Autoestima inflada ou grandiosidade." },
+                { id: "C4", text: "Precisou dormir menos do que o habitual?", criteria: "2. Redução da necessidade de sono." },
+                { id: "C5", text: "Estava mais falante do que o habitual?", criteria: "3. Mais loquaz/Pressão por falar." },
+                { id: "C6", text: "Seus pensamentos estavam acelerados?", criteria: "4. Fuga de ideias." },
+                { id: "C7", text: "Distraía-se facilmente?", criteria: "5. Distratibilidade." },
+                { id: "C8", text: "Ficou muito ativo (trabalho, social, sexual)?", criteria: "6. Aumento da atividade dirigida." },
+                { id: "C9", text: "Fez coisas arriscadas (gastos, sexo, velocidade)?", criteria: "7. Envolvimento em atividades de risco." }
             ],
             'B_PSYCH': [
-                { id: "B1", text: "Agora vou perguntar sobre algumas experiências incomuns que as pessoas às vezes têm. Você já ouviu coisas que outras pessoas não conseguiam ouvir, como barulhos ou a voz de pessoas cochichando ou falando?", criteria: "A. Alucinações Auditivas." },
-                { id: "B2", text: "Você já teve visões ou viu coisas que outras pessoas não conseguiam ver?", criteria: "A. Alucinações Visuais." },
-                { id: "B3", text: "Você já teve a sensação de que as pessoas estavam falando de você ou prestando atenção especial em você?", sub: "Já sentiu que estava sendo perseguido ou que alguém queria lhe fazer mal?", criteria: "A. Delírios Persecutórios ou de Referência." },
-                { id: "B4", text: "Você já teve alguma ideia de que tinha poderes especiais ou uma missão especial?", criteria: "A. Delírios de Grandeza." },
-                { id: "B5", text: "Você já sentiu que seus pensamentos estavam sendo controlados por alguma força externa?", criteria: "A. Delírios de Controle, Inserção ou Roubo de Pensamento." }
-            ],
-            'E_SUBST': [
-                { id: "E1", text: "Nos últimos 12 meses, você tomou alguma bebida alcoólica?", sub: "Tem bebido frequentemente ou em grandes quantidades?", criteria: "Rastreio de Uso de Álcool." },
-                { id: "E2", text: "Nos últimos 12 meses, você usou alguma droga, como maconha, cocaína, estimulantes ou remédios sem receita?", criteria: "Rastreio de Uso de Drogas." },
-                { type: 'logic', check: (s) => (s['E1']==='+' || s['E2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "E3", text: "Você frequentemente consumiu em quantidades maiores ou por um período mais longo do que pretendia?", criteria: "1. Uso em quantidades maiores/por mais tempo." },
-                { id: "E4", text: "Você quis diminuir ou controlar o uso, mas não conseguiu?", criteria: "2. Desejo persistente ou esforços malsucedidos." },
-                { id: "E5", text: "Você gastou muito tempo para conseguir a substância, usá-la ou se recuperar dos seus efeitos?", criteria: "3. Muito tempo gasto." },
-                { id: "E6", text: "Você teve uma vontade forte ou desejo incontrolável de usar? (Fissura)", criteria: "4. Fissura (Craving)." },
-                { id: "E7", text: "O uso frequente atrapalhou o cumprimento de obrigações no trabalho, na escola ou em casa?", criteria: "5. Uso recorrente resultando em fracasso." },
-                { id: "E8", text: "Você continuou usando mesmo tendo problemas sociais ou interpessoais causados ou piorados pelo uso?", criteria: "6. Uso continuado apesar de problemas sociais." },
-                { id: "E9", text: "Você deixou de fazer ou reduziu atividades sociais, profissionais ou de lazer importantes por causa do uso?", criteria: "7. Abandono de atividades." },
-                { id: "E10", text: "Você usou em situações nas quais isso era fisicamente perigoso (ex: dirigir)?", criteria: "8. Uso recorrente em situações de perigo físico." },
-                { id: "E11", text: "Você continuou usando mesmo sabendo que tinha um problema físico ou psicológico que poderia ter sido causado ou piorado pela substância?", criteria: "9. Uso continuado apesar de problema físico/psicológico." },
-                { id: "E12", text: "Você precisou aumentar a quantidade para sentir o mesmo efeito? (Tolerância)", criteria: "10. Tolerância." },
-                { id: "E13", text: "Você sentiu sintomas de abstinência (tremores, suor, ansiedade) quando parou ou diminuiu?", criteria: "11. Abstinência." }
-            ],
-            'F_PANIC': [
-                { id: "F1", text: "No último mês, desde [DATA], você teve um ataque de pânico inesperado (um pico súbito de medo intenso ou desconforto intenso)?", sub: "Isso veio 'do nada', ou seja, não foi causado por uma situação específica?", criteria: "A. Ataques de pânico recorrentes e inesperados." },
-                { type: 'logic', check: (s) => s['F1']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F2", text: "Durante o último mês, você ficou preocupado persistentemente com a possibilidade de ter outro ataque ou com as consequências dele?", criteria: "B. Preocupação persistente ou mudança desadaptativa de comportamento." }
-            ],
-            'F_AGORA': [
-                { id: "F23", text: "Nos últimos seis meses, você tem sentido medo ou ansiedade acentuados acerca de duas (ou mais) das seguintes situações: Usar transporte público? Permanecer em espaços abertos? Permanecer em locais fechados? Ficar em uma fila ou no meio de uma multidão? Sair de casa sozinho?", criteria: "A. Medo ou ansiedade marcantes acerca de 2+ situações." },
-                { type: 'logic', check: (s) => s['F23']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F24", text: "Você teme ou evita essas situações porque acha que pode ser difícil escapar ou que o auxílio pode não estar disponível se você tiver sintomas de pânico?", criteria: "B. Cognição agorafóbica." }
-            ],
-            'F_SOCIAL': [
-                { id: "F32", text: "Nos últimos seis meses, você tem sentido medo ou ansiedade acentuados acerca de uma ou mais situações sociais nas quais é exposto a possível avaliação por outras pessoas?", sub: "Ex: Interações sociais, ser observado, falar em público?", criteria: "A. Medo ou ansiedade de exposição social." },
-                { type: 'logic', check: (s) => s['F32']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F33", text: "Você teme que vá demonstrar sintomas de ansiedade e que isso será avaliado negativamente (que será humilhante ou constrangedor)?", criteria: "B. Medo de avaliação negativa." }
-            ],
-            'F_GAD': [
-                { id: "F42", text: "Nos últimos seis meses, você tem andado muito ansioso e preocupado (expectativa apreensiva) na maioria dos dias?", sub: "Preocupado com diversos eventos ou atividades (tais como desempenho escolar ou profissional)?", criteria: "A. Ansiedade e preocupação excessivas." },
-                { type: 'logic', check: (s) => s['F42']==='+' ? 'NEXT' : 'STOP' },
-                { id: "F43", text: "Você considera difícil controlar a preocupação?", criteria: "B. O indivíduo considera difícil controlar a preocupação." },
-                { id: "F44", text: "Essa ansiedade e preocupação vêm acompanhadas de sintomas como inquietação, cansaço fácil, dificuldade de concentração, irritabilidade, tensão muscular ou perturbação do sono? (Pelo menos 3)", criteria: "C. Três ou mais sintomas físicos/cognitivos." }
-            ],
-            'G_TOC': [
-                { id: "G1", text: "No último mês, você foi incomodado por pensamentos, impulsos ou imagens recorrentes que eram indesejados e causavam ansiedade (Obsessões)?", sub: "Ex: Pensamentos de contaminação, dúvidas repetidas, necessidade de ordem?", criteria: "A. Presença de Obsessões." },
-                { id: "G2", text: "No último mês, você sentiu que precisava executar comportamentos repetitivos (lavar as mãos, verificar) ou atos mentais (rezar, contar) em resposta a uma obsessão?", criteria: "A. Presença de Compulsões." },
-                { type: 'logic', check: (s) => (s['G1']==='+' || s['G2']==='+') ? 'NEXT' : 'STOP' },
-                { id: "G3", text: "As obsessões ou compulsões tomam muito tempo (mais de 1 hora por dia) ou causam sofrimento clinicamente significativo?", criteria: "B. Tempo dispendido ou sofrimento clínico." }
-            ],
-            'G_TEPT': [
-                { id: "G4", text: "Alguma vez na vida você foi exposto a morte real ou ameaça de morte, ferimento grave ou violência sexual?", sub: "Isso aconteceu diretamente com você, você testemunhou ou soube que aconteceu com alguém próximo?", criteria: "A. Exposição a evento traumático." },
-                { type: 'logic', check: (s) => s['G4']==='+' ? 'NEXT' : 'STOP' },
-                { id: "G5", text: "Depois do evento, você teve lembranças intrusivas, sonhos angustiantes ou flashbacks?", criteria: "B. Sintomas de Intrusão." },
-                { id: "G6", text: "Você evita persistentemente estímulos (pessoas, lugares, conversas) associados ao evento traumático?", criteria: "C. Evitação persistente." },
-                { id: "G7", text: "Houve alterações negativas em seus pensamentos ou no seu humor? (Crenças negativas, culpa distorcida, estado emocional negativo persistente)?", criteria: "D. Alterações negativas na cognição e no humor." },
-                { id: "G8", text: "Você notou alterações na sua reação ou estado de alerta (irritabilidade, hipervigilância, sustos exagerados)?", criteria: "E. Alterações marcantes na excitação e na reatividade." }
-            ],
-            'H_ADHD': [
-                { id: "H1", text: "Frequentemente deixa de prestar atenção a detalhes ou comete erros por descuido em atividades escolares, no trabalho ou em outras atividades?", criteria: "A1. Desatenção." },
-                { id: "H2", text: "Frequentemente tem dificuldade para manter a atenção em tarefas ou atividades?", criteria: "A1. Desatenção." },
-                { id: "H3", text: "Com frequência parece não escutar quando lhe dirigem a palavra?", criteria: "A1. Desatenção." },
-                { id: "H4", text: "Frequentemente não segue instruções até o fim e não consegue terminar trabalhos ou tarefas?", criteria: "A1. Desatenção." },
-                { id: "H5", text: "Frequentemente tem dificuldade para organizar tarefas e atividades?", criteria: "A1. Desatenção." },
-                { id: "H6", text: "Frequentemente evita, não gosta ou reluta em se envolver em tarefas que exijam esforço mental prolongado?", criteria: "A1. Desatenção." },
-                { id: "H7", text: "Frequentemente perde coisas necessárias para tarefas ou atividades?", criteria: "A1. Desatenção." },
-                { id: "H8", text: "Com frequência é facilmente distraído por estímulos externos?", criteria: "A1. Desatenção." },
-                { id: "H9", text: "Com frequência é esquecido em relação a atividades cotidianas?", criteria: "A1. Desatenção." },
-                { id: "H10", text: "Frequentemente remexe ou batuca as mãos ou os pés ou se contorce na cadeira?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H11", text: "Frequentemente levanta da cadeira em situações em que se espera que permaneça sentado?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H12", text: "Frequentemente sente-se inquieto (em adultos)?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H13", text: "Com frequência tem dificuldade de se envolver em atividades de lazer calmamente?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H14", text: "Com frequência 'não para', agindo como se estivesse 'com o motor ligado'?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H15", text: "Frequentemente fala em demasia?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H16", text: "Frequentemente deixa escapar uma resposta antes que a pergunta tenha sido concluída?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H17", text: "Frequentemente tem dificuldade para esperar a sua vez?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H18", text: "Frequentemente interrompe ou se intromete?", criteria: "A2. Hiperatividade/Impulsividade." },
-                { id: "H19", text: "Vários sintomas de desatenção ou hiperatividade estavam presentes antes dos 12 anos de idade?", criteria: "B. Início na infância." },
-                { id: "H20", text: "Vários desses sintomas interferem no funcionamento social, acadêmico ou profissional?", criteria: "C. Prejuízo funcional." }
-            ],
-            'J_ADJUST': [
-                { id: "J1", text: "Nos últimos 3 meses, aconteceu alguma coisa estressante antes de os sintomas terem começado?", sub: "Você acha que o estressor teve alguma coisa a ver com o desenvolvimento dos sintomas?", criteria: "A. Sintomas emocionais ou comportamentais em resposta a um estressor identificável." },
-                { type: 'logic', check: (s) => s['J1']==='+' ? 'NEXT' : 'STOP' },
-                { id: "J2", text: "O sofrimento é desproporcional à gravidade do estressor ou há prejuízo significativo no funcionamento?", criteria: "B. Significância clínica." },
-                { id: "J3", text: "Uma vez que o estressor ou suas consequências tenham cedido, os sintomas persistem por mais de mais 6 meses?", criteria: "E. Os sintomas não persistem por mais de 6 meses adicionais (A resposta deve ser NÃO para confirmar o diagnóstico)." }
+                { id: "B1", text: "Você já ouviu coisas que outras pessoas não ouviam, como barulhos ou vozes?", criteria: "A. Alucinações Auditivas." },
+                { id: "B2", text: "Você já teve visões ou viu coisas que outros não viam?", criteria: "A. Alucinações Visuais." },
+                { id: "B3", text: "Você já sentiu que as pessoas estavam te seguindo, espionando ou querendo te machucar?", criteria: "A. Delírios Persecutórios." },
+                { id: "B4", text: "Você já acreditou ter poderes especiais, uma missão divina ou ser alguém famoso?", criteria: "A. Delírios de Grandeza." },
+                { id: "B5", text: "Já sentiu que seus pensamentos eram controlados por outros ou que colocavam pensamentos na sua cabeça?", criteria: "A. Delírios de Controle." }
             ],
             'D_DIFF': [
-                { id: "D1", text: "(SE HOUVE PSICOSE): As alucinações ou delírios ocorrem EXCLUSIVAMENTE durante o curso dos episódios de depressão ou mania?", criteria: "Diagnóstico Diferencial: Transtorno Depressivo/Bipolar com características psicóticas vs. Transtorno Esquizoafetivo." },
-                { id: "D2", text: "Há evidências de que a perturbação é consequência fisiológica direta de uma substância (droga de abuso, medicamento)?", criteria: "Diagnóstico Diferencial: Transtorno Induzido por Substância." },
-                { id: "D3", text: "Há evidências de que a perturbação é consequência fisiológica direta de outra condição médica?", criteria: "Diagnóstico Diferencial: Transtorno Devido a Outra Condição Médica." }
+                { id: "D1", text: "(SE HOUVE PSICOSE E DEPRESSÃO): As alucinações/delírios ocorrem APENAS quando você está deprimido/eufórico?", sub: "Ou elas acontecem mesmo quando seu humor está normal?", criteria: "Diagnóstico Diferencial: Transtorno de Humor com Psicose vs. Transtorno Psicótico (Esquizoafetivo/Esquizofrenia)." },
+                { id: "D2", text: "Você acha que esses sintomas começaram por causa de drogas, álcool ou algum medicamento?", criteria: "Diagnóstico Diferencial: Perturbação Induzida por Substância." },
+                { id: "D3", text: "Você tem alguma condição médica (ex: tireoide) que o médico disse que poderia causar isso?", criteria: "Diagnóstico Diferencial: Devido a Outra Condição Médica." }
+            ],
+            'E_SUBST': [
+                { id: "E1", text: "Nos últimos 12 meses, você bebeu álcool frequentemente ou em quantidades maiores do que pretendia?", criteria: "Rastreio de Uso de Álcool." },
+                { id: "E2", text: "Nos últimos 12 meses, você usou drogas (maconha, cocaína, remédios sem receita) para alterar o humor?", criteria: "Rastreio de Uso de Drogas." },
+                { type: 'logic', check: function(s) { return (s['E1']==='+' || s['E2']==='+') ? 'NEXT' : 'STOP'; } },
+                { id: "E3", text: "Você consome em quantidades maiores ou por mais tempo do que pretendia?", criteria: "1. Uso em excesso." },
+                { id: "E4", text: "Você tentou parar ou controlar o uso, mas não conseguiu?", criteria: "2. Esforços infrutíferos para parar." },
+                { id: "E5", text: "Você gasta muito tempo para obter, usar ou se recuperar da substância?", criteria: "3. Tempo dispendido." },
+                { id: "E6", text: "Você sente uma vontade incontrolável (fissura) de usar?", criteria: "4. Fissura (Craving)." },
+                { id: "E7", text: "O uso prejudicou seu trabalho, escola ou tarefas domésticas?", criteria: "5. Fracasso em obrigações." },
+                { id: "E8", text: "Continuou usando mesmo tendo problemas sociais ou interpessoais causados por isso?", criteria: "6. Problemas sociais persistentes." },
+                { id: "E9", text: "Você deixou de fazer atividades importantes (lazer, social) por causa do uso?", criteria: "7. Abandono de atividades." },
+                { id: "E10", text: "Usou em situações fisicamente perigosas (ex: dirigir embriagado)?", criteria: "8. Uso em situações de risco físico." },
+                { id: "E11", text: "Continuou usando mesmo sabendo que tinha um problema físico ou psicológico causado pela substância?", criteria: "9. Uso continuado apesar de problemas." },
+                { id: "E12", text: "Você precisou aumentar a dose para ter o mesmo efeito? (Tolerância)", criteria: "10. Tolerância." },
+                { id: "E13", text: "Você sentiu sintomas de abstinência (tremores, suor, ansiedade) ao ficar sem usar?", criteria: "11. Abstinência." }
+            ],
+            'F_PANIC': [
+                { id: "F1", text: "No último mês, você teve um ataque de pânico inesperado (pico de medo intenso que vem 'do nada')?", criteria: "A. Ataques de pânico recorrentes e inesperados." },
+                { type: 'logic', check: function(s) { return s['F1']==='+' ? 'NEXT' : 'STOP'; } },
+                { id: "F2", text: "Depois do ataque, você ficou um mês ou mais preocupado com a possibilidade de ter outro?", criteria: "B. Preocupação persistente ou mudança de comportamento." }
+            ],
+            'F_AGORA': [
+                { id: "F23", text: "Nos últimos 6 meses, você sentiu medo ou ansiedade intensa em: transporte público, espaços abertos, locais fechados, filas ou sair sozinho?", criteria: "A. Medo/ansiedade em 2+ situações agorafóbicas." },
+                { type: 'logic', check: function(s) { return s['F23']==='+' ? 'NEXT' : 'STOP'; } },
+                { id: "F24", text: "Você teme essas situações porque acha que seria difícil escapar ou obter ajuda?", criteria: "B. Cognição agorafóbica." }
+            ],
+            'F_SOCIAL': [
+                { id: "F32", text: "Nos últimos 6 meses, sentiu medo acentuado em situações sociais onde poderia ser avaliado (falar em público, comer com outros)?", criteria: "A. Medo/ansiedade em situações sociais." },
+                { type: 'logic', check: function(s) { return s['F32']==='+' ? 'NEXT' : 'STOP'; } },
+                { id: "F33", text: "Você teme ser avaliado negativamente, humilhado ou rejeitado?", criteria: "B. Medo de avaliação negativa." }
+            ],
+            'F_GAD': [
+                { id: "F42", text: "Nos últimos 6 meses, você tem se sentido muito ansioso e preocupado na maioria dos dias?", sub: "Preocupado com diversas coisas (trabalho, escola, finanças)?", criteria: "A. Ansiedade e preocupação excessivas (expectativa apreensiva)." },
+                { type: 'logic', check: function(s) { return s['F42']==='+' ? 'NEXT' : 'STOP'; } },
+                { id: "F43", text: "Você acha difícil controlar essa preocupação?", criteria: "B. Dificuldade em controlar a preocupação." },
+                { id: "F44", text: "Essa ansiedade vem acompanhada de sintomas físicos (inquietação, fadiga, tensão muscular)?", criteria: "C. Sintomas físicos associados (3 ou mais)." }
+            ],
+            'G_TOC': [
+                { id: "G1", text: "No último mês, você teve pensamentos, impulsos ou imagens indesejados que não saíam da cabeça (Obsessões)?", criteria: "A. Presença de Obsessões." },
+                { id: "G2", text: "Você sentiu que precisava repetir certos atos (lavar, verificar, contar) para aliviar a ansiedade (Compulsões)?", criteria: "A. Presença de Compulsões." },
+                { type: 'logic', check: function(s) { return (s['G1']==='+' || s['G2']==='+') ? 'NEXT' : 'STOP'; } },
+                { id: "G3", text: "Essas obsessões ou compulsões consomem muito tempo (mais de 1 hora/dia) ou causam grande sofrimento?", criteria: "B. Tempo dispendido ou sofrimento clínico." }
+            ],
+            'G_TEPT': [
+                { id: "G4", text: "Você já foi exposto a um evento traumático (risco de morte, violência sexual, lesão grave)?", criteria: "A. Exposição a evento traumático." },
+                { type: 'logic', check: function(s) { return s['G4']==='+' ? 'NEXT' : 'STOP'; } },
+                { id: "G5", text: "O evento volta à sua mente de forma intrusiva (pesadelos, flashbacks)?", criteria: "B. Sintomas de Intrusão." },
+                { id: "G6", text: "Você evita lugares, pessoas ou pensamentos que lembrem o trauma?", criteria: "C. Evitação persistente." },
+                { id: "G7", text: "Seu humor ou pensamentos pioraram após o evento (culpa, medo, desapego)?", criteria: "D. Alterações negativas na cognição/humor." },
+                { id: "G8", text: "Você ficou mais 'alerta', assustado ou irritado (hipervigilância)?", criteria: "E. Alterações na excitação/reatividade." }
+            ],
+            'H_ADHD': [
+                { id: "H1", text: "Frequentemente deixa de prestar atenção a detalhes ou comete erros por descuido?", criteria: "A1. Desatenção." },
+                { id: "H2", text: "Tem dificuldade para manter a atenção em tarefas ou atividades?", criteria: "A1. Desatenção." },
+                { id: "H3", text: "Parece não escutar quando lhe dirigem a palavra?", criteria: "A1. Desatenção." },
+                { id: "H4", text: "Não segue instruções até o fim e não termina tarefas?", criteria: "A1. Desatenção." },
+                { id: "H5", text: "Tem dificuldade para organizar tarefas e atividades?", criteria: "A1. Desatenção." },
+                { id: "H6", text: "Evita tarefas que exigem esforço mental constante?", criteria: "A1. Desatenção." },
+                { id: "H7", text: "Perde coisas necessárias para tarefas (chaves, documentos)?", criteria: "A1. Desatenção." },
+                { id: "H8", text: "É facilmente distraído por estímulos externos?", criteria: "A1. Desatenção." },
+                { id: "H9", text: "É esquecido em relação a atividades cotidianas?", criteria: "A1. Desatenção." },
+                { id: "H10", text: "Frequentemente remexe as mãos/pés ou se contorce na cadeira?", criteria: "A2. Hiperatividade." },
+                { id: "H11", text: "Levanta-se em situações em que deveria ficar sentado?", criteria: "A2. Hiperatividade." },
+                { id: "H12", text: "Sente-se inquieto, como se estivesse 'com um motor ligado'?", criteria: "A2. Hiperatividade." },
+                { id: "H13", text: "Tem dificuldade em lazer silencioso?", criteria: "A2. Hiperatividade." },
+                { id: "H14", text: "Está frequentemente 'a mil por hora'?", criteria: "A2. Hiperatividade." },
+                { id: "H15", text: "Fala em demasia?", criteria: "A2. Hiperatividade." },
+                { id: "H16", text: "Deixa escapar respostas antes de a pergunta ser concluída?", criteria: "A2. Impulsividade." },
+                { id: "H17", text: "Tem dificuldade em esperar sua vez?", criteria: "A2. Impulsividade." },
+                { id: "H18", text: "Interrompe os outros ou se intromete?", criteria: "A2. Impulsividade." },
+                { id: "H19", text: "Vários desses sintomas estavam presentes antes dos 12 anos de idade?", criteria: "B. Início na infância." },
+                { id: "H20", text: "Os sintomas interferem no seu funcionamento social, acadêmico ou profissional?", criteria: "C. Prejuízo funcional." }
+            ],
+            'I_SCREEN': [
+                { id: "I1", text: "ALIMENTAR: Você já teve episódios de compulsão alimentar (comer muito em pouco tempo com perda de controle)?", criteria: "Rastreio: Transtorno da Compulsão Alimentar Periódica." },
+                { id: "I2", text: "ALIMENTAR: Você usa métodos para não ganhar peso (vômito, laxantes, exercício excessivo)?", criteria: "Rastreio: Bulimia Nervosa." },
+                { id: "I3", text: "ALIMENTAR: Você se considera gordo ou tem medo intenso de engordar, mesmo estando com peso baixo?", criteria: "Rastreio: Anorexia Nervosa." }
+            ],
+            'J_ADJUST': [
+                { id: "J1", text: "Nos últimos 3 meses, você passou por algum evento estressante (não traumático) que iniciou seus sintomas?", sub: "Ex: Divórcio, problemas financeiros, demissão?", criteria: "A. Sintomas emocionais em resposta a um estressor identificável." },
+                { type: 'logic', check: function(s) { return s['J1']==='+' ? 'NEXT' : 'STOP'; } },
+                { id: "J2", text: "O seu sofrimento é desproporcional à gravidade do estressor ou prejudica significativamente sua vida?", criteria: "B. Significância clínica." },
+                { id: "J3", text: "Os sintomas persistem por mais de 6 meses após o fim do estressor?", criteria: "E. Duração (Para ser Adaptação, a resposta deve ser NÃO)." }
             ]
         };
 
@@ -469,9 +472,15 @@
         let globalScores = {};
         Object.keys(database).forEach(k => globalScores[k] = {});
 
+        window.addEventListener('DOMContentLoaded', () => {
+            switchModule('A_DEP');
+        });
+
         function switchModule(modId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('nav-' + modId).classList.add('active');
+            const navEl = document.getElementById('nav-' + modId);
+            if(navEl) navEl.classList.add('active');
+            
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('interview-header').style.display = 'flex';
             document.getElementById('interview-area').style.display = 'grid';
@@ -481,13 +490,17 @@
             
             const titles = {
                 'A_DEP': 'Módulo A: Depressão Maior', 'A_MANIA': 'Módulo A: Mania',
-                'B_PSYCH': 'Módulo B: Psicose', 'D_DIFF': 'Módulo D: Diferencial', 'E_SUBST': 'Módulo E: Substâncias',
+                'B_PSYCH': 'Módulo B: Rastreio de Psicose', 'D_DIFF': 'Módulo D: Diagnóstico Diferencial',
+                'E_SUBST': 'Módulo E: Uso de Substâncias',
                 'F_PANIC': 'Módulo F: Pânico', 'F_AGORA': 'Módulo F: Agorafobia',
                 'F_SOCIAL': 'Módulo F: Ans. Social', 'F_GAD': 'Módulo F: TAG',
                 'G_TOC': 'Módulo G: TOC', 'G_TEPT': 'Módulo G: TEPT',
-                'H_ADHD': 'Módulo H: TDAH Adulto', 'J_ADJUST': 'Módulo J: Adaptação'
+                'H_ADHD': 'Módulo H: TDAH Adulto',
+                'I_SCREEN': 'Módulo I: Outros Transtornos',
+                'J_ADJUST': 'Módulo J: Transtorno de Adaptação'
             };
-            document.getElementById('module-title').innerText = titles[currentModule];
+            document.getElementById('module-title').innerText = titles[currentModule] || modId;
+            
             loadQuestion();
         }
 
@@ -501,11 +514,12 @@
 
             const q = questions[moduleIndex];
 
+            // AUTO-SKIP
             if (q.type === 'logic') {
                 const action = q.check(globalScores[currentModule]);
                 if (action === 'STOP') {
                     updateSidebarScore(currentModule);
-                    goToNextModule(); 
+                    goToNextModule();
                     return; 
                 } else {
                     moduleIndex++;
@@ -519,10 +533,20 @@
             document.getElementById('c-text').innerText = q.criteria;
             
             const sub = document.getElementById('q-sub');
-            if(q.sub) { sub.style.display='block'; sub.innerText = q.sub; } else { sub.style.display='none'; }
+            if(q.sub) { 
+                sub.style.display='block'; 
+                sub.innerText = q.sub; 
+            } else { 
+                sub.style.display='none'; 
+            }
             
             const inst = document.getElementById('q-inst');
-            if(q.inst) { inst.style.display='block'; inst.innerText = q.inst; } else { inst.style.display='none'; }
+            if(q.inst) { 
+                inst.style.display='block'; 
+                inst.innerText = q.inst; 
+            } else { 
+                inst.style.display='none'; 
+            }
             
             document.getElementById('progress-display').innerText = `Item ${moduleIndex + 1}`;
         }
@@ -548,7 +572,8 @@
             let count = 0;
             const scores = globalScores[mod];
             Object.keys(scores).forEach(key => { if (scores[key] === '+') count++; });
-            document.getElementById('score-' + mod).innerText = count > 0 ? count : "0";
+            const badge = document.getElementById('score-' + mod);
+            if(badge) badge.innerText = count;
         }
 
         function showDashboard() {
@@ -569,79 +594,52 @@
                 { id: 'F_PANIC', title: 'Transtorno de Pânico', min: 1, crit: ['F1'] },
                 { id: 'F_AGORA', title: 'Agorafobia', min: 2, crit: ['F23'] },
                 { id: 'F_SOCIAL', title: 'Ansiedade Social', min: 2, crit: ['F32'] },
-                { id: 'F_GAD', title: 'TAG', min: 3, crit: ['F42'] },
+                { id: 'F_GAD', title: 'TAG (Ansiedade Generalizada)', min: 3, crit: ['F42'] },
                 { id: 'G_TOC', title: 'TOC', min: 1, crit: ['G3'] },
                 { id: 'G_TEPT', title: 'TEPT', min: 3, crit: ['G4'] }
             ];
 
             let activeDiagnoses = [];
 
-            modules.forEach(r => {
-                let scores = globalScores[r.id];
+            modules.forEach(m => {
+                let scores = globalScores[m.id];
                 let count = 0;
                 let critMet = false;
                 
                 Object.keys(scores).forEach(k => { if(scores[k] === '+') count++; });
 
-                if(r.id === 'E_SUBST') {
+                if(m.id === 'E_SUBST') {
                     let sym = 0;
                     for(let i=3; i<=13; i++) if(scores['E'+i] === '+') sym++;
                     if(sym >= 2) critMet = true;
                     count = sym;
-                } else if(r.id === 'G_TOC') {
+                } else if(m.id === 'G_TOC') {
                     if((scores['G1']==='+' || scores['G2']==='+') && scores['G3']==='+') critMet = true;
-                } else if (r.id === 'G_TEPT') {
-                    if(scores['G4']==='+') critMet = true;
                 } else {
-                    if(r.crit && r.crit.length > 0) {
-                        r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
+                    if(m.crit && m.crit.length > 0) {
+                        m.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
                     } else {
-                        critMet = true;
+                        critMet = true; 
                     }
                 }
 
-                let status = (critMet && count >= r.min) ? 'Positivo' : 'Negativo';
-                if(r.id === 'E_SUBST' && critMet) status = 'Positivo';
-                if(status === 'Positivo') activeDiagnoses.push(r.title);
+                let status = (critMet && count >= m.min) ? 'Positivo' : 'Negativo';
+                if(m.id === 'E_SUBST' && critMet) status = 'Positivo';
+                if(status === 'Positivo') activeDiagnoses.push(m.title);
 
-                let css = status === 'Positivo' ? 'positive' : 'negative';
-                let tag = status === 'Positivo' ? 'status-pos' : 'status-neg';
-
-                dash.innerHTML += `
-                    <div class="result-card ${css}">
-                        <div>
-                            <h3>${r.title}</h3>
-                            <span class="status-tag ${tag}">${status}</span>
-                        </div>
-                        <div style="text-align:right">
-                            <div style="font-size:1.2rem; font-weight:bold;">${count}</div>
-                            <small>Sintomas</small>
-                        </div>
-                    </div>
-                `;
+                dash.innerHTML += renderCard(m.title, status, count);
             });
 
             // TDAH
             let hS = globalScores['H_ADHD'];
             let inatt = 0, hyper = 0;
-            for(let i=1; i<=9; i++) if(hS['H'+i] === '+') inatt++;
-            for(let i=10; i<=18; i++) if(hS['H'+i] === '+') hyper++;
+            for(let i=1; i<=9; i++) if(hS['H'+i]==='+') inatt++;
+            for(let i=10; i<=18; i++) if(hS['H'+i]==='+') hyper++;
             let adhdStatus = "Negativo";
             if(hS['H19']==='+' && hS['H20']==='+') {
                 if(inatt >= 5 || hyper >= 5) { adhdStatus = "Positivo"; activeDiagnoses.push("TDAH"); }
             }
-            dash.innerHTML += `
-                <div class="result-card ${adhdStatus === 'Positivo' ? 'positive' : 'negative'}">
-                    <div>
-                        <h3>TDAH Adulto</h3>
-                        <span class="status-tag ${adhdStatus === 'Positivo' ? 'status-pos' : 'status-neg'}">${adhdStatus}</span>
-                    </div>
-                    <div style="text-align:right">
-                        <div>D: <b>${inatt}</b> / H: <b>${hyper}</b></div>
-                        <small>Sintomas</small>
-                    </div>
-                </div>
-            `;
+            dash.innerHTML += renderCard("TDAH Adulto", adhdStatus, `D:${inatt} H:${hyper}`);
 
             // Adaptação
             let jS = globalScores['J_ADJUST'];
@@ -651,25 +649,36 @@
             } else if (activeDiagnoses.length > 0 && jS['J1']==='+') {
                 adjustStatus = "Descartado (Hierarquia)";
             }
-            let jCss = adjustStatus === 'Positivo' ? 'positive' : 'negative';
-            let jTag = adjustStatus === 'Positivo' ? 'status-pos' : 'status-neg';
-            
-            dash.innerHTML += `
-                <div class="result-card ${jCss}">
-                    <div>
-                        <h3>Transtorno de Adaptação</h3>
-                        <span class="status-tag ${jTag}">${adjustStatus}</span>
-                        ${adjustStatus.includes('Descartado') ? '<div style="font-size:0.7rem">Explicado por outro transtorno</div>' : ''}
-                    </div>
-                </div>
-            `;
+            dash.innerHTML += renderCard("Transtorno de Adaptação", adjustStatus, "-");
 
+            // Rastreio
+            let iS = globalScores['I_SCREEN'];
+            if(Object.values(iS).includes('+')) {
+                let list = [];
+                if(iS['I1']==='+' || iS['I2']==='+' || iS['I3']==='+') list.push("Alimentar");
+                dash.innerHTML += renderCard("Outros Rastreios", "Alerta", list.join(', ') || "Nenhum");
+            }
+
+            // Alertas
             if(activeDiagnoses.includes("Depressão Maior") && activeDiagnoses.includes("Sintomas Psicóticos (Rastreio)")) {
-                alertBox.innerHTML += `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:10px; margin-bottom:20px;"><strong>⚠️ Atenção:</strong> Co-ocorrência de Depressão e Psicose exige Módulo D (Diferencial).</div>`;
+                alertBox.innerHTML += `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:10px; margin-bottom:20px;"><strong>⚠️ Atenção:</strong> Depressão + Psicose exige diagnóstico diferencial (Módulo D).</div>`;
             }
         }
 
-        switchModule('A_DEP');
+        function renderCard(title, status, count) {
+            let css = status === 'Positivo' ? 'status-pos' : (status === 'Alerta' ? 'status-pos' : 'status-neg');
+            if(status.includes('Descartado')) css = 'status-neg';
+            
+            return `
+                <div class="result-row">
+                    <div>
+                        <div style="font-weight:bold; font-size:1rem; color:#2c3e50">${title}</div>
+                        <div style="font-size:0.75rem; color:#95a5a6">Contagem: ${count}</div>
+                    </div>
+                    <span class="status-badge ${css}">${status}</span>
+                </div>
+            `;
+        }
 
     </script>
 </body>
