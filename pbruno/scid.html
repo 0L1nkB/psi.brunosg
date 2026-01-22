@@ -3,433 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCID-5-CV: Versão Acadêmica | Bruno de Souza</title>
+    <title>SCID-5-CV: Fluxo Contínuo | Bruno de Souza</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #2980b9;
-            --bg-color: #f4f6f7;
-            --text-color: #2c3e50;
-            --sidebar-width: 280px;
-            --success: #27ae60;
-            --danger: #c0392b;
-            --neutral: #f39c12;
+            --bg-color: #f0f8ff;
+            --sidebar-bg: #2d3436;
+            --primary: #6c5ce7;
+            --text: #2d3436;
+            --card-bg: #ffffff;
+            --positive: #ef5350;
+            --negative: #00b894;
+            --neutral: #fdcb6e;
         }
 
         * { box-sizing: border-box; }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             background-color: var(--bg-color);
             margin: 0;
             padding: 0;
             height: 100vh;
+            color: var(--text);
             display: flex;
             overflow: hidden;
-            color: var(--text-color);
         }
 
-        /* --- SIDEBAR --- */
+        /* SIDEBAR */
         #sidebar {
-            width: var(--sidebar-width);
-            background-color: white;
-            border-right: 1px solid #ddd;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: white;
             display: flex;
             flex-direction: column;
-            padding: 15px;
-            z-index: 100;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
             overflow-y: auto;
+            z-index: 100;
         }
 
         .brand {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             margin-bottom: 20px;
             color: var(--primary);
             text-transform: uppercase;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent);
             text-align: center;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
         }
 
-        .menu-group {
+        .menu-section {
             font-size: 0.7rem;
             text-transform: uppercase;
-            color: #95a5a6;
+            color: #b2bec3;
             margin-top: 15px;
             margin-bottom: 5px;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            padding-left: 10px;
+            letter-spacing: 1px;
         }
 
         .nav-item {
-            padding: 10px;
-            margin-bottom: 4px;
-            border-radius: 5px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: 0.2s;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-weight: 600;
+            color: #dfe6e9;
             font-size: 0.85rem;
-            color: #7f8c8d;
-            border: 1px solid transparent;
         }
 
-        .nav-item:hover { background-color: #ecf0f1; color: var(--primary); }
-        .nav-item.active { 
-            background-color: var(--primary); 
-            color: white; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        .nav-item:hover { background-color: rgba(255,255,255,0.1); color: white; }
+        .nav-item.active { background-color: var(--primary); color: white; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.4); }
 
         .score-badge {
-            background: rgba(0,0,0,0.2);
-            padding: 1px 6px;
-            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
             font-size: 0.7rem;
-            font-weight: bold;
         }
 
-        /* --- MAIN --- */
+        /* MAIN CONTENT */
         #main-content {
             flex: 1;
-            display: flex;
-            flex-direction: column;
             padding: 30px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         header {
+            width: 100%;
+            max-width: 900px;
             margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        h2 { margin: 0; font-weight: 300; font-size: 1.6rem; color: var(--primary); }
+        h2 { margin: 0; color: var(--primary); font-weight: 800; font-size: 1.4rem; }
 
-        /* INTERVIEW GRID */
         #interview-area {
             display: grid;
-            grid-template-columns: 3fr 2fr 90px;
+            grid-template-columns: 2fr 1fr 90px;
             gap: 20px;
-            height: 100%;
+            width: 100%;
+            max-width: 1100px;
+            height: calc(100vh - 150px);
         }
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        .question-panel {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
+            border: 2px solid white;
+            overflow-y: auto;
         }
 
-        .q-card { border-left: 5px solid var(--accent); overflow-y: auto; }
-        .c-card { background: #fdfdfd; border: 1px solid #eee; overflow-y: auto; }
+        .question-code {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
 
-        .q-id { font-weight: 900; color: var(--accent); margin-bottom: 10px; display: block; font-size: 1.1rem; }
-        .q-text { font-size: 1.25rem; line-height: 1.5; font-weight: 500; margin-bottom: 20px; }
-        
-        .q-sub {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            color: #555;
+        .question-text {
+            font-size: 1.25rem;
+            line-height: 1.5;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .sub-questions {
             font-size: 0.95rem;
-            margin-bottom: 15px;
-            border-left: 3px solid #bdc3c7;
-            font-style: italic;
+            color: #4b6584;
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
-        .q-inst {
+        .instruction {
             margin-top: auto;
             background: #fff3cd;
             color: #856404;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .criteria-label { font-size: 0.7rem; text-transform: uppercase; color: #b2bec3; font-weight: 900; margin-bottom: 10px; display: block; }
-        .c-text { font-size: 0.9rem; line-height: 1.5; color: #555; }
-
-        /* ACTION BUTTONS */
-        .action-panel { display: flex; flex-direction: column; gap: 10px; }
-        .btn-score {
-            flex: 1;
-            border: none;
+            padding: 12px;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: white;
-            transition: transform 0.1s;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px dashed #ffeeba;
         }
-        .btn-score:hover { transform: scale(1.05); }
-        .btn-yes { background-color: var(--danger); }
-        .btn-no { background-color: var(--success); }
-        .btn-unsure { background-color: var(--neutral); }
+
+        .criteria-panel {
+            background: #dfe6e9;
+            border-radius: 20px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 2px solid #b2bec3;
+            color: #2d3436;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .action-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        .btn-action {
+            width: 100%;
+            height: 70px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-action:hover { transform: scale(1.05); }
+        .btn-plus { background-color: var(--positive); }
+        .btn-minus { background-color: var(--negative); }
+        .btn-unsure { background-color: var(--neutral); color: #2d3436; }
 
         /* DASHBOARD */
-        #dashboard-view { display: none; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        
-        .result-row {
-            display: flex; justify-content: space-between; padding: 12px;
-            border-bottom: 1px solid #eee; align-items: center;
+        #dashboard-view {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            padding-bottom: 50px;
         }
-        .result-row:last-child { border-bottom: none; }
-        
-        .status-badge {
-            padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; text-transform: uppercase;
-        }
-        .status-pos { background: #fadbd8; color: #c0392b; }
-        .status-neg { background: #d5f5e3; color: #27ae60; }
 
+        .result-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 8px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-card.positive { border-left-color: var(--positive); }
+        .result-card.negative { border-left-color: var(--negative); }
+        
+        .status-tag {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .status-pos { background: #ffebee; color: var(--positive); }
+        .status-neg { background: #e0f2f1; color: var(--negative); }
+
+        /* PRINT STYLES */
         @media print {
             #sidebar, .action-panel, button { display: none !important; }
             #dashboard-view { display: block !important; }
-            #interview-area { display: none; }
-            body { background: white; -webkit-print-color-adjust: exact; }
+            body, #main-content { overflow: visible; height: auto; background: white; }
+            .result-card { box-shadow: none; border: 1px solid #eee; break-inside: avoid; }
         }
+
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <div class="brand">SCID-5 ACADÊMICO</div>
+        <div class="brand"><i class="fa-solid fa-brain"></i> SCID-5 AUTO</div>
         
-        <div class="menu-group">Módulo A: Humor</div>
-        <div class="nav-item active" onclick="switchModule('A_DEP')" id="nav-A_DEP"><span>Depressão Maior</span><span class="score-badge" id="score-A_DEP">0</span></div>
-        <div class="nav-item" onclick="switchModule('A_MANIA')" id="nav-A_MANIA"><span>Mania/Hipomania</span><span class="score-badge" id="score-A_MANIA">0</span></div>
+        <div class="menu-section">Módulo A: Humor</div>
+        <div class="nav-item active" onclick="switchModule('A_DEP')" id="nav-A_DEP"><span><i class="fa-solid fa-cloud-rain"></i> Depressão</span><span class="score-badge" id="score-A_DEP">0</span></div>
+        <div class="nav-item" onclick="switchModule('A_MANIA')" id="nav-A_MANIA"><span><i class="fa-solid fa-bolt"></i> Mania</span><span class="score-badge" id="score-A_MANIA">0</span></div>
 
-        <div class="menu-group">Módulo B: Psicose</div>
-        <div class="nav-item" onclick="switchModule('B_PSYCH')" id="nav-B_PSYCH"><span>Sint. Psicóticos</span><span class="score-badge" id="score-B_PSYCH">0</span></div>
+        <div class="menu-section">Módulo B: Psicose</div>
+        <div class="nav-item" onclick="switchModule('B_PSYCH')" id="nav-B_PSYCH"><span><i class="fa-solid fa-eye"></i> Rastreio Psicose</span><span class="score-badge" id="score-B_PSYCH">0</span></div>
 
-        <div class="menu-group">Módulo D: Diferencial</div>
-        <div class="nav-item" onclick="switchModule('D_DIFF')" id="nav-D_DIFF" style="color:#e67e22"><span>Diag. Diferencial</span><span class="score-badge" id="score-D_DIFF">-</span></div>
+        <div class="menu-section">Módulo E: Substâncias</div>
+        <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST"><span><i class="fa-solid fa-wine-bottle"></i> Substâncias</span><span class="score-badge" id="score-E_SUBST">0</span></div>
 
-        <div class="menu-group">Módulo E: Substâncias</div>
-        <div class="nav-item" onclick="switchModule('E_SUBST')" id="nav-E_SUBST"><span>Uso de Substâncias</span><span class="score-badge" id="score-E_SUBST">0</span></div>
+        <div class="menu-section">Módulo F: Ansiedade</div>
+        <div class="nav-item" onclick="switchModule('F_PANIC')" id="nav-F_PANIC"><span><i class="fa-solid fa-person-falling-burst"></i> Pânico</span><span class="score-badge" id="score-F_PANIC">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_AGORA')" id="nav-F_AGORA"><span><i class="fa-solid fa-house-lock"></i> Agorafobia</span><span class="score-badge" id="score-F_AGORA">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_SOCIAL')" id="nav-F_SOCIAL"><span><i class="fa-solid fa-users-slash"></i> Ans. Social</span><span class="score-badge" id="score-F_SOCIAL">0</span></div>
+        <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD"><span><i class="fa-solid fa-head-side-virus"></i> TAG</span><span class="score-badge" id="score-F_GAD">0</span></div>
 
-        <div class="menu-group">Módulo F: Ansiedade</div>
-        <div class="nav-item" onclick="switchModule('F_PANIC')" id="nav-F_PANIC"><span>Pânico</span><span class="score-badge" id="score-F_PANIC">0</span></div>
-        <div class="nav-item" onclick="switchModule('F_AGORA')" id="nav-F_AGORA"><span>Agorafobia</span><span class="score-badge" id="score-F_AGORA">0</span></div>
-        <div class="nav-item" onclick="switchModule('F_SOCIAL')" id="nav-F_SOCIAL"><span>Ansiedade Social</span><span class="score-badge" id="score-F_SOCIAL">0</span></div>
-        <div class="nav-item" onclick="switchModule('F_GAD')" id="nav-F_GAD"><span>TAG</span><span class="score-badge" id="score-F_GAD">0</span></div>
+        <div class="menu-section">Outros</div>
+        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC"><span><i class="fa-solid fa-rotate"></i> TOC</span><span class="score-badge" id="score-G_TOC">0</span></div>
+        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT"><span><i class="fa-solid fa-land-mine-on"></i> TEPT</span><span class="score-badge" id="score-G_TEPT">0</span></div>
+        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD"><span><i class="fa-solid fa-bolt-lightning"></i> TDAH</span><span class="score-badge" id="score-H_ADHD">0</span></div>
+        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST"><span><i class="fa-solid fa-scale-unbalanced"></i> Adaptação</span><span class="score-badge" id="score-J_ADJUST">0</span></div>
+        <div class="nav-item" onclick="switchModule('D_DIFF')" id="nav-D_DIFF" style="color:#fdcb6e"><span><i class="fa-solid fa-scale-balanced"></i> Diferencial</span><span class="score-badge" id="score-D_DIFF">-</span></div>
 
-        <div class="menu-group">Módulos G, H, I</div>
-        <div class="nav-item" onclick="switchModule('G_TOC')" id="nav-G_TOC"><span>TOC</span><span class="score-badge" id="score-G_TOC">0</span></div>
-        <div class="nav-item" onclick="switchModule('G_TEPT')" id="nav-G_TEPT"><span>TEPT</span><span class="score-badge" id="score-G_TEPT">0</span></div>
-        <div class="nav-item" onclick="switchModule('H_ADHD')" id="nav-H_ADHD"><span>TDAH Adulto</span><span class="score-badge" id="score-H_ADHD">0</span></div>
-        <div class="nav-item" onclick="switchModule('I_SCREEN')" id="nav-I_SCREEN"><span>Outros (Rastreio)</span><span class="score-badge" id="score-I_SCREEN">0</span></div>
-
-        <div class="menu-group">Módulo J: Adaptação</div>
-        <div class="nav-item" onclick="switchModule('J_ADJUST')" id="nav-J_ADJUST"><span>Adaptação</span><span class="score-badge" id="score-J_ADJUST">0</span></div>
-
-        <div class="nav-item" onclick="showDashboard()" style="margin-top:auto; justify-content:center; background:#2c3e50; color:white;">
-            <i class="fa-solid fa-file-invoice"></i> &nbsp; RELATÓRIO
+        <div class="nav-item" onclick="showDashboard()" style="margin-top:auto; background:#2d3436; border:1px solid #636e72; justify-content:center;">
+            <span><i class="fa-solid fa-clipboard-check"></i> RESULTADO</span>
         </div>
     </div>
 
     <div id="main-content">
-        <header>
-            <h2 id="module-title">Carregando...</h2>
-            <div style="font-size:0.85rem; color:#7f8c8d; font-weight:bold" id="progress-display">Item 1</div>
+        <header id="interview-header">
+            <h2 id="module-title">SCID-5-CV Digital</h2>
+            <div style="font-weight:bold; color:#636e72; background:white; padding:5px 15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05)" id="progress-display">Item 1</div>
         </header>
 
         <div id="interview-area">
-            <div class="card q-card">
-                <span class="q-id" id="q-id">...</span>
-                <div class="q-text" id="q-text">Selecione um módulo</div>
-                <div class="q-sub" id="q-sub" style="display:none;"></div>
-                <div class="q-inst" id="q-inst" style="display:none;"></div>
+            <div class="question-panel" data-aos="fade-right">
+                <span class="question-code" id="q-id">A1</span>
+                <div class="question-text" id="q-text">Carregando...</div>
+                <div class="sub-questions" id="q-sub" style="display:none;"></div>
+                <div class="instruction" id="q-inst" style="display:none;"></div>
             </div>
 
-            <div class="card c-card">
-                <span class="criteria-label">Critério DSM-5</span>
-                <div class="c-text" id="c-text">...</div>
+            <div class="criteria-panel" data-aos="fade-left">
+                <div style="font-weight:800; margin-bottom:10px; color:#636e72; text-transform:uppercase; font-size:0.75rem; letter-spacing:1px;">Critério DSM-5</div>
+                <div class="criteria-text" id="c-text">Carregando...</div>
             </div>
 
             <div class="action-panel">
-                <button class="btn-score btn-yes" onclick="registerScore('+')"><i class="fa-solid fa-check"></i></button>
-                <button class="btn-score btn-unsure" onclick="registerScore('?')"><i class="fa-solid fa-question"></i></button>
-                <button class="btn-score btn-no" onclick="registerScore('-')"><i class="fa-solid fa-xmark"></i></button>
+                <button class="btn-action btn-plus" onclick="registerScore('+')"><i class="fa-solid fa-check"></i></button>
+                <button class="btn-action btn-unsure" onclick="registerScore('?')"><i class="fa-solid fa-question"></i></button>
+                <button class="btn-action btn-minus" onclick="registerScore('-')"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
 
         <div id="dashboard-view">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; border-bottom:2px solid #eee; padding-bottom:15px;">
-                <h2 style="font-size:1.5rem">Relatório de Avaliação Diagnóstica (SCID-5-CV)</h2>
-                <button onclick="window.print()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">Salvar PDF</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2>Relatório Clínico</h2>
+                <button onclick="window.print()" style="background:#6c5ce7; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;"><i class="fa-solid fa-print"></i> Salvar PDF</button>
             </div>
             
             <div id="differential-alert"></div>
             <div id="dashboard-content"></div>
             
-            <div style="margin-top:40px; font-size:0.75rem; color:#7f8c8d; text-align:center;">
-                Documento gerado para fins acadêmicos. Baseado no protocolo SCID-5-CV (APA).<br>
-                Este relatório não substitui uma avaliação clínica formal realizada por psiquiatra ou psicólogo.
+            <div style="margin-top:40px; padding-top:20px; border-top:2px solid #eee; text-align:center; color:#999; font-size:0.8rem;">
+                Ferramenta Didática baseada na SCID-5-CV. Não substitui avaliação médica profissional.
             </div>
         </div>
     </div>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        
-        // --- BANCO DE DADOS UNIFICADO ---
-        // Definição monolítica para garantir integridade
+        AOS.init();
+
+        // ORDEM DE EXECUÇÃO AUTOMÁTICA
+        const moduleOrder = [
+            'A_DEP', 'A_MANIA', 'B_PSYCH', 'E_SUBST', 
+            'F_PANIC', 'F_AGORA', 'F_SOCIAL', 'F_GAD', 
+            'G_TOC', 'G_TEPT', 'H_ADHD', 'J_ADJUST', 'D_DIFF'
+        ];
+
         const database = {
             'A_DEP': [
-                { id: "A1", text: "No último mês, desde [DATA], houve algum período de tempo em que você se sentiu deprimido ou abatido na maior parte do dia, quase todos os dias?", sub: "Alguém comentou que você parecia triste, abatido ou deprimido?", criteria: "A. Humor deprimido na maior parte do dia, quase todos os dias.", inst: "SE VISIVELMENTE DEPRIMIDO, PODE CLASSIFICAR (+) MESMO SE NEGADO." },
-                { id: "A2", text: "Durante esse período, você sentiu menos interesse ou prazer com coisas de que normalmente gosta?", criteria: "B. Acentuada diminuição de interesse ou prazer.", inst: "VERIFIQUE SE A1 OU A2 = (+). SE AMBOS (-), PULE O MÓDULO." },
-                { type: 'logic', check: function(s) { return (s['A1']==='+' || s['A2']==='+') ? 'NEXT' : 'STOP'; } },
-                { id: "A3", text: "Como estava o seu apetite? Houve mudança de peso significativa?", criteria: "C. Perda ou ganho significativo de peso sem dieta." },
-                { id: "A4", text: "Como você tem dormido? (Insônia ou dormir demais?)", criteria: "D. Insônia ou hipersonia quase todos os dias." },
-                { id: "A5", text: "Você tem se sentido agitado ou, ao contrário, lento?", criteria: "E. Agitação ou retardo psicomotor (observável)." },
-                { id: "A6", text: "Como tem estado sua energia? Sente-se cansado?", criteria: "F. Fadiga ou perda de energia." },
-                { id: "A7", text: "Você tem se sentido inútil ou culpado?", criteria: "G. Sentimentos de inutilidade ou culpa excessiva." },
-                { id: "A8", text: "Dificuldade para pensar, concentrar-se ou tomar decisões?", criteria: "H. Capacidade diminuída para pensar/concentrar." },
-                { id: "A9", text: "Você tem pensado em morte ou em se machucar?", criteria: "I. Pensamentos de morte ou ideação suicida.", inst: "AVALIE RISCO." }
+                { id: "A1", text: "No último mês, sentiu-se deprimido na maior parte do dia?", criteria: "A. Humor deprimido." },
+                { id: "A2", text: "Perdeu o interesse ou prazer nas coisas?", criteria: "B. Anedonia." },
+                { type: 'logic', check: (s) => (s['A1']==='+' || s['A2']==='+') ? 'NEXT' : 'STOP' },
+                { id: "A3", text: "Mudança de apetite ou peso?", criteria: "C. Peso/Apetite." },
+                { id: "A4", text: "Problemas de sono?", criteria: "D. Sono." },
+                { id: "A5", text: "Agitação ou lentidão?", criteria: "E. Psicomotor." },
+                { id: "A6", text: "Fadiga ou perda de energia?", criteria: "F. Energia." },
+                { id: "A7", text: "Inutilidade ou culpa?", criteria: "G. Culpa." },
+                { id: "A8", text: "Dificuldade de concentração?", criteria: "H. Cognição." },
+                { id: "A9", text: "Pensamentos de morte?", criteria: "I. Suicídio." }
             ],
             'A_MANIA': [
-                { id: "C1", text: "Já teve um período em que se sentiu muito 'elevado', eufórico ou 'no topo do mundo'?", criteria: "A. Humor anormalmente elevado/expansivo." },
-                { id: "C2", text: "Se não eufórico: Teve um período em que ficou muito irritável ou raivoso?", criteria: "A (Alt). Humor anormalmente irritável." },
-                { type: 'logic', check: function(s) { return (s['C1']==='+' || s['C2']==='+') ? 'NEXT' : 'STOP'; } },
-                { id: "C3", text: "Sua autoestima estava inflada? Sentia-se grandioso?", criteria: "1. Autoestima inflada ou grandiosidade." },
-                { id: "C4", text: "Precisou dormir menos do que o habitual?", criteria: "2. Redução da necessidade de sono." },
-                { id: "C5", text: "Estava mais falante do que o habitual?", criteria: "3. Mais loquaz/Pressão por falar." },
-                { id: "C6", text: "Seus pensamentos estavam acelerados?", criteria: "4. Fuga de ideias." },
-                { id: "C7", text: "Distraía-se facilmente?", criteria: "5. Distratibilidade." },
-                { id: "C8", text: "Ficou muito ativo (trabalho, social, sexual)?", criteria: "6. Aumento da atividade dirigida." },
-                { id: "C9", text: "Fez coisas arriscadas (gastos, sexo, velocidade)?", criteria: "7. Envolvimento em atividades de risco." }
+                { id: "C1", text: "Já teve período de euforia ou humor elevado?", criteria: "A. Humor Elevado." },
+                { id: "C2", text: "Ou período de extrema irritabilidade?", criteria: "A. Irritabilidade." },
+                { type: 'logic', check: (s) => (s['C1']==='+' || s['C2']==='+') ? 'NEXT' : 'STOP' },
+                { id: "C3", text: "Grandiosidade?", criteria: "1. Autoestima." },
+                { id: "C4", text: "Menor necessidade de sono?", criteria: "2. Sono reduzido." },
+                { id: "C5", text: "Mais falante?", criteria: "3. Loquacidade." },
+                { id: "C6", text: "Pensamentos acelerados?", criteria: "4. Fuga de ideias." },
+                { id: "C7", text: "Distratibilidade?", criteria: "5. Atenção." },
+                { id: "C8", text: "Aumento de atividades?", criteria: "6. Atividade dirigida." },
+                { id: "C9", text: "Comportamentos de risco?", criteria: "7. Risco." }
             ],
             'B_PSYCH': [
-                { id: "B1", text: "Você já ouviu coisas que outras pessoas não ouviam, como barulhos ou vozes?", criteria: "A. Alucinações Auditivas." },
-                { id: "B2", text: "Você já teve visões ou viu coisas que outros não viam?", criteria: "A. Alucinações Visuais." },
-                { id: "B3", text: "Você já sentiu que as pessoas estavam te seguindo, espionando ou querendo te machucar?", criteria: "A. Delírios Persecutórios." },
-                { id: "B4", text: "Você já acreditou ter poderes especiais, uma missão divina ou ser alguém famoso?", criteria: "A. Delírios de Grandeza." },
-                { id: "B5", text: "Já sentiu que seus pensamentos eram controlados por outros ou que colocavam pensamentos na sua cabeça?", criteria: "A. Delírios de Controle." }
-            ],
-            'D_DIFF': [
-                { id: "D1", text: "(SE HOUVE PSICOSE E DEPRESSÃO): As alucinações/delírios ocorrem APENAS quando você está deprimido/eufórico?", sub: "Ou elas acontecem mesmo quando seu humor está normal?", criteria: "Diagnóstico Diferencial: Transtorno de Humor com Psicose vs. Transtorno Psicótico (Esquizoafetivo/Esquizofrenia)." },
-                { id: "D2", text: "Você acha que esses sintomas começaram por causa de drogas, álcool ou algum medicamento?", criteria: "Diagnóstico Diferencial: Perturbação Induzida por Substância." },
-                { id: "D3", text: "Você tem alguma condição médica (ex: tireoide) que o médico disse que poderia causar isso?", criteria: "Diagnóstico Diferencial: Devido a Outra Condição Médica." }
+                { id: "B1", text: "Ouve vozes que outros não ouvem?", criteria: "Alucinação Auditiva." },
+                { id: "B2", text: "Vê coisas que outros não veem?", criteria: "Alucinação Visual." },
+                { id: "B3", text: "Sente-se perseguido ou espionado?", criteria: "Delírio Persecutório." },
+                { id: "B4", text: "Acredita ter poderes especiais?", criteria: "Delírio de Grandeza." },
+                { id: "B5", text: "Sente que leem ou controlam sua mente?", criteria: "Delírio de Controle." }
             ],
             'E_SUBST': [
-                { id: "E1", text: "Nos últimos 12 meses, você bebeu álcool frequentemente ou em quantidades maiores do que pretendia?", criteria: "Rastreio de Uso de Álcool." },
-                { id: "E2", text: "Nos últimos 12 meses, você usou drogas (maconha, cocaína, remédios sem receita) para alterar o humor?", criteria: "Rastreio de Uso de Drogas." },
-                { type: 'logic', check: function(s) { return (s['E1']==='+' || s['E2']==='+') ? 'NEXT' : 'STOP'; } },
-                { id: "E3", text: "Você consome em quantidades maiores ou por mais tempo do que pretendia?", criteria: "1. Uso em excesso." },
-                { id: "E4", text: "Você tentou parar ou controlar o uso, mas não conseguiu?", criteria: "2. Esforços infrutíferos para parar." },
-                { id: "E5", text: "Você gasta muito tempo para obter, usar ou se recuperar da substância?", criteria: "3. Tempo dispendido." },
-                { id: "E6", text: "Você sente uma vontade incontrolável (fissura) de usar?", criteria: "4. Fissura (Craving)." },
-                { id: "E7", text: "O uso prejudicou seu trabalho, escola ou tarefas domésticas?", criteria: "5. Fracasso em obrigações." },
-                { id: "E8", text: "Continuou usando mesmo tendo problemas sociais ou interpessoais causados por isso?", criteria: "6. Problemas sociais persistentes." },
-                { id: "E9", text: "Você deixou de fazer atividades importantes (lazer, social) por causa do uso?", criteria: "7. Abandono de atividades." },
-                { id: "E10", text: "Usou em situações fisicamente perigosas (ex: dirigir embriagado)?", criteria: "8. Uso em situações de risco físico." },
-                { id: "E11", text: "Continuou usando mesmo sabendo que tinha um problema físico ou psicológico causado pela substância?", criteria: "9. Uso continuado apesar de problemas." },
-                { id: "E12", text: "Você precisou aumentar a dose para ter o mesmo efeito? (Tolerância)", criteria: "10. Tolerância." },
-                { id: "E13", text: "Você sentiu sintomas de abstinência (tremores, suor, ansiedade) ao ficar sem usar?", criteria: "11. Abstinência." }
+                { id: "E1", text: "Uso frequente de álcool?", criteria: "Rastreio Álcool." },
+                { id: "E2", text: "Uso de drogas?", criteria: "Rastreio Drogas." },
+                { type: 'logic', check: (s) => (s['E1']==='+' || s['E2']==='+') ? 'NEXT' : 'STOP' },
+                { id: "E3", text: "Uso maior que o pretendido?", criteria: "1. Controle." },
+                { id: "E4", text: "Desejo de parar sem sucesso?", criteria: "2. Controle." },
+                { id: "E5", text: "Muito tempo gasto com uso?", criteria: "3. Tempo." },
+                { id: "E6", text: "Fissura (Craving)?", criteria: "4. Fissura." },
+                { id: "E7", text: "Prejuízo no trabalho/casa?", criteria: "5. Obrigações." },
+                { id: "E8", text: "Problemas sociais pelo uso?", criteria: "6. Social." },
+                { id: "E9", text: "Abandonou atividades?", criteria: "7. Lazer." },
+                { id: "E10", text: "Uso em situações perigosas?", criteria: "8. Risco físico." },
+                { id: "E11", text: "Uso apesar de problemas de saúde?", criteria: "9. Saúde." },
+                { id: "E12", text: "Tolerância?", criteria: "10. Tolerância." },
+                { id: "E13", text: "Abstinência?", criteria: "11. Abstinência." }
             ],
             'F_PANIC': [
-                { id: "F1", text: "No último mês, você teve um ataque de pânico inesperado (pico de medo intenso que vem 'do nada')?", criteria: "A. Ataques de pânico recorrentes e inesperados." },
-                { type: 'logic', check: function(s) { return s['F1']==='+' ? 'NEXT' : 'STOP'; } },
-                { id: "F2", text: "Depois do ataque, você ficou um mês ou mais preocupado com a possibilidade de ter outro?", criteria: "B. Preocupação persistente ou mudança de comportamento." }
+                { id: "F1", text: "Ataque de pânico inesperado?", criteria: "A. Ataque." },
+                { type: 'logic', check: (s) => s['F1']==='+' ? 'NEXT' : 'STOP' },
+                { id: "F2", text: "Preocupação com novos ataques?", criteria: "B. Preocupação." }
             ],
             'F_AGORA': [
-                { id: "F23", text: "Nos últimos 6 meses, você sentiu medo ou ansiedade intensa em: transporte público, espaços abertos, locais fechados, filas ou sair sozinho?", criteria: "A. Medo/ansiedade em 2+ situações agorafóbicas." },
-                { type: 'logic', check: function(s) { return s['F23']==='+' ? 'NEXT' : 'STOP'; } },
-                { id: "F24", text: "Você teme essas situações porque acha que seria difícil escapar ou obter ajuda?", criteria: "B. Cognição agorafóbica." }
+                { id: "F23", text: "Medo de transporte, lugares abertos/fechados?", criteria: "A. Situações." },
+                { type: 'logic', check: (s) => s['F23']==='+' ? 'NEXT' : 'STOP' },
+                { id: "F24", text: "Medo de não ter escape?", criteria: "B. Cognição." }
             ],
             'F_SOCIAL': [
-                { id: "F32", text: "Nos últimos 6 meses, sentiu medo acentuado em situações sociais onde poderia ser avaliado (falar em público, comer com outros)?", criteria: "A. Medo/ansiedade em situações sociais." },
-                { type: 'logic', check: function(s) { return s['F32']==='+' ? 'NEXT' : 'STOP'; } },
-                { id: "F33", text: "Você teme ser avaliado negativamente, humilhado ou rejeitado?", criteria: "B. Medo de avaliação negativa." }
+                { id: "F32", text: "Medo de situações sociais?", criteria: "A. Exposição." },
+                { type: 'logic', check: (s) => s['F32']==='+' ? 'NEXT' : 'STOP' },
+                { id: "F33", text: "Medo de julgamento negativo?", criteria: "B. Julgamento." }
             ],
             'F_GAD': [
-                { id: "F42", text: "Nos últimos 6 meses, você tem se sentido muito ansioso e preocupado na maioria dos dias?", sub: "Preocupado com diversas coisas (trabalho, escola, finanças)?", criteria: "A. Ansiedade e preocupação excessivas (expectativa apreensiva)." },
-                { type: 'logic', check: function(s) { return s['F42']==='+' ? 'NEXT' : 'STOP'; } },
-                { id: "F43", text: "Você acha difícil controlar essa preocupação?", criteria: "B. Dificuldade em controlar a preocupação." },
-                { id: "F44", text: "Essa ansiedade vem acompanhada de sintomas físicos (inquietação, fadiga, tensão muscular)?", criteria: "C. Sintomas físicos associados (3 ou mais)." }
+                { id: "F42", text: "Ansiedade excessiva (6 meses)?", criteria: "A. Ansiedade." },
+                { type: 'logic', check: (s) => s['F42']==='+' ? 'NEXT' : 'STOP' },
+                { id: "F43", text: "Difícil controlar?", criteria: "B. Controle." },
+                { id: "F44", text: "Sintomas físicos (tensão, sono)?", criteria: "C. Físicos." }
             ],
             'G_TOC': [
-                { id: "G1", text: "No último mês, você teve pensamentos, impulsos ou imagens indesejados que não saíam da cabeça (Obsessões)?", criteria: "A. Presença de Obsessões." },
-                { id: "G2", text: "Você sentiu que precisava repetir certos atos (lavar, verificar, contar) para aliviar a ansiedade (Compulsões)?", criteria: "A. Presença de Compulsões." },
-                { type: 'logic', check: function(s) { return (s['G1']==='+' || s['G2']==='+') ? 'NEXT' : 'STOP'; } },
-                { id: "G3", text: "Essas obsessões ou compulsões consomem muito tempo (mais de 1 hora/dia) ou causam grande sofrimento?", criteria: "B. Tempo dispendido ou sofrimento clínico." }
+                { id: "G1", text: "Obsessões (pensamentos intrusivos)?", criteria: "A. Obsessões." },
+                { id: "G2", text: "Compulsões (rituais)?", criteria: "A. Compulsões." },
+                { type: 'logic', check: (s) => (s['G1']==='+' || s['G2']==='+') ? 'NEXT' : 'STOP' },
+                { id: "G3", text: "Toma tempo ou causa sofrimento?", criteria: "B. Gravidade." }
             ],
             'G_TEPT': [
-                { id: "G4", text: "Você já foi exposto a um evento traumático (risco de morte, violência sexual, lesão grave)?", criteria: "A. Exposição a evento traumático." },
-                { type: 'logic', check: function(s) { return s['G4']==='+' ? 'NEXT' : 'STOP'; } },
-                { id: "G5", text: "O evento volta à sua mente de forma intrusiva (pesadelos, flashbacks)?", criteria: "B. Sintomas de Intrusão." },
-                { id: "G6", text: "Você evita lugares, pessoas ou pensamentos que lembrem o trauma?", criteria: "C. Evitação persistente." },
-                { id: "G7", text: "Seu humor ou pensamentos pioraram após o evento (culpa, medo, desapego)?", criteria: "D. Alterações negativas na cognição/humor." },
-                { id: "G8", text: "Você ficou mais 'alerta', assustado ou irritado (hipervigilância)?", criteria: "E. Alterações na excitação/reatividade." }
+                { id: "G4", text: "Trauma grave (risco vida/violência)?", criteria: "A. Trauma." },
+                { type: 'logic', check: (s) => s['G4']==='+' ? 'NEXT' : 'STOP' },
+                { id: "G5", text: "Flashbacks/Pesadelos?", criteria: "B. Intrusão." },
+                { id: "G6", text: "Evitação?", criteria: "C. Evitação." },
+                { id: "G7", text: "Humor negativo/culpa?", criteria: "D. Humor." },
+                { id: "G8", text: "Hipervigilância?", criteria: "E. Excitação." }
             ],
             'H_ADHD': [
-                { id: "H1", text: "Frequentemente deixa de prestar atenção a detalhes ou comete erros por descuido?", criteria: "A1. Desatenção." },
-                { id: "H2", text: "Tem dificuldade para manter a atenção em tarefas ou atividades?", criteria: "A1. Desatenção." },
-                { id: "H3", text: "Parece não escutar quando lhe dirigem a palavra?", criteria: "A1. Desatenção." },
-                { id: "H4", text: "Não segue instruções até o fim e não termina tarefas?", criteria: "A1. Desatenção." },
-                { id: "H5", text: "Tem dificuldade para organizar tarefas e atividades?", criteria: "A1. Desatenção." },
-                { id: "H6", text: "Evita tarefas que exigem esforço mental constante?", criteria: "A1. Desatenção." },
-                { id: "H7", text: "Perde coisas necessárias para tarefas (chaves, documentos)?", criteria: "A1. Desatenção." },
-                { id: "H8", text: "É facilmente distraído por estímulos externos?", criteria: "A1. Desatenção." },
-                { id: "H9", text: "É esquecido em relação a atividades cotidianas?", criteria: "A1. Desatenção." },
-                { id: "H10", text: "Frequentemente remexe as mãos/pés ou se contorce na cadeira?", criteria: "A2. Hiperatividade." },
-                { id: "H11", text: "Levanta-se em situações em que deveria ficar sentado?", criteria: "A2. Hiperatividade." },
-                { id: "H12", text: "Sente-se inquieto, como se estivesse 'com um motor ligado'?", criteria: "A2. Hiperatividade." },
-                { id: "H13", text: "Tem dificuldade em lazer silencioso?", criteria: "A2. Hiperatividade." },
-                { id: "H14", text: "Está frequentemente 'a mil por hora'?", criteria: "A2. Hiperatividade." },
-                { id: "H15", text: "Fala em demasia?", criteria: "A2. Hiperatividade." },
-                { id: "H16", text: "Deixa escapar respostas antes de a pergunta ser concluída?", criteria: "A2. Impulsividade." },
-                { id: "H17", text: "Tem dificuldade em esperar sua vez?", criteria: "A2. Impulsividade." },
-                { id: "H18", text: "Interrompe os outros ou se intromete?", criteria: "A2. Impulsividade." },
-                { id: "H19", text: "Vários desses sintomas estavam presentes antes dos 12 anos de idade?", criteria: "B. Início na infância." },
-                { id: "H20", text: "Os sintomas interferem no seu funcionamento social, acadêmico ou profissional?", criteria: "C. Prejuízo funcional." }
-            ],
-            'I_SCREEN': [
-                { id: "I1", text: "ALIMENTAR: Você já teve episódios de compulsão alimentar (comer muito em pouco tempo com perda de controle)?", criteria: "Rastreio: Transtorno da Compulsão Alimentar Periódica." },
-                { id: "I2", text: "ALIMENTAR: Você usa métodos para não ganhar peso (vômito, laxantes, exercício excessivo)?", criteria: "Rastreio: Bulimia Nervosa." },
-                { id: "I3", text: "ALIMENTAR: Você se considera gordo ou tem medo intenso de engordar, mesmo estando com peso baixo?", criteria: "Rastreio: Anorexia Nervosa." }
+                { id: "H1", text: "Erros por descuido?", criteria: "Desatenção." },
+                { id: "H2", text: "Difícil manter atenção?", criteria: "Desatenção." },
+                { id: "H3", text: "Não escuta?", criteria: "Desatenção." },
+                { id: "H4", text: "Não finaliza tarefas?", criteria: "Desatenção." },
+                { id: "H5", text: "Desorganizado?", criteria: "Desatenção." },
+                { id: "H6", text: "Evita esforço mental?", criteria: "Desatenção." },
+                { id: "H7", text: "Perde coisas?", criteria: "Desatenção." },
+                { id: "H8", text: "Distrai-se fácil?", criteria: "Desatenção." },
+                { id: "H9", text: "Esquecido?", criteria: "Desatenção." },
+                { id: "H10", text: "Inquieto (mãos/pés)?", criteria: "Hiperatividade." },
+                { id: "H11", text: "Levanta-se?", criteria: "Hiperatividade." },
+                { id: "H12", text: "Motor ligado?", criteria: "Hiperatividade." },
+                { id: "H13", text: "Lazer barulhento?", criteria: "Hiperatividade." },
+                { id: "H14", text: "A mil por hora?", criteria: "Hiperatividade." },
+                { id: "H15", text: "Fala muito?", criteria: "Hiperatividade." },
+                { id: "H16", text: "Responde antes?", criteria: "Impulsividade." },
+                { id: "H17", text: "Não espera vez?", criteria: "Impulsividade." },
+                { id: "H18", text: "Interrompe?", criteria: "Impulsividade." },
+                { id: "H19", text: "Presente na infância?", criteria: "B. Infância." },
+                { id: "H20", text: "Prejuízo em 2 ambientes?", criteria: "C. Prejuízo." }
             ],
             'J_ADJUST': [
-                { id: "J1", text: "Nos últimos 3 meses, você passou por algum evento estressante (não traumático) que iniciou seus sintomas?", sub: "Ex: Divórcio, problemas financeiros, demissão?", criteria: "A. Sintomas emocionais em resposta a um estressor identificável." },
-                { type: 'logic', check: function(s) { return s['J1']==='+' ? 'NEXT' : 'STOP'; } },
-                { id: "J2", text: "O seu sofrimento é desproporcional à gravidade do estressor ou prejudica significativamente sua vida?", criteria: "B. Significância clínica." },
-                { id: "J3", text: "Os sintomas persistem por mais de 6 meses após o fim do estressor?", criteria: "E. Duração (Para ser Adaptação, a resposta deve ser NÃO)." }
+                { id: "J1", text: "Estressor recente (3 meses)?", criteria: "A. Estressor." },
+                { type: 'logic', check: (s) => s['J1']==='+' ? 'NEXT' : 'STOP' },
+                { id: "J2", text: "Sofrimento desproporcional?", criteria: "B. Gravidade." },
+                { id: "J3", text: "Sintomas persistem 6 meses pós-término?", criteria: "E. Duração (Deve ser Não)." }
+            ],
+            'D_DIFF': [
+                { id: "D1", text: "As alucinações/delírios acontecem APENAS durante episódios de humor?", criteria: "Diff: Humor vs Esquizo." },
+                { id: "D2", text: "Sintomas apenas durante uso de substâncias?", criteria: "Diff: Substância." },
+                { id: "D3", text: "Devido a condição médica?", criteria: "Diff: Orgânico." }
             ]
         };
-
-        const moduleOrder = ['A_DEP', 'A_MANIA', 'B_PSYCH', 'D_DIFF', 'E_SUBST', 'F_PANIC', 'F_AGORA', 'F_SOCIAL', 'F_GAD', 'G_TOC', 'G_TEPT', 'H_ADHD', 'I_SCREEN', 'J_ADJUST'];
 
         let currentModule = 'A_DEP';
         let moduleIndex = 0;
         let globalScores = {};
-        
         Object.keys(database).forEach(k => globalScores[k] = {});
-
-        // INICIALIZAÇÃO
-        window.addEventListener('DOMContentLoaded', () => {
-            switchModule('A_DEP');
-        });
 
         function switchModule(modId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            const navEl = document.getElementById('nav-' + modId);
-            if(navEl) navEl.classList.add('active');
-            
+            document.getElementById('nav-' + modId).classList.add('active');
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('interview-header').style.display = 'flex';
             document.getElementById('interview-area').style.display = 'grid';
@@ -438,37 +472,34 @@
             moduleIndex = 0;
             
             const titles = {
-                'A_DEP': 'Módulo A: Depressão Maior', 'A_MANIA': 'Módulo A: Mania',
-                'B_PSYCH': 'Módulo B: Rastreio de Psicose', 'D_DIFF': 'Módulo D: Diagnóstico Diferencial',
-                'E_SUBST': 'Módulo E: Uso de Substâncias',
+                'A_DEP': 'Módulo A: Depressão', 'A_MANIA': 'Módulo A: Mania',
+                'B_PSYCH': 'Módulo B: Psicose', 'D_DIFF': 'Módulo D: Diferencial', 'E_SUBST': 'Módulo E: Substâncias',
                 'F_PANIC': 'Módulo F: Pânico', 'F_AGORA': 'Módulo F: Agorafobia',
                 'F_SOCIAL': 'Módulo F: Ans. Social', 'F_GAD': 'Módulo F: TAG',
                 'G_TOC': 'Módulo G: TOC', 'G_TEPT': 'Módulo G: TEPT',
-                'H_ADHD': 'Módulo H: TDAH Adulto',
-                'I_SCREEN': 'Módulo I: Outros Transtornos',
-                'J_ADJUST': 'Módulo J: Transtorno de Adaptação'
+                'H_ADHD': 'Módulo H: TDAH', 'J_ADJUST': 'Módulo J: Adaptação'
             };
-            document.getElementById('module-title').innerText = titles[currentModule] || modId;
-            
+            document.getElementById('module-title').innerText = titles[currentModule];
             loadQuestion();
         }
 
         function loadQuestion() {
             const questions = database[currentModule];
             
+            // VERIFICA SE O MÓDULO ACABOU
             if (moduleIndex >= questions.length) {
+                // AUTO-AVANÇO (Sem Alert)
                 goToNextModule();
                 return;
             }
 
             const q = questions[moduleIndex];
-
-            // LOGICA DE PULO
             if (q.type === 'logic') {
                 const action = q.check(globalScores[currentModule]);
                 if (action === 'STOP') {
+                    // CRITÉRIO NÃO ATENDIDO (Sem Alert)
                     updateSidebarScore(currentModule);
-                    goToNextModule(); 
+                    goToNextModule();
                     return; 
                 } else {
                     moduleIndex++;
@@ -477,25 +508,30 @@
                 }
             }
 
-            // RENDERIZAÇÃO DOM (Sem animações para garantir visibilidade)
             document.getElementById('q-id').innerText = q.id;
             document.getElementById('q-text').innerText = q.text;
             document.getElementById('c-text').innerText = q.criteria;
-            
-            const sub = document.getElementById('q-sub');
-            if(q.sub) { sub.style.display='block'; sub.innerText = q.sub; } else { sub.style.display='none'; }
-            
-            const inst = document.getElementById('q-inst');
-            if(q.inst) { inst.style.display='block'; inst.innerText = q.inst; } else { inst.style.display='none'; }
-            
             document.getElementById('progress-display').innerText = `Item ${moduleIndex + 1}`;
+            
+            const subDiv = document.getElementById('q-sub');
+            if (q.sub) { subDiv.style.display = 'block'; subDiv.innerText = q.sub; } 
+            else { subDiv.style.display = 'none'; }
+            
+            const instDiv = document.getElementById('q-inst');
+            instDiv.style.display = q.inst ? 'block' : 'none';
+            if (q.inst) instDiv.innerText = "NOTA: " + q.inst;
         }
 
+        // FUNÇÃO DE AUTO-NAVEGAÇÃO
         function goToNextModule() {
-            const idx = moduleOrder.indexOf(currentModule);
-            if (idx >= 0 && idx < moduleOrder.length - 1) {
-                switchModule(moduleOrder[idx+1]);
+            const currentIdx = moduleOrder.indexOf(currentModule);
+            
+            // Se houver próximo módulo na lista
+            if (currentIdx >= 0 && currentIdx < moduleOrder.length - 1) {
+                const nextMod = moduleOrder[currentIdx + 1];
+                switchModule(nextMod);
             } else {
+                // Se for o último, mostra o Dashboard
                 showDashboard();
             }
         }
@@ -512,8 +548,7 @@
             let count = 0;
             const scores = globalScores[mod];
             Object.keys(scores).forEach(key => { if (scores[key] === '+') count++; });
-            const badge = document.getElementById('score-' + mod);
-            if(badge) badge.innerText = count;
+            document.getElementById('score-' + mod).innerText = count > 0 ? count : "0";
         }
 
         function showDashboard() {
@@ -522,64 +557,61 @@
             document.getElementById('dashboard-view').style.display = 'block';
 
             const dash = document.getElementById('dashboard-content');
-            const alertBox = document.getElementById('differential-alert');
             dash.innerHTML = '';
-            alertBox.innerHTML = '';
+            const diffAlert = document.getElementById('differential-alert');
+            diffAlert.innerHTML = '';
 
             const modules = [
                 { id: 'A_DEP', title: 'Depressão Maior', min: 5, crit: ['A1','A2'] },
                 { id: 'A_MANIA', title: 'Episódio Maníaco', min: 3, crit: ['C1','C2'] },
                 { id: 'B_PSYCH', title: 'Sintomas Psicóticos (Rastreio)', min: 1, crit: ['B1','B2','B3','B4','B5'] },
                 { id: 'E_SUBST', title: 'Transtorno por Uso de Substâncias', min: 2, crit: [] },
-                { id: 'F_PANIC', title: 'Transtorno de Pânico', min: 1, crit: ['F1'] },
+                { id: 'F_PANIC', title: 'Pânico', min: 1, crit: ['F1'] },
                 { id: 'F_AGORA', title: 'Agorafobia', min: 2, crit: ['F23'] },
                 { id: 'F_SOCIAL', title: 'Ansiedade Social', min: 2, crit: ['F32'] },
-                { id: 'F_GAD', title: 'TAG (Ansiedade Generalizada)', min: 3, crit: ['F42'] },
+                { id: 'F_GAD', title: 'TAG', min: 3, crit: ['F42'] },
                 { id: 'G_TOC', title: 'TOC', min: 1, crit: ['G3'] },
                 { id: 'G_TEPT', title: 'TEPT', min: 3, crit: ['G4'] }
             ];
 
             let activeDiagnoses = [];
 
-            modules.forEach(m => {
-                let scores = globalScores[m.id];
+            modules.forEach(r => {
+                let scores = globalScores[r.id];
                 let count = 0;
                 let critMet = false;
                 
                 Object.keys(scores).forEach(k => { if(scores[k] === '+') count++; });
 
-                if(m.id === 'E_SUBST') {
+                if(r.id === 'E_SUBST') {
                     let sym = 0;
                     for(let i=3; i<=13; i++) if(scores['E'+i] === '+') sym++;
                     if(sym >= 2) critMet = true;
                     count = sym;
-                } else if(m.id === 'G_TOC') {
+                } else if(r.id === 'G_TOC') {
                     if((scores['G1']==='+' || scores['G2']==='+') && scores['G3']==='+') critMet = true;
                 } else {
-                    if(m.crit && m.crit.length > 0) {
-                        m.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
-                    } else {
-                        critMet = true; 
-                    }
+                    r.crit.forEach(c => { if(scores[c] === '+') critMet = true; });
                 }
 
-                let status = (critMet && count >= m.min) ? 'Positivo' : 'Negativo';
-                if(m.id === 'E_SUBST' && critMet) status = 'Positivo';
-                if(status === 'Positivo') activeDiagnoses.push(m.title);
+                let status = (critMet && count >= r.min) ? 'Positivo' : 'Negativo';
+                if(r.id === 'E_SUBST' && critMet) status = 'Positivo';
+                
+                if(status === 'Positivo') activeDiagnoses.push(r.title);
 
-                dash.innerHTML += renderCard(m.title, status, count);
+                dash.innerHTML += createCard(r.title, status, count);
             });
 
             // TDAH
             let hS = globalScores['H_ADHD'];
             let inatt = 0, hyper = 0;
-            for(let i=1; i<=9; i++) if(hS['H'+i]==='+') inatt++;
-            for(let i=10; i<=18; i++) if(hS['H'+i]==='+') hyper++;
+            for(let i=1; i<=9; i++) if(hS['H'+i] === '+') inatt++;
+            for(let i=10; i<=18; i++) if(hS['H'+i] === '+') hyper++;
             let adhdStatus = "Negativo";
             if(hS['H19']==='+' && hS['H20']==='+') {
                 if(inatt >= 5 || hyper >= 5) { adhdStatus = "Positivo"; activeDiagnoses.push("TDAH"); }
             }
-            dash.innerHTML += renderCard("TDAH Adulto", adhdStatus, `D:${inatt} H:${hyper}`);
+            dash.innerHTML += createCard("TDAH Adulto", adhdStatus, `D:${inatt} H:${hyper}`);
 
             // Adaptação
             let jS = globalScores['J_ADJUST'];
@@ -589,36 +621,47 @@
             } else if (activeDiagnoses.length > 0 && jS['J1']==='+') {
                 adjustStatus = "Descartado (Hierarquia)";
             }
-            dash.innerHTML += renderCard("Transtorno de Adaptação", adjustStatus, "-");
+            dash.innerHTML += createCard("Transtorno de Adaptação", adjustStatus, "-");
 
-            // Rastreio
-            let iS = globalScores['I_SCREEN'];
-            if(Object.values(iS).includes('+')) {
-                let list = [];
-                if(iS['I1']==='+' || iS['I2']==='+' || iS['I3']==='+') list.push("Alimentar");
-                dash.innerHTML += renderCard("Outros Rastreios", "Alerta", list.join(', ') || "Nenhum");
+            // Diferencial
+            let hasDep = activeDiagnoses.includes("Depressão Maior");
+            let hasPsych = activeDiagnoses.includes("Sintomas Psicóticos (Rastreio)");
+            let hasMania = activeDiagnoses.includes("Episódio Maníaco");
+            
+            if(hasDep && hasPsych) {
+                let dScore = globalScores['D_DIFF']['D1'];
+                let conclusao = "";
+                if(dScore === '+') conclusao = "Provável DEPRESSÃO COM CARACTERÍSTICAS PSICÓTICAS.";
+                else if(dScore === '-') conclusao = "Provável TRANSTORNO ESQUIZOAFETIVO.";
+                else conclusao = "Necessário aplicar Módulo D.";
+                diffAlert.innerHTML += `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:10px; margin-bottom:20px;"><strong>⚠️ Conflito:</strong> Depressão + Psicose.<br>${conclusao}</div>`;
             }
 
-            // Alertas
-            if(activeDiagnoses.includes("Depressão Maior") && activeDiagnoses.includes("Sintomas Psicóticos (Rastreio)")) {
-                alertBox.innerHTML += `<div style="background:#fff3cd; color:#856404; padding:15px; border-radius:5px; margin-bottom:15px;"><strong>⚠️ Atenção:</strong> Depressão + Psicose exige diagnóstico diferencial (Módulo D).</div>`;
+            if(hasMania) {
+                diffAlert.innerHTML += `<div style="background:#fdcb6e; color:#d35400; padding:15px; border-radius:10px; margin-bottom:20px;"><strong>⚠️ Alerta Bipolar:</strong> Mania anula Depressão Unipolar.</div>`;
             }
         }
 
-        function renderCard(title, status, count) {
-            let css = status === 'Positivo' ? 'status-pos' : (status === 'Alerta' ? 'status-pos' : 'status-neg');
-            if(status.includes('Descartado')) css = 'status-neg';
+        function createCard(title, status, count) {
+            let css = status === 'Positivo' ? 'positive' : 'negative';
+            if(status.includes('Descartado')) css = 'negative';
+            let tag = status === 'Positivo' ? 'status-pos' : 'status-neg';
             
             return `
-                <div class="result-row">
+                <div class="result-card ${css}">
                     <div>
-                        <div style="font-weight:bold; font-size:1rem; color:#2c3e50">${title}</div>
-                        <div style="font-size:0.75rem; color:#95a5a6">Contagem: ${count}</div>
+                        <h3>${title}</h3>
+                        <span class="status-tag ${tag}">${status}</span>
                     </div>
-                    <span class="status-badge ${css}">${status}</span>
+                    <div style="text-align:right">
+                        <div style="font-size:1.2rem; font-weight:bold;">${count}</div>
+                        <small>Sintomas</small>
+                    </div>
                 </div>
             `;
         }
+
+        switchModule('A_DEP');
 
     </script>
 </body>
