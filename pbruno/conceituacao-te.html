@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conceitualização Cognitiva - Terapia do Esquema (Com IA)</title>
+    <title>Conceitualização Terapia do Esquema (Versão 2.22 Completa)</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -11,442 +11,534 @@
 
     <style>
         :root {
-            --primary: #4a90e2;
-            --secondary: #50e3c2;
-            --ai-color: #8e44ad; /* Cor Roxa para a IA */
-            --bg: #f4f7f6;
-            --text: #333;
+            --primary: #2980b9;
+            --secondary: #16a085;
+            --accent: #8e44ad;
+            --bg: #eceff1;
+            --card: #ffffff;
+            --text: #2c3e50;
+            --border: #bdc3c7;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        header {
-            text-align: center;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        h1 { margin: 0; color: var(--primary); }
-        h2 { font-size: 1.2rem; color: #666; margin-top: 5px; }
-
-        .section-title {
-            background: var(--primary);
-            color: white;
-            padding: 10px 15px;
+            background: var(--card);
+            padding: 50px;
             border-radius: 8px;
-            margin-top: 30px;
-            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Cabeçalho */
+        header {
+            border-bottom: 4px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-titles h1 { margin: 0; color: var(--primary); font-size: 1.8rem; text-transform: uppercase; }
+        .header-titles h2 { margin: 5px 0 0 0; color: #7f8c8d; font-size: 1rem; font-weight: 400; }
+        .logo-placeholder { font-weight: bold; color: var(--accent); border: 2px solid var(--accent); padding: 5px 10px; border-radius: 5px; }
+
+        /* Seções */
+        .section-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.1rem;
             font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .sub-section {
+            color: var(--primary);
+            font-weight: 700;
+            border-bottom: 1px solid #ddd;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
         }
 
-        .form-group { margin-bottom: 20px; position: relative; }
+        /* Formulários */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+
+        .form-group { margin-bottom: 15px; }
         
         label {
             display: block;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: #555;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #34495e;
         }
 
-        input, textarea {
+        input[type="text"], input[type="date"], input[type="number"], select, textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background: #fdfdfd;
             box-sizing: border-box;
-            transition: border 0.3s;
         }
 
-        input:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
+        textarea { resize: vertical; min-height: 80px; font-family: inherit; }
+        input:focus, textarea:focus { border-color: var(--primary); outline: none; background: #fff; }
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        /* --- BOTÃO IA --- */
+        /* Botão IA */
         .ai-btn {
-            background-color: var(--ai-color);
+            float: right;
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            margin-bottom: 5px;
-            transition: transform 0.2s, background 0.2s;
-            float: right; /* Fica no canto direito do label */
+            transition: 0.2s;
         }
+        .ai-btn:hover { background: #6c3483; }
+        .ai-loading { display: none; float: right; color: var(--accent); font-size: 0.75rem; margin-right: 10px; }
 
-        .ai-btn:hover {
-            background-color: #732d91;
-            transform: scale(1.05);
-        }
-
-        .ai-loading {
-            display: none;
-            margin-left: 10px;
-            color: var(--ai-color);
-            font-size: 0.9rem;
-        }
-
-        /* ESQUEMAS */
-        .domain-block {
-            border: 1px solid #eee;
+        /* Interatividade: Esquemas e Modos */
+        .selection-area {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
             padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            background: #fafafa;
+            border-radius: 5px;
         }
 
-        .domain-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: #888;
-            font-weight: 800;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .selectable-item {
-            padding: 8px 12px;
+        .chip {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 4px;
+            background: white;
             border: 1px solid #ccc;
             border-radius: 20px;
+            font-size: 0.85rem;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            background: white;
-            display: inline-block;
-            margin: 3px;
+            transition: 0.2s;
             user-select: none;
         }
 
-        .selectable-item.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            font-weight: bold;
-        }
+        .chip:hover { border-color: var(--primary); }
+        .chip.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 600; }
 
-        /* MODOS */
-        .mode-child.active { background-color: #fbc02d; color: #333; border-color: #fbc02d; }
-        .mode-coping.active { background-color: #d84315; color: white; border-color: #d84315; }
-        .mode-parent.active { background-color: #7b1fa2; color: white; border-color: #7b1fa2; }
-        .mode-healthy.active { background-color: #388e3c; color: white; border-color: #388e3c; }
+        /* Cores Específicas de Modos */
+        .chip.mode-child.active { background: #f1c40f; color: #333; border-color: #f1c40f; }
+        .chip.mode-coping.active { background: #e67e22; color: white; border-color: #e67e22; }
+        .chip.mode-parent.active { background: #8e44ad; color: white; border-color: #8e44ad; }
+        .chip.mode-healthy.active { background: #27ae60; color: white; border-color: #27ae60; }
+
+        /* Objetivos Terapêuticos */
+        .goal-card {
+            background: white;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
 
         /* FAB PDF */
         .fab {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: #e74c3c;
-            color: white;
             width: 60px;
             height: 60px;
+            background: #c0392b;
+            color: white;
             border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
-            z-index: 1000;
             border: none;
+            z-index: 999;
+            transition: transform 0.2s;
         }
+        .fab:hover { transform: scale(1.1); }
 
+        /* Impressão */
         @media print {
             .fab, .ai-btn { display: none !important; }
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; padding: 0; }
-            .selectable-item.active { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            textarea { border: none; border-bottom: 1px solid #ccc; resize: none; }
+            input { border: none; border-bottom: 1px solid #ccc; }
+            .chip { border: 1px solid #999; }
+            .chip.active { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
 <body>
 
-    <button class="fab" onclick="generatePDF()" title="Salvar como PDF">
-        <i class="fa-solid fa-file-pdf"></i>
-    </button>
+    <button class="fab" onclick="generatePDF()" title="Baixar PDF"><i class="fa-solid fa-file-pdf"></i></button>
 
-    <div class="container" id="form-content">
+    <div class="container" id="report">
         
         <header>
-            <h1>Conceitualização de Caso</h1>
-            <h2>Terapia do Esquema</h2>
+            <div class="header-titles">
+                <h1>Formulário de Conceitualização de Caso</h1>
+                <h2>Terapia do Esquema • Versão 2.22 (Baseada na ISST)</h2>
+            </div>
+            <div class="logo-placeholder">CONFIDENCIAL</div>
         </header>
 
-        <div class="section-title"><i class="fa-solid fa-user"></i> I. Informações do Paciente</div>
-        <div class="form-grid">
+        <div class="section-header"><i class="fa-solid fa-address-card"></i> I. Informações Básicas do Paciente</div>
+        
+        <div class="grid-2">
             <div class="form-group">
-                <label>Nome do Paciente:</label>
-                <input type="text" id="paciente_nome">
+                <label>Nome do Paciente / ID:</label>
+                <input type="text" id="pat_name">
             </div>
             <div class="form-group">
                 <label>Data:</label>
                 <input type="date">
             </div>
         </div>
-
-        <div class="form-group">
-            <label>
-                Motivo da Consulta (Queixas Principais):
-                <button class="ai-btn" onclick="improveText('queixas')"><i class="fa-solid fa-wand-magic-sparkles"></i> Melhorar com IA</button>
-                <span id="loading-queixas" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i> Reescrevendo...</span>
-            </label>
-            <textarea id="queixas" placeholder="Ex: Paciente reclama de ansiedade, brigas constantes no trabalho..."></textarea>
+        
+        <div class="grid-4">
+            <div class="form-group">
+                <label>Idade / D.N.:</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Estado Civil / Relacionamento:</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Filhos (se houver):</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Ocupação:</label>
+                <input type="text">
+            </div>
         </div>
 
-        <div class="section-title"><i class="fa-solid fa-baby"></i> II. Origens e História de Vida</div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Nível Educacional:</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>País / Religião / Grupo:</label>
+                <input type="text">
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Nome do Terapeuta:</label>
+                <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Número de Sessões:</label>
+                <input type="number">
+            </div>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-question-circle"></i> II. Motivação para Terapia</div>
         
         <div class="form-group">
-            <label>
-                Atmosfera Familiar e Infância:
-                <button class="ai-btn" onclick="improveText('infancia')"><i class="fa-solid fa-wand-magic-sparkles"></i> Melhorar com IA</button>
-                <span id="loading-infancia" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i> Reescrevendo...</span>
+            <label>a. Inicialmente (O que trouxe o paciente?): 
+                <span id="load_mot_ini" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                <button class="ai-btn" onclick="improve('mot_ini')">IA</button>
             </label>
-            <textarea id="infancia" placeholder="Ex: Pai ausente, mãe crítica. Sentia-se sozinho..."></textarea>
+            <textarea id="mot_ini" placeholder="Fatores principais, eventos significativos, sintomas iniciais..."></textarea>
         </div>
 
         <div class="form-group">
-            <label>
-                Eventos Traumáticos ou Significativos:
-                <button class="ai-btn" onclick="improveText('traumas')"><i class="fa-solid fa-wand-magic-sparkles"></i> Melhorar com IA</button>
-                <span id="loading-traumas" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i> Reescrevendo...</span>
+            <label>b. Atualmente (Por que continua?): 
+                <span id="load_mot_curr" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                <button class="ai-btn" onclick="improve('mot_curr')">IA</button>
             </label>
-            <textarea id="traumas" placeholder="Ex: Bullying na escola aos 10 anos..."></textarea>
+            <textarea id="mot_curr" placeholder="Fatores atuais, novos problemas, persistência dos sintomas..."></textarea>
         </div>
 
-        <div class="section-title"><i class="fa-solid fa-brain"></i> III. Esquemas Iniciais Desadaptativos (EIDs)</div>
-        
-        <div class="domain-block">
-            <div class="domain-title">1. Desconexão e Rejeição</div>
-            <div>
-                <div class="selectable-item" onclick="toggle(this)">Abandono/Instabilidade</div>
-                <div class="selectable-item" onclick="toggle(this)">Desconfiança/Abuso</div>
-                <div class="selectable-item" onclick="toggle(this)">Privação Emocional</div>
-                <div class="selectable-item" onclick="toggle(this)">Defectividade/Vergonha</div>
-                <div class="selectable-item" onclick="toggle(this)">Isolamento Social</div>
-            </div>
-        </div>
-
-        <div class="domain-block">
-            <div class="domain-title">2. Autonomia Prejudicada</div>
-            <div>
-                <div class="selectable-item" onclick="toggle(this)">Dependência/Incompetência</div>
-                <div class="selectable-item" onclick="toggle(this)">Vulnerabilidade ao Dano</div>
-                <div class="selectable-item" onclick="toggle(this)">Emaranhamento</div>
-                <div class="selectable-item" onclick="toggle(this)">Fracasso</div>
-            </div>
-        </div>
-
-        <div class="domain-block">
-            <div class="domain-title">3. Limites Prejudicados</div>
-            <div>
-                <div class="selectable-item" onclick="toggle(this)">Arrogo/Grandiosidade</div>
-                <div class="selectable-item" onclick="toggle(this)">Autocontrole Insuficiente</div>
-            </div>
-        </div>
-
-        <div class="domain-block">
-            <div class="domain-title">4. Orientação para o Outro</div>
-            <div>
-                <div class="selectable-item" onclick="toggle(this)">Subjugação</div>
-                <div class="selectable-item" onclick="toggle(this)">Auto-sacrifício</div>
-                <div class="selectable-item" onclick="toggle(this)">Busca de Aprovação</div>
-            </div>
-        </div>
-
-        <div class="domain-block">
-            <div class="domain-title">5. Supervigilância e Inibição</div>
-            <div>
-                <div class="selectable-item" onclick="toggle(this)">Negativismo/Pessimismo</div>
-                <div class="selectable-item" onclick="toggle(this)">Inibição Emocional</div>
-                <div class="selectable-item" onclick="toggle(this)">Padrões Inflexíveis</div>
-                <div class="selectable-item" onclick="toggle(this)">Postura Punitiva</div>
-            </div>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-masks-theater"></i> IV. Modos Esquemáticos</div>
-        
-        <div class="domain-block" style="border-left: 5px solid #fbc02d;">
-            <div class="domain-title" style="color: #f9a825;">Modos Criança</div>
-            <div>
-                <div class="selectable-item mode-child" onclick="toggle(this)">Criança Vulnerável</div>
-                <div class="selectable-item mode-child" onclick="toggle(this)">Criança Zangada</div>
-                <div class="selectable-item mode-child" onclick="toggle(this)">Criança Impulsiva</div>
-                <div class="selectable-item mode-child" onclick="toggle(this)">Criança Feliz</div>
-            </div>
-        </div>
-
-        <div class="domain-block" style="border-left: 5px solid #d84315;">
-            <div class="domain-title" style="color: #d84315;">Modos de Enfrentamento</div>
-            <div>
-                <div class="selectable-item mode-coping" onclick="toggle(this)">Capitulador Complacente</div>
-                <div class="selectable-item mode-coping" onclick="toggle(this)">Protetor Desligado</div>
-                <div class="selectable-item mode-coping" onclick="toggle(this)">Hipercompensador</div>
-                <div class="selectable-item mode-coping" onclick="toggle(this)">Controlador Obsessivo</div>
-            </div>
-        </div>
-
-        <div class="domain-block" style="border-left: 5px solid #7b1fa2;">
-            <div class="domain-title" style="color: #7b1fa2;">Modos Pais</div>
-            <div>
-                <div class="selectable-item mode-parent" onclick="toggle(this)">Pai Punitivo</div>
-                <div class="selectable-item mode-parent" onclick="toggle(this)">Pai Exigente</div>
-            </div>
-        </div>
-
-        <div class="domain-block" style="border-left: 5px solid #388e3c;">
-            <div class="domain-title" style="color: #388e3c;">Modo Saudável</div>
-            <div>
-                <div class="selectable-item mode-healthy" onclick="toggle(this)">Adulto Saudável</div>
-            </div>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-bullseye"></i> V. Plano Terapêutico</div>
+        <div class="section-header"><i class="fa-solid fa-eye"></i> III. Impressões Gerais do Paciente</div>
         <div class="form-group">
-            <label>
-                Objetivos e Intervenções:
-                <button class="ai-btn" onclick="improveText('plano')"><i class="fa-solid fa-wand-magic-sparkles"></i> Sugerir com IA</button>
-                <span id="loading-plano" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i> Gerando...</span>
+            <label>Apresentação Global em Sessão:
+                <span id="load_impress" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                <button class="ai-btn" onclick="improve('impress')">IA</button>
             </label>
-            <textarea id="plano" placeholder="Quais as metas? Reparentalização? Trabalho com cadeiras?"></textarea>
+            <textarea id="impress" placeholder="Ex: Reservado, hostil, ansioso para agradar, carente, sedutor, lógico, defensivo..."></textarea>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-triangle-exclamation"></i> IV. Principais Sintomas e Problemas</div>
+        <div class="form-group">
+            <label>Descrição dos Sintomas (Frequência, Duração, Gravidade):
+                <span id="load_sintomas" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                <button class="ai-btn" onclick="improve('sintomas')">IA</button>
+            </label>
+            <textarea id="sintomas" placeholder="Descreva os problemas de vida atuais e sintomas clínicos..."></textarea>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-timeline"></i> V. História de Vida e Origens</div>
+        
+        <div class="form-group">
+            <label>1. Atmosfera Familiar Geral na Infância:
+                <span id="load_atmosfera" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                <button class="ai-btn" onclick="improve('atmosfera')">IA</button>
+            </label>
+            <textarea id="atmosfera" placeholder="Segura? Caótica? Fria? Crítica?"></textarea>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label>2. Características do Pai:
+                    <span id="load_father" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                    <button class="ai-btn" onclick="improve('father')">IA</button>
+                </label>
+                <textarea id="father" placeholder="Descreva o pai ou figura paterna..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>3. Características da Mãe:
+                    <span id="load_mother" class="ai-loading"><i class="fa-solid fa-spinner fa-spin"></i></span>
+                    <button class="ai-btn" onclick="improve('mother')">IA</button>
+                </label>
+                <textarea id="mother" placeholder="Descreva a mãe ou figura materna..."></textarea>
+            </div>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-brain"></i> VI. Esquemas Iniciais Desadaptativos (EIDs)</div>
+        <p style="font-size:0.8rem; color:#666;">Clique nos esquemas relevantes para o paciente (classifique mentalmente a severidade).</p>
+
+        <div class="selection-area">
+            <div class="sub-section">1. Desconexão e Rejeição</div>
+            <div>
+                <span class="chip" onclick="toggle(this)">Abandono/Instabilidade</span>
+                <span class="chip" onclick="toggle(this)">Desconfiança/Abuso</span>
+                <span class="chip" onclick="toggle(this)">Privação Emocional</span>
+                <span class="chip" onclick="toggle(this)">Defectividade/Vergonha</span>
+                <span class="chip" onclick="toggle(this)">Isolamento Social</span>
+            </div>
+
+            <div class="sub-section">2. Autonomia e Desempenho Prejudicados</div>
+            <div>
+                <span class="chip" onclick="toggle(this)">Dependência/Incompetência</span>
+                <span class="chip" onclick="toggle(this)">Vulnerabilidade ao Dano/Doença</span>
+                <span class="chip" onclick="toggle(this)">Emaranhamento/Self Subdesenvolvido</span>
+                <span class="chip" onclick="toggle(this)">Fracasso</span>
+            </div>
+
+            <div class="sub-section">3. Limites Prejudicados</div>
+            <div>
+                <span class="chip" onclick="toggle(this)">Arrogo/Grandiosidade</span>
+                <span class="chip" onclick="toggle(this)">Autocontrole Insuficiente</span>
+            </div>
+
+            <div class="sub-section">4. Orientação para o Outro</div>
+            <div>
+                <span class="chip" onclick="toggle(this)">Subjugação</span>
+                <span class="chip" onclick="toggle(this)">Auto-sacrifício</span>
+                <span class="chip" onclick="toggle(this)">Busca de Aprovação</span>
+            </div>
+
+            <div class="sub-section">5. Supervigilância e Inibição</div>
+            <div>
+                <span class="chip" onclick="toggle(this)">Negativismo/Pessimismo</span>
+                <span class="chip" onclick="toggle(this)">Inibição Emocional</span>
+                <span class="chip" onclick="toggle(this)">Padrões Inflexíveis</span>
+                <span class="chip" onclick="toggle(this)">Postura Punitiva</span>
+            </div>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-shield-halved"></i> VIII. Estilos de Enfrentamento Desadaptativos</div>
+        
+        <div class="grid-3">
+            <div class="form-group">
+                <label>Rendição (Congelar):</label>
+                <textarea placeholder="Ex: Escolhe parceiros abusivos, aceita críticas, não pede ajuda..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Evitação (Fugir):</label>
+                <textarea placeholder="Ex: Bebe para não sentir, evita intimidade, procrastina..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Hipercompensação (Lutar):</label>
+                <textarea placeholder="Ex: Perfeccionismo, agressividade, status excessivo..."></textarea>
+            </div>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-masks-theater"></i> IX. Modos Esquemáticos</div>
+        <div class="selection-area">
+            <div class="sub-section">Modos Criança (Amarelo)</div>
+            <div>
+                <span class="chip mode-child" onclick="toggle(this)">Criança Vulnerável</span>
+                <span class="chip mode-child" onclick="toggle(this)">Criança Zangada</span>
+                <span class="chip mode-child" onclick="toggle(this)">Criança Enfurecida</span>
+                <span class="chip mode-child" onclick="toggle(this)">Criança Impulsiva</span>
+                <span class="chip mode-child" onclick="toggle(this)">Criança Indisciplinada</span>
+                <span class="chip mode-child" onclick="toggle(this)">Criança Feliz</span>
+            </div>
+
+            <div class="sub-section">Modos de Enfrentamento (Laranja)</div>
+            <div>
+                <span class="chip mode-coping" onclick="toggle(this)">Capitulador Complacente</span>
+                <span class="chip mode-coping" onclick="toggle(this)">Protetor Desligado</span>
+                <span class="chip mode-coping" onclick="toggle(this)">Auto-Acalentador</span>
+                <span class="chip mode-coping" onclick="toggle(this)">Auto-Engrandecedor</span>
+                <span class="chip mode-coping" onclick="toggle(this)">Intimidador e Ataque</span>
+                <span class="chip mode-coping" onclick="toggle(this)">Controlador Obsessivo</span>
+            </div>
+
+            <div class="sub-section">Modos Pais Disfuncionais (Roxo)</div>
+            <div>
+                <span class="chip mode-parent" onclick="toggle(this)">Pai/Mãe Punitivo(a)</span>
+                <span class="chip mode-parent" onclick="toggle(this)">Pai/Mãe Exigente</span>
+            </div>
+
+            <div class="sub-section">Modos Saudáveis (Verde)</div>
+            <div>
+                <span class="chip mode-healthy" onclick="toggle(this)">Adulto Saudável</span>
+            </div>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-list-check"></i> X. Plano de Tratamento e Objetivos</div>
+        
+        <div class="goal-card">
+            <label style="color:var(--primary);">1. Objetivo da Terapia:</label>
+            <textarea placeholder="Descreva o objetivo..."></textarea>
+            <div class="grid-2" style="margin-top:10px;">
+                <div>
+                    <label>Esquemas/Modos Alvo:</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Estratégias/Progresso:</label>
+                    <input type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="goal-card">
+            <label style="color:var(--primary);">2. Objetivo da Terapia:</label>
+            <textarea placeholder="Descreva o objetivo..."></textarea>
+            <div class="grid-2" style="margin-top:10px;">
+                <div>
+                    <label>Esquemas/Modos Alvo:</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Estratégias/Progresso:</label>
+                    <input type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="goal-card">
+            <label style="color:var(--primary);">3. Objetivo da Terapia:</label>
+            <textarea placeholder="Descreva o objetivo..."></textarea>
+            <div class="grid-2" style="margin-top:10px;">
+                <div>
+                    <label>Esquemas/Modos Alvo:</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label>Estratégias/Progresso:</label>
+                    <input type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header"><i class="fa-solid fa-comment"></i> XI. Comentários Adicionais</div>
+        <div class="form-group">
+            <textarea style="height:100px;"></textarea>
         </div>
 
     </div>
 
     <script>
-        // ========================================================
-        // CONFIGURAÇÃO DA API (COLE SUA CHAVE ABAIXO)
-        // ========================================================
-        const API_KEY = 'SUA_CHAVE_AQUI'; // <--- COLE SUA CHAVE AQUI
-        // ========================================================
+        // =======================================================
+        //  COLE SUA CHAVE DA API AQUI
+        // =======================================================
+        const API_KEY = 'AIzaSyC8rW-DYeoI6nZGFMb1MG61oKWvH64oVA8'; 
+        // =======================================================
 
         function toggle(el) {
             el.classList.toggle('active');
         }
 
-        async function improveText(elementId) {
-            if (API_KEY === 'AIzaSyC8rW-DYeoI6nZGFMb1MG61oKWvH64oVA8') {
-                alert("Erro: Você precisa abrir o código e colar sua chave da API do Google na linha 365.");
+        function generatePDF() {
+            const element = document.getElementById('report');
+            
+            // Esconde botões para o PDF
+            document.querySelectorAll('.ai-btn').forEach(b => b.style.display = 'none');
+            
+            const opt = {
+                margin:       5,
+                filename:     'Conceitualizacao_Esquema_Completa.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restaura botões
+                document.querySelectorAll('.ai-btn').forEach(b => b.style.display = 'inline-flex');
+            });
+        }
+
+        async function improve(id) {
+            if (API_KEY === 'SUA_CHAVE_AQUI') {
+                alert("Configure a API Key no código!");
                 return;
             }
 
-            const textField = document.getElementById(elementId);
-            const originalText = textField.value;
-            const loadingSpan = document.getElementById('loading-' + elementId);
+            const field = document.getElementById(id);
+            const text = field.value;
+            const loader = document.getElementById('load_' + id);
 
-            if (!originalText && elementId !== 'plano') {
-                alert("Por favor, digite algo no campo para a IA melhorar.");
-                return;
-            }
+            if (!text) { alert("Digite algo primeiro."); return; }
 
-            loadingSpan.style.display = 'inline-block';
+            loader.style.display = 'inline';
 
-            // Definição do Prompt baseado no campo
-            let systemInstruction = "Você é um supervisor clínico especialista em Terapia do Esquema (Jeffrey Young).";
-            let userPrompt = "";
-
-            if (elementId === 'plano') {
-                // Se o campo for plano e estiver vazio, a IA sugere baseada no que já foi escrito ou pede dados
-                if (!originalText) {
-                    userPrompt = "Crie uma lista genérica de intervenções comuns na Terapia do Esquema para fortalecer o Adulto Saudável.";
-                } else {
-                    userPrompt = `Melhore e expanda este plano de tratamento com terminologia técnica da Terapia do Esquema: "${originalText}"`;
-                }
-            } else {
-                userPrompt = `Reescreva o seguinte texto para um prontuário clínico formal, usando terminologia adequada, corrigindo a gramática e mantendo a objetividade clínica: "${originalText}"`;
-            }
+            const prompt = `Atue como um terapeuta do esquema sênior supervisionando um caso. Reescreva o seguinte texto para um formulário de conceitualização formal, mantendo a precisão clínica e usando termos da Terapia do Esquema (Young): "${text}"`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: systemInstruction + "\n" + userPrompt }] }]
-                    })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
-
-                const data = await response.json();
                 
-                if (data.candidates && data.candidates[0].content) {
-                    const aiText = data.candidates[0].content.parts[0].text;
-                    textField.value = aiText.trim();
-                } else {
-                    console.error('Erro na resposta da API:', data);
-                    alert("Erro ao contatar a IA. Verifique o console.");
+                const data = await response.json();
+                if(data.candidates) {
+                    field.value = data.candidates[0].content.parts[0].text.trim();
                 }
-
-            } catch (error) {
-                console.error('Erro:', error);
-                alert("Erro de conexão com a API.");
+            } catch (err) {
+                console.error(err);
+                alert("Erro na IA.");
             } finally {
-                loadingSpan.style.display = 'none';
+                loader.style.display = 'none';
             }
-        }
-
-        function generatePDF() {
-            const element = document.getElementById('form-content');
-            const opt = {
-                margin: 10,
-                filename: 'Conceitualizacao_TE_IA.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            // Prepara visual para PDF
-            document.querySelectorAll('.ai-btn').forEach(btn => btn.style.display = 'none');
-            document.querySelectorAll('textarea').forEach(t => {
-                t.style.border = 'none';
-                t.style.borderBottom = '1px solid #ccc';
-                t.style.resize = 'none';
-            });
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                // Restaura visual
-                document.querySelectorAll('.ai-btn').forEach(btn => btn.style.display = 'inline-flex');
-                document.querySelectorAll('textarea').forEach(t => {
-                    t.style.border = '1px solid #ddd';
-                    t.style.resize = 'vertical';
-                });
-            });
         }
     </script>
 </body>
