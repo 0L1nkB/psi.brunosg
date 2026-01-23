@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tríade Cognitiva - O Jogo | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --text: #2d3436;
+            
+            /* Cores das Categorias */
+            --event-color: #0984e3;   /* Azul - Fato Frio */
+            --thought-color: #f1c40f; /* Amarelo - Ideia/Lâmpada */
+            --feeling-color: #e17055; /* Vermelho - Emoção/Coração */
+            
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed #636e72;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 800px; width: 100%; position: relative;
+        }
+
+        header h1 { color: #2d3436; margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid #2d3436; color: #2d3436;
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: #2d3436; color: white; }
+
+        /* --- ÁREA DO JOGO --- */
+        .game-container {
+            width: 100%; max-width: 600px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        /* Cartão Central */
+        .flashcard {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            min-height: 250px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border: 4px solid white;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .statement-text {
+            font-size: 1.8rem; font-weight: 800; color: #2d3436;
+            line-height: 1.4;
+        }
+
+        .progress-indicator {
+            position: absolute; top: 20px; right: 20px;
+            font-weight: bold; color: #b2bec3; font-size: 0.9rem;
+        }
+
+        /* Botões de Ação */
+        .actions-grid {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; width: 100%;
+        }
+
+        .btn-action {
+            padding: 20px 10px; border: none; border-radius: 20px;
+            font-family: 'Quicksand', sans-serif; font-weight: 800; font-size: 1rem;
+            cursor: pointer; transition: transform 0.2s, opacity 0.2s;
+            color: white; display: flex; flex-direction: column; align-items: center; gap: 10px;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.1);
+        }
+        
+        .btn-action:active { transform: translateY(4px); box-shadow: none; }
+        .btn-action i { font-size: 1.5rem; }
+
+        .btn-event { background-color: var(--event-color); }
+        .btn-thought { background-color: var(--thought-color); color: #2d3436; }
+        .btn-feeling { background-color: var(--feeling-color); }
+
+        /* Feedback Visual */
+        .flashcard.correct { border-color: #00b894; background: #f0fff4; }
+        .flashcard.wrong { border-color: #d63031; background: #fff5f5; }
+
+        .feedback-msg {
+            margin-top: 15px; font-weight: bold; font-size: 1.1rem; height: 30px;
+        }
+
+        /* --- TELA DE RESULTADOS --- */
+        #results-screen {
+            display: none; width: 100%; max-width: 800px;
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .score-board {
+            text-align: center; margin-bottom: 30px;
+        }
+        .final-score { font-size: 3rem; font-weight: 800; color: var(--text); }
+
+        .history-list {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .history-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 5px solid #ccc;
+        }
+        .history-item.type-event { border-left-color: var(--event-color); }
+        .history-item.type-thought { border-left-color: var(--thought-color); }
+        .history-item.type-feeling { border-left-color: var(--feeling-color); }
+
+        .badge {
+            padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; color: white;
+        }
+
+        .btn-restart {
+            margin-top: 20px; padding: 15px 30px; background: #2d3436; color: white;
+            border: none; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 1rem; width: 100%;
+        }
+
+        .btn-back-home {
+            margin-top: 40px; color: #b2bec3; text-decoration: none; font-weight: 600;
+        }
+        .btn-back-home:hover { color: var(--event-color); }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; } /* Tabela limpa para impressão */
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .game-container, .btn-back-home, #results-screen { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 10px; }
+            
+            #print-table {
+                display: block; width: 100%; border-collapse: collapse; font-family: sans-serif;
+            }
+            #print-table th { background: #eee; padding: 10px; text-align: left; border: 1px solid #ccc; }
+            #print-table td { padding: 10px; border: 1px solid #ccc; }
+            
+            /* Legenda de cores para impressão pb */
+            .print-legend { display: block; margin-bottom: 20px; font-size: 0.9rem; border: 1px dashed #ccc; padding: 10px; }
+        }
+
+        @media (max-width: 600px) {
+            .statement-text { font-size: 1.4rem; }
+            .btn-action { font-size: 0.9rem; padding: 15px 5px; }
+            .btn-print span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir Folha</span></button>
+        <h1>O que é isso?</h1>
+        <div class="subtitle">Distingua: Evento, Pensamento ou Sentimento</div>
+    </header>
+
+    <div class="game-container" id="gameArea" data-aos="zoom-in">
+        
+        <div class="flashcard" id="flashcard">
+            <div class="progress-indicator"><span id="current">1</span> / <span id="total">0</span></div>
+            <div class="statement-text" id="statementText">Carregando...</div>
+            <div class="feedback-msg" id="feedbackMsg"></div>
+        </div>
+
+        <div class="actions-grid">
+            <button class="btn-action btn-event" onclick="checkAnswer('event')">
+                <i class="fa-solid fa-video"></i>
+                EVENTO
+                <span style="font-size:0.7rem; font-weight:normal;">(Fato/Situação)</span>
+            </button>
+            <button class="btn-action btn-thought" onclick="checkAnswer('thought')">
+                <i class="fa-solid fa-comment-dots"></i>
+                PENSAMENTO
+                <span style="font-size:0.7rem; font-weight:normal;">(Interpretação)</span>
+            </button>
+            <button class="btn-action btn-feeling" onclick="checkAnswer('feeling')">
+                <i class="fa-solid fa-heart"></i>
+                SENTIMENTO
+                <span style="font-size:0.7rem; font-weight:normal;">(Emoção/Corpo)</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div id="results-screen">
+        <div class="score-board">
+            <h2>Treino Concluído!</h2>
+            <div class="final-score" id="scoreDisplay">0%</div>
+            <p>de acertos na identificação.</p>
+        </div>
+        
+        <div class="history-list" id="historyList">
+            </div>
+
+        <button class="btn-restart" onclick="location.reload()">Jogar Novamente</button>
+    </div>
+
+    <div id="print-table-container">
+        <div class="print-legend no-print-view">
+            <strong>Guia de Resposta:</strong> Marque com um X a coluna correta.<br>
+            <em>E = Evento (Fato) | P = Pensamento (Ideia) | S = Sentimento (Emoção)</em>
+        </div>
+        <table id="print-table">
+            <thead>
+                <tr>
+                    <th style="width: 50%">Afirmação</th>
+                    <th style="width: 15%; text-align:center">Evento</th>
+                    <th style="width: 15%; text-align:center">Pensamento</th>
+                    <th style="width: 15%; text-align:center">Sentimento</th>
+                </tr>
+            </thead>
+            <tbody id="print-body">
+                </tbody>
+        </table>
+    </div>
+
+    <a href="../listaferramentas.html" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        // BANCO DE DADOS EXPANDIDO
+        const data = [
+            // Originais do PDF
+            { t: "Meu chefe criticou meu trabalho.", type: "event" },
+            { t: "Vou perder meu emprego.", type: "thought" },
+            { t: "Estou ansioso.", type: "feeling" },
+            { t: "Jamais tenho uma pausa/descanso.", type: "thought" },
+            { t: "Estou triste.", type: "feeling" },
+            { t: "Estou preso no trânsito.", type: "event" },
+            { t: "Está chovendo.", type: "event" },
+            { t: "Acho que ela não gosta de mim.", type: "thought" },
+            { t: "Sinto-me embaraçado/envergonhado.", type: "feeling" },
+            
+            // Novos adicionados
+            { t: "O telefone tocou às 3 da manhã.", type: "event" },
+            { t: "Deve ser uma má notícia.", type: "thought" },
+            { t: "Sinto um aperto no peito (medo).", type: "feeling" },
+            { t: "Quebrei um copo na cozinha.", type: "event" },
+            { t: "Eu sou um desastrado.", type: "thought" },
+            { t: "Raiva.", type: "feeling" },
+            { t: "Alguém olhou para mim na rua.", type: "event" },
+            { t: "Estão rindo da minha roupa.", type: "thought" },
+            { t: "Vergonha.", type: "feeling" },
+            { t: "Recebi um elogio.", type: "event" },
+            { t: "Ele só quer ser gentil, não é verdade.", type: "thought" },
+            { t: "Desconfiança.", type: "feeling" }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userHistory = [];
+
+        // Inicialização
+        document.getElementById('total').innerText = data.length;
+        populatePrintTable();
+        loadCard();
+
+        function loadCard() {
+            const item = data[currentIndex];
+            const card = document.getElementById('flashcard');
+            
+            // Reset visual
+            card.className = 'flashcard'; 
+            document.getElementById('statementText').innerText = item.t;
+            document.getElementById('current').innerText = currentIndex + 1;
+            document.getElementById('feedbackMsg').innerText = "";
+            document.getElementById('feedbackMsg').style.color = "transparent";
+        }
+
+        function checkAnswer(selectedType) {
+            const item = data[currentIndex];
+            const card = document.getElementById('flashcard');
+            const feedback = document.getElementById('feedbackMsg');
+            let correct = (selectedType === item.type);
+
+            // Salva histórico
+            userHistory.push({
+                text: item.t,
+                correctType: item.type,
+                userType: selectedType,
+                isCorrect: correct
+            });
+
+            if (correct) {
+                score++;
+                card.classList.add('correct');
+                feedback.innerText = "Correto! 🎉";
+                feedback.style.color = "#00b894";
+            } else {
+                card.classList.add('wrong');
+                let typeName = item.type === 'event' ? "EVENTO (Fato)" : item.type === 'thought' ? "PENSAMENTO (Ideia)" : "SENTIMENTO (Emoção)";
+                feedback.innerText = `Ops! Isso é um(a) ${typeName}.`;
+                feedback.style.color = "#d63031";
+            }
+
+            // Trava cliques rápidos
+            setTimeout(() => {
+                currentIndex++;
+                if(currentIndex < data.length) {
+                    loadCard();
+                } else {
+                    finishGame();
+                }
+            }, 1500);
+        }
+
+        function finishGame() {
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'block';
+            
+            // Placar
+            const percent = Math.round((score / data.length) * 100);
+            document.getElementById('scoreDisplay').innerText = percent + "%";
+
+            // Lista de revisão
+            const list = document.getElementById('historyList');
+            userHistory.forEach(h => {
+                let badgeColor = h.correctType === 'event' ? '#0984e3' : h.correctType === 'thought' ? '#f1c40f' : '#e17055';
+                let badgeName = h.correctType === 'event' ? 'Evento' : h.correctType === 'thought' ? 'Pensamento' : 'Sentimento';
+                
+                list.innerHTML += `
+                    <div class="history-item type-${h.correctType}">
+                        <div>
+                            <strong>${h.text}</strong>
+                        </div>
+                        <div style="text-align:right">
+                            <span class="badge" style="background:${badgeColor}">${badgeName}</span>
+                            <div style="font-size:0.8rem; margin-top:5px;">
+                                ${h.isCorrect ? '<i class="fa-solid fa-check" style="color:#00b894"></i> Acertou' : '<i class="fa-solid fa-xmark" style="color:#d63031"></i> Errou'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Gera a tabela estática para impressão
+        function populatePrintTable() {
+            const tbody = document.getElementById('print-body');
+            data.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.t}</td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+
+</body>
+</html>
