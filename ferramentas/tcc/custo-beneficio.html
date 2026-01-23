@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Custo-Benefício | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --advantage: #00b894; /* Verde */
+            --disadvantage: #d63031; /* Vermelho */
+            --text: #2d3436;
+            --primary: #6c5ce7;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed #636e72;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 900px; width: 100%; position: relative;
+        }
+
+        header h1 { color: #2d3436; margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid #2d3436; color: #2d3436;
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: #2d3436; color: white; }
+
+        /* --- PENSAMENTO CENTRAL --- */
+        .thought-section {
+            width: 100%; max-width: 1000px;
+            background: white; padding: 25px; border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .thought-section label { display: block; font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: var(--primary); }
+        .thought-section input {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 10px;
+            font-size: 1.1rem; font-family: inherit; transition: 0.3s;
+        }
+        .thought-section input:focus { border-color: var(--primary); outline: none; }
+
+        /* --- BALANÇA (GRID) --- */
+        .balance-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+            width: 100%; max-width: 1000px; margin-bottom: 40px;
+        }
+
+        .side-card {
+            background: white; padding: 25px; border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+            border-top: 5px solid;
+        }
+
+        .side-card.adv { border-color: var(--advantage); }
+        .side-card.dis { border-color: var(--disadvantage); }
+
+        .side-title {
+            font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .adv .side-title { color: var(--advantage); }
+        .dis .side-title { color: var(--disadvantage); }
+
+        /* LISTA DE ITENS */
+        .items-list { flex: 1; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+
+        .item-row {
+            display: flex; align-items: center; gap: 10px;
+            background: #f8f9fa; padding: 10px; border-radius: 10px; border: 1px solid #eee;
+            animation: slideIn 0.3s ease;
+        }
+
+        .item-text { flex: 1; font-weight: 600; color: #2d3436; }
+        
+        .weight-badge {
+            background: #2d3436; color: white; padding: 5px 10px; border-radius: 15px;
+            font-size: 0.8rem; font-weight: 800; min-width: 30px; text-align: center;
+        }
+
+        .btn-remove {
+            background: none; border: none; color: #b2bec3; cursor: pointer; transition: 0.2s;
+        }
+        .btn-remove:hover { color: #d63031; }
+
+        /* INPUT AREA */
+        .add-area {
+            display: flex; flex-direction: column; gap: 10px;
+            background: #f1f2f6; padding: 15px; border-radius: 15px;
+        }
+        
+        .add-area input[type="text"] {
+            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit;
+        }
+
+        .weight-control {
+            display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; color: #636e72;
+        }
+        .weight-control input { flex: 1; accent-color: #636e72; }
+
+        .btn-add-item {
+            width: 100%; padding: 10px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.2s;
+        }
+        .adv .btn-add-item { background: var(--advantage); color: white; }
+        .adv .btn-add-item:hover { background: #00a383; }
+        
+        .dis .btn-add-item { background: var(--disadvantage); color: white; }
+        .dis .btn-add-item:hover { background: #c0392b; }
+
+        /* --- PLACAR FINAL --- */
+        .scoreboard {
+            width: 100%; max-width: 1000px;
+            background: #2d3436; color: white; padding: 20px 40px;
+            border-radius: 50px; margin-bottom: 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .score-box { text-align: center; }
+        .score-label { font-size: 0.9rem; opacity: 0.7; text-transform: uppercase; font-weight: 700; }
+        .score-val { font-size: 2.5rem; font-weight: 800; }
+
+        .score-adv { color: var(--advantage); }
+        .score-dis { color: var(--disadvantage); }
+
+        .winner-text { font-size: 1.2rem; font-weight: 700; color: #fff; }
+
+        /* --- CRENÇA ALTERNATIVA --- */
+        .alternative-section {
+            width: 100%; max-width: 1000px;
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 50px;
+            border: 2px dashed var(--primary);
+        }
+        
+        .alternative-section h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        .alternative-section textarea {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 10px;
+            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 100px;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsividade */
+        @media (max-width: 800px) {
+            .balance-container { grid-template-columns: 1fr; }
+            .scoreboard { flex-direction: column; gap: 20px; border-radius: 25px; text-align: center; }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .btn-back-home, .add-area, .btn-remove { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            
+            #print-table {
+                display: table; width: 100%; border-collapse: collapse; font-family: sans-serif; margin: 20px 0;
+            }
+            #print-table th { background: #eee; padding: 10px; border: 1px solid #ccc; width: 50%; }
+            #print-table td { padding: 10px; border: 1px solid #ccc; vertical-align: top; }
+            
+            /* Esconde a interface interativa e mostra a tabela */
+            .balance-container, .scoreboard { display: none; }
+            
+            .thought-section { border: 1px solid #ccc; box-shadow: none; }
+            .alternative-section { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1>Análise de Custo-Benefício</h1>
+        <div class="subtitle">A Balança de Decisão</div>
+    </header>
+
+    <div class="thought-section" data-aos="fade-up">
+        <label><i class="fa-solid fa-cloud"></i> Pensamento Negativo / Crença a ser testada:</label>
+        <input type="text" id="mainThought" placeholder='Ex: "Devo me preocupar com tudo para estar seguro."'>
+    </div>
+
+    <div class="scoreboard" data-aos="zoom-in">
+        <div class="score-box">
+            <div class="score-label">Vantagens</div>
+            <div class="score-val score-adv" id="scoreAdv">0</div>
+        </div>
+        <div class="winner-text" id="winnerText">A Balança está equilibrada</div>
+        <div class="score-box">
+            <div class="score-label">Desvantagens</div>
+            <div class="score-val score-dis" id="scoreDis">0</div>
+        </div>
+    </div>
+
+    <div class="balance-container">
+        
+        <div class="side-card adv" data-aos="fade-right">
+            <div class="side-title">
+                <span><i class="fa-solid fa-thumbs-up"></i> Vantagens</span>
+                <span style="font-size:0.8rem; opacity:0.7;">(Manter a crença)</span>
+            </div>
+            
+            <div class="items-list" id="listAdv"></div>
+
+            <div class="add-area">
+                <input type="text" id="inputAdv" placeholder="O que eu ganho com isso?">
+                <div class="weight-control">
+                    <span>Peso (Importância):</span>
+                    <input type="range" id="weightAdv" min="1" max="10" value="5" oninput="document.getElementById('valAdv').innerText = this.value">
+                    <span id="valAdv" style="font-weight:800; width:20px;">5</span>
+                </div>
+                <button class="btn-add-item" onclick="addItem('adv')">Adicionar Vantagem</button>
+            </div>
+        </div>
+
+        <div class="side-card dis" data-aos="fade-left">
+            <div class="side-title">
+                <span><i class="fa-solid fa-thumbs-down"></i> Desvantagens</span>
+                <span style="font-size:0.8rem; opacity:0.7;">(Custos da crença)</span>
+            </div>
+            
+            <div class="items-list" id="listDis"></div>
+
+            <div class="add-area">
+                <input type="text" id="inputDis" placeholder="O que eu perco com isso?">
+                <div class="weight-control">
+                    <span>Peso (Importância):</span>
+                    <input type="range" id="weightDis" min="1" max="10" value="5" oninput="document.getElementById('valDis').innerText = this.value">
+                    <span id="valDis" style="font-weight:800; width:20px;">5</span>
+                </div>
+                <button class="btn-add-item" onclick="addItem('dis')">Adicionar Desvantagem</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="alternative-section" data-aos="fade-up">
+        <h3><i class="fa-solid fa-lightbulb"></i> Nova Crença Equilibrada</h3>
+        <p style="margin-bottom:10px; color:#636e72;">Considerando os custos e benefícios, qual seria uma forma mais saudável de pensar?</p>
+        <textarea id="altThought" placeholder="Ex: Preocupação moderada ajuda a planejar, mas preocupação excessiva só me paralisa e faz mal."></textarea>
+    </div>
+
+    <table id="print-table">
+        <thead>
+            <tr>
+                <th>Vantagens (Peso)</th>
+                <th>Desvantagens (Peso)</th>
+            </tr>
+        </thead>
+        <tbody id="printBody">
+            <tr>
+                <td id="printAdvCell" valign="top"></td>
+                <td id="printDisCell" valign="top"></td>
+            </tr>
+            <tr>
+                <td style="font-weight:bold; background:#eee;">Total: <span id="printTotalAdv">0</span></td>
+                <td style="font-weight:bold; background:#eee;">Total: <span id="printTotalDis">0</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:40px; color:#b2bec3; text-decoration:none; font-weight:600;" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        let itemsAdv = [];
+        let itemsDis = [];
+
+        function addItem(type) {
+            const inputId = type === 'adv' ? 'inputAdv' : 'inputDis';
+            const weightId = type === 'adv' ? 'weightAdv' : 'weightDis';
+            
+            const text = document.getElementById(inputId).value.trim();
+            const weight = parseInt(document.getElementById(weightId).value);
+
+            if (!text) {
+                alert("Digite o texto!");
+                return;
+            }
+
+            const item = { text, weight, id: Date.now() };
+
+            if (type === 'adv') itemsAdv.push(item);
+            else itemsDis.push(item);
+
+            document.getElementById(inputId).value = '';
+            document.getElementById(weightId).value = 5;
+            
+            renderLists();
+        }
+
+        function removeItem(id, type) {
+            if (type === 'adv') itemsAdv = itemsAdv.filter(i => i.id !== id);
+            else itemsDis = itemsDis.filter(i => i.id !== id);
+            renderLists();
+        }
+
+        function renderLists() {
+            // Renderiza Visual
+            renderListHTML('listAdv', itemsAdv, 'adv');
+            renderListHTML('listDis', itemsDis, 'dis');
+
+            // Calcula Totais
+            const totalAdv = itemsAdv.reduce((sum, i) => sum + i.weight, 0);
+            const totalDis = itemsDis.reduce((sum, i) => sum + i.weight, 0);
+
+            document.getElementById('scoreAdv').innerText = totalAdv;
+            document.getElementById('scoreDis').innerText = totalDis;
+
+            // Define Vencedor
+            const winnerText = document.getElementById('winnerText');
+            if (totalAdv > totalDis) {
+                winnerText.innerText = "A Crença Atual GANHA (Mais Vantagens)";
+                winnerText.style.color = "#00b894";
+            } else if (totalDis > totalAdv) {
+                winnerText.innerText = "A Crença Atual PERDE (Muitos Custos)";
+                winnerText.style.color = "#d63031";
+            } else {
+                winnerText.innerText = "A Balança está Equilibrada";
+                winnerText.style.color = "white";
+            }
+
+            // Atualiza Impressão
+            updatePrintTable();
+        }
+
+        function renderListHTML(elementId, items, type) {
+            const list = document.getElementById(elementId);
+            list.innerHTML = '';
+            
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.innerHTML = `
+                    <div class="item-text">${item.text}</div>
+                    <div class="weight-badge">${item.weight}</div>
+                    <button class="btn-remove" onclick="removeItem(${item.id}, '${type}')"><i class="fa-solid fa-xmark"></i></button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function updatePrintTable() {
+            const cellAdv = document.getElementById('printAdvCell');
+            const cellDis = document.getElementById('printDisCell');
+            
+            cellAdv.innerHTML = itemsAdv.map(i => `• ${i.text} <strong>(${i.weight})</strong>`).join('<br><br>');
+            cellDis.innerHTML = itemsDis.map(i => `• ${i.text} <strong>(${i.weight})</strong>`).join('<br><br>');
+
+            document.getElementById('printTotalAdv').innerText = itemsAdv.reduce((s, i) => s + i.weight, 0);
+            document.getElementById('printTotalDis').innerText = itemsDis.reduce((s, i) => s + i.weight, 0);
+        }
+    </script>
+
+</body>
+</html>
