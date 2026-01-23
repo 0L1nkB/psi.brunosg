@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seta Descendente | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fdcb6e;
+            --text: #2d3436;
+            --card-bg: #ffffff;
+            --arrow-color: #0984e3;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed #636e72;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 900px; width: 100%; position: relative; z-index: 10;
+        }
+
+        header h1 { color: #2d3436; margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid #2d3436; color: #2d3436;
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: #2d3436; color: white; }
+
+        /* --- CONTAINER PRINCIPAL (FLUXO) --- */
+        .flow-container {
+            width: 100%; max-width: 800px;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0; /* Gap zero pq vamos usar setas manuais */
+            padding-bottom: 100px;
+        }
+
+        /* --- CARTÕES DE PENSAMENTO --- */
+        .thought-card {
+            background: white; border-radius: 20px; padding: 25px;
+            width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            position: relative; z-index: 2; border: 2px solid transparent;
+            transition: all 0.4s ease;
+            animation: slideDown 0.5s ease;
+        }
+
+        /* Profundidade Visual (Cores) */
+        .depth-0 { border-color: #74b9ff; background: #f0f8ff; }
+        .depth-1 { border-color: #a29bfe; background: #f3f0ff; }
+        .depth-2 { border-color: #fdcb6e; background: #fffcf0; }
+        .depth-3 { border-color: #e17055; background: #fff0eb; }
+        .depth-4 { border-color: #d63031; background: #fff0f0; } /* Fundo do poço */
+
+        .card-header {
+            font-size: 0.85rem; text-transform: uppercase; font-weight: 800;
+            color: #636e72; margin-bottom: 10px; display: flex; justify-content: space-between;
+        }
+
+        .thought-text {
+            font-size: 1.2rem; font-weight: 600; color: #2d3436; line-height: 1.5;
+        }
+
+        /* --- SETA CONECTORA --- */
+        .arrow-connector {
+            height: 60px; width: 4px; background: #dfe6e9;
+            position: relative; margin: 0; z-index: 1;
+            transition: height 0.5s ease;
+        }
+        .arrow-connector::after {
+            content: '\f078'; font-family: "Font Awesome 6 Free"; font-weight: 900;
+            position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%);
+            color: #b2bec3; font-size: 1.2rem; background: var(--bg-color); padding: 5px;
+        }
+
+        /* --- ÁREA DE INPUT (PERGUNTA) --- */
+        .input-area {
+            background: white; border-radius: 20px; padding: 30px;
+            width: 100%; max-width: 800px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            z-index: 100; border-top: 4px solid var(--primary);
+            animation: slideUp 0.5s ease;
+        }
+
+        .question-label {
+            font-size: 1.1rem; font-weight: 800; color: var(--primary);
+            margin-bottom: 15px; display: block;
+        }
+
+        textarea {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9;
+            border-radius: 12px; font-family: inherit; font-size: 1rem;
+            resize: none; height: 80px; transition: 0.3s; background: #fdfdfd;
+        }
+        textarea:focus { border-color: var(--primary); outline: none; background: white; }
+
+        .action-row {
+            display: flex; justify-content: space-between; align-items: center; margin-top: 15px;
+        }
+
+        .btn-next {
+            background: var(--primary); color: white; border: none;
+            padding: 12px 30px; border-radius: 30px; font-weight: 800; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+            transition: 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+        .btn-next:hover { transform: translateY(-3px); background: #5849be; }
+
+        .btn-finish {
+            background: #d63031; color: white; border: none;
+            padding: 12px 30px; border-radius: 30px; font-weight: 800; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(214, 48, 49, 0.3);
+            transition: 0.3s; display: none; /* Só aparece depois de alguns níveis */
+        }
+        .btn-finish:hover { transform: translateY(-3px); background: #c0392b; }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RESULTADO FINAL --- */
+        .core-belief-reveal {
+            text-align: center; padding: 40px; background: #fff0f0; border: 4px dashed #d63031;
+            border-radius: 25px; margin-top: 20px; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: none; width: 100%;
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .btn-back-home { margin-top: 100px; color: #b2bec3; text-decoration: none; font-weight: 600; display: block; text-align: center; }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .btn-print span { display: none; }
+            .input-area { padding: 20px; border-radius: 20px 20px 0 0; }
+            .question-label { font-size: 1rem; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .input-area, .btn-back-home { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            .flow-container { padding-bottom: 0; }
+            .arrow-connector { background: #ccc; }
+            .arrow-connector::after { color: #ccc; background: white; }
+            
+            /* Ajuste de quebra de página */
+            .thought-card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir Fluxo</span></button>
+        <h1>Seta Descendente</h1>
+        <div class="subtitle">Mergulhando na Crença Central</div>
+    </header>
+
+    <div class="flow-container" id="flowContainer">
+        </div>
+
+    <div class="input-area" id="inputArea">
+        <label class="question-label" id="questionLabel">
+            <i class="fa-solid fa-bolt"></i> Qual foi o Evento / Situação inicial?
+        </label>
+        
+        <textarea id="userInput" placeholder="Digite aqui..."></textarea>
+        
+        <div class="action-row">
+            <button class="btn-finish" id="btnFinish" onclick="finishExercise()">
+                <i class="fa-solid fa-flag-checkered"></i> Encontrei a Crença!
+            </button>
+            <button class="btn-next" onclick="nextLevel()">
+                <span id="btnText">Começar</span> <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <a href="../listaferramentas.html" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i> Voltar para Ferramentas</a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        let level = 0;
+        const container = document.getElementById('flowContainer');
+        const input = document.getElementById('userInput');
+        const label = document.getElementById('questionLabel');
+        const btnNext = document.querySelector('.btn-next');
+        const btnFinish = document.getElementById('btnFinish');
+        
+        // Perguntas progressivas para guiar o aprofundamento
+        const questions = [
+            "Qual foi o pensamento automático que surgiu?",
+            "Se esse pensamento fosse verdade, o que isso significaria para você?",
+            "E se isso acontecesse, o que de pior poderia significar?",
+            "O que isso diria sobre quem você é?",
+            "O que isso diria sobre o seu futuro?"
+        ];
+
+        function nextLevel() {
+            const text = input.value.trim();
+            if (!text) {
+                alert("Por favor, digite sua resposta.");
+                return;
+            }
+
+            // 1. Adiciona Seta (se não for o primeiro)
+            if (level > 0) {
+                const arrow = document.createElement('div');
+                arrow.className = 'arrow-connector';
+                container.appendChild(arrow);
+            }
+
+            // 2. Adiciona o Card
+            const card = document.createElement('div');
+            // Calcula profundidade visual (0 a 4)
+            let depthClass = `depth-${Math.min(level, 4)}`;
+            
+            card.className = `thought-card ${depthClass}`;
+            
+            let headerText = "";
+            if (level === 0) headerText = "EVENTO / GATILHO";
+            else if (level === 1) headerText = "PENSAMENTO AUTOMÁTICO";
+            else headerText = `NÍVEL ${level - 1} (SIGNIFICADO)`;
+
+            card.innerHTML = `
+                <div class="card-header">
+                    <span>${headerText}</span>
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="thought-text">"${text}"</div>
+            `;
+            container.appendChild(card);
+
+            // 3. Prepara próxima pergunta
+            input.value = "";
+            level++;
+            
+            // Ajusta Labels
+            if (level < questions.length + 1) {
+                // Acessa array de perguntas (level-1 pq o evento é level 0)
+                // Se acabar as perguntas prontas, repete a última lógica
+                let qIndex = level - 1;
+                let nextQ = questions[qIndex] || "E o que isso significaria sobre você?";
+                
+                label.innerHTML = `<i class="fa-solid fa-circle-question"></i> ${nextQ}`;
+                document.getElementById('btnText').innerText = "Aprofundar";
+                
+                // Mostra botão de finalizar a partir do nível 3 (crença pode aparecer antes)
+                if (level >= 3) {
+                    btnFinish.style.display = "flex";
+                }
+            } else {
+                // Se passar muito, força fim ou continua loop
+                label.innerHTML = `<i class="fa-solid fa-circle-question"></i> E o que isso diz sobre o seu valor como pessoa?`;
+            }
+
+            // Scroll suave para baixo
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function finishExercise() {
+            // Oculta área de input
+            document.getElementById('inputArea').style.display = 'none';
+
+            // Adiciona Seta Final
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow-connector';
+            container.appendChild(arrow);
+
+            // Cria o Card da Crença Central
+            const coreCard = document.createElement('div');
+            coreCard.className = 'core-belief-reveal';
+            coreCard.innerHTML = `
+                <i class="fa-solid fa-bullseye" style="font-size:3rem; color:#d63031; margin-bottom:15px;"></i>
+                <h2 style="color:#d63031; margin:0 0 10px 0;">Crença Central Identificada</h2>
+                <p style="color:#636e72; font-size:1.1rem;">Esta é a raiz do pensamento.</p>
+                <div class="thought-text" style="font-size:1.5rem; margin-top:15px;">"${input.value || 'Eu sou inadequado/indigno'}"</div>
+                
+                <button onclick="window.print()" style="margin-top:20px; padding:10px 20px; background:#2d3436; color:white; border:none; border-radius:20px; font-weight:bold; cursor:pointer;">
+                    <i class="fa-solid fa-print"></i> Imprimir Análise
+                </button>
+            `;
+            container.appendChild(coreCard);
+            
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
