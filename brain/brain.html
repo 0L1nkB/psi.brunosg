@@ -3,91 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroView 3D - Ultimate</title>
+    <title>NeuroView - Visão Psicológica</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #0f0f0f; font-family: 'Segoe UI', sans-serif; color: white; }
+        /* --- ESTILO DARK MODE MODERNO --- */
+        body { margin: 0; overflow: hidden; background-color: #050505; font-family: 'Segoe UI', Roboto, sans-serif; color: white; }
         
-        /* LOADING */
         #loader-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; transition: opacity 0.5s;
         }
-        .spinner { width: 50px; height: 50px; border: 4px solid #222; border-top: 4px solid #00d2ff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
+        .spinner { width: 60px; height: 60px; border: 4px solid #1a1a1a; border-top: 4px solid #00d2ff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* UI: PAINEL DIREITO (INFO) */
+        /* UI INFO LATERAL */
         #info-panel {
-            position: absolute; top: 20px; right: 20px; width: 300px;
-            background: rgba(15, 15, 15, 0.95); border-right: 4px solid #00d2ff;
-            padding: 25px; border-radius: 12px 0 0 12px; z-index: 10;
-            box-shadow: -10px 10px 40px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px); pointer-events: none; opacity: 0; 
-            transform: translateX(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute; top: 20px; right: 20px; width: 350px;
+            background: rgba(10, 15, 20, 0.95); border-right: 4px solid #00d2ff;
+            padding: 30px; border-radius: 15px 0 0 15px; z-index: 10;
+            box-shadow: -10px 10px 50px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px); transform: translateX(400px); 
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        #info-panel.visible { opacity: 1; pointer-events: auto; transform: translateX(0); }
+        #info-panel.visible { transform: translateX(0); }
         
-        #region-title { margin: 0 0 5px 0; font-size: 22px; color: #fff; text-transform: capitalize; font-weight: 700;}
-        #region-category { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 15px; font-weight: bold;}
-        #region-desc { font-size: 14px; line-height: 1.6; color: #ccc; margin-bottom: 20px; }
-        .psy-tag { background: #222; padding: 4px 10px; border-radius: 4px; font-size: 11px; color: #00d2ff; border: 1px solid #333; display: inline-block; margin-right: 5px; margin-bottom: 5px;}
-
-        /* UI: PAINEL ESQUERDO (DIVISÕES) */
-        #layer-menu {
-            position: absolute; top: 20px; left: 20px; width: 200px;
-            background: rgba(10, 10, 10, 0.8); padding: 15px; border-radius: 12px;
-            border: 1px solid #333; z-index: 10; backdrop-filter: blur(5px);
+        #region-title { margin: 0; font-size: 28px; color: #fff; font-weight: 800; letter-spacing: -1px; line-height: 1.1;}
+        #region-subtitle { font-size: 14px; color: #00d2ff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight: 600; margin-top: 5px;}
+        #region-desc { font-size: 15px; line-height: 1.7; color: #b0b0b0; margin-bottom: 20px; font-weight: 400;}
+        
+        /* TAGS */
+        .psy-tag { 
+            background: rgba(0, 210, 255, 0.1); padding: 6px 12px; border-radius: 6px; 
+            font-size: 12px; color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.2); 
+            display: inline-block; margin-right: 6px; margin-bottom: 6px; font-weight: 600;
         }
-        .menu-title { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 10px; font-weight: bold;}
-        .layer-item {
-            display: flex; align-items: center; padding: 8px; cursor: pointer;
-            border-radius: 6px; transition: background 0.2s; color: #ddd; font-size: 13px;
-        }
-        .layer-item:hover { background: rgba(255,255,255,0.1); }
-        .layer-color { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
-        .layer-checkbox { margin-left: auto; accent-color: #00d2ff; cursor: pointer; }
 
-        /* UI: CONTROLES INFERIORES (EXPLOSÃO) */
-        #controls-bar {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.9); padding: 15px 30px; border-radius: 50px;
-            border: 1px solid #333; z-index: 10; display: flex; align-items: center; gap: 20px;
+        /* LEGENDA FLUTUANTE (MOUSE) */
+        #tooltip {
+            position: absolute; pointer-events: none; background: rgba(0,0,0,0.8);
+            color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 12px;
+            display: none; z-index: 20; border: 1px solid #333;
         }
-        .slider-group { display: flex; flex-direction: column; align-items: center; min-width: 150px; }
-        .slider-group label { font-size: 11px; color: #aaa; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
-        input[type=range] { width: 100%; cursor: pointer; accent-color: #00d2ff; }
 
+        /* CONTROLES DA CÂMERA */
+        #controls-help {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
     <div id="loader-screen">
         <div class="spinner"></div>
-        <div style="color: #00d2ff; font-weight: bold;">Carregando Atlas 3D</div>
-        <div id="loading-count" style="color: #666; font-size: 12px; margin-top: 5px;">Preparando...</div>
+        <div style="color: #fff; font-weight: bold; font-size: 14px;">CONSTRUINDO LOBOS CEREBRAIS</div>
+        <div id="loading-count" style="color: #666; font-size: 12px; margin-top: 5px;">0%</div>
     </div>
 
-    <div id="layer-menu">
-        <div class="menu-title">Divisões Anatômicas</div>
-        </div>
+    <div id="tooltip"></div>
 
     <div id="info-panel">
-        <h2 id="region-title">Título</h2>
-        <div id="region-category">Categoria</div>
-        <p id="region-desc">Descrição...</p>
+        <h1 id="region-title">Lobo Frontal</h1>
+        <div id="region-subtitle">O "CEO" do Cérebro</div>
+        <p id="region-desc">Descrição psicológica detalhada aparecerá aqui.</p>
         <div id="region-tags"></div>
     </div>
 
-    <div id="controls-bar">
-        <div class="slider-group">
-            <label>💥 Expandir Peças (Explosion)</label>
-            <input type="range" id="explodeSlider" min="0" max="2" step="0.01" value="0">
-        </div>
-        <div style="width: 1px; height: 30px; background: #333;"></div>
-        <div style="font-size: 11px; color: #666;">
-            Clique para isolar <br> Clique fora para restaurar
-        </div>
-    </div>
+    <div id="controls-help">Clique para Selecionar • Arraste para Girar</div>
 
     <script type="importmap">
         {
@@ -103,33 +86,68 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
-        // --- 1. CONFIGURAÇÃO DE CATEGORIAS (CORES BRAINFACTS) ---
-        const categories = {
-            "frontal": { name: "Lobo Frontal", color: 0x2196F3, keywords: ["frontal", "precentral", "orbital", "rectus", "straight", "cingulate"] },
-            "parietal": { name: "Lobo Parietal", color: 0xFFC107, keywords: ["parietal", "postcentral", "precuneus", "supramarginal", "angular"] },
-            "temporal": { name: "Lobo Temporal", color: 0x4CAF50, keywords: ["temporal", "fusiform", "hippocampus", "amygdala", "uncus", "entorhinal", "parahippocampal"] },
-            "occipital": { name: "Lobo Occipital", color: 0xE91E63, keywords: ["occipital", "cuneus", "lingual", "calcarine"] },
-            "inner": { name: "Límbico / Núcleos", color: 0x9C27B0, keywords: ["thalamus", "putamen", "caudate", "pallidus", "claustrum", "fornix", "septum", "mammillary", "habenula", "stria"] },
-            "stem": { name: "Tronco / Cerebelo", color: 0xFF5722, keywords: ["cerebellum", "midbrain", "pons", "medulla", "colliculus", "ventricle", "aqueduct", "substantia nigra", "red nucleus"] }
+        // --- 1. MAPEAMENTO DAS 7 GRANDES ÁREAS (LOBOS + ESTRUTURAS) ---
+        // Definimos a cor e o conteúdo psicológico de cada GRANDE BLOCO.
+        const brainRegions = {
+            "frontal": {
+                name: "Lobo Frontal",
+                subtitle: "Funções Executivas & Personalidade",
+                desc: "É a área mais evoluída do cérebro humano. Responsável pelo planejamento, tomada de decisão, controle de impulsos e comportamento social. É aqui que reside a sua 'personalidade'. Lesões nesta área podem causar mudanças drásticas de comportamento e dificuldade em planejar o futuro.",
+                tags: ["Planejamento", "Freio Social", "Decisão", "Motor"],
+                color: 0x00d2ff, // Azul Neon
+                keywords: ["frontal", "precentral", "orbital", "rectus", "straight", "cingulate"]
+            },
+            "parietal": {
+                name: "Lobo Parietal",
+                subtitle: "Percepção Sensorial & Espacial",
+                desc: "Processa as informações táteis (dor, temperatura, toque) e a noção do corpo no espaço (propriocepção). É fundamental para a coordenação visuo-motora, como pegar um objeto que você está vendo.",
+                tags: ["Tato", "Dor", "Espaço", "Matemática"],
+                color: 0xffa500, // Laranja
+                keywords: ["parietal", "postcentral", "precuneus", "supramarginal", "angular"]
+            },
+            "temporal": {
+                name: "Lobo Temporal",
+                subtitle: "Memória, Audição & Emoção",
+                desc: "Abriga o Hipocampo (memória) e a Amígdala (emoção/medo). É crucial para processar sons, entender a linguagem falada e reconhecer rostos. É a área mais associada à epilepsia e ao Alzheimer inicial.",
+                tags: ["Memória", "Linguagem", "Medo", "Audição"],
+                color: 0x00ff00, // Verde Neon
+                keywords: ["temporal", "fusiform", "hippocampus", "amygdala", "uncus", "entorhinal", "parahippocampal"]
+            },
+            "occipital": {
+                name: "Lobo Occipital",
+                subtitle: "Processamento Visual",
+                desc: "O centro da visão. Onde o cérebro interpreta o que os olhos veem: cores, formas, luz e movimento. Danos aqui podem causar cegueira cortical (os olhos funcionam, mas o cérebro não vê).",
+                tags: ["Visão", "Cores", "Movimento"],
+                color: 0xff0055, // Rosa/Vermelho
+                keywords: ["occipital", "cuneus", "lingual", "calcarine"]
+            },
+            "insula": {
+                name: "Ínsula & Límbico",
+                subtitle: "Consciência Interna & Desejo",
+                desc: "Escondida profundamente, a ínsula monitora o estado interno do corpo (fome, batimentos cardíacos, nojo). Está fortemente ligada à autoconsciência, empatia e vícios.",
+                tags: ["Empatia", "Vício", "Nojo", "Interocepção"],
+                color: 0xaa00ff, // Roxo
+                keywords: ["insula", "thalamus", "putamen", "caudate", "pallidus", "fornix", "septum", "mammillary", "habenula", "stria"]
+            },
+            "cerebellum": {
+                name: "Cerebelo",
+                subtitle: "Coordenação & Equilíbrio",
+                desc: "Conhecido como 'pequeno cérebro'. Essencial para a coordenação motora fina, postura e equilíbrio. Também participa de processos cognitivos como atenção e linguagem.",
+                tags: ["Motor Fino", "Equilíbrio", "Ritmo"],
+                color: 0xffff00, // Amarelo
+                keywords: ["cerebellum"]
+            },
+            "brainstem": {
+                name: "Tronco Encefálico",
+                subtitle: "Sobrevivência Básica",
+                desc: "A parte mais primitiva. Controla funções vitais automáticas: respiração, batimentos cardíacos, sono e pressão arterial. Conecta o cérebro à medula espinhal.",
+                tags: ["Respiração", "Sono", "Vital"],
+                color: 0xffffff, // Branco
+                keywords: ["midbrain", "pons", "medulla", "colliculus", "ventricle", "aqueduct", "substantia", "red nucleus"]
+            }
         };
-        const defaultCategory = { name: "Outras Estruturas", color: 0x607D8B };
 
-        // --- 2. DICIONÁRIO DE PSICOLOGIA ---
-        const psychoDictionary = {
-            "amygdala": { desc: "Processamento de medo, emoção intensa e respostas de luta ou fuga. Hiperativa na ansiedade.", tags: ["Emoção", "Medo", "Ansiedade"] },
-            "hippocampus": { desc: "Fundamental para criar novas memórias (longo prazo) e navegação espacial.", tags: ["Memória", "Navegação", "Aprendizado"] },
-            "prefrontal": { desc: "Funções executivas: planejamento, decisão, controle de impulsos e personalidade.", tags: ["Executivo", "Personalidade", "Decisão"] },
-            "orbital": { desc: "Processamento de recompensas, emoção e tomada de decisão social.", tags: ["Social", "Emoção"] },
-            "cingulate": { desc: "Regulação emocional, detecção de erros e dor emocional/física.", tags: ["Emoção", "Dor", "Atenção"] },
-            "broca": { desc: "Produção da fala e articulação.", tags: ["Linguagem", "Fala"] },
-            "wernicke": { desc: "Compreensão da linguagem falada e escrita.", tags: ["Linguagem", "Compreensão"] },
-            "occipital": { desc: "Processamento visual primário: cor, luz e movimento.", tags: ["Visão"] },
-            "thalamus": { desc: "O grande 'porteiro' sensorial. Filtra e retransmite informações para o córtex.", tags: ["Sensorial", "Atenção"] },
-            "cerebellum": { desc: "Coordenação motora fina, equilíbrio e precisão.", tags: ["Motor", "Equilíbrio"] },
-            "accumbens": { desc: "Centro de prazer e recompensa. Envolvido em vícios e motivação.", tags: ["Prazer", "Dopamina"] }
-        };
-
-        // --- 3. LISTA DE ARQUIVOS (INSERIR A LISTA COMPLETA AQUI) ---
+        // --- SEU ARQUIVO DE LISTA (Pode manter os 223 arquivos aqui) ---
         const fileList = [
             "FJ1735_BP37293_FMA73462_Brachium of left superior colliculus.obj",
             "FJ1761_BP37183_FMA73464_Brachium of left inferior colliculus.obj",
@@ -375,16 +393,11 @@
 
         // --- VARIÁVEIS GLOBAIS ---
         let scene, camera, renderer, controls, raycaster, mouse;
-        let brainGroup; // Grupo principal
-        let brainCenter = new THREE.Vector3(); // Centro global
-        let hoveredObject = null;
-        let selectedObject = null;
+        let brainGroup; 
+        let selectedCategory = null; // Agora a seleção é por CATEGORIA, não objeto
+        let hoveredCategory = null;
+        let piecesByCategory = {}; // Mapeia "frontal" -> [mesh1, mesh2, mesh3...]
         const loaderManager = new THREE.LoadingManager();
-
-        // Arrays para gerenciar categorias (para o menu de camadas)
-        const layers = {}; 
-        Object.keys(categories).forEach(k => layers[k] = []);
-        layers['other'] = [];
 
         init();
         loadBrainParts();
@@ -392,7 +405,7 @@
 
         function init() {
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0f0f0f);
+            scene.background = new THREE.Color(0x050505);
             
             camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
             camera.position.set(0, 0, 150); 
@@ -402,10 +415,11 @@
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             document.body.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0x404040, 5); 
+            // Luzes ajustadas para destaque
+            const ambientLight = new THREE.AmbientLight(0x404040, 4); 
             scene.add(ambientLight);
             
-            const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
             dirLight.position.set(50, 50, 50);
             scene.add(dirLight);
 
@@ -422,71 +436,40 @@
 
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2();
+            
+            // Listeners
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('click', onClick);
             window.addEventListener('resize', onWindowResize);
 
-            // LOGICA DE CARREGAMENTO E INICIALIZAÇÃO
+            // Interface de Loading
             const loadingText = document.getElementById('loading-count');
             const loadingScreen = document.getElementById('loader-screen');
-            const explodeSlider = document.getElementById('explodeSlider');
 
             loaderManager.onProgress = function (url, itemsLoaded, itemsTotal) {
-                loadingText.innerText = `Carregando parte ${itemsLoaded} de ${itemsTotal}`;
+                let percent = Math.round((itemsLoaded / itemsTotal) * 100);
+                loadingText.innerText = `${percent}%`;
             };
 
             loaderManager.onLoad = function () {
-                loadingText.innerText = "Calculando geometria e cores...";
-                
-                // 1. Centralização Global
+                // Centraliza e ajusta
                 const box = new THREE.Box3().setFromObject(brainGroup);
-                box.getCenter(brainCenter); // Salva o centro para o cálculo de explosão
+                const center = box.getCenter(new THREE.Vector3());
                 const size = box.getSize(new THREE.Vector3());
 
-                // Ajusta o grupo para ficar no 0,0,0 visualmente
-                brainGroup.position.x = -brainCenter.x;
-                brainGroup.position.y = -brainCenter.y;
-                brainGroup.position.z = -brainCenter.z;
-                
-                // Atualiza o centro de referência para 0,0,0 (pois movemos o grupo)
-                brainCenter.set(0,0,0); 
+                brainGroup.position.x = -center.x;
+                brainGroup.position.y = -center.y;
+                brainGroup.position.z = -center.z;
 
-                // 2. Calcula vetor de explosão para cada peça
-                brainGroup.children.forEach(mesh => {
-                    // Centro individual da peça
-                    const meshBox = new THREE.Box3().setFromObject(mesh);
-                    const meshCenter = meshBox.getCenter(new THREE.Vector3());
-                    
-                    // Vetor do Centro do Cérebro -> Centro da Peça
-                    // (Como o grupo foi movido, usamos a posição relativa)
-                    // Na prática, como o objeto está dentro do grupo, sua position local é (0,0,0).
-                    // Mas a geometria tem um offset. O vetor de explosão é simplesmente o centro da geometria.
-                    
-                    // Precisamos transformar o centro da peça para o espaço local do grupo
-                    const localCenter = meshCenter.clone().sub(brainGroup.position);
-
-                    mesh.userData.explodeVector = localCenter.clone().normalize();
-                    mesh.userData.originalPosition = mesh.position.clone(); // Deve ser 0,0,0
-                });
-
-                // 3. Ajusta Câmera
                 const maxDim = Math.max(size.x, size.y, size.z);
                 const fov = camera.fov * (Math.PI / 180);
-                let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov * 2)) * 2.5;
+                let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov * 2)) * 2.2;
                 camera.position.set(0, maxDim / 3, cameraZ);
                 camera.lookAt(0, 0, 0);
                 controls.target.set(0, 0, 0);
                 controls.update();
 
-                // 4. Gera Menu de Camadas
-                generateLayerMenu();
-
-                // 5. Ativa Slider de Explosão
-                explodeSlider.addEventListener('input', (e) => {
-                    const val = parseFloat(e.target.value);
-                    explodeBrain(val * 40); // Multiplicador de distância
-                });
-
+                // Fim do loading
                 setTimeout(() => {
                     loadingScreen.style.opacity = '0';
                     setTimeout(() => loadingScreen.style.display = 'none', 500);
@@ -497,6 +480,10 @@
         function loadBrainParts() {
             const loader = new OBJLoader(loaderManager);
 
+            // Inicializa arrays
+            Object.keys(brainRegions).forEach(k => piecesByCategory[k] = []);
+            piecesByCategory["other"] = []; // Fallback
+
             fileList.forEach(filename => {
                 loader.load('./' + filename, function (object) {
                     
@@ -504,51 +491,40 @@
                     const nameParts = rawName.split('_');
                     let cleanName = nameParts.length > 3 ? nameParts.slice(3).join(' ') : rawName;
                     
-                    // --- CATEGORIZAÇÃO E COR ---
-                    let categoryData = defaultCategory;
-                    let catKey = "other";
+                    // --- ALGORITMO DE AGRUPAMENTO (O SEGREDO) ---
+                    // Descobre qual categoria esse pedaço pertence
+                    let catKey = "other"; // Padrão
                     
-                    // Verifica keywords
-                    for (const [key, cat] of Object.entries(categories)) {
-                        if (cat.keywords.some(k => cleanName.toLowerCase().includes(k))) {
-                            categoryData = cat;
+                    for (const [key, region] of Object.entries(brainRegions)) {
+                        if (region.keywords.some(k => cleanName.toLowerCase().includes(k))) {
                             catKey = key;
                             break;
                         }
                     }
 
+                    // Aplica ao Mesh
                     object.traverse(function (child) {
                         if (child.isMesh) {
-                            const color = categoryData.color;
+                            // Se for "other", usa cinza. Se não, usa a cor da região.
+                            const color = catKey === "other" ? 0x555555 : brainRegions[catKey].color;
                             
                             child.material = new THREE.MeshStandardMaterial({
                                 color: color,
                                 roughness: 0.4, 
                                 metalness: 0.1,
                                 transparent: true,
-                                opacity: 1,
+                                opacity: 1, // Sólido por padrão
                                 side: THREE.DoubleSide
                             });
                             
-                            // Dados para interação e psicologia
-                            let psychoData = null;
-                            for (const key in psychoDictionary) {
-                                if (cleanName.toLowerCase().includes(key)) {
-                                    psychoData = psychoDictionary[key];
-                                    break;
-                                }
-                            }
-
+                            // Guarda a "Identidade" do bloco
                             child.userData = { 
                                 originalColor: color,
-                                name: cleanName,
-                                category: categoryData.name,
-                                psycho: psychoData,
-                                catKey: catKey // Para o menu de camadas
+                                category: catKey
                             };
                             
-                            // Adiciona à lista de camadas para controle
-                            layers[catKey].push(child);
+                            // Guarda na lista global para manipularmos depois
+                            piecesByCategory[catKey].push(child);
                         }
                     });
 
@@ -557,138 +533,146 @@
             });
         }
 
-        function explodeBrain(scalar) {
-            brainGroup.children.forEach(mesh => {
-                if (mesh.userData.explodeVector) {
-                    // Move a peça na direção do seu vetor de explosão
-                    mesh.position.copy(mesh.userData.originalPosition)
-                        .add(mesh.userData.explodeVector.clone().multiplyScalar(scalar));
-                }
-            });
-        }
-
-        function generateLayerMenu() {
-            const menu = document.getElementById('layer-menu');
-            
-            // Ordem de exibição
-            const order = ["frontal", "parietal", "temporal", "occipital", "inner", "stem", "other"];
-
-            order.forEach(key => {
-                if (layers[key].length === 0) return;
-
-                const cat = categories[key] || defaultCategory;
-                
-                const div = document.createElement('div');
-                div.className = 'layer-item';
-                div.innerHTML = `
-                    <div class="layer-color" style="background-color: #${cat.color.toString(16)}"></div>
-                    <span>${cat.name}</span>
-                    <input type="checkbox" class="layer-checkbox" checked data-key="${key}">
-                `;
-
-                // Evento de Toggle
-                div.querySelector('input').addEventListener('change', (e) => {
-                    const isVisible = e.target.checked;
-                    layers[key].forEach(mesh => {
-                        mesh.visible = isVisible;
-                    });
-                });
-
-                menu.appendChild(div);
-            });
-        }
-
+        // --- INTERAÇÃO "EM BLOCO" ---
+        
         function onMouseMove(event) {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             
-            // Só interage com objetos visíveis
-            const intersects = raycaster.intersectObjects(brainGroup.children.filter(o => o.visible), true);
+            const intersects = raycaster.intersectObjects(brainGroup.children, true);
+            const tooltip = document.getElementById('tooltip');
 
             if (intersects.length > 0) {
-                const obj = intersects[0].object;
-                if (hoveredObject !== obj) {
-                    if (hoveredObject && hoveredObject !== selectedObject) hoveredObject.material.emissive.setHex(0x000000);
-                    hoveredObject = obj;
-                    // Brilho branco suave no hover
-                    hoveredObject.material.emissive.setHex(0x222222);
-                    document.body.style.cursor = 'pointer';
+                const hitObj = intersects[0].object;
+                const catKey = hitObj.userData.category;
+
+                // Se mudou de categoria (ex: saiu do Frontal e foi pro Parietal)
+                if (hoveredCategory !== catKey) {
+                    
+                    // Se nada estiver clicado/fixo, podemos limpar o destaque anterior
+                    if (!selectedCategory) {
+                        resetHighlights(); 
+                    }
+
+                    hoveredCategory = catKey;
+                    
+                    // Se não tiver seleção fixa, destaca o que o mouse está em cima
+                    if (!selectedCategory && catKey !== 'other') {
+                        highlightCategory(catKey, 0x222222); // Brilho suave
+                    }
+
+                    // Tooltip (Legenda do Mouse)
+                    if (brainRegions[catKey]) {
+                        tooltip.style.display = 'block';
+                        tooltip.innerText = brainRegions[catKey].name;
+                        tooltip.style.left = event.clientX + 10 + 'px';
+                        tooltip.style.top = event.clientY + 10 + 'px';
+                    }
+                } else {
+                    // Atualiza posição do tooltip
+                    tooltip.style.left = event.clientX + 10 + 'px';
+                    tooltip.style.top = event.clientY + 10 + 'px';
                 }
+                document.body.style.cursor = 'pointer';
+
             } else {
-                if (hoveredObject && hoveredObject !== selectedObject) hoveredObject.material.emissive.setHex(0x000000);
-                hoveredObject = null;
+                if (!selectedCategory) resetHighlights();
+                hoveredCategory = null;
                 document.body.style.cursor = 'default';
+                tooltip.style.display = 'none';
             }
         }
 
         function onClick() {
-            if (hoveredObject) {
-                if (selectedObject === hoveredObject) { resetView(); return; }
-                selectedObject = hoveredObject;
+            // Se estiver em cima de algo válido
+            if (hoveredCategory && hoveredCategory !== 'other') {
                 
-                // --- ATUALIZA PAINEL DE INFO ---
-                const panel = document.getElementById('info-panel');
-                const title = document.getElementById('region-title');
-                const cat = document.getElementById('region-category');
-                const desc = document.getElementById('region-desc');
-                const tagContainer = document.getElementById('region-tags');
-
-                const data = selectedObject.userData;
-                title.innerText = data.name;
-                cat.innerText = data.category;
-                cat.style.color = '#' + data.originalColor.toString(16);
-
-                if (data.psycho) {
-                    desc.innerText = data.psycho.desc;
-                    tagContainer.innerHTML = data.psycho.tags.map(tag => `<span class="psy-tag">${tag}</span>`).join('');
-                } else {
-                    desc.innerText = "Estrutura anatômica. (Sem dados funcionais específicos cadastrados).";
-                    tagContainer.innerHTML = "";
+                // Se clicou no mesmo, desfaz
+                if (selectedCategory === hoveredCategory) {
+                    selectedCategory = null;
+                    resetHighlights();
+                    hideInfo();
+                    return;
                 }
-                
-                panel.classList.add('visible');
 
-                // --- EFEITO GHOST / TRANSPARÊNCIA ---
+                // Nova seleção
+                selectedCategory = hoveredCategory;
+                
+                // 1. Apaga tudo (Ghost Mode)
                 brainGroup.children.forEach(group => {
                     group.traverse(child => {
                         if (child.isMesh) {
-                            if (child === selectedObject) {
-                                // O escolhido fica SÓLIDO e COLORIDO
-                                child.material.opacity = 1;
-                                child.material.transparent = false;
-                                child.material.color.setHex(child.userData.originalColor);
-                                child.material.emissive.setHex(0x111111);
-                            } else {
-                                // O resto fica TRANSPARENTE e CINZA
-                                child.material.transparent = true;
-                                child.material.opacity = 0.05; // Bem fantasma
-                                child.material.color.setHex(0x333333);
-                                child.material.emissive.setHex(0x000000);
-                            }
+                            child.material.opacity = 0.1; // Quase invisível
+                            child.material.emissive.setHex(0x000000);
                         }
                     });
                 });
+
+                // 2. Acende SÓ a categoria escolhida
+                const meshes = piecesByCategory[selectedCategory];
+                meshes.forEach(mesh => {
+                    mesh.material.opacity = 1;
+                    mesh.material.emissive.setHex(0x222222);
+                });
+
+                // 3. Mostra Info Psicológica
+                showInfo(selectedCategory);
+
             } else {
-                resetView();
+                // Clicou no fundo preto -> Reset
+                selectedCategory = null;
+                resetHighlights();
+                hideInfo();
             }
         }
 
-        function resetView() {
-            selectedObject = null;
-            document.getElementById('info-panel').classList.remove('visible');
+        // Função Auxiliar: Ilumina um grupo inteiro
+        function highlightCategory(key, emissiveColor) {
+            // Primeiro apaga brilhos
+            brainGroup.children.forEach(g => g.traverse(c => { if(c.isMesh) c.material.emissive.setHex(0x000000); }));
             
-            // Restaura tudo
+            // Acende o grupo
+            if (piecesByCategory[key]) {
+                piecesByCategory[key].forEach(mesh => {
+                    mesh.material.emissive.setHex(emissiveColor);
+                });
+            }
+        }
+
+        // Função Auxiliar: Volta tudo ao normal
+        function resetHighlights() {
             brainGroup.children.forEach(group => {
                 group.traverse(child => {
                     if (child.isMesh) {
-                        child.material.opacity = 1;
-                        child.material.transparent = true; // Volta a ser "transparente=true" mas com opacity 1 (padrão do material)
-                        child.material.color.set(child.userData.originalColor);
-                        child.material.emissive.setHex(0x000000);
+                        child.material.opacity = 1; // Sólido
+                        child.material.emissive.setHex(0x000000); // Sem brilho extra
                     }
                 });
             });
+        }
+
+        // UI Logic
+        function showInfo(key) {
+            const data = brainRegions[key];
+            if (!data) return;
+
+            const panel = document.getElementById('info-panel');
+            document.getElementById('region-title').innerText = data.name;
+            document.getElementById('region-subtitle').innerText = data.subtitle;
+            document.getElementById('region-subtitle').style.color = '#' + data.color.toString(16);
+            document.getElementById('region-desc').innerText = data.desc;
+            
+            const tagsDiv = document.getElementById('region-tags');
+            tagsDiv.innerHTML = data.tags.map(t => 
+                `<span class="psy-tag" style="color:#${data.color.toString(16)}; border-color: #${data.color.toString(16)}44">${t}</span>`
+            ).join('');
+
+            panel.classList.add('visible');
+        }
+
+        function hideInfo() {
+            document.getElementById('info-panel').classList.remove('visible');
         }
 
         function onWindowResize() {
