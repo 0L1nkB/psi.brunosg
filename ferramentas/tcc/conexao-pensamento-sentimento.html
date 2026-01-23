@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório das Emoções | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --primary: #0984e3;       /* Azul (Pensamento) */
+            --secondary: #e17055;     /* Laranja (Sentimento) */
+            --success: #00b894;
+            --text: #2d3436;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed var(--primary);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 800px; width: 100%; position: relative;
+        }
+
+        header h1 { color: var(--primary); margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid var(--primary); color: var(--primary);
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: var(--primary); color: white; }
+
+        /* --- JOGO DE CORRESPONDÊNCIA --- */
+        .game-section {
+            width: 100%; max-width: 900px;
+            background: white; border-radius: 25px;
+            padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .game-title {
+            text-align: center; font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr; /* Coluna Pensamento | Espaço | Coluna Emoção */
+            gap: 20px;
+            align-items: center;
+        }
+
+        .column { display: flex; flex-direction: column; gap: 15px; }
+
+        .card {
+            padding: 15px; border-radius: 15px; cursor: pointer;
+            border: 3px solid transparent; background: #f8f9fa;
+            font-weight: 600; text-align: center; transition: all 0.2s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        /* Tipos de Cartas */
+        .card.thought { border-color: #74b9ff; color: #2d3436; }
+        .card.thought:hover { background: #e3f2fd; transform: translateX(5px); }
+        .card.thought.selected { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px rgba(9, 132, 227, 0.4); }
+
+        .card.feeling { border-color: #fab1a0; color: #2d3436; }
+        .card.feeling:hover { background: #ffeaa7; transform: translateX(-5px); }
+        .card.feeling.selected { background: var(--secondary); color: white; border-color: var(--secondary); box-shadow: 0 0 15px rgba(225, 112, 85, 0.4); }
+
+        /* Estado "Combinado" (Resolvido) */
+        .card.matched {
+            background: #dfe6e9; color: #b2bec3; border-color: #b2bec3;
+            cursor: default; pointer-events: none; opacity: 0.6; text-decoration: line-through;
+            transform: none !important;
+        }
+
+        .center-connector {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 2rem; color: #b2bec3; height: 100%;
+        }
+
+        /* --- FORMULÁRIO PESSOAL --- */
+        .personal-section {
+            width: 100%; max-width: 900px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .input-row {
+            display: flex; gap: 15px; background: white; padding: 20px;
+            border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            align-items: flex-end;
+        }
+
+        .field-group { flex: 1; }
+        .field-group label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--text); }
+        .field-group input {
+            width: 100%; padding: 12px; border: 2px solid #dfe6e9; border-radius: 10px;
+            font-family: inherit; font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .field-group input:focus { border-color: var(--primary); }
+
+        .btn-add {
+            background: var(--success); color: white; border: none;
+            width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .btn-add:hover { transform: scale(1.1); background: #00a884; }
+
+        /* Lista de Itens Adicionados */
+        .entries-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+        .entry-card {
+            display: flex; align-items: center; background: white;
+            padding: 15px 20px; border-radius: 15px; border-left: 5px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: slideIn 0.3s ease;
+        }
+        
+        .entry-thought { flex: 1; font-weight: 600; color: #2d3436; }
+        .entry-arrow { padding: 0 20px; color: #b2bec3; font-size: 1.2rem; }
+        .entry-feeling { flex: 1; font-weight: 700; color: var(--secondary); text-align: right; }
+        .btn-delete { background: none; border: none; color: #d63031; cursor: pointer; margin-left: 15px; opacity: 0.5; transition:0.2s; }
+        .btn-delete:hover { opacity: 1; transform: scale(1.2); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsividade */
+        @media (max-width: 700px) {
+            .game-grid { grid-template-columns: 1fr; gap: 10px; }
+            .center-connector { display: none; }
+            .input-row { flex-direction: column; align-items: stretch; }
+            .btn-add { width: 100%; border-radius: 10px; height: 40px; margin-top: 10px; }
+            .entry-card { flex-direction: column; text-align: center; gap: 5px; }
+            .entry-arrow { transform: rotate(90deg); }
+            .entry-feeling { text-align: center; }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .game-section, .input-row, .btn-back-home, .btn-delete { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            
+            #print-table { display: table; width: 100%; border-collapse: collapse; margin-top: 20px; }
+            #print-table th { background: #eee; padding: 10px; text-align: left; border: 1px solid #ccc; }
+            #print-table td { padding: 10px; border: 1px solid #ccc; }
+            
+            .entry-card { display: none; } /* Esconde os cards visuais para usar a tabela limpa */
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1>Como os Pensamentos criam Sentimentos</h1>
+        <div class="subtitle">Laboratório de TCC</div>
+    </header>
+
+    <div class="game-section" data-aos="fade-up">
+        <div class="game-title">
+            <i class="fa-solid fa-puzzle-piece" style="color:var(--primary)"></i> 
+            Treino: Clique no Pensamento e depois na Emoção correspondente
+        </div>
+        
+        <div class="game-grid">
+            <div class="column" id="thoughts-col">
+                </div>
+            
+            <div class="center-connector">
+                <i class="fa-solid fa-arrow-right"></i>
+                <i class="fa-solid fa-arrow-right"></i>
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+
+            <div class="column" id="feelings-col">
+                </div>
+        </div>
+        <p style="text-align:center; margin-top:15px; color:#00b894; font-weight:bold; min-height:20px;" id="game-feedback"></p>
+    </div>
+
+    <div class="personal-section" data-aos="fade-up">
+        <div class="input-row">
+            <div class="field-group">
+                <label><i class="fa-solid fa-comment-dots" style="color:var(--primary)"></i> Pensamento: "Penso que..."</label>
+                <input type="text" id="userThought" placeholder="Ex: Eu vou reprovar na prova...">
+            </div>
+            <div class="field-group">
+                <label><i class="fa-solid fa-heart" style="color:var(--secondary)"></i> Sentimento: "Portanto, sinto-me..."</label>
+                <input type="text" id="userFeeling" placeholder="Ex: Ansioso e Triste">
+            </div>
+            <button class="btn-add" onclick="addEntry()"><i class="fa-solid fa-plus"></i></button>
+        </div>
+
+        <div class="entries-list" id="entriesList">
+            <div class="entry-card">
+                <div class="entry-thought">"Todos vão rir de mim se eu falar."</div>
+                <div class="entry-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="entry-feeling">Vergonha / Medo</div>
+                <button class="btn-delete" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <table id="print-table">
+        <thead>
+            <tr>
+                <th style="width: 50%">Pensamento (Penso que...)</th>
+                <th style="width: 50%">Sentimento (Portanto, sinto-me...)</th>
+            </tr>
+        </thead>
+        <tbody id="print-tbody">
+            </tbody>
+    </table>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:40px; color:#b2bec3; text-decoration:none; font-weight:600;">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        /* --- LÓGICA DO JOGO --- */
+        const pairs = [
+            { id: 1, t: "Vou me sair mal na prova", f: "Ansiedade / Medo" },
+            { id: 2, t: "Vou me sair bem na prova", f: "Tranquilidade / Confiança" },
+            { id: 3, t: "Ninguém gosta de mim", f: "Tristeza / Solidão" },
+            { id: 4, t: "Isso é muito injusto!", f: "Raiva" },
+            { id: 5, t: "Consegui terminar tudo!", f: "Alívio / Alegria" }
+        ];
+
+        // Embaralha array
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        let selectedThought = null;
+        let selectedFeeling = null;
+
+        function initGame() {
+            const thoughtsCol = document.getElementById('thoughts-col');
+            const feelingsCol = document.getElementById('feelings-col');
+            
+            // Cria cópias embaralhadas
+            const thoughts = shuffle([...pairs]);
+            const feelings = shuffle([...pairs]);
+
+            thoughtsCol.innerHTML = '';
+            feelingsCol.innerHTML = '';
+
+            thoughts.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card thought';
+                card.innerText = item.t;
+                card.dataset.id = item.id;
+                card.onclick = () => selectCard(card, 'thought');
+                thoughtsCol.appendChild(card);
+            });
+
+            feelings.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card feeling';
+                card.innerText = item.f;
+                card.dataset.id = item.id;
+                card.onclick = () => selectCard(card, 'feeling');
+                feelingsCol.appendChild(card);
+            });
+        }
+
+        function selectCard(card, type) {
+            if (card.classList.contains('matched')) return;
+
+            // Limpa seleção anterior do mesmo tipo
+            document.querySelectorAll(`.card.${type}`).forEach(c => c.classList.remove('selected'));
+            
+            card.classList.add('selected');
+
+            if (type === 'thought') selectedThought = card;
+            else selectedFeeling = card;
+
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (selectedThought && selectedFeeling) {
+                const id1 = selectedThought.dataset.id;
+                const id2 = selectedFeeling.dataset.id;
+
+                if (id1 === id2) {
+                    // Acertou
+                    document.getElementById('game-feedback').innerText = "Correto! 🎉";
+                    document.getElementById('game-feedback').style.color = "#00b894";
+                    
+                    selectedThought.classList.remove('selected');
+                    selectedFeeling.classList.remove('selected');
+                    
+                    selectedThought.classList.add('matched');
+                    selectedFeeling.classList.add('matched');
+                    
+                    selectedThought = null;
+                    selectedFeeling = null;
+                } else {
+                    // Errou
+                    document.getElementById('game-feedback').innerText = "Ops! Tente outra combinação.";
+                    document.getElementById('game-feedback').style.color = "#d63031";
+                    
+                    setTimeout(() => {
+                        if(selectedThought) selectedThought.classList.remove('selected');
+                        if(selectedFeeling) selectedFeeling.classList.remove('selected');
+                        selectedThought = null;
+                        selectedFeeling = null;
+                        document.getElementById('game-feedback').innerText = "";
+                    }, 1000);
+                }
+            }
+        }
+
+        /* --- LÓGICA DO DIÁRIO --- */
+        function addEntry() {
+            const thoughtInput = document.getElementById('userThought');
+            const feelingInput = document.getElementById('userFeeling');
+            
+            const t = thoughtInput.value.trim();
+            const f = feelingInput.value.trim();
+
+            if (!t || !f) {
+                alert("Preencha o pensamento e o sentimento!");
+                return;
+            }
+
+            const list = document.getElementById('entriesList');
+            const div = document.createElement('div');
+            div.className = 'entry-card';
+            div.innerHTML = `
+                <div class="entry-thought">"${t}"</div>
+                <div class="entry-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="entry-feeling">${f}</div>
+                <button class="btn-delete" onclick="this.parentElement.remove(); updatePrintTable();"><i class="fa-solid fa-trash"></i></button>
+            `;
+            
+            list.appendChild(div);
+            
+            thoughtInput.value = '';
+            feelingInput.value = '';
+            
+            updatePrintTable();
+        }
+
+        // Atualiza a tabela oculta de impressão
+        function updatePrintTable() {
+            const tbody = document.getElementById('print-tbody');
+            tbody.innerHTML = '';
+            
+            // Pega o exemplo fixo
+            const cards = document.querySelectorAll('.entry-card');
+            
+            cards.forEach(card => {
+                const t = card.querySelector('.entry-thought').innerText.replace(/"/g, '');
+                const f = card.querySelector('.entry-feeling').innerText;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${t}</td><td>${f}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Inicializa
+        initGame();
+        updatePrintTable(); // Carrega o exemplo inicial na tabela
+    </script>
+
+</body>
+</html>
