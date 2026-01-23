@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroView 3D - High Fidelity</title>
+    <title>NeuroView 3D</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #0b0d10; font-family: 'Segoe UI', sans-serif; color: white; }
         
-        /* TELA DE CARREGAMENTO */
+        /* Loading Screen */
         #loader-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #0b0d10; z-index: 999; display: flex; flex-direction: column;
@@ -23,7 +23,7 @@
         #loading-text { font-size: 18px; color: #00d2ff; font-weight: bold; }
         #loading-count { font-size: 14px; color: #666; margin-top: 10px; }
         
-        /* PAINEL DE INFORMAÇÃO */
+        /* Painel de Informações */
         #info-panel {
             position: absolute; top: 20px; left: 20px; width: 320px;
             background: rgba(15, 20, 25, 0.95); border-left: 4px solid #00d2ff;
@@ -36,9 +36,7 @@
         
         #region-title { margin: 0 0 5px 0; font-size: 22px; color: #fff; text-transform: capitalize; font-weight: 600; line-height: 1.2;}
         #region-code { font-size: 11px; color: #00d2ff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase;}
-        .meta-tag { display: inline-block; background: #333; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #ccc; margin-top: 10px;}
-
-        /* Controles de Ajuda */
+        
         #help-text { position: absolute; bottom: 20px; width: 100%; text-align: center; color: #555; font-size: 12px; pointer-events: none; }
     </style>
 </head>
@@ -46,15 +44,14 @@
 
     <div id="loader-screen">
         <div class="spinner"></div>
-        <div id="loading-text">Carregando Neuroanatomia</div>
-        <div id="loading-count">Inicializando...</div>
+        <div id="loading-text">Carregando Cérebro Completo</div>
+        <div id="loading-count">Preparando...</div>
     </div>
 
     <div id="info-panel">
         <h2 id="region-title">Nome da Área</h2>
         <div id="region-code">CODE_REF</div>
-        <p style="color: #aaa; font-size: 14px; line-height: 1.5;">Esta estrutura foi renderizada a partir de dados volumétricos segmentados de alta precisão.</p>
-        <div class="meta-tag">Segmentação Volumétrica</div>
+        <p style="color: #aaa; font-size: 14px; line-height: 1.5;">Estrutura anatômica renderizada em tempo real.</p>
     </div>
 
     <div id="help-text">Clique e arraste para girar • Scroll para Zoom • Clique nas áreas para detalhes</div>
@@ -73,7 +70,7 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
-        // --- SUA LISTA COMPLETA DE ARQUIVOS ---
+        // --- LISTA DE ARQUIVOS (Mantenha sua lista completa aqui) ---
         const fileList = [
             "FJ1735_BP37293_FMA73462_Brachium of left superior colliculus.obj",
             "FJ1761_BP37183_FMA73464_Brachium of left inferior colliculus.obj",
@@ -332,9 +329,9 @@
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x0b0d10);
             
-            // Câmera posicionada para ver todo o modelo
+            // Câmera (Posição inicial padrão, será ajustada no final)
             camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
-            camera.position.set(120, 80, 150); 
+            camera.position.set(0, 0, 100); 
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -342,13 +339,13 @@
             renderer.toneMappingExposure = 1.0;
             document.body.appendChild(renderer.domElement);
 
-            // Luzes de Estúdio (Para realçar as curvas do cérebro)
-            const ambientLight = new THREE.AmbientLight(0x404040, 3.5); 
+            // Luzes de Estúdio (Mais fortes para garantir visibilidade)
+            const ambientLight = new THREE.AmbientLight(0x404040, 5); // Luz ambiente forte
             scene.add(ambientLight);
             
-            const mainLight = new THREE.DirectionalLight(0xffffff, 2);
-            mainLight.position.set(50, 100, 50);
-            scene.add(mainLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+            dirLight.position.set(50, 50, 50);
+            scene.add(dirLight);
 
             const fillLight = new THREE.DirectionalLight(0xaaccff, 1);
             fillLight.position.set(-50, 0, -50);
@@ -358,11 +355,8 @@
             controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
-            controls.maxDistance = 800;
 
             brainGroup = new THREE.Group();
-            // Correção de rotação (muitos modelos médicos vêm "deitados")
-            brainGroup.rotation.x = -Math.PI / 2; 
             scene.add(brainGroup);
 
             // Interação
@@ -372,7 +366,7 @@
             window.addEventListener('click', onClick);
             window.addEventListener('resize', onWindowResize);
 
-            // LOGICA DA BARRA DE PROGRESSO
+            // LOGICA DA BARRA DE PROGRESSO E CENTRALIZAÇÃO FINAL
             const loadingText = document.getElementById('loading-count');
             const loadingScreen = document.getElementById('loader-screen');
 
@@ -380,8 +374,32 @@
                 loadingText.innerText = `Carregando parte ${itemsLoaded} de ${itemsTotal}`;
             };
 
+            // *** O SEGREDO ESTÁ AQUI: Só ajusta tudo quando acabar ***
             loaderManager.onLoad = function () {
-                loadingText.innerText = "Processamento finalizado.";
+                loadingText.innerText = "Processamento finalizado. Ajustando câmera...";
+                
+                // 1. Calcula a caixa que envolve TODO o cérebro
+                const box = new THREE.Box3().setFromObject(brainGroup);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+
+                // 2. Traz o cérebro para o centro do mundo (0,0,0)
+                brainGroup.position.x = -center.x;
+                brainGroup.position.y = -center.y;
+                brainGroup.position.z = -center.z;
+
+                // 3. Ajusta a câmera para caber o cérebro inteiro
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const fov = camera.fov * (Math.PI / 180);
+                let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov * 2));
+                cameraZ *= 2.5; // Multiplicador de distância (zoom out)
+
+                camera.position.set(0, maxDim / 3, cameraZ);
+                camera.lookAt(0, 0, 0);
+                controls.target.set(0, 0, 0);
+                controls.update();
+
+                // 4. Some com a tela de loading
                 setTimeout(() => {
                     loadingScreen.style.opacity = '0';
                     setTimeout(() => loadingScreen.style.display = 'none', 500);
@@ -391,11 +409,9 @@
 
         function loadBrainParts() {
             const loader = new OBJLoader(loaderManager);
-            
-            // Variável para calcular o centro de TODO o cérebro junto
-            const box = new THREE.Box3(); 
 
             fileList.forEach(filename => {
+                // Caminho relativo simples
                 loader.load('./' + filename, function (object) {
                     
                     const rawName = filename.replace('.obj', '');
@@ -423,54 +439,19 @@
                         }
                     });
 
-                    // --- MÁGICA DE POSICIONAMENTO ---
-                    // Adiciona o objeto
+                    // Apenas adiciona ao grupo. Não tenta posicionar individualmente.
                     brainGroup.add(object);
-                    
-                    // Expande a caixa imaginária para incluir essa nova peça
-                    box.expandByObject(object);
-
-                    // Se for o último arquivo, centraliza tudo
-                    // (Isso é uma aproximação, pois o loading é assíncrono, 
-                    // mas funciona bem o suficiente visualmente)
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-
-                    // Move o grupo inteiro para anular o deslocamento original
-                    brainGroup.position.x = -center.x;
-                    brainGroup.position.y = -center.y;
-                    brainGroup.position.z = -center.z;
-
-                    // Ajusta a câmera baseada no tamanho do cérebro
-                    // Se o cérebro for gigante, afasta a câmera. Se for pequeno, aproxima.
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    if (maxDim > 0 && camera.position.z === 150) { // Só ajusta se ainda não ajustou
-                        const fov = camera.fov * (Math.PI / 180);
-                        let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov * 2));
-                        cameraZ *= 3; // Multiplicador de zoom (quanto maior, mais longe)
-                        
-                        camera.position.set(0, maxDim / 2, cameraZ);
-                        camera.lookAt(0, 0, 0);
-                        controls.maxDistance = cameraZ * 5;
-                        controls.target.set(0, 0, 0);
-                        controls.update();
-                    }
-                },
-                undefined,
-                function (error) {
-                     console.error("ERRO CRÍTICO AO CARREGAR: " + filename);
-                     console.error("Verifique se o nome do arquivo está exato e se ele está na mesma pasta do HTML.");
+                }, undefined, function(err) {
+                    console.error("Erro no arquivo:", filename);
                 });
             });
         }
 
-        // Função de Hash para gerar cores consistentes
         function getColorFromString(str) {
             let hash = 0;
             for (let i = 0; i < str.length; i++) {
                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
             }
-            // Cores mais pastéis e vibrantes (Evita marrons escuros)
             const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
             return '#' + "00000".substring(0, 6 - c.length) + c;
         }
@@ -478,25 +459,19 @@
         function onMouseMove(event) {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-            
             raycaster.setFromCamera(mouse, camera);
             const intersects = raycaster.intersectObjects(brainGroup.children, true);
 
             if (intersects.length > 0) {
                 const obj = intersects[0].object;
                 if (hoveredObject !== obj) {
-                    if (hoveredObject && hoveredObject !== selectedObject) {
-                        hoveredObject.material.emissive.setHex(0x000000);
-                    }
+                    if (hoveredObject && hoveredObject !== selectedObject) hoveredObject.material.emissive.setHex(0x000000);
                     hoveredObject = obj;
-                    // Highlight Branco Suave
                     hoveredObject.material.emissive.setHex(0x333333);
                     document.body.style.cursor = 'pointer';
                 }
             } else {
-                if (hoveredObject && hoveredObject !== selectedObject) {
-                    hoveredObject.material.emissive.setHex(0x000000);
-                }
+                if (hoveredObject && hoveredObject !== selectedObject) hoveredObject.material.emissive.setHex(0x000000);
                 hoveredObject = null;
                 document.body.style.cursor = 'default';
             }
@@ -504,32 +479,25 @@
 
         function onClick() {
             if (hoveredObject) {
-                // Se clicou na mesma coisa duas vezes, reseta
                 if (selectedObject === hoveredObject) {
                     resetView();
                     return;
                 }
-
                 selectedObject = hoveredObject;
-                
-                // Atualiza UI
                 const panel = document.getElementById('info-panel');
                 document.getElementById('region-title').innerText = selectedObject.userData.name;
                 document.getElementById('region-code').innerText = selectedObject.userData.code;
                 panel.classList.add('visible');
 
-                // Efeito de Foco (Ghost Mode)
                 brainGroup.children.forEach(group => {
                     group.traverse(child => {
                         if (child.isMesh) {
                             if (child === selectedObject) {
                                 child.material.opacity = 1;
                                 child.material.color.setHex(child.userData.originalColor);
-                                child.material.emissive.setHex(0x111111);
                             } else {
-                                child.material.opacity = 0.05; // Quase invisível
-                                child.material.color.setHex(0x555555); // Cinza
-                                child.material.emissive.setHex(0x000000);
+                                child.material.opacity = 0.1;
+                                child.material.color.setHex(0x555555);
                             }
                         }
                     });
@@ -542,13 +510,11 @@
         function resetView() {
             selectedObject = null;
             document.getElementById('info-panel').classList.remove('visible');
-            
             brainGroup.children.forEach(group => {
                 group.traverse(child => {
                     if (child.isMesh) {
                         child.material.opacity = 1;
                         child.material.color.set(child.userData.originalColor);
-                        child.material.emissive.setHex(0x000000);
                     }
                 });
             });
