@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Scan Playlist | Mindfulness</title>
+    <style>
+        /* (Mantenha o mesmo CSS de antes para o SVG e Layout) */
+        :root { --bg-color: #111827; --accent-color: #38bdf8; --body-inactive: #374151; --text-color: #f3f4f6; }
+        body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+        .main-container { display: flex; flex-direction: row; align-items: center; gap: 50px; max-width: 1000px; width: 90%; }
+        .controls { flex: 1; text-align: left; }
+        .body-visual { flex: 1; display: flex; justify-content: center; height: 500px; }
+        svg { height: 100%; width: auto; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
+        .body-part { fill: var(--body-inactive); transition: fill 2s ease; } /* Transição mais lenta para o relaxamento */
+        .body-part.active { fill: var(--accent-color); filter: drop-shadow(0 0 15px var(--accent-color)); }
+        h1 { font-weight: 300; margin-bottom: 10px; }
+        .btn-play { background: var(--accent-color); color: var(--bg-color); border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        .status-text { margin-top: 20px; font-size: 1.1rem; color: var(--accent-color); min-height: 30px; }
+        @media (max-width: 768px) { .main-container { flex-direction: column-reverse; } }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="controls">
+            <h1>Body Scan Guiado</h1>
+            <p>Relaxe e siga as instruções. O sistema guiará o tempo.</p>
+            <button class="btn-play" id="playBtn">▶ Iniciar Sessão</button>
+            <div class="status-text" id="statusMsg">Pronto</div>
+        </div>
+
+        <div class="body-visual">
+            <svg viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg">
+                <circle id="head" class="body-part" cx="100" cy="50" r="30" />
+                <rect id="neck" class="body-part" x="85" y="80" width="30" height="20" />
+                <path id="chest" class="body-part" d="M 70 100 L 130 100 L 130 180 L 70 180 Z" />
+                <path id="arms" class="body-part" d="M 70 100 L 40 180 M 130 100 L 160 180" stroke-width="20" stroke="currentColor" />
+                <path id="legs" class="body-part" d="M 80 220 L 60 400 M 120 220 L 140 400" stroke-width="20" stroke="currentColor" />
+                <path id="feet" class="body-part" d="M 60 400 L 40 420 M 140 400 L 160 420" stroke-width="15" stroke="currentColor" />
+            </svg>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const allParts = document.querySelectorAll('.body-part');
+
+        // A PLAYLIST INTELIGENTE
+        // pauseAfter: Quanto tempo de silêncio (em ms) APÓS esse áudio terminar
+        const playlist = [
+            { file: '1-intro.mp3',          ids: [],                 text: "Preparação...",          pauseAfter: 5000 },
+            { file: '2-pes.mp3',            ids: ['feet'],           text: "Focando nos Pés",        pauseAfter: 15000 }, // 15s de silêncio
+            { file: '3-pernas.mp3',         ids: ['legs'],           text: "Relaxando as Pernas",    pauseAfter: 15000 },
+            { file: '4-tronco.mp3',         ids: ['chest'],          text: "Tronco e Respiração",    pauseAfter: 20000 }, // 20s de silêncio
+            { file: '5-maos-bracos.mp3',    ids: ['arms'],           text: "Mãos e Braços",          pauseAfter: 15000 },
+            { file: '6-pescoco-cabeca.mp3', ids: ['neck', 'head'],   text: "Pescoço e Cabeça",       pauseAfter: 15000 },
+            { file: '7-final.mp3',          ids: [],                 text: "Corpo Inteiro",          pauseAfter: 0 }
+        ];
+
+        let currentIndex = 0;
+        let isSessionActive = false;
+        let pauseTimer = null;
+
+        playBtn.addEventListener('click', () => {
+            if (!isSessionActive) {
+                startSession();
+            } else {
+                // Lógica simples de parar/resetar para este exemplo
+                location.reload(); 
+            }
+        });
+
+        function startSession() {
+            isSessionActive = true;
+            playBtn.innerText = "⏹ Parar Sessão";
+            currentIndex = 0;
+            playTrack(currentIndex);
+        }
+
+        function playTrack(index) {
+            if (index >= playlist.length) {
+                finishSession();
+                return;
+            }
+
+            const track = playlist[index];
+            
+            // 1. Atualiza Visual
+            updateVisuals(track.ids, track.text);
+
+            // 2. Toca o Áudio
+            audioPlayer.src = track.file; // Certifique-se que os arquivos estão na pasta!
+            audioPlayer.play();
+
+            // 3. Quando o áudio acabar...
+            audioPlayer.onended = () => {
+                statusMsg.innerText = `${track.text} (Silêncio...)`;
+                
+                // ...espera o tempo de pausa configurado
+                console.log(`Iniciando pausa de ${track.pauseAfter/1000} segundos`);
+                
+                pauseTimer = setTimeout(() => {
+                    // Vai para o próximo
+                    playTrack(index + 1);
+                }, track.pauseAfter);
+            };
+        }
+
+        function updateVisuals(idsToActivate, text) {
+            statusMsg.innerText = text;
+            // Apaga todos
+            allParts.forEach(p => p.classList.remove('active'));
+            // Acende os atuais
+            idsToActivate.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.add('active');
+            });
+        }
+
+        function finishSession() {
+            statusMsg.innerText = "Sessão Finalizada. Namastê.";
+            playBtn.innerText = "↺ Reiniciar";
+            isSessionActive = false;
+            allParts.forEach(p => p.classList.add('active')); // Acende tudo no final
+        }
+    </script>
+</body>
+</html>
