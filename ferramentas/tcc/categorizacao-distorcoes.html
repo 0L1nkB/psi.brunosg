@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector de Distorções | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fdcb6e;
+            --text: #2d3436;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed #636e72;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 900px; width: 100%; position: relative;
+        }
+
+        header h1 { color: #2d3436; margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid #2d3436; color: #2d3436;
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: #2d3436; color: white; }
+
+        /* --- ÁREA DE INPUT --- */
+        .input-card {
+            width: 100%; max-width: 900px;
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+        }
+
+        .input-group { display: flex; flex-direction: column; gap: 10px; }
+        label { font-weight: 800; color: #636e72; display: flex; align-items: center; gap: 8px; }
+
+        textarea {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 120px;
+            transition: 0.3s; background: #fdfdfd;
+        }
+        textarea:focus { border-color: var(--primary); outline: none; background: white; }
+
+        select {
+            width: 100%; padding: 12px; border: 2px solid #dfe6e9; border-radius: 10px;
+            font-family: inherit; font-size: 1rem; cursor: pointer; background: white;
+        }
+
+        .dist-description {
+            margin-top: 10px; padding: 15px; background: #f8f9fa; border-radius: 10px;
+            font-size: 0.9rem; color: #636e72; font-style: italic; border-left: 4px solid var(--accent);
+            display: none; /* Aparece ao selecionar */
+        }
+
+        .btn-add {
+            grid-column: span 2;
+            padding: 15px; border-radius: 50px; border: none;
+            background: #2d3436; color: white; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-add:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* --- LISTA DE REGISTROS --- */
+        .records-list {
+            width: 100%; max-width: 900px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .record-card {
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative;
+            border-left: 6px solid var(--primary); animation: slideUp 0.4s ease;
+        }
+
+        .record-thought {
+            font-size: 1.1rem; color: #2d3436; font-weight: 600; margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .record-tag {
+            display: inline-block; background: #f1f2f6; padding: 5px 15px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase;
+        }
+
+        .btn-delete {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: none; color: #d63031; cursor: pointer; opacity: 0.4; transition: 0.2s;
+        }
+        .btn-delete:hover { opacity: 1; transform: scale(1.2); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .input-card { grid-template-columns: 1fr; gap: 20px; }
+            .btn-add { grid-column: span 1; }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .input-card, .btn-back-home, .btn-delete { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            
+            #print-table {
+                display: table; width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px;
+            }
+            #print-table th { background: #eee; padding: 10px; text-align: left; border: 1px solid #ccc; font-weight: bold; }
+            #print-table td { padding: 10px; border: 1px solid #ccc; vertical-align: top; }
+            
+            .records-list { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1>Detector de Distorções</h1>
+        <div class="subtitle">Identifique as armadilhas do seu pensamento</div>
+    </header>
+
+    <div class="input-card" data-aos="fade-up">
+        
+        <div class="input-group">
+            <label><i class="fa-solid fa-comment-dots"></i> Pensamento Automático</label>
+            <textarea id="thoughtInput" placeholder='Ex: "Ela não respondeu, deve estar brava comigo..."'></textarea>
+        </div>
+
+        <div class="input-group">
+            <label><i class="fa-solid fa-filter"></i> Qual é a Distorção?</label>
+            <select id="distSelect" onchange="showDesc()">
+                <option value="" disabled selected>Selecione uma categoria...</option>
+                <option value="Leitura da Mente">Leitura da Mente</option>
+                <option value="Adivinhação do Futuro">Adivinhação do Futuro</option>
+                <option value="Catastrofização">Catastrofização</option>
+                <option value="Rotulação">Rotulação</option>
+                <option value="Desqualificação do Positivo">Desqualificação do Positivo</option>
+                <option value="Filtro Negativo">Filtro Negativo</option>
+                <option value="Supergeneralização">Supergeneralização</option>
+                <option value="Pensamento Dicotômico">Pensamento Dicotômico (Tudo ou Nada)</option>
+                <option value="Afirmações 'Deveria'">Afirmações do tipo "Deveria"</option>
+                <option value="Personalização">Personalização (Culpa)</option>
+                <option value="Comparações Injustas">Comparações Injustas</option>
+                <option value="Raciocínio Emocional">Raciocínio Emocional</option>
+            </select>
+            
+            <div id="descBox" class="dist-description"></div>
+        </div>
+
+        <button class="btn-add" onclick="addRecord()">
+            <i class="fa-solid fa-plus-circle"></i> Adicionar à Lista
+        </button>
+    </div>
+
+    <div class="records-list" id="recordsList">
+        <div class="record-card">
+            <div class="record-thought">"Se eu errar nessa apresentação, minha carreira acabou."</div>
+            <div class="record-tag">Catastrofização</div>
+            <button class="btn-delete" onclick="deleteRecord(this)"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    </div>
+
+    <table id="print-table">
+        <thead>
+            <tr>
+                <th style="width: 60%">Pensamento Automático</th>
+                <th style="width: 40%">Distorção Identificada</th>
+            </tr>
+        </thead>
+        <tbody id="print-body">
+            </tbody>
+    </table>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:40px; color:#b2bec3; text-decoration:none; font-weight:600;" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const descriptions = {
+            "Leitura da Mente": "Você acha que sabe o que os outros pensam, sem ter provas.",
+            "Adivinhação do Futuro": "Você prevê que o pior vai acontecer.",
+            "Catastrofização": "Você transforma um pequeno problema em um desastre total.",
+            "Rotulação": "Você coloca um rótulo negativo fixo em si mesmo ou nos outros.",
+            "Desqualificação do Positivo": "Você ignora as coisas boas que acontecem.",
+            "Filtro Negativo": "Você foca apenas nos detalhes ruins.",
+            "Supergeneralização": "Você vê um evento ruim como um padrão eterno.",
+            "Pensamento Dicotômico": "8 ou 80. Se não for perfeito, é um fracasso.",
+            "Afirmações 'Deveria'": "Você tem regras rígidas sobre como você e os outros devem agir.",
+            "Personalização": "Você assume a culpa por coisas que não estão sob seu controle.",
+            "Comparações Injustas": "Você se compara com quem está melhor e se sente inferior.",
+            "Raciocínio Emocional": "Você acha que algo é verdade só porque sente que é."
+        };
+
+        function showDesc() {
+            const val = document.getElementById('distSelect').value;
+            const box = document.getElementById('descBox');
+            if(val) {
+                box.innerText = descriptions[val] || "";
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        function addRecord() {
+            const tht = document.getElementById('thoughtInput').value.trim();
+            const dist = document.getElementById('distSelect').value;
+
+            if (!tht || !dist) {
+                alert("Preencha o pensamento e selecione a distorção!");
+                return;
+            }
+
+            const list = document.getElementById('recordsList');
+            const div = document.createElement('div');
+            div.className = 'record-card';
+            
+            div.innerHTML = `
+                <div class="record-thought">"${tht}"</div>
+                <div class="record-tag">${dist}</div>
+                <button class="btn-delete" onclick="deleteRecord(this)"><i class="fa-solid fa-trash"></i></button>
+            `;
+
+            list.prepend(div);
+            
+            // Reset
+            document.getElementById('thoughtInput').value = '';
+            document.getElementById('distSelect').value = "";
+            document.getElementById('descBox').style.display = 'none';
+
+            updatePrintTable();
+        }
+
+        function deleteRecord(btn) {
+            if(confirm("Remover?")) {
+                btn.closest('.record-card').remove();
+                updatePrintTable();
+            }
+        }
+
+        function updatePrintTable() {
+            const tbody = document.getElementById('print-body');
+            tbody.innerHTML = '';
+            
+            const cards = document.querySelectorAll('.record-card');
+            
+            cards.forEach(card => {
+                const t = card.querySelector('.record-thought').innerText.replace(/"/g, '');
+                const d = card.querySelector('.record-tag').innerText;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${t}</td><td>${d}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        updatePrintTable(); // Carrega exemplo
+    </script>
+
+</body>
+</html>
