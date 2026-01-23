@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroView - Psicologia Clínica 3D</title>
+    <title>NeuroView - Psicologia Clínica (Final)</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #050505; font-family: 'Segoe UI', sans-serif; color: white; }
         
@@ -16,63 +16,78 @@
         .spinner { width: 60px; height: 60px; border: 3px solid #333; border-top: 3px solid #00e5ff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* INFO PANEL */
+        /* PAINEL INFO (DIREITA) */
         #info-panel {
             position: absolute; top: 20px; right: 20px; width: 320px;
             background: rgba(15, 15, 15, 0.95); border-right: 4px solid #00e5ff;
-            padding: 25px; border-radius: 12px 0 0 12px; z-index: 10;
+            padding: 25px; border-radius: 12px 0 0 12px; z-index: 20;
             box-shadow: -10px 10px 40px rgba(0,0,0,0.8);
-            transform: translateX(400px); transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateX(400px); transition: transform 0.3s ease-out;
+            max-height: 80vh; overflow-y: auto;
         }
         #info-panel.visible { transform: translateX(0); }
         
-        #region-name { margin: 0; font-size: 24px; color: #fff; font-weight: 700; letter-spacing: -0.5px;}
-        #region-func { font-size: 13px; color: #00e5ff; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0; font-weight: 700;}
+        #region-name { margin: 0; font-size: 22px; color: #fff; font-weight: 700; letter-spacing: -0.5px;}
+        #region-func { font-size: 12px; color: #00e5ff; text-transform: uppercase; letter-spacing: 1px; margin: 10px 0; font-weight: 700;}
         #region-desc { font-size: 14px; line-height: 1.6; color: #ccc; margin-bottom: 15px; }
         
-        .psy-tag { 
-            background: rgba(0, 229, 255, 0.1); padding: 4px 8px; border-radius: 4px; 
-            font-size: 11px; color: #00e5ff; border: 1px solid rgba(0, 229, 255, 0.3); 
-            display: inline-block; margin-right: 5px; margin-bottom: 5px;
-        }
-
-        /* MENU LATERAL */
+        /* MENU LATERAL (ESQUERDA) */
         #menu-container {
-            position: absolute; top: 20px; left: 20px; width: 240px; max-height: 70vh;
-            background: rgba(10, 10, 10, 0.9); padding: 15px; border-radius: 10px;
-            overflow-y: auto; border: 1px solid #333; z-index: 5;
+            position: absolute; top: 20px; left: 20px; width: 240px; height: 70vh;
+            background: rgba(10, 10, 10, 0.9); border-radius: 10px;
+            border: 1px solid #333; z-index: 20; display: flex; flex-direction: column;
         }
-        .menu-header { font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 10px; font-weight: bold; letter-spacing: 1px; }
+        .menu-header { padding: 15px; font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #333; }
+        #menu-list { overflow-y: auto; flex: 1; padding: 5px; }
+        
         .menu-item {
-            padding: 8px 10px; font-size: 13px; color: #aaa; cursor: pointer;
-            border-radius: 6px; transition: 0.2s; display: flex; align-items: center; margin-bottom: 2px;
+            padding: 10px; font-size: 13px; color: #aaa; cursor: pointer;
+            border-radius: 6px; transition: 0.2s; display: flex; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .menu-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .menu-item.active { background: rgba(0, 229, 255, 0.15); color: #00e5ff; font-weight: bold; }
+        .menu-item.active { background: rgba(0, 229, 255, 0.2); color: #00e5ff; font-weight: bold; border-left: 3px solid #00e5ff;}
         .menu-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; flex-shrink: 0;}
 
-        /* SLIDERS INFERIORES */
+        /* CONTROLES INFERIORES */
         #controls-bar {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 30px; background: rgba(10, 10, 10, 0.9); padding: 15px 30px;
-            border-radius: 30px; border: 1px solid #333; z-index: 10;
+            display: flex; gap: 20px; background: rgba(10, 10, 10, 0.95); padding: 15px 30px;
+            border-radius: 30px; border: 1px solid #333; z-index: 20; align-items: center;
         }
-        .slider-group { display: flex; flex-direction: column; align-items: center; min-width: 140px; }
-        .slider-group label { font-size: 10px; color: #888; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; }
-        input[type=range] { width: 100%; cursor: pointer; accent-color: #00e5ff; }
+        .control-group { display: flex; flex-direction: column; align-items: center; }
+        .control-label { font-size: 10px; color: #888; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+        
+        /* Botões de Hemisfério */
+        .hemi-btn-group { display: flex; background: #222; border-radius: 20px; padding: 2px; }
+        .hemi-btn { 
+            background: transparent; border: none; color: #aaa; padding: 5px 15px; 
+            font-size: 11px; cursor: pointer; border-radius: 18px; transition: 0.2s;
+        }
+        .hemi-btn.active { background: #00e5ff; color: #000; font-weight: bold; }
+        
+        input[type=range] { width: 120px; cursor: pointer; accent-color: #00e5ff; }
 
+        /* Tooltip Mouse */
+        #tooltip {
+            position: absolute; pointer-events: none; background: rgba(0,0,0,0.9);
+            color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 12px;
+            display: none; z-index: 30; border: 1px solid #444;
+        }
     </style>
 </head>
 <body>
 
     <div id="loader-screen">
         <div class="spinner"></div>
-        <div style="color: #fff; font-weight: bold;">PROCESSANDO NEUROANATOMIA</div>
+        <div style="color: #fff; font-weight: bold;">MAPEANDO CÉREBRO</div>
         <div id="loading-count" style="color: #666; font-size: 12px; margin-top: 5px;">0%</div>
     </div>
 
+    <div id="tooltip"></div>
+
     <div id="menu-container">
-        <div class="menu-header">Áreas Funcionais</div>
+        <div class="menu-header">Estruturas Funcionais</div>
         <div id="menu-list"></div>
     </div>
 
@@ -80,17 +95,21 @@
         <h2 id="region-name">Nome</h2>
         <div id="region-func">Função</div>
         <p id="region-desc">Descrição...</p>
-        <div id="region-tags"></div>
     </div>
 
     <div id="controls-bar">
-        <div class="slider-group">
-            <label>💥 Explodir Peças</label>
-            <input type="range" id="explodeSlider" min="0" max="1" step="0.01" value="0">
+        <div class="control-group">
+            <div class="control-label">Visualização</div>
+            <div class="hemi-btn-group">
+                <button class="hemi-btn" onclick="setHemisphere(-1)">ESQ</button>
+                <button class="hemi-btn active" onclick="setHemisphere(0)">AMBOS</button>
+                <button class="hemi-btn" onclick="setHemisphere(1)">DIR</button>
+            </div>
         </div>
-        <div class="slider-group">
-            <label>🧠 Abrir Hemisférios</label>
-            <input type="range" id="splitSlider" min="0" max="50" step="0.5" value="0">
+        <div style="width: 1px; height: 30px; background: #333;"></div>
+        <div class="control-group">
+            <div class="control-label">Explosão (Pop-Out)</div>
+            <input type="range" id="explodeSlider" min="0" max="1" step="0.01" value="0">
         </div>
     </div>
 
@@ -108,122 +127,125 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
-        // --- 1. MAPEAMENTO AVANÇADO (Novas Áreas Adicionadas) ---
+        // --- 1. MAPEAMENTO COMPLETO (Corrigindo áreas pretas) ---
         const functionalMap = {
             "prefrontal": {
                 name: "Córtex Pré-Frontal",
                 func: "Personalidade & Decisão",
-                desc: "O 'CEO' do cérebro. Responsável por planejamento, controle de impulsos e comportamento social.",
+                desc: "O 'CEO' do cérebro. Planejamento, controle de impulsos e comportamento social.",
                 color: 0x00E5FF, 
                 keywords: ["superior frontal", "middle frontal", "straight", "rectus", "orbital"]
             },
             "motor": {
                 name: "Córtex Motor",
-                func: "Movimento Voluntário",
-                desc: "Inicia os comandos motores. Contém o homúnculo motor (mapa do corpo).",
+                func: "Movimento",
+                desc: "Inicia comandos musculares voluntários.",
                 color: 0xFF5252, 
                 keywords: ["precentral"]
             },
             "somato": {
                 name: "Córtex Somatossensorial",
                 func: "Tato & Dor",
-                desc: "Recebe sensações do corpo: toque, temperatura e dor.",
+                desc: "Processa sensações físicas do corpo.",
                 color: 0xFFAB40, 
                 keywords: ["postcentral"]
             },
             "broca": {
                 name: "Área de Broca",
                 func: "Fala (Expressão)",
-                desc: "Produção da linguagem. Lesões causam dificuldade em formar palavras.",
+                desc: "Produção da linguagem falada.",
                 color: 0xD500F9, 
                 keywords: ["inferior frontal"]
             },
             "wernicke": {
                 name: "Área de Wernicke",
                 func: "Linguagem (Compreensão)",
-                desc: "Interpretação do significado das palavras e sons.",
+                desc: "Interpretação do significado das palavras.",
                 color: 0x2979FF, 
                 keywords: ["supramarginal", "angular"]
-            },
-            "fusiform": {
-                name: "Giro Fusiforme",
-                func: "Reconhecimento de Faces",
-                desc: "Especializado em identificar rostos humanos. Lesões causam prosopagnosia (cegueira para feições).",
-                color: 0xEC407A, 
-                keywords: ["fusiform"]
             },
             "auditory": {
                 name: "Córtex Auditivo",
                 func: "Audição",
-                desc: "Processamento primário de frequências sonoras.",
+                desc: "Processamento de sons.",
                 color: 0x76FF03, 
                 keywords: ["transverse temporal", "superior temporal"]
             },
+            "fusiform": {
+                name: "Giro Fusiforme",
+                func: "Reconhecimento Facial",
+                desc: "Especializado em identificar rostos.",
+                color: 0xEC407A, 
+                keywords: ["fusiform"]
+            },
             "hippocampus": {
                 name: "Hipocampo",
-                func: "Memória Longa",
-                desc: "Arquivista do cérebro. Consolida memórias e ajuda na navegação espacial.",
-                color: 0xFFEA00, 
-                keywords: ["hippocampus", "dentate", "subiculum", "fasciolar"]
+                func: "Memória",
+                desc: "Formação de memórias de longo prazo.",
+                color: 0xFFFF00, 
+                keywords: ["hippocampus", "dentate", "fimbria", "subiculum", "fasciolar"]
             },
             "amygdala": {
                 name: "Amígdala",
                 func: "Medo & Emoção",
-                desc: "Centro de alarme. Processa ameaças, medo e memórias emocionais fortes.",
+                desc: "Processamento de ameaças e respostas emocionais.",
                 color: 0xFF1744, 
-                keywords: ["amygdala"]
-            },
-            "insula": {
-                name: "Ínsula",
-                func: "Consciência Corporal",
-                desc: "Percepção interna (fome, batimento), dor emocional, empatia e nojo.",
-                color: 0xAA00FF, 
-                keywords: ["short gyrus of insula", "long gyrus of insula", "insula"]
-            },
-            "cingulate": {
-                name: "Córtex Cingulado",
-                func: "Conflito & Emoção",
-                desc: "Liga emoções ao comportamento. Ativo em situações de erro ou dor psicológica.",
-                color: 0x1DE9B6, 
-                keywords: ["cingulate"]
-            },
-            "callosum": {
-                name: "Corpo Caloso",
-                func: "Conexão Hemisférica",
-                desc: "A ponte de fibras que permite a comunicação entre o lado esquerdo e direito.",
-                color: 0xFFFFFF, 
-                keywords: ["corpus callosum"]
-            },
-            "fornix": {
-                name: "Fórnix",
-                func: "Transmissão de Memória",
-                desc: "Feixe de fibras que conecta o hipocampo ao hipotálamo. Vital para a memória.",
-                color: 0xFF9E80, 
-                keywords: ["fornix"]
+                keywords: ["amygdala", "periamygdaloid"]
             },
             "thalamus": {
                 name: "Tálamo",
                 func: "Relé Sensorial",
-                desc: "Porteiro dos sentidos. Tudo (menos cheiro) passa por aqui antes de ir pro córtex.",
+                desc: "Hub central de conexões sensoriais.",
                 color: 0x651FFF, 
-                keywords: ["thalamus", "geniculate", "pulvinar"]
+                keywords: ["thalamus", "geniculate", "pulvinar", "ventral posterior", "ventral lateral", "medial dorsal", "anterior nucleus", "centromedian", "parafascicular", "paratenial", "reuniens"]
             },
-            "hypothalamus": {
-                name: "Hipotálamo",
-                func: "Sobrevivência",
-                desc: "Fome, sede, sono, temperatura e hormônios.",
-                color: 0xF50057, 
-                keywords: ["hypothalamus", "mammillary"]
+            "basal": {
+                name: "Núcleos da Base",
+                func: "Controle Motor Fino",
+                desc: "Suavização de movimentos e formação de hábitos.",
+                color: 0x7E57C2,
+                keywords: ["caudate", "putamen", "globus pallidus", "pallidus", "accumbens", "subthalamic"]
             },
             "brainstem": {
                 name: "Tronco Encefálico",
                 func: "Funções Vitais",
-                desc: "Respiração e batimentos cardíacos.",
-                color: 0x9E9E9E, 
-                keywords: ["midbrain", "pons", "medulla", "colliculus", "substantia nigra"]
+                desc: "Controle autônomo (respiração, coração).",
+                color: 0xFFFFFF, 
+                keywords: ["midbrain", "pons", "medulla", "oblongata", "colliculus", "substantia nigra", "red nucleus", "tegmentum", "olive"]
+            },
+            "ventricle": {
+                name: "Ventrículos",
+                func: "Proteção Hidráulica",
+                desc: "Cavidades cheias de líquido (LCR) que protegem o cérebro de impactos.",
+                color: 0x004D40, // Verde Escuro/Azulado (Era Preto)
+                keywords: ["ventricle", "aqueduct", "choroid"]
+            },
+            "white_matter": {
+                name: "Substância Branca",
+                func: "Conectividade",
+                desc: "Vias de comunicação (cabos) entre áreas.",
+                color: 0x9E9E9E, // Cinza Claro
+                keywords: ["capsule", "corona", "cerebral crus", "peduncle", "brachium", "lemniscus", "tract", "fasciculus", "commissure", "callosum", "fornix", "stria"]
+            },
+            "cingulate": {
+                name: "Giro Cingulado",
+                func: "Emoção & Dor",
+                desc: "Regulação emocional e processamento de dor.",
+                color: 0x1DE9B6,
+                keywords: ["cingulate"]
+            },
+            "insula": {
+                name: "Ínsula",
+                func: "Consciência Corporal",
+                desc: "Percepção interna e emoções sociais.",
+                color: 0xAA00FF,
+                keywords: ["insula"]
             }
         };
 
+        const defaultRegion = { name: "Outras Estruturas", func: "Estrutura de Suporte", desc: "Parte integrante da anatomia cerebral.", color: 0x444444 };
+
+        // LISTA DE ARQUIVOS (Mantida)
         const fileList = [
             "FJ1735_BP37293_FMA73462_Brachium of left superior colliculus.obj",
             "FJ1761_BP37183_FMA73464_Brachium of left inferior colliculus.obj",
@@ -472,13 +494,16 @@
         let currentSelectionKey = null;
         let hoveredKey = null;
         let objectsByKey = {}; 
-        let activeSplitValue = 0; // Valor atual da separação dos hemisférios
-        let activeExplodeValue = 0; // Valor atual da explosão
+        let activeExplodeValue = 0;
+        let activeHemisphereMode = 0; // 0=Ambos, -1=Esq, 1=Dir
         
         const loaderManager = new THREE.LoadingManager();
         
-        // Posições base (alvo sem efeito)
+        // Posições base
         const basePositions = new Map();
+
+        // Expõe funções para o HTML
+        window.setHemisphere = setHemisphereMode;
 
         init();
         loadBrainParts();
@@ -496,7 +521,6 @@
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             document.body.appendChild(renderer.domElement);
 
-            // Iluminação
             const ambientLight = new THREE.AmbientLight(0x404040, 4);
             scene.add(ambientLight);
             
@@ -522,15 +546,11 @@
             window.addEventListener('click', onClick);
             window.addEventListener('resize', onWindowResize);
 
-            // Sliders
             document.getElementById('explodeSlider').addEventListener('input', (e) => {
                 activeExplodeValue = parseFloat(e.target.value);
             });
-            document.getElementById('splitSlider').addEventListener('input', (e) => {
-                activeSplitValue = parseFloat(e.target.value);
-            });
 
-            // Loader
+            // Loading Logic
             const loadingText = document.getElementById('loading-count');
             const loadingScreen = document.getElementById('loader-screen');
 
@@ -540,7 +560,6 @@
             };
 
             loaderManager.onLoad = function () {
-                // Centralizar
                 const box = new THREE.Box3().setFromObject(brainGroup);
                 const center = box.getCenter(new THREE.Vector3());
                 brainGroup.position.x = -center.x;
@@ -578,16 +597,15 @@
                         }
                     }
 
-                    // 2. Identificar Hemisfério (Para o Split)
-                    let side = 0; // 0 = centro/desconhecido, -1 = Esquerda, 1 = Direita
+                    // 2. Identificar Hemisfério
+                    let side = 0; // 0=Mid, -1=Left, 1=Right
                     if (cleanName.includes("left")) side = -1;
                     else if (cleanName.includes("right")) side = 1;
 
                     object.traverse(function (child) {
                         if (child.isMesh) {
                             const regionData = assignedKey === "other" 
-                                ? { color: 0x333333 } 
-                                : functionalMap[assignedKey];
+                                ? defaultRegion : functionalMap[assignedKey];
                             
                             child.material = new THREE.MeshStandardMaterial({
                                 color: regionData.color,
@@ -605,8 +623,6 @@
                             };
                             
                             objectsByKey[assignedKey].push(child);
-                            
-                            // Guarda posição inicial (que é 0,0,0 localmente)
                             basePositions.set(child, new THREE.Vector3(0,0,0));
                         }
                     });
@@ -617,18 +633,14 @@
         }
 
         function calculateVectors() {
-            // Calcula vetores de explosão para cada grupo funcional
             Object.keys(objectsByKey).forEach(key => {
                 if (key === 'other') return;
                 
                 const box = new THREE.Box3();
                 let hasObjects = false;
                 
-                // Calcula centro do grupo
                 objectsByKey[key].forEach(mesh => {
                     if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
-                    // Precisamos considerar a transformação mundial se os objetos não estivessem na origem
-                    // Mas como todos estão em 0,0,0, o bounding box da geometria serve
                     box.expandByObject(mesh);
                     hasObjects = true;
                 });
@@ -647,6 +659,8 @@
 
         function generateMenu() {
             const list = document.getElementById('menu-list');
+            
+            // Ordenar alfabeticamente ou manter ordem lógica
             Object.entries(functionalMap).forEach(([key, data]) => {
                 if (objectsByKey[key] && objectsByKey[key].length > 0) {
                     const item = document.createElement('div');
@@ -654,41 +668,70 @@
                     item.id = `menu-${key}`;
                     item.innerHTML = `<div class="menu-dot" style="background-color: #${data.color.toString(16)}"></div>${data.name}`;
                     
-                    // CLICK NO MENU -> Seleciona a área
-                    item.onclick = () => selectRegion(key);
+                    // CORREÇÃO CLICK NO MENU
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Impede que o clique no menu feche a seleção
+                        selectRegion(key);
+                    });
                     
                     list.appendChild(item);
                 }
             });
         }
 
+        function setHemisphereMode(mode) {
+            activeHemisphereMode = mode;
+            
+            // Atualiza UI dos botões
+            document.querySelectorAll('.hemi-btn').forEach((btn, idx) => {
+                const vals = [-1, 0, 1];
+                if (vals[idx] === mode) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            // Atualiza Visibilidade
+            brainGroup.children.forEach(group => {
+                group.traverse(child => {
+                    if (child.isMesh) {
+                        const side = child.userData.side;
+                        // Modo 0 (Ambos): Mostra tudo
+                        // Modo -1 (Esq): Mostra Esq (-1) e Centro (0)
+                        // Modo 1 (Dir): Mostra Dir (1) e Centro (0)
+                        
+                        if (mode === 0) {
+                            child.visible = true;
+                        } else if (mode === -1) {
+                            child.visible = (side <= 0);
+                        } else if (mode === 1) {
+                            child.visible = (side >= 0);
+                        }
+                    }
+                });
+            });
+        }
+
         function updatePositions() {
-            // Atualiza a posição de cada mesh baseado nos Sliders e Seleção
             brainGroup.children.forEach(group => {
                 group.traverse(child => {
                     if (child.isMesh) {
                         const basePos = basePositions.get(child) || new THREE.Vector3(0,0,0);
                         const finalPos = basePos.clone();
 
-                        // 1. Efeito Split (Hemisférios)
-                        if (child.userData.side !== 0) {
-                            finalPos.x += child.userData.side * activeSplitValue;
-                        }
-
-                        // 2. Efeito Explosão (Geral)
+                        // Efeito Explosão (Geral)
                         if (child.userData.explodeDir) {
                             finalPos.add(child.userData.explodeDir.clone().multiplyScalar(activeExplodeValue * 50));
                         }
 
-                        // 3. Efeito Seleção (Pop-Out Específico)
+                        // Efeito Seleção (Pop-Out)
                         if (currentSelectionKey && child.userData.key === currentSelectionKey) {
                             if (child.userData.explodeDir) {
-                                // Pula para fora extra
                                 finalPos.add(child.userData.explodeDir.clone().multiplyScalar(30));
+                            } else {
+                                // Fallback para peças sem direção calculada (move para frente da câmera)
+                                finalPos.add(new THREE.Vector3(0, 0, 20));
                             }
                         }
 
-                        // Lerp para suavidade
                         child.position.lerp(finalPos, 0.1);
                     }
                 });
@@ -700,7 +743,9 @@
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
             
-            const intersects = raycaster.intersectObjects(brainGroup.children, true);
+            // Só raycast em objetos visíveis
+            const visibleObjs = brainGroup.children.filter(o => o.visible);
+            const intersects = raycaster.intersectObjects(visibleObjs, true);
             const tooltip = document.getElementById('tooltip');
 
             if (intersects.length > 0) {
@@ -730,7 +775,10 @@
             }
         }
 
-        function onClick() {
+        function onClick(event) {
+            // Se o clique foi no menu ou UI, ignora
+            if (event.target.closest('#menu-container') || event.target.closest('#info-panel') || event.target.closest('#controls-bar')) return;
+
             if (hoveredKey && hoveredKey !== 'other') {
                 if (currentSelectionKey === hoveredKey) {
                     resetSelection();
@@ -745,23 +793,33 @@
         function selectRegion(key) {
             currentSelectionKey = key;
             
-            // Highlight Visual
+            // Ghost Mode
             brainGroup.children.forEach(group => {
                 group.traverse(child => {
                     if (child.isMesh) {
-                        const isSelected = child.userData.key === key;
-                        child.material.opacity = isSelected ? 1 : 0.1;
-                        child.material.emissive.setHex(isSelected ? 0x222222 : 0x000000);
+                        child.material.opacity = 0.05;
+                        child.material.transparent = true;
+                        child.material.emissive.setHex(0x000000);
                     }
                 });
             });
+
+            // Highlight & Pop-Out Selection
+            if (objectsByKey[key]) {
+                objectsByKey[key].forEach(mesh => {
+                    mesh.material.opacity = 1;
+                    mesh.material.emissive.setHex(0x333333);
+                });
+            }
 
             // Highlight Menu
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             const menuItem = document.getElementById(`menu-${key}`);
             if(menuItem) menuItem.classList.add('active');
+            
+            // Scroll Menu para o item
+            if(menuItem) menuItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Show Info
             updateInfoPanel(key);
         }
 
@@ -774,8 +832,14 @@
 
         function highlightRegion(key) {
             brainGroup.children.forEach(g => g.traverse(c => { 
-                if(c.isMesh) c.material.emissive.setHex(c.userData.key === key ? 0x333333 : 0x000000); 
+                if(c.isMesh) c.material.emissive.setHex(0x000000); 
             }));
+            
+            if (objectsByKey[key]) {
+                objectsByKey[key].forEach(mesh => {
+                    mesh.material.emissive.setHex(0x222222);
+                });
+            }
         }
 
         function resetMaterials() {
