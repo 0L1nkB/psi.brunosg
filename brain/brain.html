@@ -1,121 +1,63 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroView 3D - Estilo BrainFacts</title>
+    <title>NeuroView 3D - High Fidelity</title>
     <style>
-        /* --- ESTILO GERAL (CSS) --- */
         body { margin: 0; overflow: hidden; background-color: #0b0d10; font-family: 'Segoe UI', sans-serif; color: white; }
         
-        /* Layout Principal */
-        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        /* TELA DE CARREGAMENTO */
+        #loader-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0b0d10; z-index: 999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: opacity 0.5s;
+        }
+        .spinner { 
+            width: 60px; height: 60px; border: 4px solid #333; 
+            border-top: 4px solid #00d2ff; border-radius: 50%; 
+            animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* UI: Painel de Informações Médicas (Esquerda) */
+        #loading-text { font-size: 18px; color: #00d2ff; font-weight: bold; }
+        #loading-count { font-size: 14px; color: #666; margin-top: 10px; }
+        
+        /* PAINEL DE INFORMAÇÃO */
         #info-panel {
-            position: absolute; top: 20px; left: 20px; width: 300px;
-            background: rgba(20, 24, 30, 0.9); border-left: 4px solid #00d2ff;
-            padding: 20px; border-radius: 0 8px 8px 0; z-index: 2;
-            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
+            position: absolute; top: 20px; left: 20px; width: 320px;
+            background: rgba(15, 20, 25, 0.95); border-left: 4px solid #00d2ff;
+            padding: 25px; border-radius: 0 12px 12px 0; z-index: 2;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px); pointer-events: none; opacity: 0; 
+            transform: translateX(-20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        #info-panel h1 { margin: 0 0 10px 0; font-size: 24px; color: #fff; }
-        #info-panel h2 { margin: 0 0 10px 0; font-size: 18px; color: #00d2ff; text-transform: uppercase; letter-spacing: 1px; }
-        #info-panel p { font-size: 14px; line-height: 1.6; color: #ccc; }
-        .instruction { font-size: 12px; color: #666; margin-top: 15px; font-style: italic; }
-
-        /* UI: Botão de Reset */
-        #reset-btn {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            padding: 12px 25px; background: #00d2ff; color: #000; border: none;
-            border-radius: 25px; cursor: pointer; font-weight: bold; z-index: 2;
-            opacity: 0; pointer-events: none; transition: all 0.3s;
-        }
-        #reset-btn.active { opacity: 1; pointer-events: all; bottom: 50px; }
-
-        /* UI: Painel Didático do Desenvolvedor (Direita) */
-        #dev-panel {
-            position: absolute; top: 0; right: 0; width: 350px; height: 100vh;
-            background: #1a1a1a; border-left: 1px solid #333; z-index: 3;
-            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            display: flex; flex-direction: column;
-        }
-        #dev-panel.open { transform: translateX(0); }
+        #info-panel.visible { opacity: 1; pointer-events: auto; transform: translateX(0); }
         
-        /* Botão para abrir o painel Dev */
-        #dev-toggle {
-            position: absolute; top: 20px; right: 20px; z-index: 4;
-            background: #333; color: #fff; border: 1px solid #555;
-            padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 12px;
-        }
-        #dev-toggle:hover { background: #444; }
+        #region-title { margin: 0 0 5px 0; font-size: 22px; color: #fff; text-transform: capitalize; font-weight: 600; line-height: 1.2;}
+        #region-code { font-size: 11px; color: #00d2ff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase;}
+        .meta-tag { display: inline-block; background: #333; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #ccc; margin-top: 10px;}
 
-        /* Conteúdo do Painel Dev */
-        .dev-content { padding: 20px; overflow-y: auto; height: 100%; }
-        .module-card {
-            background: #252525; border-radius: 6px; padding: 15px; margin-bottom: 15px;
-            border-left: 3px solid #777;
-        }
-        .module-title { color: #f0a500; font-weight: bold; margin-bottom: 5px; font-family: monospace; }
-        .module-desc { font-size: 13px; color: #aaa; }
-
+        /* Controles de Ajuda */
+        #help-text { position: absolute; bottom: 20px; width: 100%; text-align: center; color: #555; font-size: 12px; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container"></div>
+    <div id="loader-screen">
+        <div class="spinner"></div>
+        <div id="loading-text">Carregando Neuroanatomia</div>
+        <div id="loading-count">Inicializando...</div>
+    </div>
 
     <div id="info-panel">
-        <h1>Cérebro Humano</h1>
-        <h2 id="region-title">Visão Geral</h2>
-        <p id="region-desc">
-            O cérebro é o centro de comando do sistema nervoso humano.
-            Nesta demonstração, separamos as áreas por cores (segmentação) para facilitar o estudo, similar ao método usado em anatomia didática.
-        </p>
-        <p class="instruction">Passe o mouse para identificar e clique para isolar uma área.</p>
+        <h2 id="region-title">Nome da Área</h2>
+        <div id="region-code">CODE_REF</div>
+        <p style="color: #aaa; font-size: 14px; line-height: 1.5;">Esta estrutura foi renderizada a partir de dados volumétricos segmentados de alta precisão.</p>
+        <div class="meta-tag">Segmentação Volumétrica</div>
     </div>
 
-    <button id="reset-btn" onclick="resetView()">Restaurar Visão Completa</button>
-
-    <button id="dev-toggle" onclick="toggleDevPanel()">🛠️ Estrutura do Código</button>
-    
-    <div id="dev-panel">
-        <div class="dev-content">
-            <h3>Arquitetura da Aplicação</h3>
-            <p style="font-size: 12px; color: #888; margin-bottom: 20px;">
-                Como este projeto foi estruturado modularmente:
-            </p>
-
-            <div class="module-card" style="border-color: #f0a500;">
-                <div class="module-title">1. Data Module (JSON)</div>
-                <div class="module-desc">
-                    Um banco de dados simples dentro do código. Contém os IDs, nomes, cores e descrições médicas de cada parte. É a "Fonte da Verdade".
-                </div>
-            </div>
-
-            <div class="module-card" style="border-color: #00d2ff;">
-                <div class="module-title">2. Scene Manager</div>
-                <div class="module-desc">
-                    Responsável por criar o "mundo": Câmera, Luzes e Renderizador (Three.js). Configura o palco onde o cérebro vai existir.
-                </div>
-            </div>
-
-            <div class="module-card" style="border-color: #ff5733;">
-                <div class="module-title">3. Brain Builder</div>
-                <div class="module-desc">
-                    Constrói a geometria 3D. Na versão final, isso carregará arquivos `.obj`. Aqui, ele gera formas matemáticas para simular os lobos.
-                </div>
-            </div>
-
-            <div class="module-card" style="border-color: #33ff57;">
-                <div class="module-title">4. Interaction Handler</div>
-                <div class="module-desc">
-                    O cérebro da aplicação. Usa "Raycasting" (raios invisíveis) para detectar onde o mouse está, calcula colisões e gerencia os cliques.
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="help-text">Clique e arraste para girar • Scroll para Zoom • Clique nas áreas para detalhes</div>
 
     <script type="importmap">
         {
@@ -129,256 +71,453 @@
     <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
-        // --- MÓDULO 1: DADOS (DATABASE) ---
-        // Aqui definimos as propriedades de cada região
-        const brainData = {
-            'frontal': {
-                name: 'Lobo Frontal',
-                color: 0xFF5733, // Laranja avermelhado
-                desc: 'Responsável pelo planejamento, raciocínio, resolução de problemas e controle motor voluntário. É a "sede da personalidade".'
-            },
-            'parietal': {
-                name: 'Lobo Parietal',
-                color: 0xFFC300, // Amarelo
-                desc: 'Processa informações sensoriais (tato, temperatura, dor) e a percepção espacial do corpo.'
-            },
-            'temporal': {
-                name: 'Lobo Temporal',
-                color: 0x28B463, // Verde
-                desc: 'Fundamental para a audição, linguagem e processamento de memórias (Hipocampo).'
-            },
-            'occipital': {
-                name: 'Lobo Occipital',
-                color: 0xC70039, // Vermelho escuro
-                desc: 'O centro de processamento visual. Interpreta cores, luzes e movimentos.'
-            },
-            'cerebellum': {
-                name: 'Cerebelo',
-                color: 0x8E44AD, // Roxo
-                desc: 'Coordena o equilíbrio, a postura e a precisão dos movimentos finos.'
-            }
-        };
+        // --- SUA LISTA COMPLETA DE ARQUIVOS ---
+        const fileList = [
+            "FJ1735_BP37293_FMA73462_Brachium of left superior colliculus.obj",
+            "FJ1761_BP37183_FMA73464_Brachium of left inferior colliculus.obj",
+            "FJ1762_BP35181_FMA73435_Left inferior colliculus.obj",
+            "FJ1809_BP33232_FMA73463_Brachium of right inferior colliculus.obj",
+            "FJ1810_BP36436_FMA73434_Right inferior colliculus.obj",
+            "FJ1815_BP33292_FMA74877_Mammillary body.obj",
+            "FJ1826_BP36657_FMA73422_Right superior colliculus.obj",
+            "FJ3787_BP35443_FMA78454_Third ventricle.obj",
+            "FJ3788_BP35489_FMA78469_Fourth ventricle.obj",
+            "FJ3792_BP33376_FMA61961_Anterior commissure.obj",
+            "FJ3793_BP33229_FMA73461_Brachium of right superior colliculus.obj",
+            "FJ3795_BP33936_FMA78467_Cerebral aqueduct.obj",
+            "FJ3798_BP35453_FMA61970_Commissure of fornix of forebrain.obj",
+            "FJ3799_BP33365_FMA86464_Corpus callosum.obj",
+            "FJ3800_BP37280_FMA62032_Habenula.obj",
+            "FJ3801_BP36185_FMA72658_Left inferior frontal gyrus.obj",
+            "FJ3802_BP35284_FMA72657_Right inferior frontal gyrus.obj",
+            "FJ3807_BP36507_FMA72907_Left internal capsule.obj",
+            "FJ3808_BP36506_FMA72906_Right internal capsule.obj",
+            "FJ3814_BP35571_FMA72831_Left globus pallidus.obj",
+            "FJ3817_BP33711_FMA62008_Hypothalamus.obj",
+            "FJ3819_BP33096_FMA61975_Lamina terminalis.obj",
+            "FJ3822_BP33292_FMA74877_Mammillary body.obj",
+            "FJ3823_BP33849_FMA62004_Medulla oblongata.obj",
+            "FJ3824_BP34150_FMA61993_Midbrain.obj",
+            "FJ3827_BP33093_FMA242162_Left cerebral crus.obj",
+            "FJ3828_BP33675_FMA67943_Pons.obj",
+            "FJ3829_BP36782_FMA72829_Left putamen.obj",
+            "FJ3830_BP33199_FMA73414_Left stria medullaris of thalamus.obj",
+            "FJ3831_BP36885_FMA72940_Left stria terminalis.obj",
+            "FJ3832_BP33747_FMA73423_Left superior colliculus.obj",
+            "FJ3833_BP37238_FMA62327_Tuber cinereum.obj",
+            "FJ3834_BP37207_FMA67944_Cerebellum.obj",
+            "FJ3839_BP35281_FMA72656_Left middle frontal gyrus.obj",
+            "FJ3840_BP36251_FMA72655_Right middle frontal gyrus.obj",
+            "FJ3847_BP33976_FMA62033_Pineal body.obj",
+            "FJ3849_BP36774_FMA72666_Left postcentral gyrus.obj",
+            "FJ3850_BP37078_FMA72665_Right postcentral gyrus.obj",
+            "FJ3851_BP33349_FMA62072_Posterior commissure.obj",
+            "FJ3852_BP36414_FMA72662_Left precentral gyrus.obj",
+            "FJ3853_BP36698_FMA72661_Right precentral gyrus.obj",
+            "FJ3857_BP36976_FMA72830_Right globus pallidus.obj",
+            "FJ3860_BP33711_FMA62008_Hypothalamus.obj",
+            "FJ3861_BP33096_FMA61975_Lamina terminalis.obj",
+            "FJ3865_BP34150_FMA61993_Midbrain.obj",
+            "FJ3868_BP36519_FMA242160_Right cerebral crus.obj",
+            "FJ3869_BP33675_FMA67943_Pons.obj",
+            "FJ3870_BP37053_FMA72828_Right putamen.obj",
+            "FJ3871_BP36970_FMA73413_Right stria medullaris of thalamus.obj",
+            "FJ3872_BP35487_FMA72939_Right stria terminalis.obj",
+            "FJ3874_BP37238_FMA62327_Tuber cinereum.obj",
+            "FJ3876_BP37207_FMA67944_Cerebellum.obj",
+            "FJ3877_BP33849_FMA62004_Medulla oblongata.obj",
+            "FJ3878_BP33625_FMA61842_Septum of telencephalon.obj",
+            "FJ3879_BP36418_FMA72654_Left superior frontal gyrus.obj",
+            "FJ3880_BP36474_FMA72653_Right superior frontal gyrus.obj",
+            "FJ7465_BP37135_FMA256200_Left anterior orbital gyrus.obj",
+            "FJ7465M_BP36969_FMA256198_Right anterior orbital gyrus.obj",
+            "FJ7466_BP37231_FMA72757_Left lateral orbital gyrus.obj",
+            "FJ7466M_BP37236_FMA72756_Right lateral orbital gyrus.obj",
+            "FJ7480_BP33949_FMA73491_Right red nucleus.obj",
+            "FJ7480M_BP32577_FMA73492_Left red nucleus.obj",
+            "FJ7481_BP36510_FMA73539_Right substantia nigra.obj",
+            "FJ7481M_BP36509_FMA73540_Left substantia nigra.obj",
+            "FJ7482_BP34009_FMA73367_Right subthalamic nucleus.obj",
+            "FJ7482M_BP32538_FMA73368_Left subthalamic nucleus.obj",
+            "FJ7506_BP33951_FMA73338_Left arcuate nucleus of hypothalamus.obj",
+            "FJ7507_BP34023_FMA73337_Right arcuate nucleus of hypothalamus.obj",
+            "FJ7508_BP33731_FMA73334_Left anterior nucleus of hypothalamus.obj",
+            "FJ7508M_BP33730_FMA73333_Right anterior nucleus of hypothalamus.obj",
+            "FJ7509_BP33954_FMA73340_Left dorsomedial nucleus of hypothalamus.obj",
+            "FJ7509M_BP32537_FMA73339_Right dorsomedial nucleus of hypothalamus.obj",
+            "FJ7510_BP33132_FMA73328_Left lateral preoptic nucleus.obj",
+            "FJ7510M_BP33066_FMA73327_Right lateral preoptic nucleus.obj",
+            "FJ7511_BP33146_FMA73326_Left medial preoptic nucleus.obj",
+            "FJ7511M_BP36650_FMA73325_Right medial preoptic nucleus.obj",
+            "FJ7512_BP32541_FMA73336_Left paraventricular nucleus of hypothalamus.obj",
+            "FJ7512M_BP34336_FMA73335_Right paraventricular nucleus of hypothalamus.obj",
+            "FJ7513_BP33735_FMA73354_Left posterior nucleus of hypothalamus.obj",
+            "FJ7513M_BP34017_FMA73353_Right posterior nucleus of hypothalamus.obj",
+            "FJ7514_BP34021_FMA73329_Right suprachiasmatic nucleus.obj",
+            "FJ7514M_BP34018_FMA73330_Left suprachiasmatic nucleus.obj",
+            "FJ7515_BP34020_FMA73331_Right supraoptic nucleus.obj",
+            "FJ7515M_BP34299_FMA73332_Left supraoptic nucleus.obj",
+            "FJ7516_BP32567_FMA73342_Left ventromedial nucleus of hypothalamus.obj",
+            "FJ7516M_BP33952_FMA73341_Right ventromedial nucleus of hypothalamus.obj",
+            "FJ7526_BP36645_FMA223162_Left olfactory tract.obj",
+            "FJ7526M_BP36644_FMA223163_Right olfactory tract.obj",
+            "FJ7528_BP36659_FMA72660_Left straight gyrus.obj",
+            "FJ7528M_BP36789_FMA72659_Right straight gyrus.obj",
+            "FJ7529_BP33887_FMA72849_Left subcallosal area.obj",
+            "FJ7530_BP33090_FMA72708_Left paraterminal gyrus.obj",
+            "FJ7530M_BP33088_FMA72707_Right paraterminal gyrus.obj",
+            "FJ7533_BP33741_FMA72983_Left anterodorsal nucleus.obj",
+            "FJ7533M_BP33737_FMA72982_Right anterodorsal nucleus.obj",
+            "FJ7534_BP32554_FMA72985_Left anteromedial nucleus.obj",
+            "FJ7534M_BP34015_FMA72984_Right anteromedial nucleus.obj",
+            "FJ7535_BP33710_FMA72987_Left anteroventral nucleus.obj",
+            "FJ7535M_BP33708_FMA72986_Right anteroventral nucleus.obj",
+            "FJ7536_BP34412_FMA73046_Left centromedian nucleus.obj",
+            "FJ7536M_BP36651_FMA73045_Right centromedian nucleus.obj",
+            "FJ7539_BP35623_FMA73304_Left lateral geniculate body.obj",
+            "FJ7539M_BP36971_FMA73303_Right lateral geniculate body.obj",
+            "FJ7540_BP33157_FMA73008_Parvicellular part of left medial dorsal nucleus.obj",
+            "FJ7540M_BP33151_FMA73006_Parvicellular part of right medial dorsal nucleus.obj",
+            "FJ7541_BP33153_FMA73001_Paralaminar part of left medial dorsal nucleus.obj",
+            "FJ7541M_BP33154_FMA73000_Paralaminar part of right medial dorsal nucleus.obj",
+            "FJ7542_BP33158_FMA73003_Magnocellular part of left medial dorsal nucleus.obj",
+            "FJ7542M_BP33159_FMA73002_Magnocellular part of right medial dorsal nucleus.obj",
+            "FJ7543_BP35666_FMA73310_Left medial geniculate body.obj",
+            "FJ7543M_BP35526_FMA73309_Right medial geniculate body.obj",
+            "FJ7544_BP33950_FMA73032_Left inferior pulvinar nucleus.obj",
+            "FJ7544M_BP32549_FMA73031_Right inferior pulvinar nucleus.obj",
+            "FJ7545_BP36649_FMA73048_Left parafascicular nucleus.obj",
+            "FJ7545M_BP33152_FMA73047_Right parafascicular nucleus.obj",
+            "FJ7546_BP32531_FMA73022_Left oral pulvinar nucleus.obj",
+            "FJ7546M_BP33946_FMA73021_Right oral pulvinar nucleus.obj",
+            "FJ7547_BP33070_FMA72989_Left paratenial nucleus.obj",
+            "FJ7547M_BP33126_FMA72988_Right paratenial nucleus.obj",
+            "FJ7548_BP32531_FMA73022_Left oral pulvinar nucleus.obj",
+            "FJ7548M_BP33946_FMA73021_Right oral pulvinar nucleus.obj",
+            "FJ7550_BP34016_FMA73027_Left lateral pulvinar nucleus.obj",
+            "FJ7550M_BP34004_FMA73026_Right lateral pulvinar nucleus.obj",
+            "FJ7551_BP33727_FMA73030_Left medial pulvinar nucleus.obj",
+            "FJ7551M_BP33947_FMA73029_Right medial pulvinar nucleus.obj",
+            "FJ7553_BP32541_FMA73336_Left paraventricular nucleus of hypothalamus.obj",
+            "FJ7553M_BP34336_FMA73335_Right paraventricular nucleus of hypothalamus.obj",
+            "FJ7554_BP34019_FMA73324_Left thalamic reticular nucleus.obj",
+            "FJ7554M_BP33729_FMA73323_Right thalamic reticular nucleus.obj",
+            "FJ7556_BP36652_FMA73050_Left ventral anterior nucleus.obj",
+            "FJ7556M_BP34044_FMA73049_Right ventral anterior nucleus.obj",
+            "FJ7557_BP33155_FMA73064_Caudal part of left ventral lateral nucleus.obj",
+            "FJ7557M_BP33160_FMA73063_Caudal part of right ventral lateral nucleus.obj",
+            "FJ7558_BP33163_FMA73078_Oral part of left ventral posterolateral nucleus.obj",
+            "FJ7558M_BP33161_FMA73077_Oral part of right ventral posterolateral nucleus.obj",
+            "FJ7559_BP33162_FMA73080_Caudal part of left ventral posterolateral nucleus.obj",
+            "FJ7559M_BP33164_FMA73079_Caudal part of right ventral posterolateral nucleus.obj",
+            "FJ7560_BP33953_FMA73076_Left ventral posterolateral nucleus.obj",
+            "FJ7560M_BP34005_FMA73075_Right ventral posterolateral nucleus.obj",
+            "FJ7561_BP34043_FMA73085_Parvicellular part of left ventral posteromedial nucleus.obj",
+            "FJ7561M_BP33147_FMA73083_Parvicellular part of right ventral posteromedial nucleus.obj",
+            "FJ7562_BP32530_FMA73082_Left ventral posteromedial nucleus.obj",
+            "FJ7562M_BP33742_FMA73081_Right ventral posteromedial nucleus.obj",
+            "MM153_BP33379_FMA62488_Induseum griseum.obj",
+            "MM153M_BP33379_FMA62488_Induseum griseum.obj",
+            "MM155_BP33303_FMA77627_Medial olfactory stria.obj",
+            "MM155M_BP33303_FMA77627_Medial olfactory stria.obj",
+            "MM156_BP37113_FMA72956_Left diagonal band.obj",
+            "MM156M_BP34103_FMA72955_Right diagonal band.obj",
+            "MM164_BP35308_FMA72714_Left hippocampus proper.obj",
+            "MM164M_BP35175_FMA72713_Right hippocampus proper.obj",
+            "MM165_BP33357_FMA62485_Periamygdaloid area.obj",
+            "MM165M_BP33357_FMA62485_Periamygdaloid area.obj",
+            "MM167_BP33689_FMA235004_Fimbria of left hippocampus.obj",
+            "MM167M_BP34167_FMA235002_Fimbria of right hippocampus.obj",
+            "MM168_BP33207_FMA72933_Left posterior column of fornix.obj",
+            "MM168M_BP37213_FMA72932_Right posterior column of fornix.obj",
+            "MM169_BP34165_FMA72931_Body of left fornix of forebrain.obj",
+            "MM169M_BP33248_FMA72930_Body of right fornix of forebrain.obj",
+            "MM170_BP37111_FMA72927_Left anterior column of fornix.obj",
+            "MM170M_BP37112_FMA72926_Right anterior column of fornix.obj",
+            "MM171_BP35227_FMA72716_Dentate gyrus of left hippocampus.obj",
+            "MM171M_BP35118_FMA72715_Dentate gyrus of right hippocampus.obj",
+            "MM172_BP32591_FMA74884_Uncus.obj",
+            "MM172M_BP32591_FMA74884_Uncus.obj",
+            "MM173_BP32591_FMA74884_Uncus.obj",
+            "MM173M_BP32591_FMA74884_Uncus.obj",
+            "MM175_BP36188_FMA72712_Left fasciolar gyrus.obj",
+            "MM175M_BP33796_FMA72711_Right fasciolar gyrus.obj",
+            "MM176_BP33129_FMA72942_Left lateral longitudinal stria.obj",
+            "MM176M_BP33071_FMA72941_Right lateral longitudinal stria.obj",
+            "MM177_BP33150_FMA72944_Left medial longitudinal stria.obj",
+            "MM177M_BP33069_FMA72943_Right medial longitudinal stria.obj",
+            "MM178_BP32820_FMA74414_Subiculum.obj",
+            "MM178M_BP32820_FMA74414_Subiculum.obj",
+            "MM179_BP37128_FMA72833_Left amygdala.obj",
+            "MM179M_BP34038_FMA72832_Right amygdala.obj",
+            "MM193_BP36827_FMA72718_Left cingulate gyrus.obj",
+            "MM193M_BP34000_FMA72717_Right cingulate gyrus.obj",
+            "MM194_BP36188_FMA72712_Left fasciolar gyrus.obj",
+            "MM194M_BP33796_FMA72711_Right fasciolar gyrus.obj",
+            "MM202_BP36821_FMA72759_Left medial orbital gyrus.obj",
+            "MM202M_BP36471_FMA72758_Right medial orbital gyrus.obj",
+            "MM204_BP33701_FMA78462_Choroid plexus of third ventricle.obj",
+            "MM204M_BP33701_FMA78462_Choroid plexus of third ventricle.obj",
+            "MM205_BP33970_FMA78450_Left lateral ventricle.obj",
+            "MM205M_BP33961_FMA78449_Right lateral ventricle.obj",
+            "MM227_BP36821_FMA72759_Left medial orbital gyrus.obj",
+            "MM229_BP37110_FMA72936_Left lateral olfactory stria.obj",
+            "MM229M_BP34100_FMA72935_Right lateral olfactory stria.obj",
+            "MM230_BP36872_FMA80188_Left posterior orbital gyrus.obj",
+            "MM230M_BP36767_FMA80187_Right posterior orbital gyrus.obj",
+            "MM232_BP34430_FMA72721_Left first posterior central gyrus.obj",
+            "MM232M_BP36004_FMA72720_Right first posterior central gyrus.obj",
+            "MM233_BP33791_FMA72723_Left second posterior central gyrus.obj",
+            "MM233M_BP34404_FMA72722_Right second posterior central gyrus.obj",
+            "MM235_BP33792_FMA72728_Left second short gyrus of insula.obj",
+            "MM235M_BP34429_FMA72726_Right second short gyrus of insula.obj",
+            "MM236_BP33786_FMA72725_Left first short gyrus of insula.obj",
+            "MM236M_BP34384_FMA72724_Right first short gyrus of insula.obj",
+            "MM237_BP33785_FMA72730_Left intermediate short gyrus of insula.obj",
+            "MM237M_BP33784_FMA72729_Right intermediate short gyrus of insula.obj",
+            "MM239_BP36415_FMA72704_Left anterior accessory gyrus.obj",
+            "MM240_BP36415_FMA72704_Left anterior accessory gyrus.obj",
+            "MM241_BP33067_FMA72827_Left caudate nucleus.obj",
+            "MM241M_BP35798_FMA72826_Right caudate nucleus.obj",
+            "MM242_BP37051_FMA72670_Left angular gyrus.obj",
+            "MM242M_BP37180_FMA72669_Right angular gyrus.obj",
+            "MM243_BP36477_FMA72680_Left cuneus.obj",
+            "MM243M_BP36354_FMA72679_Right cuneus.obj",
+            "MM245_BP37172_FMA72676_Left superior occipital gyrus.obj",
+            "MM245M_BP36883_FMA72675_Right superior occipital gyrus.obj",
+            "MM246_BP36490_FMA72674_Left precuneus.obj",
+            "MM246M_BP36523_FMA72673_Right precuneus.obj",
+            "MM247_BP37028_FMA72672_Left superior parietal lobule.obj",
+            "MM247M_BP37000_FMA72671_Right superior parietal lobule.obj",
+            "MM248_BP36668_FMA72686_Left middle temporal gyrus.obj",
+            "MM248M_BP36762_FMA72685_Right middle temporal gyrus.obj",
+            "MM250_BP33811_FMA72668_Left supramarginal gyrus.obj",
+            "MM250M_BP36699_FMA72667_Right supramarginal gyrus.obj",
+            "MM251_BP36485_FMA72678_Left lateral occipital gyrus.obj",
+            "MM251M_BP36476_FMA72677_Right lateral occipital gyrus.obj",
+            "MM252_BP37117_FMA72682_Left lingual gyrus.obj",
+            "MM252M_BP36513_FMA72681_Right lingual gyrus.obj",
+            "MM253_BP36937_FMA72690_Left fusiform gyrus.obj",
+            "MM253M_BP36512_FMA72689_Right fusiform gyrus.obj",
+            "MM259_BP33994_FMA72692_Left anterior transverse temporal gyrus.obj",
+            "MM259M_BP36584_FMA72691_Right anterior transverse temporal gyrus.obj",
+            "MM261_BP33998_FMA72694_Left posterior transverse temporal gyrus.obj",
+            "MM261M_BP33996_FMA72693_Right posterior transverse temporal gyrus.obj",
+            "MM263_BP34403_FMA72739_Left posterior parahippocampal gyrus.obj",
+            "MM263M_BP33793_FMA72738_Right posterior parahippocampal gyrus.obj",
+            "MM264_BP34767_FMA72741_Left entorhinal area.obj",
+            "MM264M_BP33921_FMA72740_Right entorhinal area.obj",
+            "MM267_BP36480_FMA72684_Left superior temporal gyrus.obj",
+            "MM267M_BP36597_FMA72683_Right superior temporal gyrus.obj",
+            "MM268_BP36812_FMA72688_Left inferior temporal gyrus.obj",
+            "MM268M_BP36665_FMA72687_Right inferior temporal gyrus.obj",
+            "MM270_BP35995_FMA72737_Left presubiculum.obj",
+            "MM270M_BP34413_FMA72736_Right presubiculum.obj"
+        ];
 
-        // Variáveis Globais
-        let scene, camera, renderer, controls;
-        let raycaster, mouse;
-        let brainGroup; // Grupo que segura todas as peças
+        let scene, camera, renderer, controls, raycaster, mouse;
+        let brainGroup;
         let hoveredObject = null;
         let selectedObject = null;
-
-        // Elementos DOM
-        const uiTitle = document.getElementById('region-title');
-        const uiDesc = document.getElementById('region-desc');
-        const resetBtn = document.getElementById('reset-btn');
+        const loaderManager = new THREE.LoadingManager();
 
         init();
+        loadBrainParts();
         animate();
 
-        // --- MÓDULO 2: SCENE MANAGER (Inicialização) ---
         function init() {
-            // Cena
+            // Setup Básico
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x0b0d10);
-            scene.fog = new THREE.Fog(0x0b0d10, 20, 100);
+            
+            // Câmera posicionada para ver todo o modelo
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.set(120, 80, 150); 
 
-            // Câmera
-            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(20, 10, 20);
-
-            // Renderizador
-            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            document.body.appendChild(renderer.domElement);
 
-            // Luzes (Setup de Estúdio)
-            const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
+            // Luzes de Estúdio (Para realçar as curvas do cérebro)
+            const ambientLight = new THREE.AmbientLight(0x404040, 3.5); 
             scene.add(ambientLight);
-
+            
             const mainLight = new THREE.DirectionalLight(0xffffff, 2);
-            mainLight.position.set(10, 10, 10);
+            mainLight.position.set(50, 100, 50);
             scene.add(mainLight);
 
-            const backLight = new THREE.DirectionalLight(0x5555ff, 0.5); // Luz de recorte azulada
-            backLight.position.set(-10, 5, -10);
-            scene.add(backLight);
+            const fillLight = new THREE.DirectionalLight(0xaaccff, 1);
+            fillLight.position.set(-50, 0, -50);
+            scene.add(fillLight);
 
-            // Controles de Câmera
+            // Controles
             controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
-            controls.minDistance = 10;
-            controls.maxDistance = 60;
+            controls.maxDistance = 800;
 
-            // Inicia os outros módulos
-            buildBrain();
-            setupInteraction();
-
-            window.addEventListener('resize', onWindowResize);
-        }
-
-        // --- MÓDULO 3: BRAIN BUILDER (Geometria) ---
-        function buildBrain() {
             brainGroup = new THREE.Group();
+            // Correção de rotação (muitos modelos médicos vêm "deitados")
+            brainGroup.rotation.x = -Math.PI / 2; 
             scene.add(brainGroup);
 
-            // Como não temos o modelo 3D real ainda, vamos simular os lobos com formas primitivas distorcidas.
-            // No projeto final, substituiríamos `createLobe` por `loader.load('lobo_frontal.obj')`
-
-            // Lobo Frontal (Frente)
-            createLobe('frontal', new THREE.Vector3(2, 1, 0), new THREE.Vector3(4, 3.5, 3.5));
-            
-            // Lobo Parietal (Topo/Trás)
-            createLobe('parietal', new THREE.Vector3(-1.5, 2.5, 0), new THREE.Vector3(3.5, 3, 3.5));
-
-            // Lobo Temporal (Lateral/Baixo)
-            createLobe('temporal', new THREE.Vector3(0.5, -1, 0), new THREE.Vector3(4, 2, 3));
-
-            // Lobo Occipital (Traseira)
-            createLobe('occipital', new THREE.Vector3(-4, 0, 0), new THREE.Vector3(2, 3, 2.5));
-
-            // Cerebelo (Base Traseira)
-            createLobe('cerebellum', new THREE.Vector3(-3, -2.5, 0), new THREE.Vector3(2.5, 2, 2));
-        }
-
-        function createLobe(id, position, scale) {
-            const data = brainData[id];
-            
-            // Geometria: Icosaedro detalhado para parecer orgânico
-            const geometry = new THREE.IcosahedronGeometry(1, 4); // Alta contagem de polígonos
-            
-            // Deformação leve para não parecer uma bola perfeita (Ruído procedural simples)
-            const positionAttribute = geometry.attributes.position;
-            for ( let i = 0; i < positionAttribute.count; i ++ ) {
-                const vertex = new THREE.Vector3();
-                vertex.fromBufferAttribute( positionAttribute, i );
-                // Adiciona uma irregularidade aleatória
-                vertex.multiplyScalar( 1 + 0.1 * (Math.random() - 0.5) ); 
-                positionAttribute.setXYZ( i, vertex.x, vertex.y, vertex.z );
-            }
-            geometry.computeVertexNormals();
-
-            // Material: Estilo BrainFacts (Cor sólida, pouco brilho especular)
-            const material = new THREE.MeshStandardMaterial({
-                color: data.color,
-                roughness: 0.6,
-                metalness: 0.1,
-                transparent: true,
-                opacity: 1
-            });
-
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.copy(position);
-            mesh.scale.copy(scale);
-            mesh.userData = { id: id, originalColor: data.color }; // Salva metadados no objeto 3D
-            
-            brainGroup.add(mesh);
-        }
-
-        // --- MÓDULO 4: INTERACTION HANDLER (Lógica) ---
-        function setupInteraction() {
+            // Interação
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2();
-
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('click', onClick);
-            
-            // Expõe a função de reset globalmente para o botão HTML acessar
-            window.resetView = resetView;
+            window.addEventListener('resize', onWindowResize);
+
+            // LOGICA DA BARRA DE PROGRESSO
+            const loadingText = document.getElementById('loading-count');
+            const loadingScreen = document.getElementById('loader-screen');
+
+            loaderManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+                loadingText.innerText = `Carregando parte ${itemsLoaded} de ${itemsTotal}`;
+            };
+
+            loaderManager.onLoad = function () {
+                loadingText.innerText = "Processamento finalizado.";
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => loadingScreen.style.display = 'none', 500);
+                }, 1000);
+            };
+        }
+
+        function loadBrainParts() {
+            const loader = new OBJLoader(loaderManager);
+
+            fileList.forEach(filename => {
+                // Caminho relativo da pasta 'brain'
+                loader.load('./brain/' + filename, function (object) {
+                    
+                    // Limpeza do nome: FJ1735_..._Left_gyrus.obj -> Left gyrus
+                    const rawName = filename.replace('.obj', '');
+                    const nameParts = rawName.split('_');
+                    // Pega tudo depois do terceiro underscore (ignora os códigos)
+                    // Se não tiver underscores suficientes, usa o nome do arquivo limpo
+                    let cleanName = nameParts.length > 3 ? nameParts.slice(3).join(' ') : rawName;
+                    
+                    object.traverse(function (child) {
+                        if (child.isMesh) {
+                            // Gera cor única baseada no nome
+                            const color = getColorFromString(cleanName);
+                            
+                            child.material = new THREE.MeshStandardMaterial({
+                                color: color,
+                                roughness: 0.3, // Um pouco brilhante (úmido)
+                                metalness: 0.1,
+                                transparent: true,
+                                opacity: 1,
+                                side: THREE.DoubleSide
+                            });
+                            
+                            child.userData = { 
+                                originalColor: color,
+                                name: cleanName,
+                                code: rawName // Guarda o código original para referência
+                            };
+                        }
+                    });
+
+                    brainGroup.add(object);
+                });
+            });
+        }
+
+        // Função de Hash para gerar cores consistentes
+        function getColorFromString(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            // Cores mais pastéis e vibrantes (Evita marrons escuros)
+            const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
+            return '#' + "00000".substring(0, 6 - c.length) + c;
         }
 
         function onMouseMove(event) {
-            // Normaliza coordenadas do mouse (-1 a +1)
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            if (selectedObject) return; // Se algo está selecionado, ignora o hover
-
-            checkIntersection();
-        }
-
-        function onClick(event) {
-            if (hoveredObject) {
-                selectRegion(hoveredObject);
-            } else {
-                // Se clicou no fundo vazio, reseta (opcional)
-                // resetView(); 
-            }
-        }
-
-        function checkIntersection() {
+            
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(brainGroup.children);
+            const intersects = raycaster.intersectObjects(brainGroup.children, true);
 
             if (intersects.length > 0) {
-                const object = intersects[0].object;
-                
-                if (hoveredObject !== object) {
-                    // Restaura o anterior
-                    if (hoveredObject) hoveredObject.material.emissive.setHex(0x000000);
-                    
-                    // Destaca o novo
-                    hoveredObject = object;
-                    hoveredObject.material.emissive.setHex(0x333333); // Brilho suave
-                    
+                const obj = intersects[0].object;
+                if (hoveredObject !== obj) {
+                    if (hoveredObject && hoveredObject !== selectedObject) {
+                        hoveredObject.material.emissive.setHex(0x000000);
+                    }
+                    hoveredObject = obj;
+                    // Highlight Branco Suave
+                    hoveredObject.material.emissive.setHex(0x333333);
                     document.body.style.cursor = 'pointer';
                 }
             } else {
-                if (hoveredObject) {
+                if (hoveredObject && hoveredObject !== selectedObject) {
                     hoveredObject.material.emissive.setHex(0x000000);
-                    hoveredObject = null;
-                    document.body.style.cursor = 'default';
                 }
+                hoveredObject = null;
+                document.body.style.cursor = 'default';
             }
         }
 
-        function selectRegion(object) {
-            selectedObject = object;
-            const id = object.userData.id;
-            const info = brainData[id];
-
-            // 1. Atualiza UI
-            uiTitle.innerText = info.name;
-            uiTitle.style.color = '#' + info.color.toString(16);
-            uiDesc.innerText = info.desc;
-            resetBtn.classList.add('active');
-
-            // 2. Efeito visual "Ghost" (Foco)
-            brainGroup.children.forEach(mesh => {
-                if (mesh === object) {
-                    mesh.material.opacity = 1;
-                    mesh.material.color.setHex(info.color);
-                } else {
-                    mesh.material.opacity = 0.2; // Deixa o resto transparente
-                    mesh.material.color.setHex(0x555555); // Cinza
+        function onClick() {
+            if (hoveredObject) {
+                // Se clicou na mesma coisa duas vezes, reseta
+                if (selectedObject === hoveredObject) {
+                    resetView();
+                    return;
                 }
-            });
 
-            // 3. Zoom dramático (Animação simples de câmera)
-            // Num app real, usaríamos TWEEN.js para suavizar isso
-            const targetPos = object.position.clone().multiplyScalar(1.5);
-            camera.position.lerp(new THREE.Vector3(targetPos.x + 10, targetPos.y + 5, targetPos.z + 10), 0.5);
-            controls.target.copy(object.position);
+                selectedObject = hoveredObject;
+                
+                // Atualiza UI
+                const panel = document.getElementById('info-panel');
+                document.getElementById('region-title').innerText = selectedObject.userData.name;
+                document.getElementById('region-code').innerText = selectedObject.userData.code;
+                panel.classList.add('visible');
+
+                // Efeito de Foco (Ghost Mode)
+                brainGroup.children.forEach(group => {
+                    group.traverse(child => {
+                        if (child.isMesh) {
+                            if (child === selectedObject) {
+                                child.material.opacity = 1;
+                                child.material.color.setHex(child.userData.originalColor);
+                                child.material.emissive.setHex(0x111111);
+                            } else {
+                                child.material.opacity = 0.05; // Quase invisível
+                                child.material.color.setHex(0x555555); // Cinza
+                                child.material.emissive.setHex(0x000000);
+                            }
+                        }
+                    });
+                });
+            } else {
+                resetView();
+            }
         }
 
         function resetView() {
             selectedObject = null;
+            document.getElementById('info-panel').classList.remove('visible');
             
-            // Restaura cores e opacidade
-            brainGroup.children.forEach(mesh => {
-                mesh.material.opacity = 1;
-                mesh.material.color.setHex(mesh.userData.originalColor);
+            brainGroup.children.forEach(group => {
+                group.traverse(child => {
+                    if (child.isMesh) {
+                        child.material.opacity = 1;
+                        child.material.color.set(child.userData.originalColor);
+                        child.material.emissive.setHex(0x000000);
+                    }
+                });
             });
-
-            // Restaura UI
-            uiTitle.innerText = "Visão Geral";
-            uiTitle.style.color = "#00d2ff";
-            uiDesc.innerText = "Passe o mouse para identificar e clique para isolar uma área.";
-            resetBtn.classList.remove('active');
-
-            // Restaura Câmera
-            controls.target.set(0,0,0);
         }
 
         function onWindowResize() {
@@ -391,13 +530,6 @@
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
-        }
-    </script>
-
-    <script>
-        function toggleDevPanel() {
-            const panel = document.getElementById('dev-panel');
-            panel.classList.toggle('open');
         }
     </script>
 </body>
