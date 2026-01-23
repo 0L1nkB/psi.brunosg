@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Clareza | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --primary: #00cec9;       /* Ciano (Clareza) */
+            --primary-dark: #00b894;
+            --accent: #fdcb6e;        /* Amarelo */
+            --text: #2d3436;
+            --card-bg: #ffffff;
+            --tag-bg: #e0f7fa;
+            --tag-text: #006064;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed #636e72;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 900px; width: 100%; position: relative;
+        }
+
+        header h1 { color: #2d3436; margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid #2d3436; color: #2d3436;
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: #2d3436; color: white; }
+
+        /* --- CARD DE ANÁLISE --- */
+        .analysis-card {
+            width: 100%; max-width: 900px;
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 40px;
+            display: flex; flex-direction: column; gap: 25px;
+            border-top: 5px solid var(--primary);
+        }
+
+        .row-group { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+
+        .input-wrapper { display: flex; flex-direction: column; gap: 8px; }
+        label { font-weight: 800; font-size: 0.95rem; color: #636e72; display: flex; align-items: center; gap: 8px; }
+        
+        input[type="text"], textarea {
+            width: 100%; padding: 12px; border: 2px solid #dfe6e9;
+            border-radius: 12px; font-family: inherit; font-size: 1rem;
+            transition: 0.3s; background: #fdfdfd;
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        input:focus, textarea:focus { border-color: var(--primary); outline: none; background: white; }
+
+        /* Área do "Teste do Público" */
+        .public-test-area {
+            background: #f1f2f6; padding: 20px; border-radius: 15px;
+            border: 1px dashed #b2bec3;
+        }
+
+        .tags-container {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;
+        }
+        
+        .tag-check {
+            display: none;
+        }
+        
+        .tag-label {
+            background: white; padding: 8px 15px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 700; color: #636e72;
+            cursor: pointer; border: 2px solid transparent; transition: 0.2s;
+            display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .tag-check:checked + .tag-label {
+            background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px);
+        }
+
+        .btn-add {
+            width: 100%; padding: 15px; border-radius: 50px; border: none;
+            background: #2d3436; color: white; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-add:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* --- LISTA DE REGISTROS --- */
+        .records-list {
+            width: 100%; max-width: 900px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .record-card {
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative;
+            display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 20px;
+            align-items: start; animation: slideUp 0.4s ease; border-left: 5px solid var(--accent);
+        }
+
+        .rec-col h4 { margin: 0 0 8px 0; font-size: 0.8rem; text-transform: uppercase; color: #b2bec3; }
+        .rec-text { font-size: 1rem; color: #2d3436; font-weight: 600; line-height: 1.4; }
+        
+        .rec-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+        .mini-tag { font-size: 0.7rem; background: #ffeaa7; padding: 3px 8px; border-radius: 4px; color: #d35400; font-weight: bold; }
+
+        .btn-delete {
+            position: absolute; top: 10px; right: 10px;
+            background: none; border: none; color: #d63031; cursor: pointer; opacity: 0.4; transition: 0.2s;
+        }
+        .btn-delete:hover { opacity: 1; transform: scale(1.2); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsividade */
+        @media (max-width: 800px) {
+            .row-group { grid-template-columns: 1fr; }
+            .record-card { grid-template-columns: 1fr; border-left: none; border-top: 5px solid var(--accent); }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .analysis-card, .btn-back-home, .btn-delete { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            
+            #print-table {
+                display: table; width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px;
+            }
+            #print-table th { background: #eee; padding: 10px; text-align: left; border: 1px solid #ccc; font-weight: bold; }
+            #print-table td { padding: 10px; border: 1px solid #ccc; vertical-align: top; }
+            
+            .records-list { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1>Tornando as Definições Claras</h1>
+        <div class="subtitle">O Teste da Realidade</div>
+    </header>
+
+    <div class="analysis-card" data-aos="fade-up">
+        
+        <div class="row-group">
+            <div class="input-wrapper">
+                <label><i class="fa-solid fa-tag"></i> Termo usado (quando perturbado)</label>
+                <input type="text" id="termInput" placeholder='Ex: "Sou um perdedor"'>
+            </div>
+            
+            <div class="input-wrapper">
+                <label><i class="fa-solid fa-book"></i> Como defino esse termo?</label>
+                <textarea id="defInput" placeholder="Ex: Alguém que nunca ganha nada..."></textarea>
+            </div>
+        </div>
+
+        <div class="public-test-area">
+            <label style="color:var(--primary-dark); margin-bottom:10px;">
+                <i class="fa-solid fa-users-viewfinder"></i> O Teste do Público: Outras pessoas concordariam?
+            </label>
+            
+            <div class="tags-container">
+                <input type="checkbox" id="tag1" class="tag-check" value="Muito Vago">
+                <label for="tag1" class="tag-label"><i class="fa-solid fa-cloud"></i> Muito Vago</label>
+
+                <input type="checkbox" id="tag2" class="tag-check" value="Idiosincrático (Só meu)">
+                <label for="tag2" class="tag-label"><i class="fa-solid fa-user-lock"></i> Só eu entendo</label>
+
+                <input type="checkbox" id="tag3" class="tag-check" value="Difícil de Provar">
+                <label for="tag3" class="tag-label"><i class="fa-solid fa-gavel"></i> Difícil de Provar</label>
+
+                <input type="checkbox" id="tag4" class="tag-check" value="Exagerado">
+                <label for="tag4" class="tag-label"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Exagerado</label>
+            </div>
+
+            <textarea id="analysisInput" placeholder="Por que outras pessoas teriam dificuldade em entender ou concordar com sua definição?"></textarea>
+        </div>
+
+        <button class="btn-add" onclick="addRecord()">
+            <i class="fa-solid fa-check-circle"></i> Analisar Clareza
+        </button>
+    </div>
+
+    <div class="records-list" id="recordsList">
+        <div class="record-card">
+            <div class="rec-col">
+                <h4>Termo</h4>
+                <div class="rec-text">"Burro"</div>
+            </div>
+            <div class="rec-col">
+                <h4>Definição Pessoal</h4>
+                <div class="rec-text">"Alguém que comete erros no trabalho."</div>
+            </div>
+            <div class="rec-col">
+                <h4>Análise do Público</h4>
+                <div class="rec-text">As pessoas diriam que errar é humano, não burrice. A definição é exagerada e absoluta.</div>
+                <div class="rec-tags">
+                    <span class="mini-tag">Exagerado</span>
+                    <span class="mini-tag">Difícil de Provar</span>
+                </div>
+            </div>
+            <button class="btn-delete" onclick="deleteRecord(this)"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    </div>
+
+    <table id="print-table">
+        <thead>
+            <tr>
+                <th style="width: 25%">Termo</th>
+                <th style="width: 35%">Definição</th>
+                <th style="width: 40%">Outras pessoas saberiam do que estou falando? (Análise)</th>
+            </tr>
+        </thead>
+        <tbody id="print-body">
+            </tbody>
+    </table>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:40px; color:#b2bec3; text-decoration:none; font-weight:600;" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function addRecord() {
+            const term = document.getElementById('termInput').value.trim();
+            const def = document.getElementById('defInput').value.trim();
+            const analysis = document.getElementById('analysisInput').value.trim();
+
+            if (!term || !def) {
+                alert("Preencha pelo menos o Termo e a Definição!");
+                return;
+            }
+
+            // Coleta Tags
+            let selectedTags = [];
+            document.querySelectorAll('.tag-check:checked').forEach(chk => {
+                selectedTags.push(chk.value);
+            });
+
+            // Cria HTML das tags
+            let tagsHtml = selectedTags.map(tag => `<span class="mini-tag">${tag}</span>`).join('');
+
+            const list = document.getElementById('recordsList');
+            const div = document.createElement('div');
+            div.className = 'record-card';
+            
+            div.innerHTML = `
+                <div class="rec-col">
+                    <h4>Termo</h4>
+                    <div class="rec-text term-text">"${term}"</div>
+                </div>
+                <div class="rec-col">
+                    <h4>Definição Pessoal</h4>
+                    <div class="rec-text def-text">"${def}"</div>
+                </div>
+                <div class="rec-col">
+                    <h4>Análise do Público</h4>
+                    <div class="rec-text analysis-text">${analysis || "Sem análise detalhada."}</div>
+                    <div class="rec-tags">${tagsHtml}</div>
+                </div>
+                <button class="btn-delete" onclick="deleteRecord(this)"><i class="fa-solid fa-trash"></i></button>
+            `;
+
+            list.prepend(div);
+            
+            // Reset
+            document.getElementById('termInput').value = '';
+            document.getElementById('defInput').value = '';
+            document.getElementById('analysisInput').value = '';
+            document.querySelectorAll('.tag-check').forEach(chk => chk.checked = false);
+
+            updatePrintTable();
+        }
+
+        function deleteRecord(btn) {
+            if(confirm("Remover?")) {
+                btn.closest('.record-card').remove();
+                updatePrintTable();
+            }
+        }
+
+        function updatePrintTable() {
+            const tbody = document.getElementById('print-body');
+            tbody.innerHTML = '';
+            
+            const cards = document.querySelectorAll('.record-card');
+            
+            cards.forEach(card => {
+                const t = card.querySelector('.term-text').innerText.replace(/"/g, '');
+                const d = card.querySelector('.def-text').innerText.replace(/"/g, '');
+                const a = card.querySelector('.analysis-text').innerText;
+                
+                // Coleta tags para o texto de impressão
+                let tagTexts = [];
+                card.querySelectorAll('.mini-tag').forEach(tag => tagTexts.push(tag.innerText));
+                let tagString = tagTexts.length > 0 ? `\n[Problemas: ${tagTexts.join(', ')}]` : '';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${t}</td><td>${d}</td><td>${a}${tagString}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        updatePrintTable(); // Carrega exemplo
+    </script>
+
+</body>
+</html>
