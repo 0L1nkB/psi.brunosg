@@ -28,14 +28,16 @@
             overflow: hidden;
         }
 
-        /* --- O Container Principal --- */
-        .container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+/* --- O Container Principal --- */
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Empilha: Círculo > Texto > Botão */
+    align-items: center;
+    justify-content: center;
+    gap: 40px; /* Adiciona respiro consistente entre os elementos */
+    min-height: 100vh; /* Garante que centraliza na tela toda */
+}
 
         /* --- O Círculo de Respiração (O Elemento Visual Chave) --- */
         .breathing-circle {
@@ -104,38 +106,48 @@
             }
         }
 
+/* --- O Texto Central (Agora Abaixo) --- */
+.instruction-text {
+    /* Removemos o posicionamento absoluto (que deixava ele em cima do círculo) */
+    position: relative; 
+    transform: none; 
+    top: auto; 
+    left: auto;
 
-        /* --- O Texto Central --- */
-        .instruction-text {
-            position: absolute;
-            font-size: 1.8rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            /* Centraliza perfeitamente sobre o círculo */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none; /* O clique passa através do texto */
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            transition: opacity 0.5s ease;
-        }
+    /* Melhorias de Leitura */
+    font-size: 2.2rem; /* Maior */
+    font-weight: 600; /* Mais "gordo" para leitura rápida */
+    letter-spacing: 4px; /* Espaçamento elegante */
+    color: #ffffff;
+    
+    /* Sombra suave para destacar do fundo escuro */
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+    
+    text-align: center;
+    height: 50px; /* Altura fixa para o layout não "pular" quando o texto muda */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
 
-        /* --- O Botão de Controle --- */
-        .control-btn {
-            margin-top: 50px;
-            padding: 12px 30px;
-            background-color: transparent;
-            border: 2px solid var(--circle-color-start);
-            color: var(--circle-color-start);
-            font-size: 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
+/* --- Ajuste no Botão --- */
+.control-btn {
+    margin-top: 0; /* O espaçamento agora é controlado pelo 'gap' do container */
+    /* Mantém o resto do estilo do botão igual... */
+    padding: 12px 30px;
+    background-color: transparent;
+    border: 2px solid var(--circle-color-start);
+    color: var(--circle-color-start);
+    font-size: 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
         .control-btn:hover {
             background-color: var(--circle-color-start);
             color: var(--bg-color);
