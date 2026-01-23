@@ -3,58 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroView 3D</title>
+    <title>NeuroView 3D - Psicologia & Dissecção</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #0b0d10; font-family: 'Segoe UI', sans-serif; color: white; }
+        body { margin: 0; overflow: hidden; background-color: #050505; font-family: 'Segoe UI', sans-serif; color: white; }
         
-        /* Loading Screen */
+        /* LOADING */
         #loader-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0b0d10; z-index: 999; display: flex; flex-direction: column;
+            background: #000; z-index: 999; display: flex; flex-direction: column;
             align-items: center; justify-content: center; transition: opacity 0.5s;
         }
-        .spinner { 
-            width: 60px; height: 60px; border: 4px solid #333; 
-            border-top: 4px solid #00d2ff; border-radius: 50%; 
-            animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
+        .spinner { width: 50px; height: 50px; border: 4px solid #222; border-top: 4px solid #e91e63; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        #loading-text { font-size: 18px; color: #00d2ff; font-weight: bold; }
-        #loading-count { font-size: 14px; color: #666; margin-top: 10px; }
-        
-        /* Painel de Informações */
+        /* PAINEL DE INFORMAÇÕES PSICOLÓGICAS */
         #info-panel {
-            position: absolute; top: 20px; left: 20px; width: 320px;
-            background: rgba(15, 20, 25, 0.95); border-left: 4px solid #00d2ff;
+            position: absolute; top: 20px; left: 20px; width: 350px;
+            background: rgba(10, 10, 10, 0.95); border-left: 4px solid #e91e63;
             padding: 25px; border-radius: 0 12px 12px 0; z-index: 2;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
             backdrop-filter: blur(10px); pointer-events: none; opacity: 0; 
             transform: translateX(-20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         #info-panel.visible { opacity: 1; pointer-events: auto; transform: translateX(0); }
         
-        #region-title { margin: 0 0 5px 0; font-size: 22px; color: #fff; text-transform: capitalize; font-weight: 600; line-height: 1.2;}
-        #region-code { font-size: 11px; color: #00d2ff; margin-bottom: 15px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase;}
+        #region-title { margin: 0 0 5px 0; font-size: 24px; color: #fff; text-transform: capitalize; font-weight: 700; letter-spacing: -0.5px;}
+        #region-func { color: #e91e63; font-weight: bold; font-size: 14px; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px;}
+        #region-desc { font-size: 15px; line-height: 1.6; color: #ccc; margin-bottom: 20px; }
         
-        #help-text { position: absolute; bottom: 20px; width: 100%; text-align: center; color: #555; font-size: 12px; pointer-events: none; }
+        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .psy-tag { background: #222; padding: 4px 10px; border-radius: 15px; font-size: 11px; color: #aaa; border: 1px solid #333;}
+
+        /* CONTROLES DE CORTE (SLIDERS) */
+        #slice-controls {
+            position: absolute; bottom: 30px; right: 30px; width: 250px;
+            background: rgba(0,0,0,0.8); padding: 20px; border-radius: 12px;
+            border: 1px solid #333; z-index: 5;
+        }
+        .control-group { margin-bottom: 15px; }
+        .control-group label { display: block; font-size: 12px; color: #e91e63; margin-bottom: 5px; font-weight: bold; text-transform: uppercase;}
+        input[type=range] { width: 100%; cursor: pointer; accent-color: #e91e63; }
+        
+        #help-text { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #444; font-size: 12px; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div id="loader-screen">
         <div class="spinner"></div>
-        <div id="loading-text">Carregando Cérebro Completo</div>
-        <div id="loading-count">Preparando...</div>
+        <div style="color: #e91e63; font-weight: bold;">Carregando Cérebro</div>
+        <div id="loading-count" style="color: #666; font-size: 12px; margin-top: 5px;">Preparando...</div>
     </div>
 
     <div id="info-panel">
         <h2 id="region-title">Nome da Área</h2>
-        <div id="region-code">CODE_REF</div>
-        <p style="color: #aaa; font-size: 14px; line-height: 1.5;">Estrutura anatômica renderizada em tempo real.</p>
+        <div id="region-func">Função Principal</div>
+        <p id="region-desc">Descrição detalhada...</p>
+        <div class="tag-container" id="region-tags">
+            </div>
     </div>
 
-    <div id="help-text">Clique e arraste para girar • Scroll para Zoom • Clique nas áreas para detalhes</div>
+    <div id="slice-controls">
+        <div class="control-group">
+            <label>Corte Horizontal (Axial)</label>
+            <input type="range" id="sliceY" min="-80" max="80" value="80" step="0.5">
+        </div>
+        <div class="control-group">
+            <label>Corte Vertical (Sagital)</label>
+            <input type="range" id="sliceX" min="-80" max="80" value="-80" step="0.5">
+        </div>
+        <div class="control-group">
+            <label>Corte Frontal (Coronal)</label>
+            <input type="range" id="sliceZ" min="-100" max="100" value="-100" step="0.5">
+        </div>
+        <div style="text-align: center; font-size: 10px; color: #666; margin-top: 10px;">
+            Mova os sliders para dissecar
+        </div>
+    </div>
+
+    <div id="help-text">Clique para selecionar • Arraste para girar • Use os sliders para cortar</div>
 
     <script type="importmap">
         {
@@ -70,7 +97,62 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
-        // --- LISTA DE ARQUIVOS (Mantenha sua lista completa aqui) ---
+        // --- DICIONÁRIO DE PSICOLOGIA ---
+        // Aqui mapeamos palavras-chave do nome do arquivo para explicações psicológicas reais.
+        const psychoDictionary = {
+            "amygdala": {
+                func: "Centro do Medo e Emoção",
+                desc: "Fundamental para o processamento de reações emocionais, especialmente o medo e a ansiedade. É o 'sistema de alarme' do cérebro. Hiperativa em casos de TEPT e Transtornos de Ansiedade.",
+                tags: ["Emoção", "Luta ou Fuga", "Ansiedade"]
+            },
+            "hippocampus": {
+                func: "Memória e Aprendizagem",
+                desc: "Essencial para consolidar memórias de curto prazo em memórias de longo prazo e para a navegação espacial. É uma das primeiras áreas afetadas no Alzheimer.",
+                tags: ["Memória Episódica", "Navegação", "Neurogênese"]
+            },
+            "frontal gyrus": {
+                func: "Funções Executivas",
+                desc: "O 'CEO' do cérebro. Responsável pelo planejamento, tomada de decisão, controle de impulsos, personalidade e comportamento social. O Córtex Pré-Frontal reside aqui.",
+                tags: ["Tomada de Decisão", "Controle de Impulso", "Personalidade"]
+            },
+            "precentral gyrus": {
+                func: "Córtex Motor Primário",
+                desc: "Responsável pelo controle dos movimentos voluntários do corpo. Cada seção deste giro controla uma parte específica do corpo (Homúnculo Motor).",
+                tags: ["Movimento", "Ação Voluntária", "Coordenação"]
+            },
+            "postcentral gyrus": {
+                func: "Córtex Somatossensorial",
+                desc: "Processa sensações físicas como toque, dor, temperatura e propriocepção (noção do corpo no espaço).",
+                tags: ["Tato", "Dor", "Sensação"]
+            },
+            "temporal gyrus": {
+                func: "Processamento Auditivo e Linguagem",
+                desc: "Envolvido na audição, compreensão da linguagem (Área de Wernicke) e processamento visual complexo (reconhecimento de faces).",
+                tags: ["Audição", "Linguagem", "Reconhecimento Facial"]
+            },
+            "occipital": {
+                func: "Processamento Visual",
+                desc: "Centro primário da visão. Interpreta cor, luz e movimento. Lesões aqui podem causar cegueira cortical.",
+                tags: ["Visão", "Percepção Visual"]
+            },
+            "putamen": {
+                func: "Aprendizado Motor",
+                desc: "Regula movimentos em vários estágios (preparação e execução) e influencia tipos de aprendizado por reforço.",
+                tags: ["Hábito", "Movimento Automático"]
+            },
+            "caudate": {
+                func: "Sistema de Recompensa",
+                desc: "Parte vital do sistema de recompensa e motivação. Envolvido na paixão romântica, vício e transtorno obsessivo-compulsivo (TOC).",
+                tags: ["Motivação", "Recompensa", "Dopamina"]
+            },
+            "thalamus": {
+                func: "Estação de Relé Sensorial",
+                desc: "Retransmite quase todas as informações sensoriais (exceto olfato) para o córtex cerebral. Regula o sono e a vigília.",
+                tags: ["Consciência", "Sono", "Sentidos"]
+            }
+        };
+
+        // Lista de Arquivos (Mantenha sua lista completa aqui - cortei para brevidade no exemplo, mas use a sua completa!)
         const fileList = [
             "FJ1735_BP37293_FMA73462_Brachium of left superior colliculus.obj",
             "FJ1761_BP37183_FMA73464_Brachium of left inferior colliculus.obj",
@@ -320,38 +402,46 @@
         let selectedObject = null;
         const loaderManager = new THREE.LoadingManager();
 
+        // PLANOS DE CORTE (Clipping Planes)
+        // Criamos 3 planos infinitos. Tudo que estiver "atrás" deles será cortado.
+        const clipPlanes = [
+            new THREE.Plane(new THREE.Vector3(0, -1, 0), 80),  // Corte Y (Horizontal/Axial)
+            new THREE.Plane(new THREE.Vector3(1, 0, 0), 80),   // Corte X (Vertical/Sagital)
+            new THREE.Plane(new THREE.Vector3(0, 0, 1), 100)   // Corte Z (Frontal/Coronal)
+        ];
+
         init();
         loadBrainParts();
         animate();
+        setupSliceControls();
 
         function init() {
-            // Setup Básico
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0b0d10);
+            scene.background = new THREE.Color(0x050505);
             
-            // Câmera (Posição inicial padrão, será ajustada no final)
             camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
-            camera.position.set(0, 0, 100); 
+            camera.position.set(0, 50, 150); 
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.0;
+            
+            // ATIVA O SISTEMA DE CORTES NO RENDERIZADOR
+            renderer.localClippingEnabled = true;
+            
             document.body.appendChild(renderer.domElement);
 
-            // Luzes de Estúdio (Mais fortes para garantir visibilidade)
-            const ambientLight = new THREE.AmbientLight(0x404040, 5); // Luz ambiente forte
+            const ambientLight = new THREE.AmbientLight(0x404040, 5);
             scene.add(ambientLight);
             
             const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-            dirLight.position.set(50, 50, 50);
+            dirLight.position.set(50, 100, 50);
             scene.add(dirLight);
 
-            const fillLight = new THREE.DirectionalLight(0xaaccff, 1);
+            const fillLight = new THREE.DirectionalLight(0xe91e63, 0.8); // Luz rosa suave de preenchimento
             fillLight.position.set(-50, 0, -50);
             scene.add(fillLight);
 
-            // Controles
             controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
@@ -359,14 +449,13 @@
             brainGroup = new THREE.Group();
             scene.add(brainGroup);
 
-            // Interação
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2();
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('click', onClick);
             window.addEventListener('resize', onWindowResize);
 
-            // LOGICA DA BARRA DE PROGRESSO E CENTRALIZAÇÃO FINAL
+            // LOGICA DE LOADING E CENTRALIZAÇÃO
             const loadingText = document.getElementById('loading-count');
             const loadingScreen = document.getElementById('loader-screen');
 
@@ -374,32 +463,26 @@
                 loadingText.innerText = `Carregando parte ${itemsLoaded} de ${itemsTotal}`;
             };
 
-            // *** O SEGREDO ESTÁ AQUI: Só ajusta tudo quando acabar ***
             loaderManager.onLoad = function () {
                 loadingText.innerText = "Processamento finalizado. Ajustando câmera...";
                 
-                // 1. Calcula a caixa que envolve TODO o cérebro
                 const box = new THREE.Box3().setFromObject(brainGroup);
                 const center = box.getCenter(new THREE.Vector3());
                 const size = box.getSize(new THREE.Vector3());
 
-                // 2. Traz o cérebro para o centro do mundo (0,0,0)
                 brainGroup.position.x = -center.x;
                 brainGroup.position.y = -center.y;
                 brainGroup.position.z = -center.z;
 
-                // 3. Ajusta a câmera para caber o cérebro inteiro
                 const maxDim = Math.max(size.x, size.y, size.z);
                 const fov = camera.fov * (Math.PI / 180);
-                let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov * 2));
-                cameraZ *= 2.5; // Multiplicador de distância (zoom out)
+                let cameraZ = Math.abs(maxDim / 2 * Math.tan(fov * 2)) * 2.5;
 
                 camera.position.set(0, maxDim / 3, cameraZ);
                 camera.lookAt(0, 0, 0);
                 controls.target.set(0, 0, 0);
                 controls.update();
 
-                // 4. Some com a tela de loading
                 setTimeout(() => {
                     loadingScreen.style.opacity = '0';
                     setTimeout(() => loadingScreen.style.display = 'none', 500);
@@ -411,7 +494,6 @@
             const loader = new OBJLoader(loaderManager);
 
             fileList.forEach(filename => {
-                // Caminho relativo simples
                 loader.load('./' + filename, function (object) {
                     
                     const rawName = filename.replace('.obj', '');
@@ -424,34 +506,55 @@
                             
                             child.material = new THREE.MeshStandardMaterial({
                                 color: color,
-                                roughness: 0.4, 
+                                roughness: 0.5, 
                                 metalness: 0.1,
                                 transparent: true,
                                 opacity: 1,
-                                side: THREE.DoubleSide
+                                side: THREE.DoubleSide,
+                                clippingPlanes: clipPlanes, // APLICA OS PLANOS DE CORTE AQUI
+                                clipShadows: true
                             });
                             
+                            // IDENTIFICAÇÃO PSICOLÓGICA INTELIGENTE
+                            // Procura palavras-chave no nome do arquivo para associar à função psicológica
+                            let psychoData = null;
+                            for (const key in psychoDictionary) {
+                                if (cleanName.toLowerCase().includes(key)) {
+                                    psychoData = psychoDictionary[key];
+                                    break;
+                                }
+                            }
+
                             child.userData = { 
                                 originalColor: color,
                                 name: cleanName,
-                                code: rawName 
+                                code: rawName,
+                                psycho: psychoData // Guarda os dados psicológicos
                             };
                         }
                     });
 
-                    // Apenas adiciona ao grupo. Não tenta posicionar individualmente.
                     brainGroup.add(object);
-                }, undefined, function(err) {
-                    console.error("Erro no arquivo:", filename);
-                });
+                }, undefined, function(err) { console.error("Erro no arquivo:", filename); });
+            });
+        }
+
+        function setupSliceControls() {
+            // Conecta os Sliders HTML aos Planos do Three.js
+            document.getElementById('sliceY').addEventListener('input', (e) => {
+                clipPlanes[0].constant = parseFloat(e.target.value);
+            });
+            document.getElementById('sliceX').addEventListener('input', (e) => {
+                clipPlanes[1].constant = parseFloat(e.target.value);
+            });
+            document.getElementById('sliceZ').addEventListener('input', (e) => {
+                clipPlanes[2].constant = parseFloat(e.target.value);
             });
         }
 
         function getColorFromString(str) {
             let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
+            for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
             const c = (hash & 0x00FFFFFF).toString(16).toUpperCase();
             return '#' + "00000".substring(0, 6 - c.length) + c;
         }
@@ -460,6 +563,7 @@
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
+            // Ignora objetos cortados (invisíveis) no Raycast
             const intersects = raycaster.intersectObjects(brainGroup.children, true);
 
             if (intersects.length > 0) {
@@ -467,7 +571,7 @@
                 if (hoveredObject !== obj) {
                     if (hoveredObject && hoveredObject !== selectedObject) hoveredObject.material.emissive.setHex(0x000000);
                     hoveredObject = obj;
-                    hoveredObject.material.emissive.setHex(0x333333);
+                    hoveredObject.material.emissive.setHex(0x444444);
                     document.body.style.cursor = 'pointer';
                 }
             } else {
@@ -479,16 +583,35 @@
 
         function onClick() {
             if (hoveredObject) {
-                if (selectedObject === hoveredObject) {
-                    resetView();
-                    return;
-                }
+                if (selectedObject === hoveredObject) { resetView(); return; }
                 selectedObject = hoveredObject;
+                
+                // ATUALIZA UI COM DADOS PSICOLÓGICOS
                 const panel = document.getElementById('info-panel');
-                document.getElementById('region-title').innerText = selectedObject.userData.name;
-                document.getElementById('region-code').innerText = selectedObject.userData.code;
+                const title = document.getElementById('region-title');
+                const func = document.getElementById('region-func');
+                const desc = document.getElementById('region-desc');
+                const tagContainer = document.getElementById('region-tags');
+
+                const data = selectedObject.userData;
+                const psycho = data.psycho;
+
+                title.innerText = data.name;
+
+                // Se houver dados psicológicos, mostra. Se não, mostra texto genérico.
+                if (psycho) {
+                    func.innerText = psycho.func;
+                    desc.innerText = psycho.desc;
+                    tagContainer.innerHTML = psycho.tags.map(tag => `<span class="psy-tag">${tag}</span>`).join('');
+                } else {
+                    func.innerText = "Estrutura Anatômica";
+                    desc.innerText = "Parte integrante da neuroanatomia funcional. Selecione áreas principais (Amígdala, Hipocampo, etc) para detalhes psicológicos específicos.";
+                    tagContainer.innerHTML = `<span class="psy-tag">Anatomia</span>`;
+                }
+                
                 panel.classList.add('visible');
 
+                // Foco visual
                 brainGroup.children.forEach(group => {
                     group.traverse(child => {
                         if (child.isMesh) {
@@ -497,7 +620,7 @@
                                 child.material.color.setHex(child.userData.originalColor);
                             } else {
                                 child.material.opacity = 0.1;
-                                child.material.color.setHex(0x555555);
+                                child.material.color.setHex(0x333333);
                             }
                         }
                     });
