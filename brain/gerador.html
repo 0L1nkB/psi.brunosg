@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Lista de Arquivos</title>
+    <style>
+        body { font-family: monospace; background: #111; color: #0f0; padding: 20px; }
+        textarea { width: 100%; height: 300px; background: #222; color: #fff; border: 1px solid #444; padding: 10px; }
+        button { padding: 15px; background: #00d2ff; border: none; font-weight: bold; cursor: pointer; font-size: 16px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>1. Clique no botão abaixo e selecione TODOS os 240 arquivos da pasta 'brain'</h2>
+    <input type="file" id="fileInput" multiple onchange="generateList()">
+    
+    <h2>2. Copie o código abaixo:</h2>
+    <textarea id="output"></textarea>
+
+    <script>
+        function generateList() {
+            const input = document.getElementById('fileInput');
+            const output = document.getElementById('output');
+            
+            let text = 'const fileList = [\n';
+            
+            // Ordena os arquivos por nome para ficar organizado
+            const files = Array.from(input.files).sort((a, b) => a.name.localeCompare(b.name));
+
+            files.forEach(file => {
+                // Só aceita arquivos .obj para evitar erros
+                if (file.name.toLowerCase().endsWith('.obj')) {
+                    text += `    "${file.name}",\n`;
+                }
+            });
+            
+            text += '];';
+            output.value = text;
+        }
+    </script>
+</body>
+</html>
