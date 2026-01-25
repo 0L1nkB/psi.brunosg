@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quebrando o Ciclo | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --cycle-bad: #e17055;  /* Vermelho/Laranja */
+            --cycle-good: #00b894; /* Verde */
+            --text: #2d3436;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px dashed var(--cycle-bad);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 900px; width: 100%; position: relative;
+            transition: all 0.5s;
+        }
+        header.virtuous { border-color: var(--cycle-good); }
+
+        header h1 { color: var(--text); margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid var(--text); color: var(--text);
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: var(--text); color: white; }
+
+        /* --- O CICLO (DIAGRAMA) --- */
+        .cycle-wrapper {
+            position: relative; width: 100%; max-width: 700px; height: 600px;
+            margin: 20px auto;
+        }
+
+        /* Linhas Conectoras (SVG) */
+        .cycle-lines {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+            pointer-events: none;
+        }
+        .connection-path {
+            fill: none; stroke: var(--cycle-bad); stroke-width: 4; stroke-dasharray: 10;
+            animation: dash 30s linear infinite; transition: stroke 0.5s;
+        }
+        .virtuous .connection-path { stroke: var(--cycle-good); animation-direction: reverse; }
+
+        @keyframes dash { to { stroke-dashoffset: 1000; } }
+
+        /* NÓS DO CICLO */
+        .cycle-node {
+            position: absolute; width: 220px; background: white; padding: 20px;
+            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 2; border: 3px solid var(--cycle-bad); transition: all 0.5s;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .virtuous .cycle-node { border-color: var(--cycle-good); }
+
+        /* Posições */
+        .node-situation { top: 0; left: 50%; transform: translateX(-50%); } /* Norte */
+        .node-thought { top: 50%; right: 0; transform: translateY(-50%); }   /* Leste */
+        .node-behavior { top: 100%; left: 50%; transform: translate(-50%, -100%); } /* Sul */
+        .node-emotion { top: 50%; left: 0; transform: translateY(-50%); }    /* Oeste */
+
+        .node-label {
+            font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: #b2bec3;
+            display: flex; align-items: center; gap: 5px;
+        }
+        
+        .node-input {
+            width: 100%; border: none; border-bottom: 2px solid #eee; padding: 5px;
+            font-family: inherit; font-size: 1rem; color: var(--text); font-weight: 600;
+            resize: none; background: transparent; outline: none; text-align: center;
+        }
+        .node-input:focus { border-bottom-color: var(--cycle-bad); }
+        .virtuous .node-input:focus { border-bottom-color: var(--cycle-good); }
+
+        /* BOTÕES DE INTERVENÇÃO (HACK) */
+        .hack-btn {
+            position: absolute; width: 40px; height: 40px; border-radius: 50%;
+            background: var(--text); color: white; border: 4px solid white;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            z-index: 3; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s;
+            font-size: 1.2rem;
+        }
+        .hack-btn:hover { transform: scale(1.2) rotate(90deg); background: var(--cycle-good); }
+
+        /* Posições dos botões (entre os nós) */
+        /* Pensamento -> Emoção (Intervenção Cognitiva) */
+        .hack-thought { top: 25%; right: 15%; }
+        
+        /* Comportamento -> Situação (Intervenção Comportamental) */
+        .hack-behavior { bottom: 25%; left: 15%; }
+
+        /* --- MODAL DE INTERVENÇÃO --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 100; backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center;
+        }
+
+        .modal-card {
+            background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 500px;
+            text-align: center; animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-title { font-size: 1.5rem; color: var(--cycle-good); margin-bottom: 10px; font-weight: 800; }
+        .modal-desc { color: #636e72; margin-bottom: 20px; }
+        
+        .modal-input {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; margin-bottom: 20px; outline: none;
+        }
+        .modal-input:focus { border-color: var(--cycle-good); }
+
+        .btn-save {
+            background: var(--cycle-good); color: white; border: none; padding: 12px 30px;
+            border-radius: 30px; font-weight: 800; cursor: pointer; font-size: 1rem;
+        }
+
+        @keyframes popUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* Responsividade */
+        @media (max-width: 800px) {
+            .cycle-wrapper { height: auto; display: flex; flex-direction: column; gap: 20px; max-width: 100%; }
+            .cycle-node { position: relative; width: 100%; top: auto !important; left: auto !important; right: auto !important; transform: none !important; }
+            .cycle-lines { display: none; } /* Remove linhas no mobile */
+            .hack-btn { position: relative; margin: 0 auto; transform: rotate(90deg); }
+            .hack-btn:hover { transform: rotate(180deg); }
+            .node-input { text-align: left; }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .btn-back-home, .hack-btn { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            
+            .cycle-wrapper { height: auto; display: block; }
+            .cycle-node { position: static; width: 100%; border: 1px solid #ccc; box-shadow: none; margin-bottom: 15px; transform: none; }
+            .cycle-lines { display: none; }
+            .node-input { border: none; text-align: left; }
+            
+            #print-table { display: block; margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down" id="mainHeader">
+        <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1 id="headerTitle">O Ciclo Vicioso</h1>
+        <div class="subtitle">Identifique e Quebre o Padrão</div>
+    </header>
+
+    <div class="cycle-wrapper" id="cycleWrapper">
+        
+        <svg class="cycle-lines">
+            <path id="path1" class="connection-path" d="M 350 20 L 600 250" /> <path id="path2" class="connection-path" d="M 600 350 L 350 580" /> <path id="path3" class="connection-path" d="M 350 580 L 100 350" /> <path id="path4" class="connection-path" d="M 100 250 L 350 20" />  </svg>
+
+        <div class="cycle-node node-situation">
+            <div class="node-label"><i class="fa-solid fa-bolt"></i> 1. Situação (Gatilho)</div>
+            <textarea class="node-input" placeholder="O que aconteceu?" rows="2"></textarea>
+        </div>
+
+        <div class="cycle-node node-thought" id="nodeThought">
+            <div class="node-label"><i class="fa-solid fa-cloud"></i> 2. Pensamento</div>
+            <textarea class="node-input" placeholder="O que passou pela sua cabeça?" rows="2"></textarea>
+        </div>
+
+        <div class="hack-btn hack-thought" onclick="openHack('thought')" title="Desafiar Pensamento">
+            <i class="fa-solid fa-wrench"></i>
+        </div>
+
+        <div class="cycle-node node-emotion">
+            <div class="node-label"><i class="fa-solid fa-heart-pulse"></i> 3. Emoção / Reação</div>
+            <textarea class="node-input" placeholder="O que você sentiu?" rows="2"></textarea>
+        </div>
+
+        <div class="hack-btn hack-behavior" onclick="openHack('behavior')" title="Mudar Comportamento">
+            <i class="fa-solid fa-person-running"></i>
+        </div>
+
+        <div class="cycle-node node-behavior" id="nodeBehavior">
+            <div class="node-label"><i class="fa-solid fa-person"></i> 4. Comportamento</div>
+            <textarea class="node-input" placeholder="O que você fez?" rows="2"></textarea>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="hackModal">
+        <div class="modal-card">
+            <div class="modal-title" id="modalTitle">Reestruturar Pensamento</div>
+            <p class="modal-desc" id="modalDesc">Qual seria uma forma mais realista de pensar?</p>
+            
+            <textarea class="modal-input" id="modalInput" rows="4"></textarea>
+            
+            <button class="btn-save" onclick="applyHack()">Quebrar o Ciclo! 🚀</button>
+            <br>
+            <button onclick="closeModal()" style="margin-top:10px; background:none; border:none; color:#b2bec3; cursor:pointer;">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="print-table">
+        <h3>Intervenção Realizada:</h3>
+        <p id="printIntervention" style="font-size:1.1rem; color:#2d3436; border:1px solid #ccc; padding:10px; border-radius:10px;">Nenhuma intervenção registrada.</p>
+    </div>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:40px; color:#b2bec3; text-decoration:none; font-weight:600;" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        let currentType = '';
+
+        function openHack(type) {
+            currentType = type;
+            const modal = document.getElementById('hackModal');
+            const title = document.getElementById('modalTitle');
+            const desc = document.getElementById('modalDesc');
+            
+            if (type === 'thought') {
+                title.innerText = "Desafiar o Pensamento";
+                desc.innerText = "Que pensamento alternativo seria mais realista e útil aqui?";
+            } else {
+                title.innerText = "Ativação Comportamental";
+                desc.innerText = "Que ação diferente você poderia tomar para quebrar esse padrão?";
+            }
+            
+            document.getElementById('modalInput').value = '';
+            modal.style.display = 'flex';
+            document.getElementById('modalInput').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('hackModal').style.display = 'none';
+        }
+
+        function applyHack() {
+            const text = document.getElementById('modalInput').value.trim();
+            if (!text) return;
+
+            // Visual Changes
+            document.getElementById('cycleWrapper').classList.add('virtuous');
+            document.getElementById('mainHeader').classList.add('virtuous');
+            document.getElementById('headerTitle').innerText = "Ciclo Virtuoso (Quebrado!)";
+            document.getElementById('headerTitle').style.color = "#00b894";
+
+            // Update Content
+            if (currentType === 'thought') {
+                const node = document.getElementById('nodeThought');
+                node.querySelector('textarea').value = text;
+                node.style.borderColor = "#00b894";
+                node.style.backgroundColor = "#e0f7fa";
+            } else {
+                const node = document.getElementById('nodeBehavior');
+                node.querySelector('textarea').value = text;
+                node.style.borderColor = "#00b894";
+                node.style.backgroundColor = "#e0f7fa";
+            }
+
+            // Update Print Area
+            document.getElementById('printIntervention').innerHTML = `<strong>Novo ${currentType === 'thought' ? 'Pensamento' : 'Comportamento'}:</strong> ${text}`;
+
+            closeModal();
+            
+            // Confetti or Success Alert could go here
+        }
+    </script>
+
+</body>
+</html>
