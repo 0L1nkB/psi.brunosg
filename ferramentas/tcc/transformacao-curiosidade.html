@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lente da Curiosidade | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --judge-color: #d63031;   /* Vermelho (Crítica) */
+            --curious-color: #0984e3; /* Azul (Curiosidade) */
+            --text: #2d3436;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dfe6e9 2px, transparent 2px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 20px 40px;
+            border-radius: 20px; border: 3px solid var(--curious-color);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            max-width: 1000px; width: 100%; position: relative;
+        }
+
+        header h1 { color: var(--curious-color); margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; }
+
+        .btn-print {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 2px solid var(--curious-color); color: var(--curious-color);
+            padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: var(--curious-color); color: white; }
+
+        /* --- CONTEXTO --- */
+        .context-card {
+            width: 100%; max-width: 1000px;
+            background: white; padding: 25px; border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px;
+            border-left: 5px solid #636e72;
+        }
+        .context-card label { display: block; font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #636e72; }
+        .context-card input {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 10px;
+            font-size: 1.1rem; font-family: inherit; transition: 0.3s;
+        }
+        .context-card input:focus { border-color: #636e72; outline: none; }
+
+        /* --- MÁQUINA DE TRANSFORMAÇÃO --- */
+        .transform-machine {
+            display: grid; grid-template-columns: 1fr 60px 1fr; gap: 20px;
+            width: 100%; max-width: 1200px; margin-bottom: 40px; align-items: start;
+        }
+
+        .panel {
+            background: white; padding: 25px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; gap: 15px;
+            border-top: 8px solid; position: relative; transition: 0.3s;
+        }
+        .panel:hover { transform: translateY(-5px); }
+
+        .panel-judge { border-color: var(--judge-color); }
+        .panel-curious { border-color: var(--curious-color); }
+
+        .panel-header {
+            font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 10px; text-transform: uppercase;
+        }
+
+        .helper-text { font-size: 0.85rem; color: #b2bec3; font-style: italic; margin-bottom: 5px; }
+
+        textarea {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 120px;
+            transition: 0.3s; background: #fdfdfd; outline: none;
+        }
+        .panel-judge textarea:focus { border-color: var(--judge-color); background: #fff5f5; }
+        .panel-curious textarea:focus { border-color: var(--curious-color); background: #f0f8ff; }
+
+        /* Icone Central */
+        .middle-icon {
+            display: flex; justify-content: center; align-items: center; height: 100%;
+            font-size: 2rem; color: #b2bec3; padding-top: 50px;
+        }
+
+        /* Chips de Ajuda (Dicas de Detetive) */
+        .detective-tools {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px;
+        }
+        .tool-chip {
+            background: #e3f2fd; color: var(--curious-color); padding: 5px 12px;
+            border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+            border: 1px solid transparent; transition: 0.2s;
+        }
+        .tool-chip:hover { background: var(--curious-color); color: white; }
+
+        /* Botão Ação */
+        .btn-transform {
+            grid-column: span 3; justify-self: center; margin-top: 20px;
+            background: linear-gradient(90deg, var(--judge-color) 0%, var(--curious-color) 100%);
+            color: white; border: none; padding: 15px 40px; border-radius: 50px;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;
+        }
+        .btn-transform:hover { transform: scale(1.05); }
+
+        /* --- LISTA DE TRANSFORMAÇÕES --- */
+        .log-container {
+            width: 100%; max-width: 1000px; display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px;
+        }
+
+        .log-card {
+            background: white; border-radius: 15px; padding: 20px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05); position: relative;
+            display: grid; grid-template-columns: 1fr 30px 1fr 30px; gap: 15px; align-items: center;
+            border-left: 5px solid var(--curious-color); animation: slideIn 0.4s ease;
+        }
+
+        .log-critic { color: #636e72; font-style: italic; }
+        .log-curious { color: var(--curious-color); font-weight: 700; }
+        .log-arrow { color: #b2bec3; }
+
+        .btn-delete {
+            background: none; border: none; color: #d63031; cursor: pointer; opacity: 0.5; transition: 0.2s;
+        }
+        .btn-delete:hover { opacity: 1; transform: scale(1.2); }
+
+        /* --- REFLEXÃO FINAL --- */
+        .reflection-card {
+            width: 100%; max-width: 1000px;
+            background: #fff; padding: 30px; border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; margin-bottom: 50px;
+        }
+        .reflection-card textarea {
+            border: 2px solid #dfe6e9; min-height: 80px; margin-top: 15px;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsividade */
+        @media (max-width: 800px) {
+            .transform-machine { grid-template-columns: 1fr; gap: 20px; }
+            .middle-icon { transform: rotate(90deg); padding: 0; height: auto; }
+            .btn-transform { grid-column: span 1; width: 100%; }
+            .log-card { grid-template-columns: 1fr; text-align: center; border-left: none; border-top: 5px solid var(--curious-color); }
+            .log-arrow { transform: rotate(90deg); margin: 5px 0; }
+            .btn-print span { display: none; }
+        }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .btn-back-home, .transform-machine, .detective-tools, .btn-delete { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; }
+            
+            .log-container { display: none; } /* Usa tabela */
+            .reflection-card { box-shadow: none; border: 1px solid #ccc; }
+            .context-card { box-shadow: none; border: 1px solid #ccc; }
+
+            /* Tabela Impressa */
+            #print-table {
+                display: table; width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px; margin-bottom: 20px;
+            }
+            #print-table th, #print-table td {
+                border: 1px solid #000; padding: 10px; vertical-align: top;
+            }
+            #print-table th { background: #eee; font-weight: bold; width: 50%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="preparePrint()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1>Lente da Curiosidade</h1>
+        <div class="subtitle">Transformando Crítica em Investigação</div>
+    </header>
+
+    <div class="context-card" data-aos="fade-up">
+        <label><i class="fa-solid fa-user-tag"></i> Comportamento ou pessoa que estou avaliando:</label>
+        <input type="text" id="targetInput" placeholder='Ex: "Meu chefe", "Eu mesmo", "Meu desempenho na prova"'>
+    </div>
+
+    <div class="transform-machine">
+        
+        <div class="panel panel-judge" data-aos="fade-right">
+            <div class="panel-header" style="color:var(--judge-color)">
+                <i class="fa-solid fa-gavel"></i> Pensamento Crítico
+            </div>
+            <div class="helper-text">O julgamento duro, o rótulo, a condenação.</div>
+            <textarea id="criticInput" placeholder='Ex: "Ele é cruel comigo." ou "Sou um fracasso."'></textarea>
+        </div>
+
+        <div class="middle-icon">
+            <i class="fa-solid fa-arrow-right"></i>
+        </div>
+
+        <div class="panel panel-curious" data-aos="fade-left">
+            <div class="panel-header" style="color:var(--curious-color)">
+                <i class="fa-solid fa-magnifying-glass"></i> Curiosidade & Desafio
+            </div>
+            <div class="helper-text">Perguntas, hipóteses, interesse genuíno em entender.</div>
+            
+            <textarea id="curiousInput" placeholder="Comece com uma pergunta..."></textarea>
+            
+            <div class="detective-tools">
+                <span class="tool-chip" onclick="addHint('Será que...')">Será que...</span>
+                <span class="tool-chip" onclick="addHint('Por que isso me incomoda?')">Por que me incomoda?</span>
+                <span class="tool-chip" onclick="addHint('O que pode ter causado...')">Causa oculta?</span>
+                <span class="tool-chip" onclick="addHint('Existe outra explicação?')">Outra explicação?</span>
+            </div>
+        </div>
+
+        <button class="btn-transform" onclick="addLog()">
+            <i class="fa-solid fa-flask"></i> Realizar Alquimia Mental
+        </button>
+    </div>
+
+    <div class="log-container" id="logList">
+        </div>
+
+    <div class="reflection-card" data-aos="fade-up">
+        <label style="font-weight:800; font-size:1.1rem; color:var(--text);">
+            <i class="fa-regular fa-lightbulb"></i> Qual a vantagem de trocar o julgamento pela curiosidade?
+        </label>
+        <textarea id="advantageInput" placeholder="Ex: Eu me sinto menos irritado e mais capaz de resolver o problema."></textarea>
+    </div>
+
+    <table id="print-table">
+        <thead>
+            <tr>
+                <th>Pensamentos Críticos (Julgamento)</th>
+                <th>Pensamentos de Curiosidade (Investigação)</th>
+            </tr>
+        </thead>
+        <tbody id="printBody"></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" style="background:#f9f9f9; padding:15px;">
+                    <strong>Vantagem da Curiosidade:</strong> <span id="printAdvantage"></span>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:40px; color:#b2bec3; text-decoration:none; font-weight:600;" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function addHint(text) {
+            const input = document.getElementById('curiousInput');
+            if(input.value) {
+                input.value += " " + text;
+            } else {
+                input.value = text;
+            }
+            input.focus();
+        }
+
+        function addLog() {
+            const critic = document.getElementById('criticInput').value.trim();
+            const curious = document.getElementById('curiousInput').value.trim();
+
+            if(!critic || !curious) {
+                alert("Preencha os dois lados para transformar!");
+                return;
+            }
+
+            const list = document.getElementById('logList');
+            const div = document.createElement('div');
+            div.className = 'log-card';
+            
+            div.innerHTML = `
+                <div class="log-critic">"${critic}"</div>
+                <div class="log-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="log-curious">${curious}</div>
+                <button class="btn-delete" onclick="deleteLog(this)"><i class="fa-solid fa-trash"></i></button>
+            `;
+
+            list.prepend(div);
+            
+            // Clear
+            document.getElementById('criticInput').value = '';
+            document.getElementById('curiousInput').value = '';
+
+            updatePrintTable();
+        }
+
+        function deleteLog(btn) {
+            if(confirm("Remover este item?")) {
+                btn.closest('.log-card').remove();
+                updatePrintTable();
+            }
+        }
+
+        function updatePrintTable() {
+            const tbody = document.getElementById('printBody');
+            tbody.innerHTML = '';
+            
+            const cards = document.querySelectorAll('.log-card');
+            
+            cards.forEach(card => {
+                const c = card.querySelector('.log-critic').innerText.replace(/"/g, '');
+                const q = card.querySelector('.log-curious').innerText;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${c}</td><td>${q}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function preparePrint() {
+            document.getElementById('printAdvantage').innerText = document.getElementById('advantageInput').value;
+            window.print();
+        }
+    </script>
+
+</body>
+</html>
