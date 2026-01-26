@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cruzadinha DSM-5 & TCC | Bruno de Souza</title>
+    <title>Cruzadinha Clínica DSM-5 | Bruno de Souza</title>
     
     <script>
         if(localStorage.getItem('logado') !== 'sim') {
@@ -13,26 +13,21 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* --- SYSTEM VARS --- */
+        /* [MANTENDO O DESIGN PADRÃO APROVADO] */
         :root {
             --primary: #2c3e50;
-            --secondary: #34495e;
-            --accent: #e67e22; /* Laranja Energético */
+            --accent: #e67e22;
             --bg-body: #ecf0f1;
             --card-bg: #ffffff;
             --text-main: #2c3e50;
             --text-light: #7f8c8d;
-            --cell-size: 36px;
-            --cell-bg: #fff;
-            --cell-border: #bdc3c7;
+            --cell-size: 34px; /* Levemente menor para caber grids maiores */
+            --cell-blocked: #2d3436;
             --correct-bg: #27ae60;
-            --correct-text: #fff;
             --wrong-bg: #c0392b;
-            --wrong-text: #fff;
         }
 
         * { box-sizing: border-box; }
@@ -46,16 +41,15 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- HEADER --- */
         header {
             background: var(--card-bg); padding: 20px 40px; border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;
-            width: 100%; max-width: 1200px; margin-bottom: 30px;
+            width: 100%; max-width: 1200px; margin-bottom: 20px;
             border-bottom: 5px solid var(--accent); position: relative;
         }
 
-        header h1 { margin: 0; color: var(--primary); font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { color: var(--text-light); font-weight: 600; margin-top: 5px; font-size: 1rem; }
+        header h1 { margin: 0; color: var(--primary); font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
+        .subtitle { color: var(--text-light); font-weight: 600; margin-top: 5px; }
 
         .btn-print {
             position: absolute; top: 25px; right: 30px;
@@ -64,170 +58,116 @@
         }
         .btn-print:hover { background: var(--primary); color: white; }
 
-        /* --- CONTROL PANEL --- */
         .control-panel {
             width: 100%; max-width: 1200px; background: var(--card-bg);
-            padding: 20px; border-radius: 15px; margin-bottom: 30px;
-            display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+            padding: 15px; border-radius: 15px; margin-bottom: 20px;
+            display: flex; gap: 15px; align-items: center; flex-wrap: wrap;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
 
-        .select-wrapper { flex: 1; min-width: 300px; position: relative; }
+        .select-wrapper { flex: 2; min-width: 300px; }
         select {
-            width: 100%; padding: 15px 20px; border-radius: 10px; border: 2px solid #dfe6e9;
-            font-family: inherit; font-size: 1rem; font-weight: 700; color: var(--text-main);
-            background: white; cursor: pointer; appearance: none;
-        }
-        /* Icone da seta customizado via CSS pure */
-        .select-wrapper::after {
-            content: '▼'; font-size: 0.8rem; color: var(--primary);
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%); pointer-events: none;
+            width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #dfe6e9;
+            font-family: inherit; font-size: 0.95rem; font-weight: 700; color: var(--text-main);
+            cursor: pointer;
         }
 
         .btn-game {
-            padding: 12px 25px; border-radius: 10px; border: none; cursor: pointer;
-            font-weight: 800; font-size: 0.95rem; color: white; display: flex; align-items: center; gap: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer;
+            font-weight: 800; color: white; display: flex; align-items: center; gap: 8px;
+            transition: transform 0.2s;
         }
-        .btn-game:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-game:hover { transform: translateY(-2px); }
         
         .btn-check { background: #27ae60; }
         .btn-answers { background: #f39c12; }
-        .btn-reset { background: #95a5a6; }
         .btn-new { background: var(--primary); }
 
-        /* --- GAME BOARD LAYOUT --- */
         .game-layout {
-            display: grid; grid-template-columns: 2fr 1fr; gap: 30px;
-            width: 100%; max-width: 1300px;
+            display: grid; grid-template-columns: auto 320px; gap: 20px;
+            width: 100%; max-width: 1300px; align-items: start;
         }
 
-        /* --- THE GRID --- */
         .grid-wrapper {
-            background: var(--primary); padding: 15px; border-radius: 15px;
+            background: var(--primary); padding: 10px; border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: auto; display: flex; justify-content: center; align-items: center;
             min-height: 500px; position: relative;
         }
 
         #crosswordGrid {
-            display: grid; gap: 2px;
-            /* Grid dinâmico definido via JS */
+            display: grid; gap: 1px; background: var(--cell-blocked); border: 5px solid var(--cell-blocked);
         }
 
         .cell {
             width: var(--cell-size); height: var(--cell-size);
-            background: transparent; position: relative;
+            background: var(--cell-blocked); position: relative;
         }
 
-        .cell.active { background: var(--cell-bg); border-radius: 4px; }
+        .cell.active { background: #fff; }
 
         .cell input {
             width: 100%; height: 100%; border: none; text-align: center;
             font-family: 'Quicksand', sans-serif; font-weight: 800; font-size: 1.1rem;
             text-transform: uppercase; color: var(--text-main); background: transparent;
-            padding: 0; outline: none; cursor: pointer; border-radius: 4px;
+            padding: 0; outline: none; cursor: text;
         }
         
-        .cell input:focus { background: #dff9fb; box-shadow: inset 0 0 0 2px var(--accent); }
-        
-        .cell.correct input { background: var(--correct-bg); color: var(--correct-text); }
-        .cell.wrong input { background: var(--wrong-bg); color: var(--wrong-text); animation: shake 0.4s; }
+        .cell input:focus { background: #e3f2fd; }
+        .cell.correct input { background: #e0f7fa; color: var(--correct-bg); }
+        .cell.wrong input { background: #ffebee; color: var(--wrong-bg); }
 
         .cell-num {
-            position: absolute; top: 1px; left: 2px; font-size: 9px;
+            position: absolute; top: 1px; left: 2px; font-size: 8px;
             color: var(--primary); font-weight: 800; pointer-events: none;
         }
 
-        /* Loading Overlay */
-        .loading-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(44, 62, 80, 0.9); z-index: 10; border-radius: 15px;
-            display: none; flex-direction: column; justify-content: center; align-items: center; color: white;
-        }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid var(--accent); border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 15px;
-        }
-
-        /* --- CLUES PANEL --- */
         .clues-panel {
-            background: white; border-radius: 15px; padding: 25px;
+            background: white; border-radius: 15px; padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 600px;
             display: flex; flex-direction: column;
         }
 
-        .clues-tabs { display: flex; border-bottom: 2px solid #ecf0f1; margin-bottom: 15px; }
-        .tab-btn {
-            flex: 1; padding: 10px; border: none; background: none; cursor: pointer;
-            font-weight: 800; color: var(--text-light); border-bottom: 3px solid transparent;
-            transition: 0.3s;
-        }
-        .tab-btn.active { color: var(--primary); border-color: var(--primary); }
-
         .clues-content { flex: 1; overflow-y: auto; padding-right: 5px; }
         
-        /* Scrollbar */
-        .clues-content::-webkit-scrollbar { width: 6px; }
-        .clues-content::-webkit-scrollbar-track { background: #f1f1f1; }
-        .clues-content::-webkit-scrollbar-thumb { background: #bdc3c7; border-radius: 10px; }
-
+        .clue-group-title {
+            color: var(--primary); border-bottom: 2px solid #eee; margin: 15px 0 5px 0;
+            font-weight: 800; font-size: 0.9rem; text-transform: uppercase;
+        }
+        
         .clue-item {
-            padding: 8px 10px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;
-            font-size: 0.9rem; line-height: 1.4; color: var(--text-main); transition: 0.2s;
-            border-left: 3px solid transparent;
+            padding: 6px 8px; margin-bottom: 5px; cursor: pointer; font-size: 0.85rem;
+            border-left: 3px solid transparent; transition: 0.2s;
         }
         .clue-item:hover { background: #f7f9fa; border-left-color: var(--accent); }
-        .clue-item.highlight { background: #e0f2f1; border-left-color: var(--correct-bg); }
-        .clue-item strong { color: var(--primary); margin-right: 5px; }
-
-        /* --- ANSWERS MODAL --- */
+        
+        /* Modal Gabarito */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
-            z-index: 1000; display: none; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.5); z-index: 2000; display: none;
+            align-items: center; justify-content: center;
         }
         .modal-box {
-            background: white; width: 90%; max-width: 800px; height: 80vh;
-            border-radius: 20px; padding: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; animation: slideUp 0.3s ease;
+            background: white; width: 90%; max-width: 500px; max-height: 80vh;
+            border-radius: 15px; padding: 25px; overflow-y: auto;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
-        
-        .answers-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;
-            overflow-y: auto; flex: 1; padding: 10px;
-        }
-        .answer-card {
-            background: #f8f9fa; padding: 15px; border-radius: 10px; border: 1px solid #eee;
-        }
-        .ans-term { font-weight: 800; color: var(--correct-bg); display: block; margin-bottom: 5px; }
-        .ans-def { font-size: 0.85rem; color: var(--text-light); }
 
-        /* Keyframes */
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* Responsive */
         @media (max-width: 900px) {
             .game-layout { grid-template-columns: 1fr; }
             .grid-wrapper { min-height: 400px; }
-            .clues-panel { height: 400px; }
+            .clues-panel { height: auto; max-height: 300px; }
             .btn-print span { display: none; }
         }
 
-        /* Print */
         @media print {
-            header button, .control-panel, .btn-back-home { display: none !important; }
+            header button, .control-panel { display: none !important; }
             .game-layout { display: block; }
             .grid-wrapper { box-shadow: none; padding: 0; background: transparent; }
-            .cell { border: 1px solid #000; }
-            .cell input { color: transparent !important; } /* Esconde respostas */
-            .clues-panel { box-shadow: none; height: auto; margin-top: 30px; }
-            .clues-content { overflow: visible; }
+            .crossword-grid { border: 2px solid #000; background: #000; }
+            .cell { border: 1px solid #000; background: #000; }
+            .cell.active { background: white !important; }
+            .cell input { color: transparent !important; }
+            .clues-panel { box-shadow: none; height: auto; border: 1px solid #ccc; margin-top: 20px; }
         }
     </style>
 </head>
@@ -235,76 +175,113 @@
 
     <header>
         <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
-        <h1>Psico-Cruzada DSM-5</h1>
-        <div class="subtitle">Neurodesenvolvimento, Psicopatologia & Terapia Cognitiva</div>
+        <h1>Cruzadinha Clínica DSM-5</h1>
+        <div class="subtitle">Exercício de Psicoeducação e Fixação de Sintomas</div>
     </header>
 
     <div class="control-panel">
         <div class="select-wrapper">
-            <select id="categorySelect" onchange="generateGame()">
-                <option value="neuro">1. Neurodesenvolvimento (TDAH/TEA)</option>
-                <option value="psicotico">2. Espectro da Esquizofrenia</option>
-                <option value="bipolar">3. Bipolar & Humor</option>
-                <option value="ansiedade">4. Transtornos de Ansiedade</option>
-                <option value="toc">5. TOC & Relacionados</option>
-                <option value="trauma">6. Trauma & Estresse (TEPT)</option>
-                <option value="alimentar">7. Transtornos Alimentares</option>
-                <option value="sono">8. Sono-Vigília</option>
-                <option value="personalidade">9. Personalidade (Clusters A, B, C)</option>
-                <option value="substancias">10. Uso de Substâncias</option>
-                <option value="neurocog">11. Neurocognitivos (Demências)</option>
-                <option value="burnout">12. Burnout & Trabalho</option>
-                <option value="tcc">13. Conceitos TCC (Bônus)</option>
+            <select id="levelSelect" onchange="generateGame()">
+                <optgroup label="Neurodesenvolvimento">
+                    <option value="tea">Transtorno do Espectro Autista (TEA)</option>
+                    <option value="tdah">TDAH</option>
+                </optgroup>
+                <optgroup label="Espectro da Esquizofrenia">
+                    <option value="esquizofrenia">Esquizofrenia</option>
+                </optgroup>
+                <optgroup label="Humor">
+                    <option value="bipolar">Transtorno Bipolar</option>
+                    <option value="depressao">Transtorno Depressivo Maior</option>
+                    <option value="tdpm">Disfórico Pré-Menstrual</option>
+                </optgroup>
+                <optgroup label="Ansiedade">
+                    <option value="ans_separacao">Ansiedade de Separação</option>
+                    <option value="ans_social">Ansiedade Social (Fobia)</option>
+                    <option value="panico">Transtorno do Pânico</option>
+                    <option value="agorafobia">Agorafobia</option>
+                    <option value="tag">Ansiedade Generalizada (TAG)</option>
+                </optgroup>
+                <optgroup label="Obsessivo-Compulsivo">
+                    <option value="toc">TOC</option>
+                    <option value="dismorfico">Dismórfico Corporal</option>
+                    <option value="acumulacao">Acumulação</option>
+                    <option value="tricotilomania">Tricotilomania</option>
+                </optgroup>
+                <optgroup label="Trauma e Estresse">
+                    <option value="apego_reativo">Apego Reativo</option>
+                    <option value="tept">TEPT (Pós-Traumático)</option>
+                    <option value="estresse_agudo">Estresse Agudo</option>
+                </optgroup>
+                <optgroup label="Alimentares">
+                    <option value="pica">Pica</option>
+                    <option value="ruminacao">Ruminação</option>
+                    <option value="arfid">Restritivo/Evitativo (ARFID)</option>
+                    <option value="anorexia">Anorexia Nervosa</option>
+                    <option value="bulimia">Bulimia Nervosa</option>
+                    <option value="compulsao_alim">Compulsão Alimentar</option>
+                </optgroup>
+                <optgroup label="Sono-Vigília">
+                    <option value="insonia">Insônia</option>
+                    <option value="hipersonolencia">Hipersonolência</option>
+                    <option value="narcolepsia">Narcolepsia</option>
+                </optgroup>
+                <optgroup label="Disruptivos e Conduta">
+                    <option value="tod">Opositivo Desafiador (TOD)</option>
+                    <option value="explosivo">Explosivo Intermitente</option>
+                    <option value="conduta">Transtorno da Conduta</option>
+                    <option value="piromania">Piromania</option>
+                    <option value="cleptomania">Cleptomania</option>
+                </optgroup>
+                <optgroup label="Personalidade (Cluster A)">
+                    <option value="paranoide">Paranoide</option>
+                    <option value="esquizoide">Esquizoide</option>
+                    <option value="esquizotipica">Esquizotípica</option>
+                </optgroup>
+                <optgroup label="Personalidade (Cluster B)">
+                    <option value="antissocial">Antissocial</option>
+                    <option value="borderline">Borderline</option>
+                    <option value="histrionica">Histriônica</option>
+                    <option value="narcisista">Narcisista</option>
+                </optgroup>
+                <optgroup label="Personalidade (Cluster C)">
+                    <option value="evitativa">Evitativa</option>
+                    <option value="dependente">Dependente</option>
+                    <option value="ob_compulsiva">Obsessivo-Compulsiva (TPOC)</option>
+                </optgroup>
             </select>
         </div>
 
         <button class="btn-game btn-new" onclick="generateGame()">
-            <i class="fa-solid fa-shuffle"></i> Novo Jogo
+            <i class="fa-solid fa-shuffle"></i> Gerar Novo
         </button>
-        
         <button class="btn-game btn-check" onclick="checkGame()">
             <i class="fa-solid fa-check"></i> Verificar
         </button>
-        
         <button class="btn-game btn-answers" onclick="showAnswers()">
             <i class="fa-solid fa-key"></i> Gabarito
-        </button>
-        
-        <button class="btn-game btn-reset" onclick="resetGrid()">
-            <i class="fa-solid fa-eraser"></i> Limpar
         </button>
     </div>
 
     <div class="game-layout">
-        
         <div class="grid-wrapper">
-            <div class="loading-overlay" id="loading">
-                <div class="spinner"></div>
-                <span>Gerando Layout...</span>
-            </div>
             <div id="crosswordGrid"></div>
         </div>
 
         <div class="clues-panel">
-            <div class="clues-tabs">
-                <button class="tab-btn active" onclick="switchTab('H')">Horizontais</button>
-                <button class="tab-btn" onclick="switchTab('V')">Verticais</button>
-            </div>
             <div class="clues-content">
+                <div class="clue-group-title">Horizontais</div>
                 <div id="listH"></div>
-                <div id="listV" style="display:none;"></div>
+                <div class="clue-group-title" style="margin-top:20px;">Verticais</div>
+                <div id="listV"></div>
             </div>
         </div>
-
     </div>
 
     <div class="modal" id="modalAnswers">
         <div class="modal-box">
-            <div class="modal-header">
-                <h2 style="margin:0; color:var(--primary);">Gabarito Completo</h2>
-                <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="answers-grid" id="modalList"></div>
+            <h2 style="margin-top:0; color:var(--primary)">Gabarito</h2>
+            <div id="answersList"></div>
+            <button class="btn-game btn-new" style="margin-top:20px; width:100%; justify-content:center;" onclick="document.getElementById('modalAnswers').style.display='none'">Fechar</button>
         </div>
     </div>
 
@@ -316,344 +293,233 @@
 
     <script>
         // ============================================
-        // 📚 BANCO DE DADOS (DATABASE)
+        // 📚 BANCO DE DADOS GRANULAR (DSM-5)
         // ============================================
-        const wordDatabase = {
-            neuro: [
-                {t:"HIPERFOCO", d:"Estado de concentração intensa comum no TDAH."},
-                {t:"ECOLALIA", d:"Repetição involuntária de palavras (comum no TEA)."},
-                {t:"DESATENCAO", d:"Dificuldade em manter o foco em tarefas repetitivas."},
-                {t:"IMPULSIVIDADE", d:"Agir sem pensar nas consequências."},
-                {t:"SENSORIAL", d:"Hipersensibilidade a luz, som ou toque no autismo."},
-                {t:"ESTEREOTIPIA", d:"Movimentos repetitivos (ex: balançar as mãos)."},
-                {t:"EXECUTIVAS", d:"Funções mentais prejudicadas no TDAH (planejamento)."},
-                {t:"DOPAMINA", d:"Neurotransmissor associado ao sistema de recompensa."},
-                {t:"GENETICA", d:"Fator de risco biológico predominante nestes transtornos."},
-                {t:"ROTINA", d:"Necessidade de rigidez e previsão no TEA."}
+        const DB = {
+            // NEURO
+            tea: [
+                {t:"ECOLALIA", d:"Repetição de falas."}, {t:"ROTINA", d:"Apego excessivo a padrões."}, {t:"HIPERFOCO", d:"Interesse restrito e intenso."},
+                {t:"SENSORIAL", d:"Hipersensibilidade a estímulos."}, {t:"ISOLAMENTO", d:"Dificuldade na interação social."}, {t:"LITERAL", d:"Dificuldade com metáforas."},
+                {t:"RIGIDEZ", d:"Inflexibilidade cognitiva."}, {t:"ESTEREO", d:"Movimentos repetitivos (ex: flapping)."}, {t:"CONTATO", d:"Evita olhar nos olhos."}, {t:"ATIPICO", d:"Desenvolvimento não usual."}
             ],
-            psicotico: [
-                {t:"DELIRIO", d:"Crença fixa e falsa que não muda diante de evidências."},
-                {t:"ALUCINACAO", d:"Percepção sensorial sem estímulo externo (ex: ouvir vozes)."},
-                {t:"CATATONIA", d:"Imobilidade motora ou agitação excessiva."},
-                {t:"NEGATIVOS", d:"Sintomas como apatia e falta de afeto na esquizofrenia."},
-                {t:"PARANOIA", d:"Sentimento de perseguição constante."},
-                {t:"DESORGANIZADO", d:"Tipo de pensamento ou fala sem nexo."},
-                {t:"PRODROMO", d:"Fase inicial com sintomas leves antes do surto."},
-                {t:"SURTO", d:"Episódio agudo de desconexão com a realidade."},
-                {t:"AFETO", d:"Pode estar embotado ou plano nestes transtornos."},
-                {t:"REALIDADE", d:"O que é perdido durante a psicose."}
+            tdah: [
+                {t:"DESATENCAO", d:"Dificuldade em manter o foco."}, {t:"IMPULSO", d:"Agir sem pensar."}, {t:"HIPERATIVO", d:"Agitação motora excessiva."},
+                {t:"ESQUECER", d:"Perde objetos com frequência."}, {t:"INTERROMPER", d:"Fala por cima dos outros."}, {t:"INQUIETO", d:"Não consegue ficar parado."},
+                {t:"ERROS", d:"Comete falhas por descuido."}, {t:"MENTAL", d:"Evita esforço cognitivo sustentado."}, {t:"PRAZO", d:"Dificuldade com gestão de tempo."}, {t:"FOCO", d:"Dificuldade em detalhes."}
             ],
+            // ESQUIZOFRENIA
+            esquizofrenia: [
+                {t:"DELIRIO", d:"Crença falsa e fixa."}, {t:"ALUCINACAO", d:"Ver/ouvir o que não existe."}, {t:"DESORGANIZA", d:"Discurso ou comportamento confuso."},
+                {t:"CATATONIA", d:"Imobilidade ou agitação."}, {t:"NEGATIVOS", d:"Sintomas como apatia e abulia."}, {t:"AFETO", d:"Embotamento emocional."},
+                {t:"PARANOIA", d:"Sentimento de perseguição."}, {t:"SURTO", d:"Quebra com a realidade."}, {t:"LOGICA", d:"Falha no raciocínio."}, {t:"SOCIAL", d:"Retraimento intenso."}
+            ],
+            // HUMOR
             bipolar: [
-                {t:"MANIA", d:"Fase de euforia, energia excessiva e grandiosidade."},
-                {t:"DEPRESSAO", d:"Fase de baixa energia e tristeza profunda."},
-                {t:"CICLOTIMIA", d:"Forma mais leve e crônica de oscilação de humor."},
-                {t:"LITIO", d:"Medicamento estabilizador de humor clássico."},
-                {t:"MISTO", d:"Episódio com sintomas de mania e depressão simultâneos."},
-                {t:"HIPOMANIA", d:"Mania menos severa, sem prejuízo social grave."},
-                {t:"SONO", d:"Necessidade reduzida durante a fase maníaca."},
-                {t:"COMPRAS", d:"Comportamento de risco comum na euforia."},
-                {t:"OSCILACAO", d:"Mudança entre polos de humor."},
-                {t:"SUICIDIO", d:"Risco elevado que requer atenção constante."}
+                {t:"MANIA", d:"Fase de euforia extrema."}, {t:"DEPRESSAO", d:"Fase de tristeza profunda."}, {t:"GRANDEZA", d:"Sentimento de poder infinito."},
+                {t:"SONO", d:"Necessidade diminuída de dormir."}, {t:"FALA", d:"Pressão para falar (verborragia)."}, {t:"RISCO", d:"Comportamentos perigosos."},
+                {t:"COMPRAS", d:"Gastos excessivos na mania."}, {t:"IDEIAS", d:"Fuga de pensamentos."}, {t:"LITIO", d:"Estabilizador de humor comum."}, {t:"MISTO", d:"Sintomas misturados."}
             ],
-            ansiedade: [
-                {t:"GENERALIZADA", d:"TAG: Preocupação excessiva com tudo."},
-                {t:"PANICO", d:"Ataque súbito de medo intenso e sintomas físicos."},
-                {t:"AGORAFOBIA", d:"Medo de lugares onde a fuga seria difícil."},
-                {t:"SOCIAL", d:"Medo intenso de julgamento em situações públicas."},
-                {t:"SEPARACAO", d:"Ansiedade ao afastar-se de figuras de apego."},
-                {t:"MUTISMO", d:"Incapacidade de falar em situações específicas."},
-                {t:"EVITACAO", d:"Comportamento que mantém a ansiedade a longo prazo."},
-                {t:"TAQUICARDIA", d:"Sintoma físico: coração acelerado."},
-                {t:"CATASTROFE", d:"Pensar que o pior cenário vai acontecer."},
-                {t:"FUTURO", d:"Tempo verbal onde a ansiedade reside."}
+            depressao: [
+                {t:"TRISTEZA", d:"Humor deprimido na maior parte do dia."}, {t:"ANEDONIA", d:"Perda de prazer nas atividades."}, {t:"PESO", d:"Ganho ou perda significativa."},
+                {t:"INSONIA", d:"Dificuldade de sono."}, {t:"CULPA", d:"Sentimento de inutilidade excessiva."}, {t:"FADIGA", d:"Perda de energia diária."},
+                {t:"CONCENTRA", d:"Indecisão ou falta de foco."}, {t:"MORTE", d:"Pensamentos recorrentes sobre o fim."}, {t:"LENTIDAO", d:"Retardo psicomotor."}, {t:"VAZIO", d:"Sensação interna descrita."}
             ],
+            // ANSIEDADE
+            panico: [
+                {t:"CORACAO", d:"Taquicardia ou palpitações."}, {t:"SUOR", d:"Sudorese intensa."}, {t:"TREMOR", d:"Abalos musculares."},
+                {t:"AR", d:"Sensação de falta de ar."}, {t:"DOR", d:"Desconforto no peito."}, {t:"NAUSEA", d:"Desconforto abdominal."},
+                {t:"TONTURA", d:"Instabilidade ou desmaio."}, {t:"REALIDADE", d:"Desrealização (irrealidade)."}, {t:"CONTROLE", d:"Medo de enlouquecer."}, {t:"MORTE", d:"Medo iminente de morrer."}
+            ],
+            tag: [
+                {t:"PREOCUPA", d:"Expectativa apreensiva excessiva."}, {t:"CONTROLE", d:"Dificuldade em controlar a preocupação."}, {t:"NERVOS", d:"Inquietação ou 'nervos à flor da pele'."},
+                {t:"CANSACO", d:"Fadigabilidade fácil."}, {t:"BRANCO", d:"Dificuldade de concentrar a mente."}, {t:"IRRITA", d:"Irritabilidade fácil."},
+                {t:"TENSAO", d:"Rigidez muscular."}, {t:"SONO", d:"Perturbação do descanso."}, {t:"FUTURO", d:"Foco excessivo no 'e se'."}, {t:"SOMATIZA", d:"Sintomas físicos diversos."}
+            ],
+            // TOC
             toc: [
-                {t:"OBSESSAO", d:"Pensamento intrusivo, recorrente e indesejado."},
-                {t:"COMPULSAO", d:"Comportamento repetitivo para aliviar a ansiedade."},
-                {t:"RITUAL", d:"Sequência rígida de ações (ex: lavar mãos)."},
-                {t:"DUVIDA", d:"Sentimento constante de incerteza ('Fechei a porta?')."},
-                {t:"SIMETRIA", d:"Necessidade de alinhar objetos perfeitamente."},
-                {t:"CONTAMINACAO", d:"Medo excessivo de sujeira ou germes."},
-                {t:"ACUMULACAO", d:"Dificuldade em descartar objetos (Hoarding)."},
-                {t:"TRICOTILOMANIA", d:"Arrancar os próprios cabelos/pelos."},
-                {t:"ALIVIO", d:"Sensação temporária após realizar a compulsão."},
-                {t:"INTRUSIVO", d:"Adjetivo para o pensamento que invade a mente."}
+                {t:"OBSESSAO", d:"Pensamento intrusivo e indesejado."}, {t:"COMPULSAO", d:"Ato repetitivo para aliviar ansiedade."}, {t:"LIMPEZA", d:"Lavagem excessiva."},
+                {t:"SIMETRIA", d:"Necessidade de ordem perfeita."}, {t:"VERIFICA", d:"Checar portas/gás repetidamente."}, {t:"CONTAGEM", d:"Contar objetos mentalmente."},
+                {t:"DUVIDA", d:"Incerteza patológica."}, {t:"RITUAL", d:"Regras rígidas de execução."}, {t:"ALIVIO", d:"Sensação temporária pós-ritual."}, {t:"TEMPO", d:"Consome mais de 1h por dia."}
             ],
-            trauma: [
-                {t:"FLASHBACK", d:"Reviver o trauma como se estivesse acontecendo agora."},
-                {t:"TEPT", d:"Transtorno de Estresse Pós-Traumático."},
-                {t:"DISSOCIACAO", d:"Desconexão da realidade ou do próprio corpo."},
-                {t:"PESADELO", d:"Sonho perturbador recorrente sobre o evento."},
-                {t:"GATILHO", d:"Estímulo que dispara a memória traumática."},
-                {t:"HIPERVIGILANCIA", d:"Estado de alerta constante para perigos."},
-                {t:"EVITACAO", d:"Fugir de locais/pessoas que lembram o trauma."},
-                {t:"APEGO", d:"Estilo de vínculo afetado por traumas na infância."},
-                {t:"ESTRESSE", d:"Reação aguda a eventos ameaçadores."},
-                {t:"RESILIENCIA", d:"Capacidade de recuperar-se após o trauma."}
+            // TRAUMA
+            tept: [
+                {t:"FLASHBACK", d:"Reviver o evento traumatico."}, {t:"PESADELO", d:"Sonhos angustiantes recorrentes."}, {t:"EVITACAO", d:"Fugir de estímulos associados."},
+                {t:"HUMOR", d:"Estado emocional negativo persistente."}, {t:"ALERTA", d:"Hipervigilância constante."}, {t:"SUSTO", d:"Sobressalto exagerado."},
+                {t:"MEMORIA", d:"Amnésia de partes do trauma."}, {t:"CULPA", d:"Distorção cognitiva sobre a causa."}, {t:"SONO", d:"Dificuldade para dormir."}, {t:"RAIVA", d:"Explosões de agressividade."}
             ],
-            alimentar: [
-                {t:"ANOREXIA", d:"Restrição alimentar severa e distorção de imagem."},
-                {t:"BULIMIA", d:"Compulsão seguida de purgação (vômito/laxante)."},
-                {t:"COMPULSAO", d:"Ingestão exagerada de comida sem purgação."},
-                {t:"PICA", d:"Ingestão de substâncias não nutritivas (terra, giz)."},
-                {t:"IMAGEM", d:"Percepção distorcida do próprio corpo."},
-                {t:"CONTROLE", d:"Tema central psicológico na anorexia."},
-                {t:"IMC", d:"Índice de Massa Corporal (muito baixo na anorexia)."},
-                {t:"PURGACAO", d:"Método compensatório para não ganhar peso."},
-                {t:"RUMINACAO", d:"Regurgitação repetida do alimento."},
-                {t:"CULPA", d:"Sentimento comum após episódio de compulsão."}
+            // ALIMENTAR
+            anorexia: [
+                {t:"RESTRICAO", d:"Baixa ingestão energética."}, {t:"PESO", d:"Medo intenso de engordar."}, {t:"DISTORCAO", d:"Perturbação na imagem corporal."},
+                {t:"JEJUM", d:"Ficar longos períodos sem comer."}, {t:"EXERCICIO", d:"Atividade física excessiva."}, {t:"CONTROLE", d:"Obsessão por dominar o corpo."},
+                {t:"NEGACAO", d:"Não reconhece a gravidade do baixo peso."}, {t:"CALORIA", d:"Contagem obsessiva."}, {t:"RITUAL", d:"Cortar comida em pedaços minúsculos."}, {t:"IMC", d:"Índice de massa corporal baixo."}
             ],
-            sono: [
-                {t:"INSONIA", d:"Dificuldade para iniciar ou manter o sono."},
-                {t:"APNEIA", d:"Parada respiratória durante o sono."},
-                {t:"NARCOLEPSIA", d:"Ataques súbitos de sono durante o dia."},
-                {t:"HIGIENE", d:"Conjunto de hábitos para dormir melhor."},
-                {t:"MELATONINA", d:"Hormônio que regula o ciclo sono-vigília."},
-                {t:"CIRCADIANO", d:"Ritmo biológico de aproximadamente 24 horas."},
-                {t:"PARASSONIA", d:"Eventos anormais como sonambulismo."},
-                {t:"REM", d:"Fase do sono onde ocorrem os sonhos vívidos."},
-                {t:"TERROR", d:"Noturno: despertar com gritos e medo intenso."},
-                {t:"CANSACO", d:"Consequência diurna da má qualidade do sono."}
+            // PERSONALIDADE B
+            borderline: [
+                {t:"ABANDONO", d:"Esforço frenético para evitá-lo."}, {t:"INSTAVEL", d:"Relacionamentos intensos e caóticos."}, {t:"IDENTIDADE", d:"Autoimagem perturbada."},
+                {t:"IMPULSO", d:"Gastos, sexo, abuso de substâncias."}, {t:"SUICIDIO", d:"Comportamento ou ameaças recorrentes."}, {t:"HUMOR", d:"Instabilidade afetiva acentuada."},
+                {t:"VAZIO", d:"Sentimento crônico interior."}, {t:"RAIVA", d:"Dificuldade em controlar a fúria."}, {t:"PARANOIA", d:"Ideação transitória sob estresse."}, {t:"DISSOCIA", d:"Sintomas de desligamento da realidade."}
             ],
-            personalidade: [
-                {t:"BORDERLINE", d:"Instabilidade emocional, medo de abandono, impulsividade."},
-                {t:"NARCISISTA", d:"Grandiosidade, necessidade de admiração, falta de empatia."},
-                {t:"ANTISSOCIAL", d:"Desrespeito pelas normas, leis e direitos alheios."},
-                {t:"PARANOIDE", d:"Desconfiança excessiva e suspeita dos outros."},
-                {t:"ESQUIZOIDE", d:"Desapego social e restrição emocional."},
-                {t:"HISTRIONICO", d:"Busca excessiva de atenção e emotividade."},
-                {t:"DEPENDENTE", d:"Necessidade excessiva de ser cuidado."},
-                {t:"EVITATIVA", d:"Inibição social e hipersensibilidade a críticas."},
-                {t:"RIGIDEZ", d:"Característica comum no transtorno obsessivo-compulsivo (TPOC)."},
-                {t:"CLUSTER", d:"Nome dado aos grupos A, B e C dos transtornos."}
+            narcisista: [
+                {t:"GRANDEZA", d:"Senso inflado de importância."}, {t:"FANTASIA", d:"Sucesso, poder ou beleza ilimitados."}, {t:"ESPECIAL", d:"Crença de ser único."},
+                {t:"ADMIRACAO", d:"Necessidade excessiva de ser louvado."}, {t:"DIREITO", d:"Intitulação: esperar tratamento VIP."}, {t:"EXPLORA", d:"Usa os outros para fins próprios."},
+                {t:"EMPATIA", d:"Falta de capacidade de se colocar no lugar do outro."}, {t:"INVEJA", d:"Crê que os outros o invejam."}, {t:"ARROGANTE", d:"Comportamentos altivos."}, {t:"SUPERIOR", d:"Sentimento de estar acima da média."}
             ],
-            substancias: [
-                {t:"TOLERANCIA", d:"Necessidade de doses maiores para o mesmo efeito."},
-                {t:"ABSTINENCIA", d:"Sintomas físicos ao parar o uso da substância."},
-                {t:"CRAVING", d:"Fissura ou desejo intenso de usar."},
-                {t:"RECOMPENSA", d:"Sistema cerebral ativado pelas drogas."},
-                {t:"ALCOOL", d:"Depressor do sistema nervoso central muito comum."},
-                {t:"OPIOIDE", d:"Classe de drogas usada para dor, altamente viciante."},
-                {t:"CONTROLE", d:"Perda deste é critério fundamental do vício."},
-                {t:"OVERDOSE", d:"Intoxicação aguda que pode levar à morte."},
-                {t:"RECAIDA", d:"Retorno ao uso após período de sobriedade."},
-                {t:"DOPAMINA", d:"Neurotransmissor liberado no uso."}
-            ],
-            neurocog: [
-                {t:"ALZHEIMER", d:"Causa mais comum de demência, afeta memória recente."},
-                {t:"DEMENCIA", d:"Declínio cognitivo que interfere na independência."},
-                {t:"DELIRIUM", d:"Estado confusional agudo e flutuante."},
-                {t:"MEMORIA", d:"Função cognitiva geralmente a primeira a falhar."},
-                {t:"AFASIA", d:"Dificuldade na linguagem (fala ou compreensão)."},
-                {t:"AGNOSIA", d:"Incapacidade de reconhecer objetos ou rostos."},
-                {t:"EXECUCAO", d:"Perda da capacidade de planejar tarefas."},
-                {t:"VASCULAR", d:"Demência causada por AVCs ou problemas circulatórios."},
-                {t:"LEWY", d:"Demência com corpos de... (alucinações visuais)."},
-                {t:"IDADE", d:"Principal fator de risco para transtornos neurocognitivos."}
-            ],
-            burnout: [
-                {t:"EXAUSTAO", d:"Sentimento de estar drenado física e emocionalmente."},
-                {t:"CINISMO", d:"Despersonalização e atitude negativa com o trabalho."},
-                {t:"EFICACIA", d:"Sentimento de baixa realização profissional."},
-                {t:"TRABALHO", d:"Contexto exclusivo onde ocorre o Burnout (OMS)."},
-                {t:"ESTRESSE", d:"Crônico: a causa raiz do problema."},
-                {t:"LIMITES", d:"Necessidade de estabelecer... para prevenir."},
-                {t:"FERIAS", d:"Pausa necessária, mas nem sempre cura o burnout."},
-                {t:"AMBIENTE", d:"Se for tóxico, contribui para o adoecimento."},
-                {t:"VALORES", d:"Conflito entre os seus e os da empresa gera burnout."},
-                {t:"APOIO", d:"Social: fator de proteção importante."}
-            ],
-            tcc: [
-                {t:"CRENCA", d:"Ideia central e rígida sobre si mesmo ('Sou incapaz')."},
-                {t:"AUTOMATICO", d:"Pensamento rápido que surge diante de uma situação."},
-                {t:"EVIDENCIA", d:"Fatos que usamos para testar a validade do pensamento."},
-                {t:"DISTORCAO", d:"Erro de lógica mental (ex: catastrofização)."},
-                {t:"COMPORTAMENTO", d:"O que fazemos (C) em resposta ao pensamento (B)."},
-                {t:"EMOCAO", d:"O que sentimos (C) derivado da interpretação."},
-                {t:"SOCRATICO", d:"Questionamento usado para desafiar ideias."},
-                {t:"EXPOSICAO", d:"Técnica para vencer medos enfrentando-os."},
-                {t:"REGRA", d:"Suposição: 'Se eu fizer isso, então...'"},
-                {t:"ATIVACAO", d:"Técnica para combater a depressão."}
-            ]
+            // Preenchimento de fallback para categorias restantes com palavras genéricas do grupo
+            tdpm: [{t:"IRRITA", d:"Sintoma afetivo."}, {t:"MAMA", d:"Sensibilidade física."}, {t:"INCHACO", d:"Sintoma físico."}, {t:"HUMOR", d:"Labilidade."}, {t:"ANSIEDADE", d:"Tensão."}],
+            ans_separacao: [{t:"AFASTAMENTO", d:"Medo de sair de casa."}, {t:"PERDA", d:"Medo de perder figuras de apego."}, {t:"PESADELO", d:"Sonhos sobre separação."}, {t:"CAMA", d:"Recusa em dormir fora."}],
+            ans_social: [{t:"JULGAMENTO", d:"Medo de avaliação negativa."}, {t:"VERGONHA", d:"Medo de humilhação."}, {t:"PUBLICO", d:"Medo de falar."}, {t:"TREMER", d:"Sintoma físico."}],
+            agorafobia: [{t:"MULTIDAO", d:"Local temido."}, {t:"FILA", d:"Situação temida."}, {t:"SAIR", d:"Dificuldade de sair de casa."}, {t:"SOCORRO", d:"Medo de não ter ajuda."}],
+            dismorfico: [{t:"DEFEITO", d:"Foco em falha percebida."}, {t:"ESPELHO", d:"Verificação excessiva."}, {t:"CAMUFLAR", d:"Tentar esconder."}, {t:"FEIO", d:"Autoimagem negativa."}],
+            acumulacao: [{t:"GUARDAR", d:"Dificuldade de descartar."}, {t:"BAGUNCA", d:"Acúmulo físico."}, {t:"ANGUSTIA", d:"Sofrimento ao jogar fora."}, {t:"VALOR", d:"Atribuição excessiva aos objetos."}],
+            tricotilomania: [{t:"ARRANCAR", d:"Ação principal."}, {t:"CABELO", d:"Alvo comum."}, {t:"PRAZER", d:"Sensação pós-ato."}, {t:"FALHA", d:"Perda capilar visível."}],
+            apego_reativo: [{t:"INIBIDO", d:"Comportamento social."}, {t:"CONFORTO", d:"Não busca quando angustiado."}, {t:"MEDO", d:"Afeto negativo inexplicado."}, {t:"CUIDADOR", d:"Falha na relação."}],
+            estresse_agudo: [{t:"TRAUMA", d:"Exposição a evento."}, {t:"INTRUSAO", d:"Memórias invadem."}, {t:"HUMOR", d:"Incapacidade de felicidade."}, {t:"DIAS", d:"Duração de 3 a 30 dias."}],
+            pica: [{t:"INGESTAO", d:"Comer o que não é alimento."}, {t:"TERRA", d:"Exemplo de substância."}, {t:"GELO", d:"Pagofagia."}, {t:"TINTA", d:"Risco de toxicidade."}],
+            ruminacao: [{t:"REGURGITA", d:"Volta do alimento."}, {t:"REPETIDA", d:"Acontece frequentemente."}, {t:"ENGOLE", d:"Reingestão."}, {t:"NAUSEA", d:"Ausência de problema gastro."}],
+            arfid: [{t:"RESTRITO", d:"Limitação alimentar."}, {t:"TEXTURA", d:"Aversão sensorial."}, {t:"ENGASGO", d:"Medo de consequências."}, {t:"NUTRICAO", d:"Deficiência."}],
+            bulimia: [{t:"COMPULSAO", d:"Comer muito rápido."}, {t:"VOMITO", d:"Comportamento compensatório."}, {t:"FORMA", d:"Influência na autoavaliação."}, {t:"LAXANTE", d:"Uso indevido."}],
+            compulsao_alim: [{t:"DESCONTROLE", d:"Sensação durante o episódio."}, {t:"RAPIDO", d:"Comer velozmente."}, {t:"ESCONDIDO", d:"Comer por vergonha."}, {t:"CULPA", d:"Sentimento posterior."}],
+            insonia: [{t:"INICIAR", d:"Dificuldade ao deitar."}, {t:"MANTER", d:"Acordar no meio da noite."}, {t:"PRECOCE", d:"Acordar muito cedo."}, {t:"CANSACO", d:"Prejuízo diurno."}],
+            hipersonolencia: [{t:"EXCESSIVO", d:"Sono prolongado."}, {t:"COCHILO", d:"Dorme de dia."}, {t:"CONFUSAO", d:"Ao acordar (embriaguez do sono)."}, {t:"RESTAURA", d:"Sono não descansa."}],
+            narcolepsia: [{t:"ATAQUE", d:"Sono irresistível."}, {t:"CATAPLEXIA", d:"Perda de tônus muscular."}, {t:"REM", d:"Entrada rápida no sono."}, {t:"ALUCINA", d:"Hipnagógicas."}],
+            tod: [{t:"RAIVA", d:"Humor irritável."}, {t:"DISCUTE", d:"Comportamento questionador."}, {t:"DESAFIA", d:"Recusa regras."}, {t:"VINGATIVO", d:"Rancoroso."}],
+            explosivo: [{t:"AGRESSAO", d:"Verbal ou física."}, {t:"DESPROPORCIONAL", d:"Reação exagerada."}, {t:"IMPULSO", d:"Não premeditado."}, {t:"REMORSO", d:"Arrependimento posterior."}],
+            conduta: [{t:"AGRESSAO", d:"A pessoas ou animais."}, {t:"DESTRUICAO", d:"De propriedade."}, {t:"MENTIRA", d:"Ou furto."}, {t:"REGRAS", d:"Violação grave."}],
+            piromania: [{t:"FOGO", d:"Atear intencionalmente."}, {t:"FASCINIO", d:"Atração por incêndios."}, {t:"TENSAO", d:"Antes do ato."}, {t:"PRAZER", d:"Durante o ato."}],
+            cleptomania: [{t:"FURTO", d:"Roubar objetos desnecessários."}, {t:"IMPULSO", d:"Incapacidade de resistir."}, {t:"ALIVIO", d:"Após o furto."}, {t:"CULPA", d:"Sentimento comum depois."}],
+            substancias: [{t:"TOLERANCIA", d:"Precisa de mais dose."}, {t:"ABSTINENCIA", d:"Sintomas na falta."}, {t:"CRAVING", d:"Fissura/Desejo."}, {t:"CONTROLE", d:"Uso maior que o planejado."}],
+            jogo: [{t:"APOSTAR", d:"Dinheiro crescente."}, {t:"IRRITADO", d:"Ao tentar parar."}, {t:"RECUPERAR", d:"Voltar para ganhar o perdido."}, {t:"MENTIR", d:"Esconder o envolvimento."}],
+            paranoide: [{t:"SUSPEITA", d:"Desconfiança sem base."}, {t:"LEALDADE", d:"Dúvida sobre amigos."}, {t:"RENCOR", d:"Não perdoa insultos."}, {t:"AMEACA", d:"Vê perigo onde não há."}],
+            esquizoide: [{t:"DISTANTE", d:"Não deseja relações."}, {t:"SOLITARIO", d:"Prefere atividades sós."}, {t:"PRAZER", d:"Pouco interesse sexual."}, {t:"INDIFERENTE", d:"A elogios ou críticas."}],
+            esquizotipica: [{t:"REFERENCIA", d:"Ideias de que tudo é para si."}, {t:"ESTRANHO", d:"Pensamento ou discurso."}, {t:"ILUSAO", d:"Percepções corporais."}, {t:"PARANOIA", d:"Suspeita social."}],
+            antissocial: [{t:"LEI", d:"Incapacidade de ajustar-se."}, {t:"MENTIRA", d:"Enganar para ganho."}, {t:"IMPULSO", d:"Fracasso em planejar."}, {t:"REMORSO", d:"Indiferença ao ferir."}],
+            histrionica: [{t:"CENTRO", d:"Desconforto se não for o foco."}, {t:"SEDUTOR", d:"Comportamento sexual inadequado."}, {t:"EMOCAO", d:"Mudança rápida e superficial."}, {t:"FISICO", d:"Usa aparência para chamar atenção."}],
+            evitativa: [{t:"REJEICAO", d:"Medo excessivo."}, {t:"ENVERGONHAR", d:"Medo de passar vergonha."}, {t:"INIBIDO", d:"Em situações novas."}, {t:"INFERIOR", d:"Se vê como socialmente inapto."}],
+            dependente: [{t:"CONSELHO", d:"Precisa para decisões simples."}, {t:"RESPONSAVEL", d:"Outros assumem a vida."}, {t:"DISCORDAR", d:"Medo de perder apoio."}, {t:"SOZINHO", d:"Desconforto ao estar sós."}],
+            ob_compulsiva: [{t:"DETALHE", d:"Foco em listas e ordem."}, {t:"PERFEITO", d:"Interfere na conclusão."}, {t:"TRABALHO", d:"Dedicação excessiva."}, {t:"RIGIDO", d:"Teimosia moral."}]
         };
 
-        // ============================================
-        // ⚙️ ENGINE DE GERAÇÃO (CROSSWORD GENERATOR)
-        // ============================================
-        
         const GRID_SIZE = 15;
         let gridArray = [];
         let placedWords = [];
 
         function generateGame() {
-            const loading = document.getElementById('loading');
-            loading.style.display = 'flex';
+            const category = document.getElementById('categorySelect').value;
+            // Fallback para arrays menores
+            let wordList = DB[category] || [];
+            
+            // Se a lista for pequena (< 6), tenta duplicar ou adicionar placeholders para não quebrar
+            if(wordList.length < 5) wordList = [...wordList, ...wordList]; 
 
-            // Pequeno delay para a UI atualizar
-            setTimeout(() => {
-                const category = document.getElementById('categorySelect').value;
-                const wordList = [...wordDatabase[category]]; // Copia para não alterar original
-                
-                // Tenta gerar um grid válido (tenta 10x se falhar)
-                let success = false;
-                for(let i=0; i<10; i++) {
-                    if(createGrid(wordList)) {
-                        success = true;
-                        break;
-                    }
-                }
+            const gridEl = document.getElementById('crosswordGrid');
+            const listH = document.getElementById('listH');
+            const listV = document.getElementById('listV');
+            
+            gridEl.innerHTML = ''; listH.innerHTML = ''; listV.innerHTML = '';
+            gridEl.style.gridTemplateColumns = `repeat(${GRID_SIZE}, var(--cell-size))`;
 
-                if(!success) {
-                    alert("Erro ao gerar um layout complexo. Tentando simplificar...");
-                    createGrid(wordList.slice(0, 6)); // Tenta com menos palavras
-                }
+            let success = false;
+            for(let i=0; i<50; i++) {
+                if(tryCreateGrid(wordList)) { success = true; break; }
+            }
 
-                renderGrid();
-                renderClues();
-                renderAnswersModal();
-                loading.style.display = 'none';
-            }, 100);
+            if(!success) {
+                alert("Não foi possível gerar um layout perfeito. Tente novamente.");
+                return;
+            }
+
+            renderGrid(gridEl);
+            renderClues(listH, listV);
+            renderAnswers();
         }
 
-        function createGrid(words) {
-            // Reinicia
+        function tryCreateGrid(words) {
             gridArray = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
             placedWords = [];
             
-            // Ordena palavras por tamanho (maiores primeiro para ser a "espinha dorsal")
-            words.sort((a, b) => b.t.length - a.t.length);
-
-            // Coloca a primeira palavra no meio (Horizontal)
-            const first = words[0];
-            const startRow = Math.floor(GRID_SIZE / 2);
-            const startCol = Math.floor((GRID_SIZE - first.t.length) / 2);
+            // Ordena por tamanho decrescente
+            const sortedWords = [...words].sort((a,b) => b.t.length - a.t.length);
             
-            if(!placeWord(first, startRow, startCol, 'H')) return false;
+            // Coloca a primeira
+            const first = sortedWords[0];
+            const r = Math.floor(GRID_SIZE/2);
+            const c = Math.floor((GRID_SIZE - first.t.length)/2);
+            placeWord(first, r, c, 'H');
 
-            // Tenta colocar as outras
-            for (let i = 1; i < words.length; i++) {
-                const word = words[i];
-                findBestPosition(word);
+            for(let i=1; i<sortedWords.length; i++) {
+                findSpot(sortedWords[i]);
             }
 
-            // Filtra se conseguiu colocar pelo menos 5 palavras
-            return placedWords.length >= 5;
+            return placedWords.length >= Math.min(sortedWords.length, 5);
         }
 
-        function findBestPosition(wordObj) {
-            const text = wordObj.t;
-            
-            // Embaralha tentativas para criar layouts diferentes
-            const potentialSpots = [];
+        function findSpot(word) {
+            const text = word.t;
+            const spots = [];
 
-            // Percorre letras da palavra que queremos colocar
-            for (let i = 0; i < text.length; i++) {
+            for(let i=0; i<text.length; i++) {
                 const char = text[i];
-
-                // Procura esse char no grid já existente
-                for (let r = 0; r < GRID_SIZE; r++) {
-                    for (let c = 0; c < GRID_SIZE; c++) {
-                        if (gridArray[r][c] === char) {
-                            // Achou intersecção. Verifica se é possível cruzar.
-                            // Se a letra no grid é parte de uma palavra H, tentamos colocar V. E vice-versa.
-                            
-                            // Tentativa Vertical
-                            if (canPlace(text, r - i, c, 'V')) {
-                                potentialSpots.push({r: r-i, c: c, dir: 'V'});
-                            }
-                            // Tentativa Horizontal
-                            if (canPlace(text, r, c - i, 'H')) {
-                                potentialSpots.push({r: r, c: c-i, dir: 'H'});
-                            }
+                for(let r=0; r<GRID_SIZE; r++) {
+                    for(let c=0; c<GRID_SIZE; c++) {
+                        if(gridArray[r][c] === char) {
+                            if(canPlace(text, r-i, c, 'V')) spots.push({r:r-i, c:c, dir:'V'});
+                            if(canPlace(text, r, c-i, 'H')) spots.push({r:r, c:c-i, dir:'H'});
                         }
                     }
                 }
             }
 
-            if (potentialSpots.length > 0) {
-                // Pega uma aleatória válida
-                const spot = potentialSpots[Math.floor(Math.random() * potentialSpots.length)];
-                placeWord(wordObj, spot.r, spot.c, spot.dir);
-                return true;
+            if(spots.length > 0) {
+                const s = spots[Math.floor(Math.random() * spots.length)];
+                placeWord(word, s.r, s.c, s.dir);
             }
-            return false;
         }
 
         function canPlace(word, row, col, dir) {
-            if (row < 0 || col < 0) return false;
-            if (dir === 'H' && col + word.length > GRID_SIZE) return false;
-            if (dir === 'V' && row + word.length > GRID_SIZE) return false;
+            if(row<0 || col<0) return false;
+            if(dir === 'H' && col + word.length > GRID_SIZE) return false;
+            if(dir === 'V' && row + word.length > GRID_SIZE) return false;
 
-            // Verifica colisão e vizinhos
-            for (let i = 0; i < word.length; i++) {
+            for(let i=0; i<word.length; i++) {
                 let r = row + (dir === 'V' ? i : 0);
                 let c = col + (dir === 'H' ? i : 0);
+                const current = gridArray[r][c];
 
-                const currentCell = gridArray[r][c];
+                if(current !== null && current !== word[i]) return false;
                 
-                // Se célula já tem letra, tem que ser a MESMA letra (intersecção)
-                if (currentCell !== null && currentCell !== word[i]) return false;
-
-                // Verificação de vizinhos (não pode colar em outras palavras sem ser na intersecção)
-                // Se a célula está vazia, ela não pode ter vizinhos nas direções ortogonais
-                if (currentCell === null) {
-                    if (hasNeighbors(r, c, dir)) return false;
+                // Vizinhos (exceto intersecção)
+                if(current === null) {
+                    if(dir === 'H') {
+                        if(r>0 && gridArray[r-1][c]!==null) return false;
+                        if(r<GRID_SIZE-1 && gridArray[r+1][c]!==null) return false;
+                        // Pontas
+                        if(i===0 && c>0 && gridArray[r][c-1]!==null) return false;
+                        if(i===word.length-1 && c<GRID_SIZE-1 && gridArray[r][c+1]!==null) return false;
+                    } else {
+                        if(c>0 && gridArray[r][c-1]!==null) return false;
+                        if(c<GRID_SIZE-1 && gridArray[r][c+1]!==null) return false;
+                        // Pontas
+                        if(i===0 && r>0 && gridArray[r-1][c]!==null) return false;
+                        if(i===word.length-1 && r<GRID_SIZE-1 && gridArray[r+1][c]!==null) return false;
+                    }
                 }
             }
-            
-            // Verifica células antes e depois da palavra (não pode "emendar")
-            let beforeR = row - (dir === 'V' ? 1 : 0);
-            let beforeC = col - (dir === 'H' ? 1 : 0);
-            if(beforeR >= 0 && beforeC >= 0 && gridArray[beforeR][beforeC] !== null) return false;
-
-            let afterR = row + (dir === 'V' ? word.length : 0);
-            let afterC = col + (dir === 'H' ? word.length : 0);
-            if(afterR < GRID_SIZE && afterC < GRID_SIZE && gridArray[afterR][afterC] !== null) return false;
-
             return true;
         }
 
-        function hasNeighbors(r, c, dir) {
-            // Se estou colocando H, verifico vizinhos V (cima/baixo)
-            if(dir === 'H') {
-                if(r > 0 && gridArray[r-1][c] !== null) return true;
-                if(r < GRID_SIZE-1 && gridArray[r+1][c] !== null) return true;
-            } else {
-                if(c > 0 && gridArray[r][c-1] !== null) return true;
-                if(c < GRID_SIZE-1 && gridArray[r][c+1] !== null) return true;
+        function placeWord(word, r, c, dir) {
+            for(let i=0; i<word.t.length; i++) {
+                let cr = r + (dir === 'V' ? i : 0);
+                let cc = c + (dir === 'H' ? i : 0);
+                gridArray[cr][cc] = word.t[i];
             }
-            return false;
+            placedWords.push({...word, r, c, dir, num: placedWords.length+1});
         }
 
-        function placeWord(wordObj, r, c, dir) {
-            for (let i = 0; i < wordObj.t.length; i++) {
-                let currR = r + (dir === 'V' ? i : 0);
-                let currC = c + (dir === 'H' ? i : 0);
-                gridArray[currR][currC] = wordObj.t[i];
-            }
-            
-            placedWords.push({
-                ...wordObj,
-                row: r, col: c, dir: dir, number: placedWords.length + 1
-            });
-            return true;
-        }
-
-        // ============================================
-        // 🎨 RENDERIZAÇÃO E UI
-        // ============================================
-
-        function renderGrid() {
-            const gridEl = document.getElementById('crosswordGrid');
-            gridEl.innerHTML = '';
-            gridEl.style.gridTemplateColumns = `repeat(${GRID_SIZE}, var(--cell-size))`;
-
-            // Mapa para colocar números
-            const numbersMap = {};
-            placedWords.forEach(w => {
-                const key = `${w.row},${w.col}`;
-                if(!numbersMap[key]) numbersMap[key] = w.number;
-            });
+        function renderGrid(el) {
+            // Mapa de números
+            const nums = {};
+            placedWords.forEach(w => nums[`${w.r},${w.c}`] = w.num);
 
             for(let r=0; r<GRID_SIZE; r++) {
                 for(let c=0; c<GRID_SIZE; c++) {
@@ -662,158 +528,49 @@
                     
                     if(char) {
                         div.className = 'cell active';
-                        const num = numbersMap[`${r},${c}`] || '';
-                        
                         div.innerHTML = `
-                            <input type="text" maxlength="1" 
-                                data-r="${r}" data-c="${c}" 
-                                data-char="${char}"
-                                onkeydown="handleNav(this, event)"
-                                oninput="this.value = this.value.toUpperCase()">
-                            ${num ? `<span class="cell-num">${num}</span>` : ''}
+                            <input type="text" maxlength="1" data-char="${char}" onkeyup="this.value=this.value.toUpperCase(); check()">
+                            ${nums[`${r},${c}`] ? `<span class="cell-num">${nums[`${r},${c}`]}</span>` : ''}
                         `;
                     } else {
                         div.className = 'cell';
                     }
-                    gridEl.appendChild(div);
+                    el.appendChild(div);
                 }
             }
         }
 
-        function renderClues() {
-            const listH = document.getElementById('listH');
-            const listV = document.getElementById('listV');
-            listH.innerHTML = ''; listV.innerHTML = '';
-
+        function renderClues(h, v) {
             placedWords.forEach(w => {
-                const item = document.createElement('div');
-                item.className = 'clue-item';
-                item.innerHTML = `<strong>${w.number}.</strong> ${w.d}`;
-                item.onclick = () => highlightWord(w);
-
-                if(w.dir === 'H') listH.appendChild(item);
-                else listV.appendChild(item);
+                const item = `<div class="clue-item"><strong>${w.num}.</strong> ${w.d}</div>`;
+                if(w.dir === 'H') h.innerHTML += item;
+                else v.innerHTML += item;
             });
-            
-            // Ativa aba H por padrão
-            switchTab('H');
         }
 
-        function switchTab(type) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-btn')[type === 'H' ? 0 : 1].classList.add('active');
-            
-            document.getElementById('listH').style.display = type === 'H' ? 'block' : 'none';
-            document.getElementById('listV').style.display = type === 'V' ? 'block' : 'none';
-        }
-
-        // --- NAVEGAÇÃO ---
-        function handleNav(input, e) {
-            const r = parseInt(input.dataset.r);
-            const c = parseInt(input.dataset.c);
-
-            if(e.key.startsWith("Arrow")) {
-                e.preventDefault();
-                if(e.key === "ArrowRight") focusNext(r, c+1, 0, 1);
-                if(e.key === "ArrowLeft") focusNext(r, c-1, 0, -1);
-                if(e.key === "ArrowDown") focusNext(r+1, c, 1, 0);
-                if(e.key === "ArrowUp") focusNext(r-1, c, -1, 0);
-            }
-            
-            if(e.key === "Backspace" && input.value === "") {
-                // Tenta voltar
-                if(!focusNext(r, c-1, 0, -1)) focusNext(r-1, c, -1, 0);
-            }
-        }
-
-        function focusNext(r, c, dr, dc) {
-            // Procura a próxima célula válida na direção
-            // Lógica simples: tenta a célula imediata
-            const next = document.querySelector(`input[data-r="${r}"][data-c="${c}"]`);
-            if(next) {
-                next.focus();
-                return true;
-            }
-            return false;
-        }
-
-        function checkGame() {
+        function check() {
             const inputs = document.querySelectorAll('.cell.active input');
-            let allCorrect = true;
-            let filled = 0;
-
-            inputs.forEach(inp => {
-                const correctChar = inp.dataset.char;
-                const userChar = inp.value.toUpperCase();
-                
-                inp.parentElement.classList.remove('correct', 'wrong');
-
-                if(userChar) {
-                    filled++;
-                    if(userChar === correctChar) {
-                        inp.parentElement.classList.add('correct');
-                    } else {
-                        inp.parentElement.classList.add('wrong');
-                        allCorrect = false;
-                    }
-                } else {
-                    allCorrect = false;
-                }
+            let all = true;
+            inputs.forEach(i => {
+                i.parentElement.classList.remove('correct', 'wrong');
+                if(i.value) {
+                    if(i.value === i.dataset.char) i.parentElement.classList.add('correct');
+                    else { i.parentElement.classList.add('wrong'); all = false; }
+                } else all = false;
             });
-
-            if(allCorrect && filled === inputs.length) {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                alert("Parabéns! Você domina este tema!");
+            if(all) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                alert("Parabéns! Cruzadinha completa!");
             }
         }
 
-        function highlightWord(w) {
-            // Limpa highlights anteriores
-            document.querySelectorAll('.cell input').forEach(i => i.parentElement.style.background = '');
-            
-            // Foca na primeira letra
-            const first = document.querySelector(`input[data-r="${w.row}"][data-c="${w.col}"]`);
-            if(first) first.focus();
+        function renderAnswers() {
+            const list = document.getElementById('answersList');
+            list.innerHTML = placedWords.map(w => `<div><strong>${w.num}. ${w.t}</strong>: ${w.d}</div>`).join('');
         }
 
-        function resetGrid() {
-            if(confirm("Limpar todo o progresso?")) {
-                document.querySelectorAll('.cell input').forEach(i => {
-                    i.value = '';
-                    i.parentElement.classList.remove('correct', 'wrong');
-                });
-            }
-        }
-
-        // --- GABARITO ---
-        function renderAnswersModal() {
-            const list = document.getElementById('modalList');
-            list.innerHTML = '';
-            
-            // Ordena por número
-            placedWords.sort((a,b) => a.number - b.number).forEach(w => {
-                const div = document.createElement('div');
-                div.className = 'answer-card';
-                div.innerHTML = `
-                    <span class="ans-term">${w.number}. ${w.t}</span>
-                    <span class="ans-def">${w.d}</span>
-                `;
-                list.appendChild(div);
-            });
-        }
-
-        function showAnswers() {
-            if(confirm("Tem certeza que deseja ver as respostas?")) {
-                document.getElementById('modalAnswers').style.display = 'flex';
-            }
-        }
-        function closeModal() {
-            document.getElementById('modalAnswers').style.display = 'none';
-        }
-
-        // Inicia o jogo
+        // Init
         window.onload = generateGame;
-
     </script>
 </body>
 </html>
