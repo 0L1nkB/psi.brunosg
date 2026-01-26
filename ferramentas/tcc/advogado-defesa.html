@@ -16,6 +16,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        /* --- RESET --- */
+        * { box-sizing: border-box; }
+
         :root {
             --bg-color: #f0f8ff;
             --primary: #2c3e50;       /* Azul Marinho (Jurídico) */
@@ -23,6 +26,7 @@
             --text: #2d3436;
             --card-bg: #ffffff;
             --step-active: #3498db;
+            --step-done: #27ae60;
         }
 
         body {
@@ -38,10 +42,10 @@
 
         /* --- HEADER --- */
         header {
-            text-align: center; margin-bottom: 30px;
-            background: white; padding: 20px 40px;
+            text-align: center; margin-bottom: 40px;
+            background: white; padding: 25px 40px;
             border-radius: 20px; border: 3px solid var(--primary);
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             max-width: 900px; width: 100%; position: relative;
         }
 
@@ -49,7 +53,7 @@
         .subtitle { color: #7f8c8d; font-weight: 600; margin-top: 5px; }
 
         .btn-print {
-            position: absolute; top: 20px; right: 20px;
+            position: absolute; top: 25px; right: 25px;
             background: none; border: 2px solid var(--primary); color: var(--primary);
             padding: 8px 15px; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s;
         }
@@ -57,31 +61,35 @@
 
         /* --- WIZARD PROGRESS --- */
         .progress-container {
-            width: 100%; max-width: 900px; margin-bottom: 30px;
+            width: 100%; max-width: 800px; margin-bottom: 40px;
             display: flex; justify-content: space-between; position: relative;
+            padding: 0 20px;
         }
-        .progress-line {
-            position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: #dfe6e9; z-index: 0; transform: translateY(-50%);
+        
+        .progress-bg-line {
+            position: absolute; top: 50%; left: 20px; right: 20px; height: 4px; background: #dfe6e9; z-index: 0; transform: translateY(-50%); border-radius: 2px;
         }
+        
         .progress-step {
-            width: 40px; height: 40px; background: #dfe6e9; border-radius: 50%;
+            width: 45px; height: 45px; background: #dfe6e9; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 800; color: #636e72; z-index: 1; border: 3px solid var(--bg-color);
-            transition: 0.3s;
+            font-weight: 800; color: #636e72; z-index: 1; border: 4px solid var(--bg-color);
+            transition: 0.3s; font-size: 1.1rem; cursor: default;
         }
-        .progress-step.active { background: var(--primary); color: white; border-color: var(--accent); transform: scale(1.1); }
-        .progress-step.completed { background: var(--step-active); color: white; }
+        
+        .progress-step.active { background: var(--primary); color: white; border-color: var(--accent); transform: scale(1.15); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .progress-step.completed { background: var(--step-done); color: white; cursor: pointer; }
 
         /* --- CONTEXTO FIXO (CRIME) --- */
         .context-bar {
             width: 100%; max-width: 900px;
             background: #2c3e50; color: white; padding: 15px 25px;
-            border-radius: 15px; margin-bottom: 20px; display: none;
-            align-items: center; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 12px; margin-bottom: 30px; display: none;
+            align-items: center; gap: 15px; box-shadow: 0 8px 20px rgba(44, 62, 80, 0.2);
             animation: slideDown 0.5s ease;
         }
-        .context-label { font-size: 0.8rem; text-transform: uppercase; color: var(--accent); font-weight: 800; }
-        .context-text { font-weight: 600; font-size: 1.1rem; font-style: italic; }
+        .context-label { font-size: 0.75rem; text-transform: uppercase; color: var(--accent); font-weight: 800; letter-spacing: 1px; white-space: nowrap; }
+        .context-text { font-weight: 600; font-size: 1rem; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         /* --- FORMS & CARDS --- */
         .form-container {
@@ -90,62 +98,75 @@
 
         .step-card {
             background: white; border-radius: 25px; padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: none;
-            animation: fadeIn 0.5s ease; border-top: 5px solid var(--primary);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05); display: none;
+            animation: fadeIn 0.4s ease; border-top: 6px solid var(--primary);
         }
         .step-card.active { display: block; }
 
         .step-title {
-            font-size: 1.5rem; color: var(--primary); margin-bottom: 25px;
-            display: flex; align-items: center; gap: 15px; border-bottom: 2px solid #f1f2f6; padding-bottom: 15px;
+            font-size: 1.4rem; color: var(--primary); margin-bottom: 30px;
+            display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #f1f2f6; padding-bottom: 15px; font-weight: 800;
         }
 
-        .input-group { margin-bottom: 25px; }
-        label { display: block; font-weight: 800; font-size: 1rem; color: #2d3436; margin-bottom: 10px; }
+        .input-group { margin-bottom: 30px; }
+        label { display: block; font-weight: 700; font-size: 1.05rem; color: #2d3436; margin-bottom: 12px; line-height: 1.4; }
         
         textarea {
-            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 12px;
-            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 80px;
-            transition: 0.3s; background: #fdfdfd;
+            width: 100%; padding: 18px; border: 2px solid #dfe6e9; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 100px;
+            transition: 0.3s; background: #fdfdfd; outline: none;
         }
-        textarea:focus { border-color: var(--step-active); outline: none; background: white; }
+        textarea:focus { border-color: var(--step-active); background: white; box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1); }
 
         /* Botões de Navegação */
         .nav-buttons {
-            display: flex; justify-content: space-between; margin-top: 30px;
+            display: flex; justify-content: space-between; margin-top: 40px; border-top: 1px solid #f1f2f6; padding-top: 20px;
         }
         .btn-nav {
-            padding: 12px 30px; border-radius: 30px; font-weight: 800; border: none; cursor: pointer; transition: 0.3s; font-size: 1rem;
+            padding: 12px 30px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; font-size: 1rem;
         }
         .btn-prev { background: #dfe6e9; color: #636e72; }
+        .btn-prev:hover { background: #b2bec3; color: white; }
+        
         .btn-next { background: var(--primary); color: white; display: flex; align-items: center; gap: 10px; }
-        .btn-next:hover { background: #34495e; transform: translateY(-2px); }
+        .btn-next:hover { background: #34495e; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* Helper Chips */
-        .chips { display: flex; gap: 10px; margin-bottom: 10px; }
+        .chips { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         .chip {
-            background: #f1f2f6; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; color: #636e72; font-weight: 600; border: 1px solid transparent;
+            background: #f1f2f6; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; color: #636e72; font-weight: 600; border: 1px solid transparent; transition: 0.2s;
         }
-        .chip:hover { background: var(--accent); color: var(--primary); border-color: var(--primary); }
+        .chip:hover { background: var(--primary); color: white; }
 
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- IMPRESSÃO --- */
         #print-content { display: none; }
 
         @media print {
-            body { background: white; padding: 0; }
+            body { background: white; padding: 0; font-family: 'Georgia', serif; }
             header button, .progress-container, .nav-buttons, .chips, .btn-back-home { display: none !important; }
             header { border: none; box-shadow: none; margin-bottom: 20px; padding: 0; }
             
-            .form-container, .context-bar { display: none; } /* Esconde o wizard */
+            .form-container, .context-bar { display: none; }
             
-            #print-content { display: block; font-family: sans-serif; }
-            .print-section { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 15px; }
-            .print-q { font-weight: bold; margin-bottom: 5px; color: #000; font-size: 0.9rem; }
-            .print-a { margin-bottom: 15px; color: #333; white-space: pre-wrap; font-size: 1rem; padding-left: 10px; border-left: 3px solid #eee; }
-            h2 { font-size: 1.2rem; border-bottom: 2px solid #000; margin-top: 20px; }
+            #print-content { display: block; width: 100%; }
+            
+            .print-section { margin-bottom: 25px; page-break-inside: avoid; }
+            .print-title { font-size: 1.2rem; border-bottom: 2px solid #000; margin-bottom: 15px; padding-bottom: 5px; text-transform: uppercase; }
+            
+            .print-item { margin-bottom: 15px; }
+            .print-q { font-weight: bold; font-size: 0.95rem; color: #444; margin-bottom: 3px; }
+            .print-a { font-size: 1.05rem; color: #000; padding-left: 15px; border-left: 3px solid #eee; line-height: 1.5; }
+        }
+        
+        /* Mobile */
+        @media (max-width: 600px) {
+            .btn-print span { display: none; }
+            .step-card { padding: 25px; }
+            .nav-buttons { flex-direction: column-reverse; gap: 15px; }
+            .btn-nav { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -158,31 +179,31 @@
     </header>
 
     <div class="progress-container">
-        <div class="progress-line"></div>
-        <div class="progress-step active" id="p1">1</div>
-        <div class="progress-step" id="p2">2</div>
-        <div class="progress-step" id="p3">3</div>
-        <div class="progress-step" id="p4">4</div>
+        <div class="progress-bg-line"></div>
+        <div class="progress-step active" onclick="goToStep(1)" id="p1">1</div>
+        <div class="progress-step" onclick="goToStep(2)" id="p2">2</div>
+        <div class="progress-step" onclick="goToStep(3)" id="p3">3</div>
+        <div class="progress-step" onclick="goToStep(4)" id="p4">4</div>
     </div>
 
     <div class="context-bar" id="contextBar">
-        <div class="context-label">Acusação:</div>
+        <div class="context-label"><i class="fa-solid fa-gavel"></i> Acusação:</div>
         <div class="context-text" id="contextText">...</div>
     </div>
 
     <div class="form-container">
         
         <div class="step-card active" id="step1">
-            <div class="step-title"><i class="fa-solid fa-gavel"></i> Fase 1: A Acusação</div>
+            <div class="step-title"><i class="fa-solid fa-file-contract"></i> Fase 1: A Acusação</div>
             
             <div class="input-group">
                 <label>1. De que "crime" você está se acusando? (Pensamento Negativo)</label>
-                <textarea id="q1" placeholder='Ex: "Eu sou um fracasso por ter cometido aquele erro."' oninput="updateContext()"></textarea>
+                <textarea id="q1" placeholder='Ex: "Eu sou um fracasso por ter cometido aquele erro no trabalho."' oninput="updateContext()"></textarea>
             </div>
             
             <div class="input-group">
                 <label>2. Qual "lei" foi infringida? Existe evidência incontestável?</label>
-                <textarea id="q2" placeholder='Ex: "A lei de que eu nunca posso errar." Não existe evidência real, apenas minha autocritica.'></textarea>
+                <textarea id="q2" placeholder='Ex: "A lei de que eu nunca posso errar." Não existe evidência real, apenas minha autocrítica.'></textarea>
             </div>
 
             <div class="nav-buttons" style="justify-content: flex-end;">
@@ -191,31 +212,32 @@
         </div>
 
         <div class="step-card" id="step2">
-            <div class="step-title"><i class="fa-solid fa-magnifying-glass"></i> Fase 2: A Investigação</div>
+            <div class="step-title"><i class="fa-solid fa-magnifying-glass-location"></i> Fase 2: A Investigação</div>
             
             <div class="input-group">
                 <label>3. Há outras explicações para o seu comportamento?</label>
                 <div class="chips">
-                    <span class="chip" onclick="addText('q3', 'Eu estava cansado.')">Cansaço</span>
-                    <span class="chip" onclick="addText('q3', 'Faltou informação.')">Falta de Info</span>
-                    <span class="chip" onclick="addText('q3', 'Estava sob pressão.')">Pressão</span>
+                    <span class="chip" onclick="addText('q3', 'Eu estava muito cansado.')">Cansaço</span>
+                    <span class="chip" onclick="addText('q3', 'Me faltava informação.')">Falta de Info</span>
+                    <span class="chip" onclick="addText('q3', 'Estava sob muita pressão.')">Pressão</span>
+                    <span class="chip" onclick="addText('q3', 'Foi um acidente.')">Acidente</span>
                 </div>
-                <textarea id="q3"></textarea>
+                <textarea id="q3" placeholder="Fatores atenuantes..."></textarea>
             </div>
 
             <div class="input-group">
-                <label>4. O acusado agiu de má-fé ou com malícia?</label>
-                <textarea id="q4" placeholder="Você teve a intenção de fazer algo ruim?"></textarea>
+                <label>4. O acusado agiu de má-fé ou com malícia intencional?</label>
+                <textarea id="q4" placeholder="Você teve a intenção real de fazer algo ruim?"></textarea>
             </div>
 
             <div class="input-group">
-                <label>5. Uma pessoa "razoável" agiria da mesma forma nessa situação?</label>
-                <textarea id="q5" placeholder="Se fosse um amigo seu, ele teria feito algo parecido?"></textarea>
+                <label>5. Uma pessoa "razoável" (um amigo) agiria da mesma forma nessa situação?</label>
+                <textarea id="q5" placeholder="Se fosse seu melhor amigo, ele teria feito algo parecido?"></textarea>
             </div>
 
             <div class="input-group">
-                <label>6. Existe mais alguém que compartilha a responsabilidade?</label>
-                <textarea id="q6" placeholder="Você é o único culpado ou havia fatores externos?"></textarea>
+                <label>6. Existe mais alguém ou algo que compartilha a responsabilidade?</label>
+                <textarea id="q6" placeholder="Você é o único culpado do universo ou havia fatores externos?"></textarea>
             </div>
 
             <div class="nav-buttons">
@@ -225,21 +247,21 @@
         </div>
 
         <div class="step-card" id="step3">
-            <div class="step-title"><i class="fa-solid fa-users"></i> Fase 3: O Teste do Júri</div>
+            <div class="step-title"><i class="fa-solid fa-users-viewfinder"></i> Fase 3: O Teste do Júri</div>
             
             <div class="input-group">
                 <label>7. Essas regras rígidas se aplicariam a todos ou só a você?</label>
-                <textarea id="q7" placeholder="Você julgaria outra pessoa tão severamente?"></textarea>
+                <textarea id="q7" placeholder="Você julgaria outra pessoa tão severamente pelo mesmo erro?"></textarea>
             </div>
 
             <div class="input-group">
                 <label>8. Dado que o promotor (sua mente) prove o caso, o acusado é culpado de algo TERRÍVEL?</label>
-                <textarea id="q8" placeholder="É um erro imperdoável ou apenas um erro humano?"></textarea>
+                <textarea id="q8" placeholder="É um erro imperdoável ou apenas um erro humano comum?"></textarea>
             </div>
 
             <div class="input-group">
                 <label>9. Um júri imparcial o condenaria?</label>
-                <textarea id="q9" placeholder="Pessoas neutras achariam que você merece punição?"></textarea>
+                <textarea id="q9" placeholder="Pessoas neutras achariam que você merece punição severa?"></textarea>
             </div>
 
             <div class="nav-buttons">
@@ -258,12 +280,12 @@
 
             <div class="input-group">
                 <label>11. Qual é a qualidade do caso contra você?</label>
-                <textarea id="q11" placeholder="As provas são sólidas ou baseadas em sentimentos?"></textarea>
+                <textarea id="q11" placeholder="As provas da acusação são sólidas ou baseadas apenas em sentimentos?"></textarea>
             </div>
 
-            <div class="input-group" style="background:#e0f7fa; padding:15px; border-radius:10px; border:1px solid #00acc1;">
-                <label style="color:#006064;">12. CONCLUSÃO / NOVA PERSPECTIVA:</label>
-                <textarea id="q12" placeholder="Escreva aqui sua nova visão sobre o evento, mais justa e racional." style="background:white;"></textarea>
+            <div class="input-group" style="background:#e8f6f3; padding:20px; border-radius:15px; border:2px solid #27ae60;">
+                <label style="color:#16a085; text-transform: uppercase;">12. Veredito Final (Nova Perspectiva):</label>
+                <textarea id="q12" placeholder="Escreva aqui sua nova visão sobre o evento, mais justa, racional e compassiva." style="background:white; min-height: 120px;"></textarea>
             </div>
 
             <div class="nav-buttons">
@@ -275,48 +297,47 @@
     </div>
 
     <div id="print-content">
-        <h1>Dossiê de Defesa Pessoal</h1>
-        <p><strong>Advogado de Defesa:</strong> O Próprio Paciente</p>
-        <hr>
+        <center>
+            <h1>Dossiê de Defesa Pessoal</h1>
+            <p><strong>Tribunal da Mente Racional</strong></p>
+        </center>
+        <hr style="margin: 20px 0;">
 
         <div class="print-section">
-            <h2>1. A Acusação</h2>
-            <div class="print-q">Crime / Acusação:</div>
-            <div class="print-a" id="p-q1"></div>
-            <div class="print-q">Lei Infringida / Evidências:</div>
-            <div class="print-a" id="p-q2"></div>
+            <div class="print-title">1. A Acusação</div>
+            <div class="print-item">
+                <div class="print-q">Crime / Pensamento Automático:</div>
+                <div class="print-a" id="p-q1"></div>
+            </div>
+            <div class="print-item">
+                <div class="print-q">Lei Infringida / Evidências da Acusação:</div>
+                <div class="print-a" id="p-q2"></div>
+            </div>
         </div>
 
         <div class="print-section">
-            <h2>2. Investigação dos Fatos</h2>
-            <div class="print-q">Outras explicações:</div>
-            <div class="print-a" id="p-q3"></div>
-            <div class="print-q">Houve má-fé?</div>
-            <div class="print-a" id="p-q4"></div>
-            <div class="print-q">Conduta de pessoa razoável?</div>
-            <div class="print-a" id="p-q5"></div>
-            <div class="print-q">Responsabilidade compartilhada?</div>
-            <div class="print-a" id="p-q6"></div>
+            <div class="print-title">2. A Investigação</div>
+            <div class="print-item"><div class="print-q">Explicações Alternativas:</div><div class="print-a" id="p-q3"></div></div>
+            <div class="print-item"><div class="print-q">Houve Má-fé?</div><div class="print-a" id="p-q4"></div></div>
+            <div class="print-item"><div class="print-q">Pessoa Razoável:</div><div class="print-a" id="p-q5"></div></div>
+            <div class="print-item"><div class="print-q">Responsabilidade Compartilhada:</div><div class="print-a" id="p-q6"></div></div>
         </div>
 
         <div class="print-section">
-            <h2>3. O Veredito do Júri</h2>
-            <div class="print-q">Aplicação universal das regras:</div>
-            <div class="print-a" id="p-q7"></div>
-            <div class="print-q">Gravidade do erro:</div>
-            <div class="print-a" id="p-q8"></div>
-            <div class="print-q">Decisão do Júri:</div>
-            <div class="print-a" id="p-q9"></div>
+            <div class="print-title">3. O Veredito do Júri</div>
+            <div class="print-item"><div class="print-q">Aplicação Universal:</div><div class="print-a" id="p-q7"></div></div>
+            <div class="print-item"><div class="print-q">Gravidade Real:</div><div class="print-a" id="p-q8"></div></div>
+            <div class="print-item"><div class="print-q">Opinião Imparcial:</div><div class="print-a" id="p-q9"></div></div>
         </div>
 
-        <div class="print-section">
-            <h2>4. Alegações Finais</h2>
-            <div class="print-q">Defesa:</div>
-            <div class="print-a" id="p-q10"></div>
-            <div class="print-q">Qualidade do caso da acusação:</div>
-            <div class="print-a" id="p-q11"></div>
-            <div class="print-q">CONCLUSÃO FINAL:</div>
-            <div class="print-a" id="p-q12" style="font-weight:bold;"></div>
+        <div class="print-section" style="background:#f9f9f9; padding:15px; border:1px solid #ddd;">
+            <div class="print-title">4. Sentença Final</div>
+            <div class="print-item"><div class="print-q">Argumento da Defesa:</div><div class="print-a" id="p-q10"></div></div>
+            <div class="print-item"><div class="print-q">Qualidade da Acusação:</div><div class="print-a" id="p-q11"></div></div>
+            <div class="print-item" style="margin-top:20px;">
+                <div class="print-q" style="font-size:1.2rem; color:#27ae60;">CONCLUSÃO:</div>
+                <div class="print-a" id="p-q12" style="font-weight:bold; font-size:1.2rem; border-left-color:#27ae60;"></div>
+            </div>
         </div>
     </div>
 
@@ -330,37 +351,47 @@
     <script>
         AOS.init();
 
+        let currentStep = 1;
+
         function updateContext() {
             const val = document.getElementById('q1').value;
             const bar = document.getElementById('contextBar');
             const txt = document.getElementById('contextText');
             
             if(val.length > 5) {
-                txt.innerText = val.substring(0, 60) + (val.length > 60 ? "..." : "");
+                txt.innerText = val;
                 bar.style.display = 'flex';
             }
         }
 
         function showStep(step) {
-            // Oculta todos
+            // Validação simples (opcional: impedir avanço se vazio)
+            
             document.querySelectorAll('.step-card').forEach(el => el.classList.remove('active'));
-            // Mostra atual
             document.getElementById(`step${step}`).classList.add('active');
             
+            currentStep = step;
+
             // Atualiza barra
             document.querySelectorAll('.progress-step').forEach((el, idx) => {
-                if (idx + 1 < step) {
+                const stepNum = idx + 1;
+                el.classList.remove('active', 'completed');
+                
+                if (stepNum < step) {
                     el.classList.add('completed');
-                    el.classList.remove('active');
-                } else if (idx + 1 === step) {
+                } else if (stepNum === step) {
                     el.classList.add('active');
-                    el.classList.remove('completed');
-                } else {
-                    el.classList.remove('active', 'completed');
                 }
             });
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Permite clicar na bolinha se já tiver passado por ela
+        function goToStep(step) {
+            if(step < currentStep || document.getElementById(`p${step}`).classList.contains('completed')) {
+                showStep(step);
+            }
         }
 
         function nextStep(step) { showStep(step); }
@@ -372,10 +403,9 @@
         }
 
         function prepareAndPrint() {
-            // Mapeia os 12 campos
             for (let i = 1; i <= 12; i++) {
                 const inputVal = document.getElementById(`q${i}`).value;
-                document.getElementById(`p-q${i}`).innerText = inputVal || "Não respondido.";
+                document.getElementById(`p-q${i}`).innerText = inputVal || "---";
             }
             window.print();
         }
