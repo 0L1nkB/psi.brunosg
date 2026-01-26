@@ -16,6 +16,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        /* --- CORREÇÃO DE DESIGN (CRUCIAL) --- */
+        * { box-sizing: border-box; }
+
         :root {
             --bg-color: #f0f8ff;
             --prosecution: #e17055; /* Favor do pensamento (Negativo/Acusação) */
@@ -75,9 +78,9 @@
         }
 
         .side-card {
-            background: white; padding: 20px; border-radius: 20px;
+            background: white; padding: 25px; border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; flex-direction: column;
-            border-top: 5px solid;
+            border-top: 6px solid;
         }
         .side-card.pros { border-color: var(--prosecution); }
         .side-card.def { border-color: var(--defense); }
@@ -112,9 +115,11 @@
 
         /* INPUTS PEQUENOS */
         .input-row { display: flex; gap: 10px; }
-        .input-row input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
+        .input-row input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #ddd; outline: none; transition: 0.3s; }
+        .input-row input:focus { border-color: #aaa; }
+        
         .btn-mini-add {
-            width: 40px; border-radius: 8px; border: none; color: white; font-size: 1.2rem; cursor: pointer;
+            width: 45px; border-radius: 10px; border: none; color: white; font-size: 1.2rem; cursor: pointer;
         }
         .pros .btn-mini-add { background: var(--prosecution); }
         .def .btn-mini-add { background: var(--defense); }
@@ -139,8 +144,9 @@
 
         textarea.conclusion {
             width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 10px;
-            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 100px;
+            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 100px; outline: none;
         }
+        textarea.conclusion:focus { border-color: #636e72; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -167,8 +173,6 @@
             /* Esconde a interface interativa */
             .courtroom, .verdict-section { display: none; }
             .case-file { box-shadow: none; border: 1px solid #000; }
-            
-            /* Mostra apenas as estrelas ativas no modo texto se quiser, ou filtra na tabela */
         }
     </style>
 </head>
