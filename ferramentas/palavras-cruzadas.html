@@ -16,7 +16,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* [MANTENDO O DESIGN PADRÃO APROVADO] */
         :root {
             --primary: #2c3e50;
             --accent: #e67e22;
@@ -24,7 +23,7 @@
             --card-bg: #ffffff;
             --text-main: #2c3e50;
             --text-light: #7f8c8d;
-            --cell-size: 34px; /* Levemente menor para caber grids maiores */
+            --cell-size: 32px;
             --cell-blocked: #2d3436;
             --correct-bg: #27ae60;
             --wrong-bg: #c0392b;
@@ -41,6 +40,7 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
+        /* HEADER */
         header {
             background: var(--card-bg); padding: 20px 40px; border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;
@@ -58,6 +58,7 @@
         }
         .btn-print:hover { background: var(--primary); color: white; }
 
+        /* CONTROLS */
         .control-panel {
             width: 100%; max-width: 1200px; background: var(--card-bg);
             padding: 15px; border-radius: 15px; margin-bottom: 20px;
@@ -68,7 +69,7 @@
         .select-wrapper { flex: 2; min-width: 300px; }
         select {
             width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #dfe6e9;
-            font-family: inherit; font-size: 0.95rem; font-weight: 700; color: var(--text-main);
+            font-family: inherit; font-size: 0.9rem; font-weight: 700; color: var(--text-main);
             cursor: pointer;
         }
 
@@ -83,16 +84,17 @@
         .btn-answers { background: #f39c12; }
         .btn-new { background: var(--primary); }
 
+        /* GAME LAYOUT */
         .game-layout {
-            display: grid; grid-template-columns: auto 320px; gap: 20px;
+            display: grid; grid-template-columns: auto 350px; gap: 20px;
             width: 100%; max-width: 1300px; align-items: start;
         }
 
         .grid-wrapper {
-            background: var(--primary); padding: 10px; border-radius: 15px;
+            background: var(--primary); padding: 15px; border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: auto; display: flex; justify-content: center; align-items: center;
-            min-height: 500px; position: relative;
+            min-height: 550px; position: relative;
         }
 
         #crosswordGrid {
@@ -118,10 +120,11 @@
         .cell.wrong input { background: #ffebee; color: var(--wrong-bg); }
 
         .cell-num {
-            position: absolute; top: 1px; left: 2px; font-size: 8px;
+            position: absolute; top: 1px; left: 2px; font-size: 9px;
             color: var(--primary); font-weight: 800; pointer-events: none;
         }
 
+        /* CLUES */
         .clues-panel {
             background: white; border-radius: 15px; padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 600px;
@@ -130,6 +133,10 @@
 
         .clues-content { flex: 1; overflow-y: auto; padding-right: 5px; }
         
+        /* Scrollbar estilizada */
+        .clues-content::-webkit-scrollbar { width: 5px; }
+        .clues-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 5px; }
+
         .clue-group-title {
             color: var(--primary); border-bottom: 2px solid #eee; margin: 15px 0 5px 0;
             font-weight: 800; font-size: 0.9rem; text-transform: uppercase;
@@ -141,21 +148,22 @@
         }
         .clue-item:hover { background: #f7f9fa; border-left-color: var(--accent); }
         
-        /* Modal Gabarito */
+        /* MODAL */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 2000; display: none;
             align-items: center; justify-content: center;
         }
         .modal-box {
-            background: white; width: 90%; max-width: 500px; max-height: 80vh;
+            background: white; width: 90%; max-width: 600px; max-height: 80vh;
             border-radius: 15px; padding: 25px; overflow-y: auto;
         }
+        .answer-row { margin-bottom: 5px; border-bottom: 1px solid #eee; padding: 5px 0; }
 
         @media (max-width: 900px) {
             .game-layout { grid-template-columns: 1fr; }
             .grid-wrapper { min-height: 400px; }
-            .clues-panel { height: auto; max-height: 300px; }
+            .clues-panel { height: auto; max-height: 400px; }
             .btn-print span { display: none; }
         }
 
@@ -176,83 +184,87 @@
     <header>
         <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
         <h1>Cruzadinha Clínica DSM-5</h1>
-        <div class="subtitle">Exercício de Psicoeducação e Fixação de Sintomas</div>
+        <div class="subtitle">Exercício de Fixação de Critérios Diagnósticos</div>
     </header>
 
     <div class="control-panel">
         <div class="select-wrapper">
             <select id="levelSelect" onchange="generateGame()">
-                <optgroup label="Neurodesenvolvimento">
-                    <option value="tea">Transtorno do Espectro Autista (TEA)</option>
+                <optgroup label="1. Neurodesenvolvimento">
+                    <option value="tea">TEA (Autismo)</option>
                     <option value="tdah">TDAH</option>
                 </optgroup>
-                <optgroup label="Espectro da Esquizofrenia">
+                <optgroup label="2. Espectro da Esquizofrenia">
                     <option value="esquizofrenia">Esquizofrenia</option>
                 </optgroup>
-                <optgroup label="Humor">
+                <optgroup label="3. Humor">
                     <option value="bipolar">Transtorno Bipolar</option>
-                    <option value="depressao">Transtorno Depressivo Maior</option>
+                    <option value="depressao_maior">Transtorno Depressivo Maior</option>
                     <option value="tdpm">Disfórico Pré-Menstrual</option>
                 </optgroup>
-                <optgroup label="Ansiedade">
+                <optgroup label="4. Ansiedade">
                     <option value="ans_separacao">Ansiedade de Separação</option>
                     <option value="ans_social">Ansiedade Social (Fobia)</option>
                     <option value="panico">Transtorno do Pânico</option>
                     <option value="agorafobia">Agorafobia</option>
-                    <option value="tag">Ansiedade Generalizada (TAG)</option>
+                    <option value="tag">TAG (Generalizada)</option>
                 </optgroup>
-                <optgroup label="Obsessivo-Compulsivo">
+                <optgroup label="5. TOC & Relacionados">
                     <option value="toc">TOC</option>
                     <option value="dismorfico">Dismórfico Corporal</option>
                     <option value="acumulacao">Acumulação</option>
                     <option value="tricotilomania">Tricotilomania</option>
                 </optgroup>
-                <optgroup label="Trauma e Estresse">
+                <optgroup label="6. Trauma & Estresse">
                     <option value="apego_reativo">Apego Reativo</option>
-                    <option value="tept">TEPT (Pós-Traumático)</option>
+                    <option value="tept">TEPT</option>
                     <option value="estresse_agudo">Estresse Agudo</option>
                 </optgroup>
-                <optgroup label="Alimentares">
+                <optgroup label="7. Alimentares">
                     <option value="pica">Pica</option>
                     <option value="ruminacao">Ruminação</option>
-                    <option value="arfid">Restritivo/Evitativo (ARFID)</option>
+                    <option value="arfid">ARFID (Restritivo/Evitativo)</option>
                     <option value="anorexia">Anorexia Nervosa</option>
                     <option value="bulimia">Bulimia Nervosa</option>
                     <option value="compulsao_alim">Compulsão Alimentar</option>
                 </optgroup>
-                <optgroup label="Sono-Vigília">
+                <optgroup label="8. Sono-Vigília">
                     <option value="insonia">Insônia</option>
                     <option value="hipersonolencia">Hipersonolência</option>
                     <option value="narcolepsia">Narcolepsia</option>
                 </optgroup>
-                <optgroup label="Disruptivos e Conduta">
-                    <option value="tod">Opositivo Desafiador (TOD)</option>
+                <optgroup label="9. Disruptivos & Conduta">
+                    <option value="tod">TOD (Opositivo Desafiador)</option>
                     <option value="explosivo">Explosivo Intermitente</option>
                     <option value="conduta">Transtorno da Conduta</option>
                     <option value="piromania">Piromania</option>
                     <option value="cleptomania">Cleptomania</option>
                 </optgroup>
-                <optgroup label="Personalidade (Cluster A)">
+                <optgroup label="10. Substâncias">
+                    <option value="substancias">Uso de Substâncias (Geral)</option>
+                    <option value="jogo">Jogo de Azar (Gambling)</option>
+                </optgroup>
+                <optgroup label="11. Personalidade - Cluster A">
                     <option value="paranoide">Paranoide</option>
                     <option value="esquizoide">Esquizoide</option>
                     <option value="esquizotipica">Esquizotípica</option>
                 </optgroup>
-                <optgroup label="Personalidade (Cluster B)">
+                <optgroup label="11. Personalidade - Cluster B">
                     <option value="antissocial">Antissocial</option>
                     <option value="borderline">Borderline</option>
                     <option value="histrionica">Histriônica</option>
                     <option value="narcisista">Narcisista</option>
                 </optgroup>
-                <optgroup label="Personalidade (Cluster C)">
+                <optgroup label="11. Personalidade - Cluster C">
                     <option value="evitativa">Evitativa</option>
                     <option value="dependente">Dependente</option>
-                    <option value="ob_compulsiva">Obsessivo-Compulsiva (TPOC)</option>
+                    <option value="ob_compulsiva">Obsessivo-Compulsiva</option>
                 </optgroup>
             </select>
         </div>
 
         <button class="btn-game btn-new" onclick="generateGame()">
-            <i class="fa-solid fa-shuffle"></i> Gerar Novo
+            <i class="fa-solid fa-shuffle"></i> Novo Jogo
         </button>
         <button class="btn-game btn-check" onclick="checkGame()">
             <i class="fa-solid fa-check"></i> Verificar
@@ -293,110 +305,548 @@
 
     <script>
         // ============================================
-        // 📚 BANCO DE DADOS GRANULAR (DSM-5)
+        // 📚 BANCO DE DADOS DETALHADO (DSM-5)
         // ============================================
         const DB = {
-            // NEURO
+            // 1. NEURODESENVOLVIMENTO
             tea: [
-                {t:"ECOLALIA", d:"Repetição de falas."}, {t:"ROTINA", d:"Apego excessivo a padrões."}, {t:"HIPERFOCO", d:"Interesse restrito e intenso."},
-                {t:"SENSORIAL", d:"Hipersensibilidade a estímulos."}, {t:"ISOLAMENTO", d:"Dificuldade na interação social."}, {t:"LITERAL", d:"Dificuldade com metáforas."},
-                {t:"RIGIDEZ", d:"Inflexibilidade cognitiva."}, {t:"ESTEREO", d:"Movimentos repetitivos (ex: flapping)."}, {t:"CONTATO", d:"Evita olhar nos olhos."}, {t:"ATIPICO", d:"Desenvolvimento não usual."}
+                {t:"ECOLALIA", d:"Repetição de palavras ou frases."}, 
+                {t:"HIPERFOCO", d:"Interesse intenso e restrito."}, 
+                {t:"ROTINA", d:"Apego excessivo a rituais."}, 
+                {t:"SENSORIAL", d:"Hipersensibilidade a sons ou luzes."}, 
+                {t:"ISOLAMENTO", d:"Dificuldade na reciprocidade social."}, 
+                {t:"LITERAL", d:"Dificuldade em entender metáforas."}, 
+                {t:"ESTEREO", d:"Movimentos estereotipados (flapping)."}, 
+                {t:"CONTATO", d:"Evita olhar nos olhos."}, 
+                {t:"RIGIDEZ", d:"Inflexibilidade para mudanças."}, 
+                {t:"ATIPICO", d:"Desenvolvimento não usual da fala."}
             ],
             tdah: [
-                {t:"DESATENCAO", d:"Dificuldade em manter o foco."}, {t:"IMPULSO", d:"Agir sem pensar."}, {t:"HIPERATIVO", d:"Agitação motora excessiva."},
-                {t:"ESQUECER", d:"Perde objetos com frequência."}, {t:"INTERROMPER", d:"Fala por cima dos outros."}, {t:"INQUIETO", d:"Não consegue ficar parado."},
-                {t:"ERROS", d:"Comete falhas por descuido."}, {t:"MENTAL", d:"Evita esforço cognitivo sustentado."}, {t:"PRAZO", d:"Dificuldade com gestão de tempo."}, {t:"FOCO", d:"Dificuldade em detalhes."}
+                {t:"DESATENCAO", d:"Dificuldade em manter o foco em tarefas."}, 
+                {t:"HIPERATIVO", d:"Agitação motora excessiva."}, 
+                {t:"IMPULSO", d:"Agir sem pensar nas consequências."}, 
+                {t:"ESQUECER", d:"Perde objetos necessários."}, 
+                {t:"INTERROMPER", d:"Fala por cima dos outros."}, 
+                {t:"INQUIETO", d:"Não consegue ficar sentado."}, 
+                {t:"ERROS", d:"Comete falhas por descuido."}, 
+                {t:"MENTAL", d:"Evita esforço mental sustentado."}, 
+                {t:"PRAZO", d:"Dificuldade em cumprir horários."}, 
+                {t:"DESORGANIZA", d:"Caos em tarefas e atividades."}
             ],
-            // ESQUIZOFRENIA
+            // 2. ESQUIZOFRENIA
             esquizofrenia: [
-                {t:"DELIRIO", d:"Crença falsa e fixa."}, {t:"ALUCINACAO", d:"Ver/ouvir o que não existe."}, {t:"DESORGANIZA", d:"Discurso ou comportamento confuso."},
-                {t:"CATATONIA", d:"Imobilidade ou agitação."}, {t:"NEGATIVOS", d:"Sintomas como apatia e abulia."}, {t:"AFETO", d:"Embotamento emocional."},
-                {t:"PARANOIA", d:"Sentimento de perseguição."}, {t:"SURTO", d:"Quebra com a realidade."}, {t:"LOGICA", d:"Falha no raciocínio."}, {t:"SOCIAL", d:"Retraimento intenso."}
+                {t:"DELIRIO", d:"Crença fixa e falsa."}, 
+                {t:"ALUCINACAO", d:"Percepção sem estímulo (ouvir vozes)."}, 
+                {t:"CATATONIA", d:"Imobilidade ou agitação motora."}, 
+                {t:"DESORGANIZA", d:"Discurso ou pensamento confuso."}, 
+                {t:"NEGATIVOS", d:"Sintomas como apatia e abulia."}, 
+                {t:"AFETO", d:"Embotamento emocional."}, 
+                {t:"PARANOIA", d:"Sentimento de perseguição."}, 
+                {t:"SURTO", d:"Episódio agudo de psicose."}, 
+                {t:"LOGICA", d:"Falha no raciocínio."}, 
+                {t:"SOCIAL", d:"Retraimento e isolamento."}
             ],
-            // HUMOR
+            // 3. HUMOR
             bipolar: [
-                {t:"MANIA", d:"Fase de euforia extrema."}, {t:"DEPRESSAO", d:"Fase de tristeza profunda."}, {t:"GRANDEZA", d:"Sentimento de poder infinito."},
-                {t:"SONO", d:"Necessidade diminuída de dormir."}, {t:"FALA", d:"Pressão para falar (verborragia)."}, {t:"RISCO", d:"Comportamentos perigosos."},
-                {t:"COMPRAS", d:"Gastos excessivos na mania."}, {t:"IDEIAS", d:"Fuga de pensamentos."}, {t:"LITIO", d:"Estabilizador de humor comum."}, {t:"MISTO", d:"Sintomas misturados."}
+                {t:"MANIA", d:"Fase de euforia e energia excessiva."}, 
+                {t:"DEPRESSAO", d:"Fase de tristeza e baixa energia."}, 
+                {t:"GRANDEZA", d:"Sentimento de poder ou importância inflado."}, 
+                {t:"SONO", d:"Necessidade diminuída de dormir."}, 
+                {t:"FALA", d:"Pressão para falar (verborragia)."}, 
+                {t:"RISCO", d:"Comportamentos perigosos e impulsivos."}, 
+                {t:"COMPRAS", d:"Gastos excessivos na fase maníaca."}, 
+                {t:"IDEIAS", d:"Fuga de pensamentos."}, 
+                {t:"LITIO", d:"Estabilizador de humor comum."}, 
+                {t:"OSCILACAO", d:"Mudança cíclica de humor."}
             ],
-            depressao: [
-                {t:"TRISTEZA", d:"Humor deprimido na maior parte do dia."}, {t:"ANEDONIA", d:"Perda de prazer nas atividades."}, {t:"PESO", d:"Ganho ou perda significativa."},
-                {t:"INSONIA", d:"Dificuldade de sono."}, {t:"CULPA", d:"Sentimento de inutilidade excessiva."}, {t:"FADIGA", d:"Perda de energia diária."},
-                {t:"CONCENTRA", d:"Indecisão ou falta de foco."}, {t:"MORTE", d:"Pensamentos recorrentes sobre o fim."}, {t:"LENTIDAO", d:"Retardo psicomotor."}, {t:"VAZIO", d:"Sensação interna descrita."}
+            depressao_maior: [
+                {t:"TRISTEZA", d:"Humor deprimido na maior parte do dia."}, 
+                {t:"ANEDONIA", d:"Perda de interesse ou prazer."}, 
+                {t:"PESO", d:"Ganho ou perda significativa sem dieta."}, 
+                {t:"INSONIA", d:"Dificuldade para dormir quase todos os dias."}, 
+                {t:"CULPA", d:"Sentimento de inutilidade excessiva."}, 
+                {t:"FADIGA", d:"Perda de energia ou cansaço."}, 
+                {t:"CONCENTRA", d:"Capacidade diminuída de pensar."}, 
+                {t:"MORTE", d:"Pensamentos recorrentes sobre o fim."}, 
+                {t:"LENTIDAO", d:"Retardo psicomotor observável."}, 
+                {t:"VAZIO", d:"Sensação interna frequente."}
             ],
-            // ANSIEDADE
+            tdpm: [
+                {t:"LABILIDADE", d:"Mudanças rápidas de humor."}, 
+                {t:"IRRITA", d:"Irritabilidade ou raiva persistente."}, 
+                {t:"HUMOR", d:"Deprimido ou sem esperança."}, 
+                {t:"ANSIEDADE", d:"Tensão acentuada."}, 
+                {t:"INTERESSE", d:"Diminuição nas atividades habituais."}, 
+                {t:"CONCENTRA", d:"Dificuldade subjetiva de foco."}, 
+                {t:"LETARGIA", d:"Fatigabilidade fácil."}, 
+                {t:"APETITE", d:"Fissura por carboidratos."}, 
+                {t:"INCHACO", d:"Sensação física comum."}, 
+                {t:"MAMA", d:"Sensibilidade dolorosa."}
+            ],
+            // 4. ANSIEDADE
+            ans_separacao: [
+                {t:"AFASTAMENTO", d:"Sofrimento ao sair de casa."}, 
+                {t:"PERDA", d:"Medo de perder figuras de apego."}, 
+                {t:"PESADELO", d:"Sonhos repetidos sobre separação."}, 
+                {t:"CAMA", d:"Recusa em dormir longe de casa."}, 
+                {t:"FISICO", d:"Dor de barriga ou cabeça ao separar."}, 
+                {t:"SOZINHO", d:"Medo excessivo de ficar só."}, 
+                {t:"ESCOLA", d:"Relutância em ir à aula."}, 
+                {t:"DANO", d:"Medo de acidente com os pais."}, 
+                {t:"APEGO", d:"Necessidade constante de proximidade."}, 
+                {t:"CHORO", d:"Reação comum na separação."}
+            ],
+            ans_social: [
+                {t:"JULGAMENTO", d:"Medo de ser avaliado negativamente."}, 
+                {t:"ESTRANHOS", d:"Ansiedade com pessoas não familiares."}, 
+                {t:"VERGONHA", d:"Medo de ser humilhado."}, 
+                {t:"FALAR", d:"Dificuldade de falar em público."}, 
+                {t:"COMER", d:"Medo de comer na frente de outros."}, 
+                {t:"TREMER", d:"Sintoma físico visível."}, 
+                {t:"RUBOR", d:"Ficar vermelho de vergonha."}, 
+                {t:"EVITACAO", d:"Fugir de situações sociais."}, 
+                {t:"CRITICA", d:"Hipersensibilidade a rejeição."}, 
+                {t:"INTERACAO", d:"Dificuldade em iniciar conversas."}
+            ],
             panico: [
-                {t:"CORACAO", d:"Taquicardia ou palpitações."}, {t:"SUOR", d:"Sudorese intensa."}, {t:"TREMOR", d:"Abalos musculares."},
-                {t:"AR", d:"Sensação de falta de ar."}, {t:"DOR", d:"Desconforto no peito."}, {t:"NAUSEA", d:"Desconforto abdominal."},
-                {t:"TONTURA", d:"Instabilidade ou desmaio."}, {t:"REALIDADE", d:"Desrealização (irrealidade)."}, {t:"CONTROLE", d:"Medo de enlouquecer."}, {t:"MORTE", d:"Medo iminente de morrer."}
+                {t:"CORACAO", d:"Palpitações ou taquicardia."}, 
+                {t:"SUOR", d:"Sudorese intensa repentina."}, 
+                {t:"TREMOR", d:"Abalos musculares visíveis."}, 
+                {t:"AR", d:"Sensação de falta de ar."}, 
+                {t:"SUFOCAR", d:"Sensação de asfixia."}, 
+                {t:"DOR", d:"Desconforto torácico."}, 
+                {t:"NAUSEA", d:"Desconforto abdominal."}, 
+                {t:"TONTURA", d:"Instabilidade ou desmaio."}, 
+                {t:"REALIDADE", d:"Desrealização (sentir que não é real)."}, 
+                {t:"MORTE", d:"Medo iminente de morrer."}
+            ],
+            agorafobia: [
+                {t:"TRANSPORTE", d:"Medo de ônibus, trem ou avião."}, 
+                {t:"ABERTO", d:"Medo de estacionamentos ou pontes."}, 
+                {t:"FECHADO", d:"Medo de lojas ou cinemas."}, 
+                {t:"FILA", d:"Medo de esperar em pé."}, 
+                {t:"MULTIDAO", d:"Medo de estar no meio de gente."}, 
+                {t:"SOZINHO", d:"Medo de sair de casa desacompanhado."}, 
+                {t:"FUGA", d:"Medo de não conseguir escapar."}, 
+                {t:"SOCORRO", d:"Medo de não ter ajuda disponível."}, 
+                {t:"CASA", d:"Lugar seguro (refúgio)."}, 
+                {t:"EVITACAO", d:"Deixar de ir aos lugares temidos."}
             ],
             tag: [
-                {t:"PREOCUPA", d:"Expectativa apreensiva excessiva."}, {t:"CONTROLE", d:"Dificuldade em controlar a preocupação."}, {t:"NERVOS", d:"Inquietação ou 'nervos à flor da pele'."},
-                {t:"CANSACO", d:"Fadigabilidade fácil."}, {t:"BRANCO", d:"Dificuldade de concentrar a mente."}, {t:"IRRITA", d:"Irritabilidade fácil."},
-                {t:"TENSAO", d:"Rigidez muscular."}, {t:"SONO", d:"Perturbação do descanso."}, {t:"FUTURO", d:"Foco excessivo no 'e se'."}, {t:"SOMATIZA", d:"Sintomas físicos diversos."}
+                {t:"PREOCUPA", d:"Expectativa apreensiva excessiva."}, 
+                {t:"CONTROLE", d:"Dificuldade de controlar a preocupação."}, 
+                {t:"NERVOS", d:"Inquietação ou nervos à flor da pele."}, 
+                {t:"CANSACO", d:"Fadigabilidade fácil."}, 
+                {t:"BRANCO", d:"Dificuldade de concentrar a mente."}, 
+                {t:"IRRITA", d:"Irritabilidade fácil."}, 
+                {t:"TENSAO", d:"Rigidez muscular."}, 
+                {t:"SONO", d:"Perturbação do descanso."}, 
+                {t:"FUTURO", d:"Foco excessivo no 'e se'."}, 
+                {t:"SOMATIZA", d:"Sintomas físicos diversos."}
             ],
-            // TOC
+            // 5. TOC
             toc: [
-                {t:"OBSESSAO", d:"Pensamento intrusivo e indesejado."}, {t:"COMPULSAO", d:"Ato repetitivo para aliviar ansiedade."}, {t:"LIMPEZA", d:"Lavagem excessiva."},
-                {t:"SIMETRIA", d:"Necessidade de ordem perfeita."}, {t:"VERIFICA", d:"Checar portas/gás repetidamente."}, {t:"CONTAGEM", d:"Contar objetos mentalmente."},
-                {t:"DUVIDA", d:"Incerteza patológica."}, {t:"RITUAL", d:"Regras rígidas de execução."}, {t:"ALIVIO", d:"Sensação temporária pós-ritual."}, {t:"TEMPO", d:"Consome mais de 1h por dia."}
+                {t:"OBSESSAO", d:"Pensamento intrusivo e indesejado."}, 
+                {t:"COMPULSAO", d:"Ato repetitivo para aliviar ansiedade."}, 
+                {t:"LIMPEZA", d:"Lavagem excessiva das mãos."}, 
+                {t:"SIMETRIA", d:"Necessidade de ordem perfeita."}, 
+                {t:"VERIFICA", d:"Checar portas/gás repetidamente."}, 
+                {t:"CONTAGEM", d:"Contar objetos mentalmente."}, 
+                {t:"DUVIDA", d:"Incerteza patológica constante."}, 
+                {t:"RITUAL", d:"Regras rígidas de execução."}, 
+                {t:"ALIVIO", d:"Sensação temporária pós-ritual."}, 
+                {t:"INTRUSIVO", d:"Natureza do pensamento obsessivo."}
             ],
-            // TRAUMA
+            dismorfico: [
+                {t:"DEFEITO", d:"Foco em falha física imaginada."}, 
+                {t:"APARENCIA", d:"Preocupação excessiva com o corpo."}, 
+                {t:"ESPELHO", d:"Verificação compulsiva ou evitação."}, 
+                {t:"TOCAR", d:"Cutucar a pele ou arrumar cabelo."}, 
+                {t:"COMPARAR", d:"Medir-se em relação aos outros."}, 
+                {t:"CAMUFLAR", d:"Usar maquiagem/roupa para esconder."}, 
+                {t:"FEIO", d:"Crença de ser deformado."}, 
+                {t:"ROSTO", d:"Foco comum (nariz, pele)."}, 
+                {t:"CIRURGIA", d:"Busca excessiva por procedimentos."}, 
+                {t:"FOCO", d:"Atenção seletiva ao 'defeito'."}
+            ],
+            acumulacao: [
+                {t:"DESCARTE", d:"Dificuldade de jogar coisas fora."}, 
+                {t:"GUARDAR", d:"Necessidade de salvar itens."}, 
+                {t:"ANGUSTIA", d:"Sofrimento ao se desfazer de algo."}, 
+                {t:"BAGUNCA", d:"Acúmulo que congestiona a casa."}, 
+                {t:"VALOR", d:"Atribuição excessiva aos objetos."}, 
+                {t:"SENTIMENTAL", d:"Apego emocional aos itens."}, 
+                {t:"ESPACO", d:"Perda da área habitável."}, 
+                {t:"SEGURANCA", d:"Risco de incêndio ou queda."}, 
+                {t:"COMPRA", d:"Aquisição excessiva de itens."}, 
+                {t:"CAOS", d:"Desorganização extrema."}
+            ],
+            tricotilomania: [
+                {t:"ARRANCAR", d:"Puxar cabelos ou pelos."}, 
+                {t:"CABELO", d:"Local mais comum (couro cabeludo)."}, 
+                {t:"SOBRANCELHA", d:"Outro local comum."}, 
+                {t:"FALHA", d:"Perda capilar visível."}, 
+                {t:"TENSAO", d:"Sentimento antes de arrancar."}, 
+                {t:"PRAZER", d:"Alívio ou gratificação ao arrancar."}, 
+                {t:"AUTOMATICO", d:"Fazer sem perceber."}, 
+                {t:"FOCADO", d:"Fazer com atenção plena."}, 
+                {t:"VERGONHA", d:"Sentimento social associado."}, 
+                {t:"CONTROLE", d:"Tentativas falhas de parar."}
+            ],
+            // 6. TRAUMA
+            apego_reativo: [
+                {t:"INIBIDO", d:"Comportamento socialmente retraído."}, 
+                {t:"CONFORTO", d:"Não busca apoio quando angustiado."}, 
+                {t:"RESPOSTA", d:"Não responde ao consolo."}, 
+                {t:"MEDO", d:"Afeto negativo inexplicado."}, 
+                {t:"IRRITA", d:"Irritabilidade sem causa aparente."}, 
+                {t:"TRISTEZA", d:"Episódios de choro durante interação."}, 
+                {t:"CUIDADOR", d:"Falha na relação com adultos."}, 
+                {t:"NEGLIGENCIA", d:"Histórico de falta de cuidado."}, 
+                {t:"SOCIAL", d:"Mínima resposta aos outros."}, 
+                {t:"AFETO", d:"Emoção positiva limitada."}
+            ],
             tept: [
-                {t:"FLASHBACK", d:"Reviver o evento traumatico."}, {t:"PESADELO", d:"Sonhos angustiantes recorrentes."}, {t:"EVITACAO", d:"Fugir de estímulos associados."},
-                {t:"HUMOR", d:"Estado emocional negativo persistente."}, {t:"ALERTA", d:"Hipervigilância constante."}, {t:"SUSTO", d:"Sobressalto exagerado."},
-                {t:"MEMORIA", d:"Amnésia de partes do trauma."}, {t:"CULPA", d:"Distorção cognitiva sobre a causa."}, {t:"SONO", d:"Dificuldade para dormir."}, {t:"RAIVA", d:"Explosões de agressividade."}
+                {t:"FLASHBACK", d:"Reviver o trauma como real."}, 
+                {t:"PESADELO", d:"Sonhos angustiantes recorrentes."}, 
+                {t:"EVITACAO", d:"Fugir de estímulos associados."}, 
+                {t:"HUMOR", d:"Estado emocional negativo."}, 
+                {t:"ALERTA", d:"Hipervigilância constante."}, 
+                {t:"SUSTO", d:"Resposta de sobressalto exagerada."}, 
+                {t:"MEMORIA", d:"Amnésia de partes do trauma."}, 
+                {t:"CULPA", d:"Crença distorcida sobre a causa."}, 
+                {t:"SONO", d:"Dificuldade para dormir."}, 
+                {t:"RAIVA", d:"Explosões de agressividade."}
             ],
-            // ALIMENTAR
+            estresse_agudo: [
+                {t:"INTRUSAO", d:"Memórias invadem a mente."}, 
+                {t:"HUMOR", d:"Incapacidade de felicidade."}, 
+                {t:"DISSOCIA", d:"Sensação de irrealidade."}, 
+                {t:"EVITACAO", d:"Esforço para não lembrar."}, 
+                {t:"ALERTA", d:"Vigilância aumentada."}, 
+                {t:"TRAUMA", d:"Exposição a evento real."}, 
+                {t:"SONHO", d:"Conteúdo afeta o sono."}, 
+                {t:"ANGUSTIA", d:"Sofrimento psicológico intenso."}, 
+                {t:"DIAS", d:"Duração de 3 dias a 1 mês."}, 
+                {t:"MEMORIA", d:"Falha em recordar detalhes."}
+            ],
+            // 7. ALIMENTAR
+            pica: [
+                {t:"INGESTAO", d:"Comer substâncias não nutritivas."}, 
+                {t:"TERRA", d:"Exemplo: Geofagia."}, 
+                {t:"GELO", d:"Exemplo: Pagofagia."}, 
+                {t:"CABELO", d:"Exemplo: Tricofagia."}, 
+                {t:"PAPEL", d:"Ingestão comum em crianças."}, 
+                {t:"TINTA", d:"Risco de intoxicação."}, 
+                {t:"METAL", d:"Ingestão de objetos."}, 
+                {t:"SABAO", d:"Desejo incomum."}, 
+                {t:"DESEJO", d:"Vontade incontrolável."}, 
+                {t:"MES", d:"Duração mínima de 1 mês."}
+            ],
+            ruminacao: [
+                {t:"REGURGITA", d:"Volta do alimento à boca."}, 
+                {t:"REPETIDA", d:"Acontece frequentemente."}, 
+                {t:"ENGOLE", d:"Reingestão do alimento."}, 
+                {t:"COSPE", d:"Expulsão do alimento."}, 
+                {t:"NAUSEA", d:"Ausência de problema gastrointestinal."}, 
+                {t:"PESO", d:"Pode levar à perda de peso."}, 
+                {t:"SOCIAL", d:"Evitação de comer em público."}, 
+                {t:"PROPOSITAL", d:"Ação não é involuntária como vômito."}, 
+                {t:"SABOR", d:"Não sente gosto ruim."}, 
+                {t:"MES", d:"Duração mínima de 1 mês."}
+            ],
+            arfid: [
+                {t:"RESTRITO", d:"Limitação da quantidade."}, 
+                {t:"EVITATIVO", d:"Recusa baseada em características."}, 
+                {t:"TEXTURA", d:"Aversão sensorial."}, 
+                {t:"COR", d:"Seleção visual do alimento."}, 
+                {t:"ODOR", d:"Rejeição pelo cheiro."}, 
+                {t:"ENGASGO", d:"Medo de consequências aversivas."}, 
+                {t:"NUTRICAO", d:"Deficiência significativa."}, 
+                {t:"PESO", d:"Perda ou falha no ganho."}, 
+                {t:"SUPLEMENTO", d:"Dependência de nutrição enteral."}, 
+                {t:"INTERESSE", d:"Falta de vontade de comer."}
+            ],
             anorexia: [
-                {t:"RESTRICAO", d:"Baixa ingestão energética."}, {t:"PESO", d:"Medo intenso de engordar."}, {t:"DISTORCAO", d:"Perturbação na imagem corporal."},
-                {t:"JEJUM", d:"Ficar longos períodos sem comer."}, {t:"EXERCICIO", d:"Atividade física excessiva."}, {t:"CONTROLE", d:"Obsessão por dominar o corpo."},
-                {t:"NEGACAO", d:"Não reconhece a gravidade do baixo peso."}, {t:"CALORIA", d:"Contagem obsessiva."}, {t:"RITUAL", d:"Cortar comida em pedaços minúsculos."}, {t:"IMC", d:"Índice de massa corporal baixo."}
+                {t:"RESTRICAO", d:"Baixa ingestão energética."}, 
+                {t:"PESO", d:"Medo intenso de engordar."}, 
+                {t:"DISTORCAO", d:"Perturbação na imagem corporal."}, 
+                {t:"JEJUM", d:"Ficar longos períodos sem comer."}, 
+                {t:"EXERCICIO", d:"Atividade física excessiva."}, 
+                {t:"CONTROLE", d:"Obsessão por dominar o corpo."}, 
+                {t:"NEGACAO", d:"Não reconhece a gravidade."}, 
+                {t:"CALORIA", d:"Contagem obsessiva."}, 
+                {t:"GORDURA", d:"Sente-se gordo mesmo magro."}, 
+                {t:"IMC", d:"Índice de massa corporal baixo."}
             ],
-            // PERSONALIDADE B
+            bulimia: [
+                {t:"COMPULSAO", d:"Ingestão exagerada em pouco tempo."}, 
+                {t:"DESCONTROLE", d:"Sensação de não conseguir parar."}, 
+                {t:"PURGACAO", d:"Comportamento compensatório."}, 
+                {t:"VOMITO", d:"Método comum de purgação."}, 
+                {t:"LAXANTE", d:"Uso indevido de medicamentos."}, 
+                {t:"FORMA", d:"Influência indevida na autoavaliação."}, 
+                {t:"PESO", d:"Foco excessivo na balança."}, 
+                {t:"JEJUM", d:"Compensação sem purgação."}, 
+                {t:"SEGREDO", d:"Comer escondido."}, 
+                {t:"CULPA", d:"Sentimento pós-episódio."}
+            ],
+            compulsao_alim: [
+                {t:"RAPIDO", d:"Comer mais depressa que o normal."}, 
+                {t:"CHEIO", d:"Comer até sentir-se desconfortável."}, 
+                {t:"SEM_FOME", d:"Comer grandes quantidades sem apetite."}, 
+                {t:"SOZINHO", d:"Comer isolado por vergonha."}, 
+                {t:"NOJO", d:"Sentir-se desgostoso consigo."}, 
+                {t:"DEPRIMIDO", d:"Sentimento pós-episódio."}, 
+                {t:"CULPA", d:"Remorso intenso."}, 
+                {t:"DESCONTROLE", d:"Incapacidade de frear."}, 
+                {t:"SEMANA", d:"Frequência mínima de 1x/semana."}, 
+                {t:"ANGUSTIA", d:"Sofrimento marcante."}
+            ],
+            // 8. SONO
+            insonia: [
+                {t:"INICIAR", d:"Dificuldade ao deitar (latência)."}, 
+                {t:"MANTER", d:"Acordar no meio da noite."}, 
+                {t:"PRECOCE", d:"Acordar muito cedo e não voltar."}, 
+                {t:"CANSACO", d:"Fadiga diurna."}, 
+                {t:"ATENCAO", d:"Dificuldade de foco no dia."}, 
+                {t:"HUMOR", d:"Irritabilidade."}, 
+                {t:"PREOCUPA", d:"Pensar demais no sono."}, 
+                {t:"NOITE", d:"Momento de ansiedade."}, 
+                {t:"QUALIDADE", d:"Sono não reparador."}, 
+                {t:"TRES", d:"Mínimo de 3 noites por semana."}
+            ],
+            hipersonolencia: [
+                {t:"EXCESSIVO", d:"Sono prolongado (+9h)."}, 
+                {t:"COCHILO", d:"Dorme durante o dia."}, 
+                {t:"RESTAURA", d:"Sono não descansa."}, 
+                {t:"ACORDAR", d:"Dificuldade de despertar completo."}, 
+                {t:"CONFUSAO", d:"Embriaguez do sono."}, 
+                {t:"AUTOMATICO", d:"Comportamentos sem memória."}, 
+                {t:"LENTIDAO", d:"Pensamento ou fala arrastada."}, 
+                {t:"MEMORIA", d:"Déficit cognitivo leve."}, 
+                {t:"DIURNO", d:"Ataques de sono de dia."}, 
+                {t:"CRONICO", d:"Persiste por meses."}
+            ],
+            narcolepsia: [
+                {t:"ATAQUE", d:"Sono irresistível."}, 
+                {t:"CATAPLEXIA", d:"Perda súbita de tônus muscular."}, 
+                {t:"RISO", d:"Gatilho comum da cataplexia."}, 
+                {t:"REM", d:"Entrada rápida no sono."}, 
+                {t:"ALUCINA", d:"Hipnagógicas (ao dormir)."}, 
+                {t:"PARALISIA", d:"Incapacidade de mover ao acordar."}, 
+                {t:"HIPOCRETINA", d:"Deficiência no líquor."}, 
+                {t:"SONOLENTO", d:"Estado constante."}, 
+                {t:"BREVE", d:"Duração curta dos ataques."}, 
+                {t:"RESTAURA", d:"Sente-se bem após cochilo."}
+            ],
+            // 9. DISRUPTIVO
+            tod: [
+                {t:"RAIVA", d:"Humor irritável frequente."}, 
+                {t:"DISCUTE", d:"Comportamento questionador."}, 
+                {t:"DESAFIA", d:"Recusa cumprir regras."}, 
+                {t:"INCOMODA", d:"Irrita os outros de propósito."}, 
+                {t:"CULPA", d:"Responsabiliza outros pelos erros."}, 
+                {t:"SUSCETIVEL", d:"Facilmente aborrecido."}, 
+                {t:"VINGATIVO", d:"Rancoroso ou malvado."}, 
+                {t:"AUTORIDADE", d:"Alvo do comportamento."}, 
+                {t:"NEGATIVO", d:"Atitude hostil."}, 
+                {t:"TEIMOSO", d:"Recusa persistente."}
+            ],
+            explosivo: [
+                {t:"AGRESSAO", d:"Verbal ou física."}, 
+                {t:"PROPRIEDADE", d:"Danos a objetos."}, 
+                {t:"ANIMAL", d:"Agressão a animais."}, 
+                {t:"DESPROPORCIONAL", d:"Reação exagerada ao estressor."}, 
+                {t:"IMPULSO", d:"Não premeditado."}, 
+                {t:"RAIVA", d:"Emoção dominante."}, 
+                {t:"REMORSO", d:"Arrependimento posterior."}, 
+                {t:"ATAQUE", d:"Surto de fúria."}, 
+                {t:"OBJETIVO", d:"Não é para ganho tangível."}, 
+                {t:"FREQUENTE", d:"Ocorre repetidamente."}
+            ],
+            conduta: [
+                {t:"AGRESSAO", d:"A pessoas ou animais."}, 
+                {t:"AMEACA", d:"Intimida outros."}, 
+                {t:"BRIGA", d:"Inicia lutas corporais."}, 
+                {t:"ARMA", d:"Uso de objeto perigoso."}, 
+                {t:"CRUELDADE", d:"Física ou moral."}, 
+                {t:"ROUBO", d:"Confronto com a vítima."}, 
+                {t:"SEXUAL", d:"Coerção."}, 
+                {t:"FOGO", d:"Destruição de propriedade."}, 
+                {t:"MENTIRA", d:"Para obter vantagens."}, 
+                {t:"FUGIR", d:"De casa ou da escola (gazeta)."}
+            ],
+            piromania: [
+                {t:"FOGO", d:"Atear intencionalmente."}, 
+                {t:"FASCINIO", d:"Atração por incêndios."}, 
+                {t:"CURIOSIDADE", d:"Interesse em equipamentos."}, 
+                {t:"TENSAO", d:"Antes do ato."}, 
+                {t:"PRAZER", d:"Durante ou após o ato."}, 
+                {t:"ALIVIO", d:"Redução da tensão."}, 
+                {t:"INTENCAO", d:"Ação deliberada."}, 
+                {t:"BOMBEIRO", d:"Interesse na profissão."}, 
+                {t:"CRIME", d:"Não é por ganho financeiro."}, 
+                {t:"RAIVA", d:"Não é expressão de vingança."}
+            ],
+            cleptomania: [
+                {t:"FURTO", d:"Roubar objetos desnecessários."}, 
+                {t:"IMPULSO", d:"Incapacidade de resistir."}, 
+                {t:"TENSAO", d:"Crescente antes do ato."}, 
+                {t:"ALIVIO", d:"No momento do furto."}, 
+                {t:"PRAZER", d:"Gratificação imediata."}, 
+                {t:"CULPA", d:"Sentimento comum depois."}, 
+                {t:"PESSOAL", d:"Uso próprio (não venda)."}, 
+                {t:"VALOR", d:"Objeto de pouco valor."}, 
+                {t:"LOJA", d:"Local comum."}, 
+                {t:"SOZINHO", d:"Geralmente não tem cúmplices."}
+            ],
+            // 10. SUBSTANCIAS
+            substancias: [
+                {t:"MAIOR", d:"Consumo em quantidade superior."}, 
+                {t:"TEMPO", d:"Gasto muito tempo obtendo/usando."}, 
+                {t:"CRAVING", d:"Fissura ou desejo intenso."}, 
+                {t:"FALHA", d:"Não cumpre obrigações (trabalho)."}, 
+                {t:"SOCIAL", d:"Problemas interpessoais."}, 
+                {t:"LAZER", d:"Abandono de atividades."}, 
+                {t:"PERIGO", d:"Uso em situações de risco."}, 
+                {t:"FISICO", d:"Uso apesar de problemas de saúde."}, 
+                {t:"TOLERANCIA", d:"Precisa de mais dose."}, 
+                {t:"ABSTINENCIA", d:"Sintomas na falta."}
+            ],
+            jogo: [
+                {t:"APOSTAR", d:"Dinheiro crescente."}, 
+                {t:"IRRITADO", d:"Ao tentar parar."}, 
+                {t:"CONTROLE", d:"Esforços falhos p/ interromper."}, 
+                {t:"PREOCUPA", d:"Pensamento fixo no jogo."}, 
+                {t:"ANGUSTIA", d:"Joga quando se sente mal."}, 
+                {t:"RECUPERAR", d:"Voltar para ganhar o perdido."}, 
+                {t:"MENTIR", d:"Esconder o envolvimento."}, 
+                {t:"RELACAO", d:"Perda de vínculos."}, 
+                {t:"EMPREGO", d:"Risco profissional."}, 
+                {t:"DINHEIRO", d:"Conta com outros p/ dívidas."}
+            ],
+            // 11. PERSONALIDADE
+            paranoide: [
+                {t:"SUSPEITA", d:"Desconfiança sem base."}, 
+                {t:"LEALDADE", d:"Dúvida injustificada sobre amigos."}, 
+                {t:"SEGREDO", d:"Reluta em confiar."}, 
+                {t:"AMEACA", d:"Vê perigo onde não há."}, 
+                {t:"RENCOR", d:"Não perdoa insultos."}, 
+                {t:"ATAQUE", d:"Sente-se atacado facilmente."}, 
+                {t:"TRAICAO", d:"Suspeita do parceiro."}, 
+                {t:"HOSTIL", d:"Reação colérica."}, 
+                {t:"RIGIDO", d:"Inflexibilidade mental."}, 
+                {t:"CIUME", d:"Patológico."}
+            ],
+            esquizoide: [
+                {t:"DISTANTE", d:"Não deseja relações intimas."}, 
+                {t:"SOLITARIO", d:"Prefere atividades sós."}, 
+                {t:"SEXO", d:"Pouco interesse sexual."}, 
+                {t:"PRAZER", d:"Gosta de poucas atividades."}, 
+                {t:"AMIGO", d:"Não tem confidentes."}, 
+                {t:"INDIFERENTE", d:"A elogios ou críticas."}, 
+                {t:"FRIO", d:"Frieza emocional."}, 
+                {t:"AFETO", d:"Embotamento."}, 
+                {t:"ISOLADO", d:"Estilo de vida."}, 
+                {t:"APATICO", d:"Sem reação emocional."}
+            ],
+            esquizotipica: [
+                {t:"REFERENCIA", d:"Ideias de que tudo é para si."}, 
+                {t:"CRENCA", d:"Esquisita ou pensamento mágico."}, 
+                {t:"ILUSAO", d:"Percepções corporais incomuns."}, 
+                {t:"ESTRANHO", d:"Pensamento ou discurso vago."}, 
+                {t:"PARANOIA", d:"Suspeita social."}, 
+                {t:"AFETO", d:"Constrito ou inadequado."}, 
+                {t:"APARENCIA", d:"Excentrica ou peculiar."}, 
+                {t:"AMIGOS", d:"Falta de próximos."}, 
+                {t:"ANSIEDADE", d:"Social excessiva."}, 
+                {t:"SUPERSTICAO", d:"Crença no sobrenatural."}
+            ],
+            antissocial: [
+                {t:"LEI", d:"Incapacidade de ajustar-se."}, 
+                {t:"MENTIRA", d:"Enganar para ganho pessoal."}, 
+                {t:"IMPULSO", d:"Fracasso em planejar."}, 
+                {t:"BRIGA", d:"Irritabilidade e agressividade."}, 
+                {t:"SEGURANCA", d:"Descaso pela própria ou alheia."}, 
+                {t:"RESPONSAVEL", d:"Irresponsabilidade constante."}, 
+                {t:"REMORSO", d:"Indiferença ao ferir."}, 
+                {t:"DANO", d:"Justifica maus tratos."}, 
+                {t:"ROUBO", d:"Histórico de delitos."}, 
+                {t:"MANIPULA", d:"Charme superficial."}
+            ],
             borderline: [
-                {t:"ABANDONO", d:"Esforço frenético para evitá-lo."}, {t:"INSTAVEL", d:"Relacionamentos intensos e caóticos."}, {t:"IDENTIDADE", d:"Autoimagem perturbada."},
-                {t:"IMPULSO", d:"Gastos, sexo, abuso de substâncias."}, {t:"SUICIDIO", d:"Comportamento ou ameaças recorrentes."}, {t:"HUMOR", d:"Instabilidade afetiva acentuada."},
-                {t:"VAZIO", d:"Sentimento crônico interior."}, {t:"RAIVA", d:"Dificuldade em controlar a fúria."}, {t:"PARANOIA", d:"Ideação transitória sob estresse."}, {t:"DISSOCIA", d:"Sintomas de desligamento da realidade."}
+                {t:"ABANDONO", d:"Esforço frenético para evitá-lo."}, 
+                {t:"INSTAVEL", d:"Relacionamentos intensos."}, 
+                {t:"IDENTIDADE", d:"Autoimagem perturbada."}, 
+                {t:"IMPULSO", d:"Gastos, sexo, abuso (2 áreas)."}, 
+                {t:"SUICIDIO", d:"Comportamento ou ameaças."}, 
+                {t:"HUMOR", d:"Instabilidade afetiva acentuada."}, 
+                {t:"VAZIO", d:"Sentimento crônico."}, 
+                {t:"RAIVA", d:"Inadequada e intensa."}, 
+                {t:"PARANOIA", d:"Ideação transitória."}, 
+                {t:"DISSOCIA", d:"Sintomas de desligamento."}
+            ],
+            histrionica: [
+                {t:"CENTRO", d:"Desconforto se não for o foco."}, 
+                {t:"SEDUTOR", d:"Comportamento sexual inadequado."}, 
+                {t:"EMOCAO", d:"Mudança rápida e superficial."}, 
+                {t:"FISICO", d:"Usa aparência para chamar atenção."}, 
+                {t:"IMPRESSAO", d:"Discurso vago e dramático."}, 
+                {t:"TEATRAL", d:"Auto-dramatização."}, 
+                {t:"SUGESTAO", d:"Facilmente influenciável."}, 
+                {t:"INTIMO", d:"Considera relações mais do que são."}, 
+                {t:"ATENCAO", d:"Busca constante."}, 
+                {t:"EXAGERO", d:"Expressão emocional."}
             ],
             narcisista: [
-                {t:"GRANDEZA", d:"Senso inflado de importância."}, {t:"FANTASIA", d:"Sucesso, poder ou beleza ilimitados."}, {t:"ESPECIAL", d:"Crença de ser único."},
-                {t:"ADMIRACAO", d:"Necessidade excessiva de ser louvado."}, {t:"DIREITO", d:"Intitulação: esperar tratamento VIP."}, {t:"EXPLORA", d:"Usa os outros para fins próprios."},
-                {t:"EMPATIA", d:"Falta de capacidade de se colocar no lugar do outro."}, {t:"INVEJA", d:"Crê que os outros o invejam."}, {t:"ARROGANTE", d:"Comportamentos altivos."}, {t:"SUPERIOR", d:"Sentimento de estar acima da média."}
+                {t:"GRANDEZA", d:"Senso inflado de importância."}, 
+                {t:"FANTASIA", d:"Sucesso, poder ou beleza ilimitados."}, 
+                {t:"ESPECIAL", d:"Crença de ser único."}, 
+                {t:"ADMIRACAO", d:"Necessidade excessiva."}, 
+                {t:"DIREITO", d:"Intitulação (tratamento VIP)."}, 
+                {t:"EXPLORA", d:"Usa os outros para fins próprios."}, 
+                {t:"EMPATIA", d:"Falta de capacidade."}, 
+                {t:"INVEJA", d:"Crê que os outros o invejam."}, 
+                {t:"ARROGANTE", d:"Comportamentos altivos."}, 
+                {t:"SOBERBA", d:"Atitude superior."}
             ],
-            // Preenchimento de fallback para categorias restantes com palavras genéricas do grupo
-            tdpm: [{t:"IRRITA", d:"Sintoma afetivo."}, {t:"MAMA", d:"Sensibilidade física."}, {t:"INCHACO", d:"Sintoma físico."}, {t:"HUMOR", d:"Labilidade."}, {t:"ANSIEDADE", d:"Tensão."}],
-            ans_separacao: [{t:"AFASTAMENTO", d:"Medo de sair de casa."}, {t:"PERDA", d:"Medo de perder figuras de apego."}, {t:"PESADELO", d:"Sonhos sobre separação."}, {t:"CAMA", d:"Recusa em dormir fora."}],
-            ans_social: [{t:"JULGAMENTO", d:"Medo de avaliação negativa."}, {t:"VERGONHA", d:"Medo de humilhação."}, {t:"PUBLICO", d:"Medo de falar."}, {t:"TREMER", d:"Sintoma físico."}],
-            agorafobia: [{t:"MULTIDAO", d:"Local temido."}, {t:"FILA", d:"Situação temida."}, {t:"SAIR", d:"Dificuldade de sair de casa."}, {t:"SOCORRO", d:"Medo de não ter ajuda."}],
-            dismorfico: [{t:"DEFEITO", d:"Foco em falha percebida."}, {t:"ESPELHO", d:"Verificação excessiva."}, {t:"CAMUFLAR", d:"Tentar esconder."}, {t:"FEIO", d:"Autoimagem negativa."}],
-            acumulacao: [{t:"GUARDAR", d:"Dificuldade de descartar."}, {t:"BAGUNCA", d:"Acúmulo físico."}, {t:"ANGUSTIA", d:"Sofrimento ao jogar fora."}, {t:"VALOR", d:"Atribuição excessiva aos objetos."}],
-            tricotilomania: [{t:"ARRANCAR", d:"Ação principal."}, {t:"CABELO", d:"Alvo comum."}, {t:"PRAZER", d:"Sensação pós-ato."}, {t:"FALHA", d:"Perda capilar visível."}],
-            apego_reativo: [{t:"INIBIDO", d:"Comportamento social."}, {t:"CONFORTO", d:"Não busca quando angustiado."}, {t:"MEDO", d:"Afeto negativo inexplicado."}, {t:"CUIDADOR", d:"Falha na relação."}],
-            estresse_agudo: [{t:"TRAUMA", d:"Exposição a evento."}, {t:"INTRUSAO", d:"Memórias invadem."}, {t:"HUMOR", d:"Incapacidade de felicidade."}, {t:"DIAS", d:"Duração de 3 a 30 dias."}],
-            pica: [{t:"INGESTAO", d:"Comer o que não é alimento."}, {t:"TERRA", d:"Exemplo de substância."}, {t:"GELO", d:"Pagofagia."}, {t:"TINTA", d:"Risco de toxicidade."}],
-            ruminacao: [{t:"REGURGITA", d:"Volta do alimento."}, {t:"REPETIDA", d:"Acontece frequentemente."}, {t:"ENGOLE", d:"Reingestão."}, {t:"NAUSEA", d:"Ausência de problema gastro."}],
-            arfid: [{t:"RESTRITO", d:"Limitação alimentar."}, {t:"TEXTURA", d:"Aversão sensorial."}, {t:"ENGASGO", d:"Medo de consequências."}, {t:"NUTRICAO", d:"Deficiência."}],
-            bulimia: [{t:"COMPULSAO", d:"Comer muito rápido."}, {t:"VOMITO", d:"Comportamento compensatório."}, {t:"FORMA", d:"Influência na autoavaliação."}, {t:"LAXANTE", d:"Uso indevido."}],
-            compulsao_alim: [{t:"DESCONTROLE", d:"Sensação durante o episódio."}, {t:"RAPIDO", d:"Comer velozmente."}, {t:"ESCONDIDO", d:"Comer por vergonha."}, {t:"CULPA", d:"Sentimento posterior."}],
-            insonia: [{t:"INICIAR", d:"Dificuldade ao deitar."}, {t:"MANTER", d:"Acordar no meio da noite."}, {t:"PRECOCE", d:"Acordar muito cedo."}, {t:"CANSACO", d:"Prejuízo diurno."}],
-            hipersonolencia: [{t:"EXCESSIVO", d:"Sono prolongado."}, {t:"COCHILO", d:"Dorme de dia."}, {t:"CONFUSAO", d:"Ao acordar (embriaguez do sono)."}, {t:"RESTAURA", d:"Sono não descansa."}],
-            narcolepsia: [{t:"ATAQUE", d:"Sono irresistível."}, {t:"CATAPLEXIA", d:"Perda de tônus muscular."}, {t:"REM", d:"Entrada rápida no sono."}, {t:"ALUCINA", d:"Hipnagógicas."}],
-            tod: [{t:"RAIVA", d:"Humor irritável."}, {t:"DISCUTE", d:"Comportamento questionador."}, {t:"DESAFIA", d:"Recusa regras."}, {t:"VINGATIVO", d:"Rancoroso."}],
-            explosivo: [{t:"AGRESSAO", d:"Verbal ou física."}, {t:"DESPROPORCIONAL", d:"Reação exagerada."}, {t:"IMPULSO", d:"Não premeditado."}, {t:"REMORSO", d:"Arrependimento posterior."}],
-            conduta: [{t:"AGRESSAO", d:"A pessoas ou animais."}, {t:"DESTRUICAO", d:"De propriedade."}, {t:"MENTIRA", d:"Ou furto."}, {t:"REGRAS", d:"Violação grave."}],
-            piromania: [{t:"FOGO", d:"Atear intencionalmente."}, {t:"FASCINIO", d:"Atração por incêndios."}, {t:"TENSAO", d:"Antes do ato."}, {t:"PRAZER", d:"Durante o ato."}],
-            cleptomania: [{t:"FURTO", d:"Roubar objetos desnecessários."}, {t:"IMPULSO", d:"Incapacidade de resistir."}, {t:"ALIVIO", d:"Após o furto."}, {t:"CULPA", d:"Sentimento comum depois."}],
-            substancias: [{t:"TOLERANCIA", d:"Precisa de mais dose."}, {t:"ABSTINENCIA", d:"Sintomas na falta."}, {t:"CRAVING", d:"Fissura/Desejo."}, {t:"CONTROLE", d:"Uso maior que o planejado."}],
-            jogo: [{t:"APOSTAR", d:"Dinheiro crescente."}, {t:"IRRITADO", d:"Ao tentar parar."}, {t:"RECUPERAR", d:"Voltar para ganhar o perdido."}, {t:"MENTIR", d:"Esconder o envolvimento."}],
-            paranoide: [{t:"SUSPEITA", d:"Desconfiança sem base."}, {t:"LEALDADE", d:"Dúvida sobre amigos."}, {t:"RENCOR", d:"Não perdoa insultos."}, {t:"AMEACA", d:"Vê perigo onde não há."}],
-            esquizoide: [{t:"DISTANTE", d:"Não deseja relações."}, {t:"SOLITARIO", d:"Prefere atividades sós."}, {t:"PRAZER", d:"Pouco interesse sexual."}, {t:"INDIFERENTE", d:"A elogios ou críticas."}],
-            esquizotipica: [{t:"REFERENCIA", d:"Ideias de que tudo é para si."}, {t:"ESTRANHO", d:"Pensamento ou discurso."}, {t:"ILUSAO", d:"Percepções corporais."}, {t:"PARANOIA", d:"Suspeita social."}],
-            antissocial: [{t:"LEI", d:"Incapacidade de ajustar-se."}, {t:"MENTIRA", d:"Enganar para ganho."}, {t:"IMPULSO", d:"Fracasso em planejar."}, {t:"REMORSO", d:"Indiferença ao ferir."}],
-            histrionica: [{t:"CENTRO", d:"Desconforto se não for o foco."}, {t:"SEDUTOR", d:"Comportamento sexual inadequado."}, {t:"EMOCAO", d:"Mudança rápida e superficial."}, {t:"FISICO", d:"Usa aparência para chamar atenção."}],
-            evitativa: [{t:"REJEICAO", d:"Medo excessivo."}, {t:"ENVERGONHAR", d:"Medo de passar vergonha."}, {t:"INIBIDO", d:"Em situações novas."}, {t:"INFERIOR", d:"Se vê como socialmente inapto."}],
-            dependente: [{t:"CONSELHO", d:"Precisa para decisões simples."}, {t:"RESPONSAVEL", d:"Outros assumem a vida."}, {t:"DISCORDAR", d:"Medo de perder apoio."}, {t:"SOZINHO", d:"Desconforto ao estar sós."}],
-            ob_compulsiva: [{t:"DETALHE", d:"Foco em listas e ordem."}, {t:"PERFEITO", d:"Interfere na conclusão."}, {t:"TRABALHO", d:"Dedicação excessiva."}, {t:"RIGIDO", d:"Teimosia moral."}]
+            evitativa: [
+                {t:"CRITICA", d:"Evita atividades por medo."}, 
+                {t:"ENVOLVER", d:"Só se relaciona se tiver certeza."}, 
+                {t:"INTIMO", d:"Reservado por medo de vergonha."}, 
+                {t:"REJEICAO", d:"Preocupação excessiva."}, 
+                {t:"INIBIDO", d:"Em situações novas."}, 
+                {t:"INADEQUADO", d:"Vê-se como sem atrativos."}, 
+                {t:"INFERIOR", d:"Vê-se menor que os outros."}, 
+                {t:"RISCO", d:"Reluta em assumir novos desafios."}, 
+                {t:"VERGONHA", d:"Medo de passar."}, 
+                {t:"TIMIDO", d:"Extrema timidez."}
+            ],
+            dependente: [
+                {t:"CONSELHO", d:"Precisa para decisões simples."}, 
+                {t:"RESPONSAVEL", d:"Outros assumem a vida."}, 
+                {t:"DISCORDAR", d:"Medo de perder apoio."}, 
+                {t:"INICIAR", d:"Dificuldade em projetos."}, 
+                {t:"APOIO", d:"Vai a extremos para obter."}, 
+                {t:"SOZINHO", d:"Desconforto ao estar sós."}, 
+                {t:"RELACAO", d:"Busca urgente se uma termina."}, 
+                {t:"MEDO", d:"De cuidar de si mesmo."}, 
+                {t:"CUIDADO", d:"Necessidade excessiva."}, 
+                {t:"SUBMISSO", d:"Comportamento aderente."}
+            ],
+            ob_compulsiva: [
+                {t:"DETALHE", d:"Preocupação com listas e ordem."}, 
+                {t:"PERFEITO", d:"Interfere na conclusão."}, 
+                {t:"TRABALHO", d:"Dedicação excessiva."}, 
+                {t:"MORAL", d:"Consciencioso e escrupuloso."}, 
+                {t:"VELHO", d:"Incapacidade de descartar."}, 
+                {t:"DELEGAR", d:"Relutância em trabalhar com outros."}, 
+                {t:"AVAREZA", d:"Estilo de gastos miserável."}, 
+                {t:"RIGIDO", d:"Teimosia."}, 
+                {t:"REGRA", d:"Apego excessivo."}, 
+                {t:"CONTROLE", d:"Necessidade mental."}
+            ]
         };
 
         const GRID_SIZE = 15;
@@ -404,12 +854,11 @@
         let placedWords = [];
 
         function generateGame() {
-            const category = document.getElementById('categorySelect').value;
-            // Fallback para arrays menores
-            let wordList = DB[category] || [];
+            const category = document.getElementById('levelSelect').value;
+            let wordList = DB[category];
             
-            // Se a lista for pequena (< 6), tenta duplicar ou adicionar placeholders para não quebrar
-            if(wordList.length < 5) wordList = [...wordList, ...wordList]; 
+            // Segurança se não houver lista
+            if(!wordList) wordList = [{t:"ERRO", d:"Categoria vazia"}];
 
             const gridEl = document.getElementById('crosswordGrid');
             const listH = document.getElementById('listH');
@@ -418,14 +867,15 @@
             gridEl.innerHTML = ''; listH.innerHTML = ''; listV.innerHTML = '';
             gridEl.style.gridTemplateColumns = `repeat(${GRID_SIZE}, var(--cell-size))`;
 
+            // Tentativa de gerar grid
             let success = false;
             for(let i=0; i<50; i++) {
                 if(tryCreateGrid(wordList)) { success = true; break; }
             }
 
             if(!success) {
-                alert("Não foi possível gerar um layout perfeito. Tente novamente.");
-                return;
+                // Fallback: tenta com menos palavras se falhar muito
+                if(tryCreateGrid(wordList.slice(0, 8))) success = true;
             }
 
             renderGrid(gridEl);
@@ -437,20 +887,22 @@
             gridArray = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null));
             placedWords = [];
             
-            // Ordena por tamanho decrescente
+            // Copia e ordena
             const sortedWords = [...words].sort((a,b) => b.t.length - a.t.length);
             
-            // Coloca a primeira
+            // Primeira palavra (Meio)
             const first = sortedWords[0];
             const r = Math.floor(GRID_SIZE/2);
             const c = Math.floor((GRID_SIZE - first.t.length)/2);
             placeWord(first, r, c, 'H');
 
+            // Restante
             for(let i=1; i<sortedWords.length; i++) {
                 findSpot(sortedWords[i]);
             }
 
-            return placedWords.length >= Math.min(sortedWords.length, 5);
+            // Critério de sucesso: pelo menos 60% das palavras ou 6 palavras
+            return placedWords.length >= Math.min(sortedWords.length, 6);
         }
 
         function findSpot(word) {
@@ -462,6 +914,7 @@
                 for(let r=0; r<GRID_SIZE; r++) {
                     for(let c=0; c<GRID_SIZE; c++) {
                         if(gridArray[r][c] === char) {
+                            // Tenta cruzar
                             if(canPlace(text, r-i, c, 'V')) spots.push({r:r-i, c:c, dir:'V'});
                             if(canPlace(text, r, c-i, 'H')) spots.push({r:r, c:c-i, dir:'H'});
                         }
@@ -487,18 +940,15 @@
 
                 if(current !== null && current !== word[i]) return false;
                 
-                // Vizinhos (exceto intersecção)
                 if(current === null) {
                     if(dir === 'H') {
                         if(r>0 && gridArray[r-1][c]!==null) return false;
                         if(r<GRID_SIZE-1 && gridArray[r+1][c]!==null) return false;
-                        // Pontas
                         if(i===0 && c>0 && gridArray[r][c-1]!==null) return false;
                         if(i===word.length-1 && c<GRID_SIZE-1 && gridArray[r][c+1]!==null) return false;
                     } else {
                         if(c>0 && gridArray[r][c-1]!==null) return false;
                         if(c<GRID_SIZE-1 && gridArray[r][c+1]!==null) return false;
-                        // Pontas
                         if(i===0 && r>0 && gridArray[r-1][c]!==null) return false;
                         if(i===word.length-1 && r<GRID_SIZE-1 && gridArray[r+1][c]!==null) return false;
                     }
@@ -517,7 +967,6 @@
         }
 
         function renderGrid(el) {
-            // Mapa de números
             const nums = {};
             placedWords.forEach(w => nums[`${w.r},${w.c}`] = w.num);
 
@@ -541,6 +990,9 @@
         }
 
         function renderClues(h, v) {
+            // Ordena por número
+            placedWords.sort((a,b) => a.num - b.num);
+            
             placedWords.forEach(w => {
                 const item = `<div class="clue-item"><strong>${w.num}.</strong> ${w.d}</div>`;
                 if(w.dir === 'H') h.innerHTML += item;
@@ -558,15 +1010,32 @@
                     else { i.parentElement.classList.add('wrong'); all = false; }
                 } else all = false;
             });
-            if(all) {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            
+            if(all) checkGame(); // Chama a verificação final para soltar confete
+        }
+
+        function checkGame() {
+            const inputs = document.querySelectorAll('.cell.active input');
+            let perfect = true;
+            inputs.forEach(i => {
+                if(i.value !== i.dataset.char) perfect = false;
+            });
+
+            if(perfect) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 alert("Parabéns! Cruzadinha completa!");
             }
         }
 
         function renderAnswers() {
             const list = document.getElementById('answersList');
-            list.innerHTML = placedWords.map(w => `<div><strong>${w.num}. ${w.t}</strong>: ${w.d}</div>`).join('');
+            list.innerHTML = placedWords.map(w => `<div class="answer-row"><strong>${w.num}. ${w.t}</strong>: ${w.d}</div>`).join('');
+        }
+
+        function showAnswers() {
+            if(confirm("Deseja ver as respostas?")) {
+                document.getElementById('modalAnswers').style.display='flex';
+            }
         }
 
         // Init
