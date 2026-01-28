@@ -50,13 +50,7 @@
                     print-color-adjust: exact;
                 }
 
-                /* ESCONDE ELEMENTOS DE TELA */
-                .no-print, .btn-magic, .ai-config, .ai-config-float, 
-                .app-header, .screen-header, .fab, .btn-back-home, 
-                .btn-action, button, #sidebar, .action-panel, .nav-item, 
-                .internal-header, #interview-area { 
-                    display: none !important; 
-                }
+            
 
                 /* AJUSTE DE CONTAINERS */
                 .container, #main-content, #dashboard-view { 
