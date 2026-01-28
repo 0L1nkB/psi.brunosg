@@ -80,21 +80,6 @@
         /* IMPRESSÃO */
         #print-header { display: none; }
 
-        @media print {
-            .btn-magic, .ai-config-float, .app-header, .fab, .btn-back-home { display: none !important; }
-            body { background: white; padding: 0; }
-            .form-section { box-shadow: none; border: 1px solid #000; break-inside: avoid; }
-            
-            #print-header {
-                display: flex; align-items: center; gap: 20px; margin-bottom: 30px;
-                padding-bottom: 20px; border-bottom: 2px solid #2d3436;
-                font-family: 'Arial', sans-serif; color: #2d3436;
-            }
-            .ph-logo img { height: 70px; width: auto; }
-            .ph-info h1 { margin: 0; font-size: 1.6rem; font-weight: 800; }
-            .ph-details { margin-top: 5px; font-size: 0.8rem; line-height: 1.4; }
-        }
-
         /* Config IA Flutuante */
         .ai-config-float {
             position: fixed; top: 100px; right: 20px; z-index: 100;
@@ -108,189 +93,33 @@
         .status-dot.active { background: #00b894; box-shadow: 0 0 5px #00b894; }
         
         @media (max-width: 1200px) { .ai-config-float { top: auto; bottom: 20px; left: 20px; right: auto; } }
-    </style>
-</head>
-<body>
 
-    <script>
-        carregarHeader("Conceituação Cognitiva", "Diagrama TCC Clássico (J. Beck)");
-    </script>
+        /* --- CORREÇÃO DE IMPRESSÃO --- */
+        @media print {
+            /* 1. Remove margens do navegador (Data, URL, Título) */
+            @page { margin: 0; size: auto; }
 
-    <div class="ai-config-float">
-        <button class="btn-config-ia" onclick="configureKey()">
-            <div class="status-dot" id="status-dot"></div> Configurar IA
-        </button>
-    </div>
-
-    <div id="print-header">
-        <div class="ph-logo">
-            <img src="../../assets/logo.png" alt="Logo BS" onerror="this.style.display='none'">
-        </div>
-        <div class="ph-info">
-            <h2 style="margin:0; font-size:1rem; font-weight:400;">Psicólogo Clínico</h2>
-            <h1>Bruno de Souza</h1>
-            <div class="ph-details">
-                <strong>Psicoterapia Cognitivo Comportamental</strong><br>
-                R. Félix Xavier da Cunha, 705 - Sala 402, Pelotas, RS<br>
-                (53) 9 91898309 • @psi.brunosg
-            </div>
-        </div>
-    </div>
-
-    <div class="container" style="max-width:1000px; width:100%;">
-
-        <div class="form-section">
-            <div class="section-header">1. História de Vida (Raízes)</div>
-            <div class="magic-input-wrapper">
-                <textarea id="txt-historia" class="form-control" rows="3" placeholder="Experiências marcantes da infância, traumas, modelos parentais..."></textarea>
-                <button class="btn-magic" onclick="improveText('txt-historia')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-            </div>
-        </div>
-
-        <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-        <div class="form-section" style="border-top: 4px solid var(--accent-color);">
-            <div class="section-header" style="background:var(--accent-color); color:#2d3436;">2. Crenças Centrais (Níveis Nucleares)</div>
+            /* 2. Esconde elementos interativos */
+            .btn-magic, .ai-config-float, .app-header, .fab, .btn-back-home, .no-print { display: none !important; }
             
-            <div class="beliefs-grid">
-                <div class="post-it">
-                    <h4>Sobre Mim Mesmo (Eu sou...)</h4>
-                    <div class="magic-input-wrapper">
-                        <textarea id="txt-crencas-eu" class="form-control" style="background:transparent; border:none;" placeholder="Ex: Inadequado, Fraco, Indigno..."></textarea>
-                        <button class="btn-magic" onclick="improveText('txt-crencas-eu')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                    </div>
-                </div>
-                <div class="post-it" style="background:#e0f7fa;">
-                    <h4>Sobre o Mundo/Outros</h4>
-                    <div class="magic-input-wrapper">
-                        <textarea id="txt-crencas-mundo" class="form-control" style="background:transparent; border:none;" placeholder="Ex: O mundo é perigoso, As pessoas não são confiáveis..."></textarea>
-                        <button class="btn-magic" onclick="improveText('txt-crencas-mundo')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-        <div class="form-section">
-            <div class="section-header">3. Pressupostos e Regras</div>
-            <div class="magic-input-wrapper">
-                <textarea id="txt-regras" class="form-control" rows="3" placeholder="Se eu... então... (Ex: Se eu falhar, serei rejeitado). Devo sempre..."></textarea>
-                <button class="btn-magic" onclick="improveText('txt-regras')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-            </div>
-        </div>
-
-        <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-        <div class="form-section">
-            <div class="section-header">4. Estratégias Compensatórias</div>
-            <div class="magic-input-wrapper">
-                <textarea id="txt-estrategias" class="form-control" rows="3" placeholder="Comportamentos para lidar com a crença (Ex: Perfeccionismo, Evitação, Agressividade...)"></textarea>
-                <button class="btn-magic" onclick="improveText('txt-estrategias')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-            </div>
-        </div>
-
-        <div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
-
-        <div class="form-section" style="border-top: 4px solid var(--secondary-color);">
-            <div class="section-header" style="background:var(--secondary-color);">5. O Ciclo Atual (Exemplo Recente)</div>
-
-            <label class="form-label">Situação Gatilho:</label>
-            <div class="magic-input-wrapper" style="margin-bottom:20px;">
-                <textarea id="txt-gatilho" class="form-control" rows="2" placeholder="O que aconteceu?"></textarea>
-                <button class="btn-magic" onclick="improveText('txt-gatilho')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-            </div>
-
-            <div class="cycle-grid">
-                <div class="cycle-col">
-                    <h4>💭 Pensamento Automático</h4>
-                    <div class="magic-input-wrapper">
-                        <textarea id="txt-pensamentos" class="form-control" rows="4"></textarea>
-                        <button class="btn-magic" onclick="improveText('txt-pensamentos')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                    </div>
-                </div>
-                <div class="cycle-col">
-                    <h4>❤️ Emoção</h4>
-                    <div class="magic-input-wrapper">
-                        <textarea id="txt-emocoes" class="form-control" rows="4"></textarea>
-                        <button class="btn-magic" onclick="improveText('txt-emocoes')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                    </div>
-                </div>
-                <div class="cycle-col">
-                    <h4>🏃 Comportamento</h4>
-                    <div class="magic-input-wrapper">
-                        <textarea id="txt-comportamento" class="form-control" rows="4"></textarea>
-                        <button class="btn-magic" onclick="improveText('txt-comportamento')"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        carregarFooter();
-    </script>
-
-    <script>
-        // Verificação Inicial
-        if (localStorage.getItem('gemini_api_key')) {
-            document.getElementById('status-dot').classList.add('active');
-        }
-
-        // Configurar Chave
-        function configureKey() {
-            const key = prompt("Insira sua API Key do Google Gemini:\n(Será salva no seu navegador)");
-            if (key) {
-                localStorage.setItem('gemini_api_key', key.trim());
-                document.getElementById('status-dot').classList.add('active');
-                alert("Chave salva com sucesso!");
+            /* 3. Ajusta o corpo para ter margem interna (já que removemos a do navegador) */
+            body { 
+                background: white; 
+                padding: 0; 
+                margin: 1.5cm; /* Margem física segura para impressão */
+                -webkit-print-color-adjust: exact; 
             }
-        }
 
-        // Função Mágica
-        async function improveText(elementId) {
-            const textarea = document.getElementById(elementId);
-            const originalText = textarea.value;
-            const apiKey = localStorage.getItem('gemini_api_key');
-            const btn = textarea.nextElementSibling;
-
-            if (!originalText) { alert("Escreva algo primeiro!"); return; }
-            if (!apiKey) { alert("Configure a IA primeiro!"); configureKey(); return; }
-
-            // UI Loading
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            btn.classList.add('loading');
-
-            // Prompt TCC Específico
-            const prompt = `
-                Atue como um supervisor clínico em Terapia Cognitivo-Comportamental (TCC).
-                Melhore o seguinte texto para um formulário de conceitualização de caso.
-                Torne-o técnico, objetivo e clinicamente preciso.
-                Texto original: "${originalText}"
-            `;
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-
-                const data = await response.json();
-                if (data.error) throw new Error(data.error.message);
-
-                textarea.value = data.candidates[0].content.parts[0].text.trim();
-
-            } catch (error) {
-                alert("Erro na IA: " + error.message);
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.classList.remove('loading');
+            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; box-shadow: none !important; }
+            .form-section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; margin-bottom: 20px; padding: 20px; }
+            
+            /* 4. Estilo do Cabeçalho Profissional */
+            #print-header {
+                display: flex !important; align-items: center; gap: 20px; margin-bottom: 30px;
+                padding-bottom: 20px; border-bottom: 2px solid #2d3436;
+                font-family: 'Arial', sans-serif; color: #2d3436;
             }
+            .ph-logo img { height: 70px; width: auto; }
+            .ph-info h1 { margin: 0; font-size: 1.6rem; font-weight: 800; }
+            .ph-details { margin-top: 5px; font-size: 0.8rem; line-height: 1.4; }
         }
-    </script>
-
-</body>
-</html>
