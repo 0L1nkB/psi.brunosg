@@ -3,131 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Visitante do Terno Amassado | TCC Animada</title>
+    <title>O Visitante | TCC Animada</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-wall: #fdfbf7;
-            --bg-floor: #e6e6e6;
+            --bg-color: #2d3436;
+            --stage-bg: #f5f6fa;
+            --dialogue-bg: #ffffff;
             --primary: #6c5ce7;
-            --text: #2d3436;
+            --host-skin: #ffcccc;
+            --visitor-skin: #ffeaa7;
         }
 
         * { box-sizing: border-box; }
         body {
             margin: 0; padding: 0; font-family: 'Nunito', sans-serif;
-            background: #2d3436; display: flex; justify-content: center; align-items: center;
+            background: var(--bg-color); display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
         }
 
-        #stage {
-            width: 900px; height: 500px; background: var(--bg-wall);
-            border-radius: 20px; position: relative; overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5); transition: background 1s;
+        /* O CONTAINER PRINCIPAL (TELA DO CELULAR/PC) */
+        #app-container {
+            width: 900px;
+            height: 600px;
+            background: var(--stage-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Isso separa o Palco do Texto verticalmente */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
-        /* --- CENÁRIO: ESCRITÓRIO --- */
-        .office-layer { position: absolute; width: 100%; height: 100%; transition: opacity 0.5s; }
-        
+        /* --- 1. O PALCO (CENÁRIO E PERSONAGENS) --- */
+        #stage {
+            flex: 1; /* Ocupa todo o espaço disponível acima do texto */
+            position: relative;
+            overflow: hidden;
+            transition: background 1s;
+            background: #f5f6fa; /* Cor da parede do escritório */
+        }
+
+        /* Elementos do Cenário */
         .floor {
-            position: absolute; bottom: 0; width: 100%; height: 120px; background: var(--bg-floor);
-            border-top: 2px solid #ccc;
+            position: absolute; bottom: 0; width: 100%; height: 20%; background: #dfe6e9; z-index: 1;
         }
         
         .window {
-            position: absolute; top: 50px; left: 100px; width: 120px; height: 180px;
-            background: #dff9fb; border: 8px solid #b2bec3; border-radius: 5px;
-            box-shadow: inset 5px 5px 0 rgba(255,255,255,0.5); overflow: hidden;
-        }
-        .window::after { content:''; position:absolute; width:100%; height:10px; background:#b2bec3; top:50%; }
-        .window::before { content:''; position:absolute; height:100%; width:10px; background:#b2bec3; left:50%; }
-
-        .plant {
-            position: absolute; bottom: 120px; right: 50px; width: 80px; height: 150px;
-        }
-
-        .door {
-            position: absolute; bottom: 120px; right: 150px; width: 100px; height: 220px;
-            background: #a29bfe; border: 6px solid #6c5ce7; border-radius: 5px;
-            transform-origin: left; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; align-items: center; justify-content: flex-end;
-        }
-        .door-handle { width: 15px; height: 15px; background: gold; border-radius: 50%; margin-right: 10px; box-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-
-        /* --- CENÁRIO: TERRAÇO --- */
-        .rooftop-layer { 
-            position: absolute; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity 1s;
-            background: linear-gradient(to bottom, #ff9f43, #ff6b6b);
-        }
-        .railing {
-            position: absolute; bottom: 100px; width: 100%; height: 20px; background: #2d3436;
-        }
-        .railing::after {
-            content: ''; position: absolute; top: 20px; left: 20%; width: 10px; height: 100px; background: #2d3436;
-            box-shadow: 100px 0 0 #2d3436, 200px 0 0 #2d3436, 300px 0 0 #2d3436, 400px 0 0 #2d3436, 500px 0 0 #2d3436;
-        }
-        .city-bg {
-            position: absolute; bottom: 100px; width: 100%; height: 150px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M0,300 L0,100 L50,100 L50,50 L100,50 L100,150 L150,150 L150,80 L200,80 L200,300 Z" fill="%23222" opacity="0.3"/></svg>');
-            background-size: cover;
-        }
-
-        /* --- PERSONAGENS (SVG WRAPPERS) --- */
-        .character { position: absolute; bottom: 90px; transition: all 0.5s ease; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
-
-        /* HOSPEDEIRO */
-        #host-char { left: 250px; width: 140px; height: 220px; z-index: 10; }
-        /* VISITANTE */
-        #visitor-char { right: -200px; width: 130px; height: 200px; z-index: 11; }
-
-        /* Estados do Visitante */
-        .visitor-enter { right: 180px !important; }
-        .visitor-giant { transform: scale(1.5) translateY(-20px); filter: drop-shadow(0 20px 20px rgba(231, 76, 60, 0.4)) !important; }
-        .visitor-small { transform: scale(0.7); filter: grayscale(0.8); }
-        .visitor-fade { opacity: 0; transform: translateY(-50px); }
-
-        /* Estados do Hospedeiro */
-        .host-rooftop { left: 350px !important; }
-        .visitor-rooftop { right: 300px !important; bottom: 90px !important; }
-
-        /* --- UI --- */
-        #dialogue-ui {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; background: rgba(255,255,255,0.95); border-radius: 15px;
-            padding: 20px; display: flex; gap: 20px; align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid #fff;
-            backdrop-filter: blur(5px);
+            position: absolute; top: 15%; left: 10%; width: 150px; height: 150px;
+            background: #b2ebf2; border: 8px solid #636e72; border-radius: 10px;
+            box-shadow: inset 10px 10px 0 rgba(255,255,255,0.3);
         }
         
-        .avatar-box {
-            width: 60px; height: 60px; border-radius: 50%; background: #eee; overflow: hidden;
-            border: 3px solid var(--primary); flex-shrink: 0;
+        .door {
+            position: absolute; bottom: 20%; right: 10%; width: 120px; height: 220px;
+            background: #a29bfe; border: 6px solid #6c5ce7; border-radius: 5px;
+            transform-origin: right; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
         }
-        .avatar-box svg { width: 100%; height: 100%; }
+        .door::after { content:''; position:absolute; top:50%; left:10px; width:15px; height:15px; background:gold; border-radius:50%; }
 
-        .text-box { flex: 1; }
-        .char-name { font-size: 0.8rem; font-weight: 900; text-transform: uppercase; color: #b2bec3; margin-bottom: 5px; }
-        .char-text { font-size: 1.1rem; color: #2d3436; font-weight: 700; line-height: 1.4; }
+        /* Plantinha para dar vida */
+        .decor-plant {
+            position: absolute; bottom: 15%; left: 5%; width: 80px; z-index: 2;
+        }
+
+        /* Cenário Terraço (Oculto por padrão) */
+        .rooftop-bg {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(180deg, #ff9f43, #ff6b6b);
+            opacity: 0; transition: opacity 1s; pointer-events: none; z-index: 0;
+        }
+        .clouds { position: absolute; top: 20px; left: 20px; font-size: 3rem; color: rgba(255,255,255,0.5); }
+
+        /* --- PERSONAGENS (SVG) --- */
+        .character-wrapper {
+            position: absolute;
+            bottom: 10%; /* Fica no chão, mas acima da borda inferior do palco */
+            width: 180px;
+            height: 250px;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        /* Animação de respiração (Idle) */
+        .idle-anim { animation: breathe 3s infinite ease-in-out; }
+        @keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.03); } }
+
+        /* HOSPEDEIRO */
+        #host { left: 20%; }
+        
+        /* VISITANTE */
+        #visitor { 
+            right: -30%; /* Começa fora da tela */
+            filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2));
+        }
+
+        /* Estados de Animação do Visitante */
+        .visitor-enter { right: 20% !important; }
+        .visitor-angry { transform: scale(1.2) !important; filter: drop-shadow(0 0 15px rgba(231, 76, 60, 0.8)) !important; }
+        .visitor-sad { transform: scale(0.8) !important; filter: grayscale(0.8) !important; }
+        .visitor-gone { opacity: 0; transform: translateY(-50px) scale(0.5) !important; }
+
+        /* --- 2. O DIÁLOGO (SEPARADO) --- */
+        #dialogue-section {
+            height: 160px; /* Altura fixa */
+            background: var(--dialogue-bg);
+            border-top: 4px solid var(--primary);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 20;
+            position: relative;
+        }
+
+        .avatar-circle {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: #eee; border: 3px solid var(--primary);
+            overflow: hidden; flex-shrink: 0;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .avatar-circle svg { width: 80%; height: 80%; }
+
+        .text-content { flex: 1; }
+        .speaker-label {
+            font-size: 0.85rem; font-weight: 900; text-transform: uppercase;
+            color: #b2bec3; margin-bottom: 5px; display: block;
+        }
+        .dialogue-line {
+            font-size: 1.2rem; font-weight: 700; color: #2d3436; line-height: 1.4;
+        }
 
         .next-btn {
-            background: var(--primary); color: white; border: none; width: 50px; height: 50px;
-            border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.2s;
+            background: var(--primary); color: white; border: none;
+            width: 60px; height: 60px; border-radius: 50%;
+            cursor: pointer; font-size: 1.5rem; transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
         }
         .next-btn:hover { transform: scale(1.1); background: #5649c0; }
 
-        /* ANIMAÇÕES GERAIS */
-        .shake { animation: shake 0.5s; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-1deg); } 75% { transform: translateX(5px) rotate(1deg); } }
+        /* EFEITOS GERAIS */
+        .shake-screen { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
 
-        /* Overlay Final */
-        #final-screen {
+        /* TELA FINAL */
+        #final-overlay {
             position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(45, 52, 54, 0.9); z-index: 100;
+            background: rgba(45, 52, 54, 0.95); z-index: 100;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; opacity: 0; pointer-events: none; transition: 1s;
+            color: white; opacity: 0; pointer-events: none; transition: 1s; text-align: center;
         }
         .show-final { opacity: 1 !important; pointer-events: auto !important; }
 
@@ -135,206 +162,206 @@
 </head>
 <body>
 
-<div id="stage">
+<div id="app-container">
     
-    <div class="office-layer" id="office">
-        <div class="window"></div>
+    <div id="stage">
         
-        <svg class="plant" viewBox="0 0 100 200">
-            <path d="M50,200 Q30,150 10,100 Q30,120 50,200" fill="#2ecc71" />
-            <path d="M50,200 Q70,150 90,80 Q70,120 50,200" fill="#27ae60" />
-            <path d="M50,200 Q50,100 50,50 Q50,120 50,200" fill="#2ecc71" />
-            <rect x="30" y="150" width="40" height="50" fill="#e67e22" rx="5" />
-        </svg>
-
-        <div class="door" id="door"><div class="door-handle"></div></div>
+        <div class="window"></div>
+        <div class="door" id="door"></div>
         <div class="floor"></div>
-    </div>
+        <div class="decor-plant">🌱</div>
 
-    <div class="rooftop-layer" id="rooftop">
-        <div class="city-bg"></div>
-        <div class="railing"></div>
-    </div>
-
-    <div class="character" id="host-char">
-        <svg viewBox="0 0 100 200">
-            <path d="M20,200 L20,120 Q20,80 50,80 Q80,80 80,120 L80,200 Z" fill="#0984e3"/> <path d="M45,80 L45,200" stroke="#000" stroke-width="1" opacity="0.2"/> <circle cx="50" cy="50" r="35" fill="#fab1a0"/> <g id="host-face">
-                <circle cx="40" cy="45" r="3" fill="#333"/>
-                <circle cx="60" cy="45" r="3" fill="#333"/>
-                <path d="M35,35 Q40,30 45,35" stroke="#333" stroke-width="2" fill="none"/>
-                <path d="M55,35 Q60,30 65,35" stroke="#333" stroke-width="2" fill="none"/>
-                <path d="M40,65 Q50,75 60,65" stroke="#333" stroke-width="2" fill="none"/> <circle cx="40" cy="45" r="8" stroke="#333" stroke-width="2" fill="none"/>
-                <circle cx="60" cy="45" r="8" stroke="#333" stroke-width="2" fill="none"/>
-                <line x1="48" y1="45" x2="52" y2="45" stroke="#333" stroke-width="2"/>
-            </g>
-
-            <path d="M40,85 L60,85 L65,95 L35,95 Z" fill="#d63031"/>
-        </svg>
-    </div>
-
-    <div class="character" id="visitor-char">
-        <svg viewBox="0 0 100 200">
-            <path d="M20,30 L30,10 L40,30 L50,5 L60,30 L70,10 L80,30" fill="#333" stroke="#333" stroke-width="2"/>
-            
-            <path d="M15,200 L10,130 Q10,90 50,90 Q90,90 85,130 L80,200" fill="#636e72"/>
-            <path d="M10,130 L20,140 L10,150" stroke="#444" stroke-width="2" fill="none"/> <circle cx="50" cy="60" r="30" fill="#ffeaa7"/>
-            
-            <g id="visitor-face">
-                <circle cx="40" cy="55" r="2" fill="#333"/>
-                <circle cx="60" cy="55" r="2" fill="#333"/>
-                <path d="M35,45 L45,50" stroke="#333" stroke-width="2"/> <path d="M65,45 L55,50" stroke="#333" stroke-width="2"/>
-                <circle cx="50" cy="70" r="5" fill="#333"/> <path id="sweat" d="M75,50 Q78,55 75,60" stroke="#0984e3" stroke-width="2" fill="none" opacity="0"/>
-            </g>
-
-            <path d="M45,90 L55,90 L60,130 L40,120 Z" fill="#fdcb6e"/>
-        </svg>
-    </div>
-
-    <div id="dialogue-ui">
-        <div class="avatar-box" id="avatar-display"></div>
-        <div class="text-box">
-            <div class="char-name" id="char-name">Narrador</div>
-            <div class="char-text" id="char-text">Clique para começar a história.</div>
+        <div class="rooftop-bg" id="rooftop">
+            <div class="clouds">☁️ ☁️</div>
         </div>
-        <button class="next-btn" onclick="nextScene()"><i class="fa-solid fa-chevron-right"></i></button>
+
+        <div class="character-wrapper idle-anim" id="host">
+            <svg viewBox="0 0 100 200">
+                <path d="M20,200 L20,100 Q20,80 50,80 Q80,80 80,100 L80,200" fill="#74b9ff"/>
+                <circle cx="50" cy="50" r="35" fill="#fab1a0"/>
+                <path d="M15,50 Q15,10 50,10 Q85,10 85,50 Q85,30 75,25 Q50,20 25,25 Q15,30 15,50" fill="#2d3436"/>
+                <g id="host-face">
+                    <circle cx="40" cy="50" r="3" fill="#333"/>
+                    <circle cx="60" cy="50" r="3" fill="#333"/>
+                    <path d="M40,65 Q50,75 60,65" stroke="#333" stroke-width="2" fill="none"/> <path d="M30,50 L70,50" stroke="#333" stroke-width="2" fill="none"/> <circle cx="40" cy="50" r="10" stroke="#333" stroke-width="2" fill="none"/> <circle cx="60" cy="50" r="10" stroke="#333" stroke-width="2" fill="none"/> </g>
+            </svg>
+        </div>
+
+        <div class="character-wrapper idle-anim" id="visitor">
+            <svg viewBox="0 0 100 200">
+                <path d="M15,200 L10,110 L15,90 L85,90 L90,110 L85,200 Z" fill="#636e72"/>
+                <path d="M10,130 L25,140 L10,150" stroke="#b2bec3" stroke-width="2" fill="none"/> <path d="M45,90 L55,90 L60,140 L40,130 Z" fill="#e17055"/>
+                <circle cx="50" cy="60" r="30" fill="#ffeaa7"/>
+                <path d="M20,40 L30,20 L40,40 L50,10 L60,40 L70,20 L80,40" fill="none" stroke="#2d3436" stroke-width="3"/>
+                <g id="visitor-face">
+                    <circle cx="38" cy="55" r="2" fill="#333"/>
+                    <circle cx="62" cy="55" r="2" fill="#333"/>
+                    <path d="M35,45 L45,50" stroke="#333" stroke-width="2"/> <path d="M65,45 L55,50" stroke="#333" stroke-width="2"/>
+                    <circle cx="50" cy="70" r="6" fill="#333"/> </g>
+            </svg>
+        </div>
+
     </div>
 
-    <div id="final-screen">
+    <div id="dialogue-section">
+        <div class="avatar-circle" id="ui-avatar">
+            </div>
+        <div class="text-content">
+            <span class="speaker-label" id="ui-label">Narrador</span>
+            <div class="dialogue-line" id="ui-text">Clique na seta para começar a história.</div>
+        </div>
+        <button class="next-btn" onclick="nextScene()"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <div id="final-overlay">
         <h1 style="font-size:3rem; margin-bottom:10px;">Fim.</h1>
-        <p style="font-size:1.5rem;">Você não é seus pensamentos.</p>
-        <button class="next-btn" style="width:auto; padding:0 30px; margin-top:20px; border-radius:30px;" onclick="location.reload()">Replay</button>
+        <p style="font-size:1.5rem; max-width:600px; line-height:1.5;">"Você não é seus pensamentos. Você é a casa onde eles visitam."</p>
+        <button class="next-btn" style="width:auto; padding:0 30px; margin-top:30px; border-radius:30px; font-size:1rem;" onclick="location.reload()">Reassistir</button>
     </div>
 
 </div>
 
 <script>
-    // Referências
+    // Referências DOM
+    const host = document.getElementById('host');
+    const visitor = document.getElementById('visitor');
     const stage = document.getElementById('stage');
     const door = document.getElementById('door');
-    const host = document.getElementById('host-char');
-    const visitor = document.getElementById('visitor-char');
-    const office = document.getElementById('office');
     const rooftop = document.getElementById('rooftop');
     
-    // UI Refs
-    const uiName = document.getElementById('char-name');
-    const uiText = document.getElementById('char-text');
-    const uiAvatar = document.getElementById('avatar-display');
+    // UI References
+    const uiLabel = document.getElementById('ui-label');
+    const uiText = document.getElementById('ui-text');
+    const uiAvatar = document.getElementById('ui-avatar');
 
-    // SVG Faces (para manipulação)
+    // SVG Faces (para expressões)
     const visitorFace = document.getElementById('visitor-face');
     const hostFace = document.getElementById('host-face');
 
-    // Variável de Roteiro
-    let sceneIndex = -1;
+    let currentStep = -1;
 
     // Roteiro
     const script = [
         {
-            name: "Hospedeiro", text: "Estava tudo calmo no meu escritório mental. Organizando meus valores, pagando boletos mentais...",
-            act: () => { 
-                // Estado Inicial
-                host.innerHTML = host.innerHTML; // Redraw SVG
-                visitor.style.display = 'block';
+            label: "Narrador", text: "Imagine que sua mente é este escritório. Você está focado, cuidando da sua vida...",
+            action: () => {
+                // Estado inicial
+                uiAvatar.innerHTML = '<i class="fa-solid fa-book-open" style="font-size:30px; color:#636e72;"></i>';
             }
         },
         {
-            name: "Narrador", text: "De repente... UM GRITO NA SALA DE ESPERA!",
-            act: () => {
-                stage.classList.add('shake');
-                setTimeout(() => stage.classList.remove('shake'), 500);
+            label: "Narrador", text: "De repente... UM GRITO NA SALA DE ESPERA! [Tremor]",
+            action: () => {
+                document.getElementById('app-container').classList.add('shake-screen');
+                setTimeout(() => document.getElementById('app-container').classList.remove('shake-screen'), 500);
             }
         },
         {
-            name: "Visitante", text: "ABRE ISSO! É UMA EMERGÊNCIA! O MUNDO VAI ACABAR!",
-            act: () => {
-                door.style.transform = "perspective(600px) rotateY(-80deg)"; // Porta abre
-                visitor.classList.add('visitor-enter');
+            label: "Visitante", text: "ABRE ISSO! É UMA EMERGÊNCIA! O MUNDO VAI ACABAR!",
+            action: () => {
+                door.style.transform = "rotateY(90deg)"; // Abre porta
+                visitor.classList.add('visitor-enter'); // Entra
+                // Avatar do Visitante
+                uiAvatar.innerHTML = visitor.innerHTML; 
             }
         },
         {
-            name: "Hospedeiro", text: "Mas... eu não marquei hora. Quem é você?",
-            act: () => {}
-        },
-        {
-            name: "Visitante", text: "Eu sou o PENSAMENTO INTRUSIVO! O terrível! Olhe para o meu terno amassado de preocupação!",
-            act: () => {
-                visitor.classList.add('visitor-giant'); // Fica grande
-                // Muda cor do visitante para vermelho via filtro CSS
-                visitor.style.filter = "hue-rotate(280deg) drop-shadow(0 5px 5px rgba(0,0,0,0.2))"; 
+            label: "Hospedeiro", text: "Mas... eu não marquei hora. Quem é você?",
+            action: () => {
+                uiAvatar.innerHTML = host.innerHTML; 
             }
         },
         {
-            name: "Narrador", text: "Antigamente, eu tentava brigar com ele. Gritava 'Saia daqui!'. Mas ele só crescia.",
-            act: () => {}
-        },
-        {
-            name: "Hospedeiro", text: "Sabe de uma coisa? Eu tenho que ver o pôr do sol. Você pode vir, se quiser.",
-            act: () => {
-                visitor.classList.remove('visitor-giant');
-                visitor.style.filter = "none"; // Volta cor normal
-                // Muda rosto do visitante para confuso
-                visitorFace.innerHTML = `<circle cx="40" cy="55" r="2" fill="#333"/><circle cx="60" cy="55" r="2" fill="#333"/><path d="M45,70 Q50,65 55,70" stroke="#333" stroke-width="2" fill="none"/>`; 
+            label: "Visitante", text: "Eu sou o PENSAMENTO INTRUSIVO! O terrível! Olhe para o meu terno amassado de preocupação!",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+                visitor.classList.add('visitor-angry'); // Fica grande e vermelho (via filtro CSS no JS seria melhor, mas aqui uso classe)
+                // Mudança de cor visual via JS para garantir o efeito "Angry"
+                visitor.querySelector('path[fill="#636e72"]').setAttribute('fill', '#e74c3c'); 
             }
         },
         {
-            name: "Visitante", text: "Hã? Mas... você não vai discutir comigo? Não vai pedir provas lógicas?",
-            act: () => {}
-        },
-        {
-            name: "Narrador", text: "Subimos para o terraço da mente.",
-            act: () => {
-                office.style.opacity = '0';
-                rooftop.style.opacity = '1';
-                host.classList.add('host-rooftop');
-                visitor.classList.add('visitor-rooftop');
+            label: "Narrador", text: "Antigamente, eu tentava brigar com ele. Gritava 'Saia daqui!'. Mas ele só crescia.",
+            action: () => {
+                uiAvatar.innerHTML = '<i class="fa-solid fa-comment-slash" style="font-size:30px; color:#636e72;"></i>';
             }
         },
         {
-            name: "Visitante", text: "Ei! Olha essa altura! É perigoso! Vamos cair! Olha pra mim!",
-            act: () => {
-                // Visitante tremendo
+            label: "Hospedeiro", text: "Sabe de uma coisa? Eu tenho que ver o pôr do sol no terraço. Você pode vir, se quiser.",
+            action: () => {
+                uiAvatar.innerHTML = host.innerHTML;
+                visitor.classList.remove('visitor-angry');
+                // Volta cor original
+                visitor.querySelector('path[fill="#e74c3c"]').setAttribute('fill', '#636e72');
+                // Muda rosto para confuso
+                visitorFace.innerHTML = `<circle cx="38" cy="55" r="2" fill="#333"/><circle cx="62" cy="55" r="2" fill="#333"/><path d="M40,70 Q50,65 60,70" stroke="#333" stroke-width="2" fill="none"/>`;
+            }
+        },
+        {
+            label: "Visitante", text: "Hã? Mas... você não vai discutir comigo? Não vai pedir provas lógicas?",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+            }
+        },
+        {
+            label: "Narrador", text: "Eles sobem para o terraço da mente...",
+            action: () => {
+                uiAvatar.innerHTML = '<i class="fa-solid fa-cloud-sun" style="font-size:30px; color:#e67e22;"></i>';
+                // Troca cenário
+                rooftop.style.opacity = 1;
+                document.querySelector('.window').style.opacity = 0;
+                document.querySelector('.door').style.opacity = 0;
+            }
+        },
+        {
+            label: "Visitante", text: "Ei! Olha essa altura! É perigoso! Vamos cair! Olha pra mim!",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+                // Tremendo
                 visitor.style.transform = "translateX(5px)";
-                setTimeout(() => visitor.style.transform = "translateX(-5px)", 100);
+                setTimeout(() => visitor.style.transform = "translateX(0)", 100);
             }
         },
         {
-            name: "Hospedeiro", text: "A vista é linda, não é?",
-            act: () => {
-                // Rosto feliz do hospedeiro
-                hostFace.innerHTML = `<circle cx="40" cy="45" r="3" fill="#333"/><circle cx="60" cy="45" r="3" fill="#333"/><path d="M40,65 Q50,75 60,65" stroke="#333" stroke-width="2" fill="none"/> <circle cx="40" cy="45" r="8" stroke="#333" stroke-width="2" fill="none"/><circle cx="60" cy="45" r="8" stroke="#333" stroke-width="2" fill="none"/><line x1="48" y1="45" x2="52" y2="45" stroke="#333" stroke-width="2"/>`;
+            label: "Hospedeiro", text: "A vista é linda, não é? (Focando no momento presente)",
+            action: () => {
+                uiAvatar.innerHTML = host.innerHTML;
+                // Rosto Feliz
+                hostFace.innerHTML = `<circle cx="40" cy="50" r="3" fill="#333"/><circle cx="60" cy="50" r="3" fill="#333"/><path d="M40,65 Q50,75 60,65" stroke="#333" stroke-width="2" fill="none"/>`;
             }
         },
         {
-            name: "Visitante", text: "É... bom... se você não vai brigar comigo... eu vou indo.",
-            act: () => {
-                visitor.classList.add('visitor-small');
-                visitor.classList.add('visitor-fade');
+            label: "Visitante", text: "É... bom... se você não vai brigar comigo... eu vou indo.",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+                visitor.classList.add('visitor-sad');
+                setTimeout(() => visitor.classList.add('visitor-gone'), 500);
             }
         },
         {
-            name: "Narrador", text: "E assim ele se foi. Pensamentos são apenas visitantes. Trate-os bem, mas não deixe que eles dirijam sua vida.",
-            act: () => {
+            label: "Narrador", text: "E assim ele se foi. Pensamentos são apenas visitantes.",
+            action: () => {
+                uiAvatar.innerHTML = '<i class="fa-solid fa-heart" style="font-size:30px; color:#e74c3c;"></i>';
                 setTimeout(() => {
-                    document.getElementById('final-screen').classList.add('show-final');
-                }, 1000);
+                    document.getElementById('final-overlay').classList.add('show-final');
+                }, 1500);
             }
         }
     ];
 
     function nextScene() {
-        sceneIndex++;
-        if(sceneIndex < script.length) {
-            const s = script[sceneIndex];
-            uiName.innerText = s.name;
+        currentStep++;
+        if(currentStep < script.length) {
+            const s = script[currentStep];
+            uiLabel.innerText = s.label;
             uiText.innerText = s.text;
             
-            // Atualiza Avatar na UI
-            if(s.name === "Hospedeiro") uiAvatar.innerHTML = host.innerHTML;
-            else if(s.name === "Visitante") uiAvatar.innerHTML = visitor.innerHTML;
-            else uiAvatar.innerHTML = ""; // Narrador
+            // Define cor do label
+            if(s.label === "Hospedeiro") uiLabel.style.color = "#0984e3";
+            else if(s.label === "Visitante") uiLabel.style.color = "#d63031";
+            else uiLabel.style.color = "#b2bec3";
 
-            if(s.act) s.act();
+            if(s.action) s.action();
         }
     }
 
