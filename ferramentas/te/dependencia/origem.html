@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origem da Dependência | Terapia do Esquema</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../../login.html"; 
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../assets/style.css">
+
+    <script src="../../../assets/layout.js"></script>
+
+    <style>
+        /* TEMA DA FERRAMENTA: AZUL (Confiança/Estabilidade) */
+        :root {
+            --primary-color: #0984e3; 
+            --secondary-accent: #74b9ff;
+            --step-bg: #f4f9ff;
+        }
+
+        /* Estilo da "Linha do Tempo" do Formulário */
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+
+        /* Linha vertical conectando os passos */
+        .step-container::before {
+            content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px;
+            background: #dfe6e9; z-index: 0;
+        }
+
+        .input-step {
+            background: white; border: 1px solid #dfe6e9;
+            border-radius: 15px; padding: 25px;
+            position: relative; z-index: 1;
+            margin-left: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            transition: transform 0.2s;
+        }
+        .input-step:hover { border-color: var(--secondary-accent); }
+
+        /* Ícone do Passo */
+        .step-icon {
+            position: absolute; left: -40px; top: 20px;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: white; border: 4px solid var(--primary-color);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary-color); font-size: 1.2rem;
+            z-index: 2;
+        }
+
+        /* Layout para Desktop (Ícone à esquerda) */
+        @media (min-width: 768px) {
+            .input-step { margin-left: 40px; }
+        }
+        @media (max-width: 767px) {
+            .step-container::before { display: none; }
+            .step-icon { position: static; margin-bottom: 15px; border-width: 2px; width: 40px; height: 40px; }
+            .input-step { margin-left: 0; }
+        }
+
+        /* CARD DE RESULTADO (INSIGHT) */
+        #result-area { display: none; margin-top: 40px; animation: fadeIn 0.6s ease; }
+        
+        .insight-card {
+            background: #fff; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 10px 40px rgba(9, 132, 227, 0.15);
+            border: 1px solid #eee;
+        }
+        .insight-header {
+            background: var(--primary-color); color: white; padding: 20px; text-align: center;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .insight-body { padding: 30px; display: grid; gap: 20px; }
+        
+        .insight-row {
+            display: grid; grid-template-columns: 1fr 2fr; gap: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee;
+        }
+        .insight-label { color: #b2bec3; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
+        .insight-value { color: #2d3436; font-weight: 600; line-height: 1.5; }
+
+        /* Estilos de Impressão */
+        @media print {
+            .step-container, .btn-primary, .app-header button { display: none !important; }
+            #result-area { display: block !important; margin-top: 0; }
+            .insight-card { box-shadow: none; border: 2px solid #000; }
+            .insight-header { background: #eee; color: #000; border-bottom: 2px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        carregarHeader("Origem da Dependência", "Anexo 18: Investigando as raízes do esquema");
+    </script>
+
+    <div class="card-panel" id="form-panel" data-aos="fade-up" style="max-width: 800px;">
+        <p style="text-align:center; color:#636e72; margin-bottom:30px;">
+            Preencha os campos abaixo para traçar a linha do tempo da sua dependência.
+        </p>
+
+        <div class="step-container">
+            
+            <div class="input-step">
+                <div class="step-icon"><i class="fa-solid fa-baby"></i></div>
+                <label class="form-label">1. Cuidadores na Infância</label>
+                <div style="font-size:0.9rem; color:#b2bec3; margin-bottom:10px;">Quem cuidava de você? (Pai, mãe, avós...)</div>
+                <input type="text" id="caregivers" class="form-control" placeholder="Ex: Minha mãe e minha avó materna...">
+            </div>
+
+            <div class="input-step">
+                <div class="step-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <label class="form-label">2. Estilo dessas pessoas comigo</label>
+                <div style="font-size:0.9rem; color:#b2bec3; margin-bottom:10px;">Eles faziam tudo por você? Criticavam seus erros? Eram superprotetores?</div>
+                <textarea id="style" class="form-control" rows="3" placeholder="Ex: Minha mãe não me deixava tentar nada sozinha, dizia que eu ia me machucar..."></textarea>
+            </div>
+
+            <div class="input-step">
+                <div class="step-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <label class="form-label">3. Por que agiam assim?</label>
+                <div style="font-size:0.9rem; color:#b2bec3; margin-bottom:10px;">O que isso diz sobre ELAS (medos delas), não sobre você?</div>
+                <textarea id="reason" class="form-control" rows="3" placeholder="Ex: Ela era muito ansiosa e tinha medo de ficar sozinha, precisava que eu precisasse dela..."></textarea>
+            </div>
+
+            <div class="input-step">
+                <div class="step-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                <label class="form-label">4. Como as pessoas lidam comigo hoje?</label>
+                <div style="font-size:0.9rem; color:#b2bec3; margin-bottom:10px;">Você busca parceiros que repetem esse padrão? As pessoas te tratam como criança?</div>
+                <textarea id="today" class="form-control" rows="3" placeholder="Ex: Meu marido toma todas as decisões financeiras, eu nem vejo a conta bancária..."></textarea>
+            </div>
+
+            <div class="input-step">
+                <div class="step-icon"><i class="fa-solid fa-link-slash"></i></div>
+                <label class="form-label">5. Consequência Atual</label>
+                <div style="font-size:0.9rem; color:#b2bec3; margin-bottom:10px;">O que isso gera na sua vida? (Sentimento de incompetência, medo...)</div>
+                <textarea id="consequence" class="form-control" rows="3" placeholder="Ex: Sinto que não sou capaz de viver sozinha, tenho pânico de ser abandonada..."></textarea>
+            </div>
+
+        </div>
+
+        <button class="btn-primary" onclick="generateAnalysis()" style="margin-top: 40px;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Compreender Origem
+        </button>
+    </div>
+
+    <div id="result-area" style="max-width: 800px; width:100%;">
+        <div class="insight-card">
+            <div class="insight-header">
+                <i class="fa-solid fa-file-contract"></i> Mapeamento da Origem
+            </div>
+            <div class="insight-body">
+                
+                <div class="insight-row">
+                    <div class="insight-label">A Raiz (Infância)</div>
+                    <div class="insight-value" id="res-caregivers">...</div>
+                </div>
+
+                <div class="insight-row">
+                    <div class="insight-label">O Padrão Aprendido</div>
+                    <div class="insight-value" id="res-style">...</div>
+                </div>
+
+                <div class="insight-row" style="background:#f0faff; border-radius:10px; padding:10px;">
+                    <div class="insight-label" style="color:var(--primary-color)">Reestruturação (Sobre Eles)</div>
+                    <div class="insight-value" id="res-reason" style="font-style:italic;">...</div>
+                </div>
+
+                <div class="insight-row">
+                    <div class="insight-label">Repetição Atual</div>
+                    <div class="insight-value" id="res-today">...</div>
+                </div>
+
+                <div class="insight-row" style="border-bottom:none;">
+                    <div class="insight-label">Impacto na Vida</div>
+                    <div class="insight-value" id="res-consequence">...</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:20px; justify-content:center;" class="no-print">
+            <button class="btn-primary" onclick="window.print()" style="background:#2d3436; width:auto; padding:0 30px;">
+                <i class="fa-solid fa-print"></i> Imprimir / Salvar PDF
+            </button>
+            <button class="btn-primary" onclick="editForm()" style="background:#fff; color:#2d3436; border:2px solid #dfe6e9; width:auto; padding:0 30px;">
+                Editar
+            </button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function generateAnalysis() {
+            // Pega valores
+            const f1 = document.getElementById('caregivers').value;
+            const f2 = document.getElementById('style').value;
+            const f3 = document.getElementById('reason').value;
+            const f4 = document.getElementById('today').value;
+            const f5 = document.getElementById('consequence').value;
+
+            if(!f1 || !f2 || !f5) {
+                alert("Por favor, preencha os campos principais para gerar a análise.");
+                return;
+            }
+
+            // Preenche Resultado
+            document.getElementById('res-caregivers').innerText = f1;
+            document.getElementById('res-style').innerText = f2;
+            document.getElementById('res-reason').innerText = f3 || "Não especificado.";
+            document.getElementById('res-today').innerText = f4 || "Não especificado.";
+            document.getElementById('res-consequence').innerText = f5;
+
+            // Troca de Tela
+            document.getElementById('form-panel').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
+            
+            // Scroll para topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function editForm() {
+            document.getElementById('form-panel').style.display = 'block';
+            document.getElementById('result-area').style.display = 'none';
+        }
+
+        // Carrega Footer
+        carregarFooter();
+    </script>
+
+</body>
+</html>
