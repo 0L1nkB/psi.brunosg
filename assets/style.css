@@ -1,1 +1,172 @@
+/* --- style.css: O Design System do Bruno --- */
 
+/* 1. VARIÁVEIS GLOBAIS (A "Paleta" do Site) */
+:root {
+    /* Cores Principais */
+    --primary-color: #6c5ce7;   /* Roxo Padrão */
+    --secondary-color: #2d3436; /* Texto Escuro */
+    --accent-color: #00cec9;    /* Destaque Ciano */
+    --danger-color: #e17055;    /* Laranja/Vermelho para Alertas */
+    --success-color: #00b894;   /* Verde para Ações Positivas */
+    
+    /* Fundos */
+    --bg-body: #fdfbf7;         /* Creme Suave */
+    --bg-card: #ffffff;         /* Branco Puro */
+    --bg-input: #fdfdfd;        
+    
+    /* Texto */
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+    
+    /* Bordas e Sombras */
+    --border-radius: 20px;      /* Arredondamento padrão */
+    --border-color: #dfe6e9;
+    --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
+    --shadow-hover: 0 15px 40px rgba(0,0,0,0.1);
+    
+    /* Fontes */
+    --font-main: 'Quicksand', sans-serif;
+}
+
+/* 2. RESET E ESTRUTURA BÁSICA */
+* { box-sizing: border-box; }
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-body);
+    /* Padrão de pontinhos sutil no fundo */
+    background-image: radial-gradient(#dcdde1 1px, transparent 1px);
+    background-size: 20px 20px;
+    margin: 0; 
+    padding: 20px;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
+
+/* 3. COMPONENTES PADRÃO */
+
+/* Header Bonito */
+.app-header {
+    text-align: center; margin-bottom: 30px;
+    background: var(--bg-card); padding: 25px 40px;
+    border-radius: var(--border-radius); 
+    border-bottom: 5px solid var(--primary-color);
+    box-shadow: var(--shadow-soft);
+    max-width: 900px; width: 100%; position: relative;
+}
+
+.app-header h1 { 
+    color: var(--primary-color); margin: 0; 
+    font-weight: 800; font-size: 1.8rem; 
+    text-transform: uppercase; letter-spacing: 1px; 
+}
+
+.app-header .subtitle { 
+    color: var(--text-muted); font-weight: 600; 
+    margin-top: 5px; font-size: 1rem; 
+}
+
+/* Cards (Os blocos brancos) */
+.card-panel {
+    width: 100%; max-width: 900px;
+    background: var(--bg-card); padding: 30px; 
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft); 
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Inputs e Textareas */
+.form-control {
+    width: 100%; padding: 15px; 
+    border: 2px solid var(--border-color); 
+    border-radius: 12px;
+    font-family: inherit; font-size: 1rem; 
+    transition: 0.3s; background: var(--bg-input); 
+    outline: none; resize: vertical;
+}
+
+.form-control:focus { 
+    border-color: var(--primary-color); 
+    background: white; 
+}
+
+/* Labels */
+.form-label {
+    font-weight: 800; color: var(--text-muted); 
+    font-size: 0.9rem; display: flex; 
+    align-items: center; gap: 8px; margin-bottom: 8px;
+}
+
+/* Botões Principais */
+.btn-primary {
+    width: 100%; padding: 15px; 
+    border-radius: 50px; border: none;
+    background: var(--primary-color); 
+    color: white; font-weight: 800; font-size: 1.1rem;
+    cursor: pointer; transition: 0.3s; 
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+
+.btn-primary:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3); 
+}
+
+/* Botão de Impressão (flutuante no header) */
+.btn-print-header {
+    position: absolute; top: 25px; right: 30px;
+    background: transparent; border: 2px solid var(--primary-color); 
+    color: var(--primary-color);
+    padding: 8px 20px; border-radius: 30px; 
+    font-weight: 700; cursor: pointer; transition: 0.3s;
+}
+
+.btn-print-header:hover { 
+    background: var(--primary-color); color: white; 
+}
+
+/* Botão Voltar (Home) */
+.btn-back-home {
+    display: inline-block; margin-top: 20px; 
+    color: #b2bec3; text-decoration: none; font-weight: 600;
+    transition: color 0.2s;
+}
+.btn-back-home:hover { color: var(--primary-color); }
+
+/* Animações Úteis */
+@keyframes slideUp { 
+    from { opacity: 0; transform: translateY(20px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+.animate-slide-up { animation: slideUp 0.4s ease; }
+
+/* 4. AJUSTES RESPONSIVOS E PRINT */
+@media (max-width: 768px) {
+    .btn-print-header span { display: none; } /* Esconde texto em mobile */
+    .app-header { padding: 20px; }
+}
+
+@media print {
+    /* Esconde elementos de navegação na impressão */
+    header button, .btn-primary, .btn-back-home, .no-print { 
+        display: none !important; 
+    }
+    
+    /* Limpa o layout para papel */
+    body { background: white; padding: 0; }
+    .app-header { 
+        border: none; box-shadow: none; 
+        margin-bottom: 20px; padding: 0; 
+        border-bottom: 2px solid #000; 
+    }
+    .card-panel {
+        box-shadow: none; border: 1px solid #ccc;
+        page-break-inside: avoid;
+    }
+}
