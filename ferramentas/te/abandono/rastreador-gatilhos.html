@@ -7,7 +7,7 @@
     
     <script>
         if(localStorage.getItem('logado') !== 'sim') {
-            // Ajuste o caminho do login conforme sua estrutura, ex: ../../../login.html
+            // Ajuste o caminho do login conforme sua estrutura
             window.location.href = "../../../login.html"; 
         }
     </script>
@@ -98,14 +98,13 @@
 </head>
 <body>
 
-    <header class="app-header" data-aos="fade-down">
-        <button class="btn-print-header" onclick="preparePrint()">
-            <i class="fa-solid fa-print"></i> <span>Imprimir</span>
-        </button>
+    <?php 
+        // Definindo os dados da página para o header
+        $titulo = "Rastreador de Gatilhos";
+        $subtitulo = "Anexo 1: Mapeando situações e respostas saudáveis";
         
-        <h1>Rastreador de Gatilhos</h1>
-        <div class="subtitle">Mapeando situações e respostas saudáveis</div>
-    </header>
+        include '../../../view/header.php'; 
+    ?>
 
     <div class="card-panel" data-aos="fade-up" style="padding: 15px 30px; display:flex; align-items:center; gap:15px;">
         <i class="fa-solid fa-fingerprint" style="color:var(--primary-color); font-size:1.5rem;"></i>
