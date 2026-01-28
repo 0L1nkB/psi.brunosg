@@ -16,6 +16,8 @@
     
     <link rel="stylesheet" href="../../assets/style.css">
     <script src="../../assets/layout.js"></script>
+    
+    <script src="../../assets/print.js"></script>
 
     <style>
         /* VARIÁVEIS LOCAIS (Roxo da TE) */
@@ -86,29 +88,6 @@
             color: #b2bec3; margin-bottom: 10px; display: block; margin-top: 15px;
         }
 
-        /* --- IMPRESSÃO --- */
-        #print-header { display: none; }
-
-        @media print {
-            .btn-magic, .ai-config, .app-header, .fab, .btn-back-home { display: none !important; }
-            body { background: white; padding: 0; }
-            .form-section { box-shadow: none; border: 1px solid #000; break-inside: avoid; }
-            
-            /* CABEÇALHO PROFISSIONAL */
-            #print-header {
-                display: flex; align-items: center; gap: 20px; margin-bottom: 30px;
-                padding-bottom: 20px; border-bottom: 2px solid #2d3436;
-                font-family: 'Arial', sans-serif; color: #2d3436;
-            }
-            .ph-logo img { height: 70px; width: auto; }
-            .ph-info h1 { margin: 0; font-size: 1.6rem; font-weight: 800; }
-            .ph-details { margin-top: 5px; font-size: 0.8rem; line-height: 1.4; }
-
-            /* Ajustes Chips */
-            .chip { border: 1px solid #999; }
-            .chip.active { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        }
-
         /* Config IA Flutuante */
         .ai-config-float {
             position: fixed; top: 100px; right: 20px; z-index: 100;
@@ -122,6 +101,14 @@
         .status-dot.active { background: #00b894; box-shadow: 0 0 5px #00b894; }
 
         @media (max-width: 1200px) { .ai-config-float { top: auto; bottom: 20px; left: 20px; right: auto; } }
+
+        /* IMPRESSÃO (Ajustes específicos além do print.js) */
+        @media print {
+            .btn-magic, .ai-config-float { display: none !important; }
+            .form-section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            .chip { border: 1px solid #999; }
+            .chip.active { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
     </style>
 </head>
 <body>
@@ -134,21 +121,6 @@
         <button class="btn-config-ia" onclick="configureKey()">
             <div class="status-dot" id="status-dot"></div> Configurar IA
         </button>
-    </div>
-
-    <div id="print-header">
-        <div class="ph-logo">
-            <img src="../../assets/logo.png" alt="Logo BS" onerror="this.style.display='none'">
-        </div>
-        <div class="ph-info">
-            <h2 style="margin:0; font-size:1rem; font-weight:400;">Psicólogo Clínico</h2>
-            <h1>Bruno de Souza</h1>
-            <div class="ph-details">
-                <strong>Psicoterapia Cognitivo Comportamental & Esquema</strong><br>
-                R. Félix Xavier da Cunha, 705 - Sala 402, Pelotas, RS<br>
-                (53) 9 91898309 • @psi.brunosg
-            </div>
-        </div>
     </div>
 
     <div class="container" style="max-width:1000px; width:100%;">
