@@ -22,24 +22,24 @@
         body { background-color: #f0f2f5; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
         .main-layout {
-            display: flex; gap: 20px; height: calc(100vh - 80px); /* Desconta header */
+            display: flex; gap: 20px; height: calc(100vh - 80px); 
             max-width: 1200px; margin: 0 auto; width: 100%; padding: 20px;
         }
 
-        /* Coluna da Esquerda: Contexto do Paciente */
+        /* Coluna da Esquerda */
         .context-panel {
             width: 350px; background: white; border-radius: 15px; padding: 20px;
             display: flex; flex-direction: column; border: 1px solid #ddd;
             overflow-y: auto; flex-shrink: 0;
         }
 
-        /* Coluna da Direita: Chat */
+        /* Coluna da Direita */
         .chat-panel {
             flex: 1; background: white; border-radius: 15px; border: 1px solid #ddd;
             display: flex; flex-direction: column; overflow: hidden; position: relative;
         }
 
-        /* Área de Mensagens */
+        /* Histórico */
         #chat-history {
             flex: 1; overflow-y: auto; padding: 20px; background: #fdfdfd;
             display: flex; flex-direction: column; gap: 15px;
@@ -47,7 +47,7 @@
 
         .message {
             max-width: 80%; padding: 15px; border-radius: 15px; line-height: 1.5;
-            font-size: 0.95rem; position: relative; animation: fadeIn 0.3s;
+            font-size: 0.95rem; position: relative; animation: fadeIn 0.3s; word-wrap: break-word;
         }
         
         .msg-user {
@@ -59,10 +59,15 @@
             align-self: flex-start; background: #f1f2f6; color: #2d3436;
             border-bottom-left-radius: 2px; border: 1px solid #eee;
         }
+        
+        .msg-error {
+            align-self: center; background: #ffebee; color: #c0392b; 
+            border: 1px solid #e74c3c; font-size: 0.85rem; text-align: center;
+        }
 
         .msg-ai strong { color: var(--primary-color); }
 
-        /* Área de Input e Botões */
+        /* Input */
         .input-area {
             padding: 20px; background: white; border-top: 1px solid #eee;
             display: flex; gap: 10px; align-items: flex-end;
@@ -80,17 +85,11 @@
             transition: transform 0.2s, background 0.3s;
         }
         .btn-icon:hover { transform: scale(1.1); }
-
         .btn-send { background: var(--primary-color); color: white; }
         
         .btn-mic { background: #f1f2f6; color: #636e72; margin-right: 5px; }
         .btn-mic:hover { background: #e0e0e0; }
-        
-        /* Estado Ouvindo (Pulsando) */
-        .btn-mic.listening {
-            background: #ff7675; color: white;
-            animation: pulse-red 1.5s infinite;
-        }
+        .btn-mic.listening { background: #ff7675; color: white; animation: pulse-red 1.5s infinite; }
 
         @keyframes pulse-red {
             0% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0.7); }
@@ -98,7 +97,7 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 118, 117, 0); }
         }
 
-        /* Botões de Ação Rápida */
+        /* Ações Rápidas */
         .quick-actions {
             display: flex; gap: 10px; padding: 10px 20px; overflow-x: auto;
             border-bottom: 1px solid #eee; background: #fafafa;
@@ -110,21 +109,22 @@
         .chip-action:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
 
         /* Config IA Flutuante */
-        .ai-config-float { position: fixed; top: 100px; right: 20px; z-index: 100; }
+        .ai-config-float { position: fixed; top: 100px; right: 20px; z-index: 100; display: flex; gap: 10px; }
         .btn-config-ia {
             background: #2d3436; color: white; padding: 8px 15px; border-radius: 30px;
             font-size: 0.8rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+        .btn-reset { background: #e74c3c; } /* Botão vermelho para resetar */
+        
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff7675; }
         .status-dot.active { background: #00b894; box-shadow: 0 0 5px #00b894; }
 
         @media (max-width: 1200px) { 
-            .ai-config-float { top: auto; bottom: 20px; left: 20px; right: auto; } 
+            .ai-config-float { top: auto; bottom: 20px; left: 20px; right: auto; flex-direction: column; align-items: flex-start;} 
             .main-layout { flex-direction: column; }
             .context-panel { width: 100%; height: 150px; }
         }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -137,6 +137,9 @@
     <div class="ai-config-float">
         <button class="btn-config-ia" onclick="configureKey()">
             <div class="status-dot" id="status-dot"></div> Configurar IA
+        </button>
+        <button class="btn-config-ia btn-reset" onclick="resetKey()" title="Se der erro, clique aqui">
+            <i class="fa-solid fa-rotate-right"></i> Trocar Chave
         </button>
     </div>
 
@@ -188,32 +191,43 @@
     </div>
 
     <script>
-        // --- 1. CONFIGURAÇÃO DA CHAVE IA ---
-        
-        // Verifica se já tem chave ao carregar
-        if (localStorage.getItem('gemini_api_key')) {
-            document.getElementById('status-dot').classList.add('active');
+        // --- 1. GERENCIAMENTO DE CHAVE ---
+        function checkKey() {
+            if (localStorage.getItem('gemini_api_key')) {
+                document.getElementById('status-dot').classList.add('active');
+                return true;
+            }
+            return false;
         }
 
         function configureKey() {
             const currentKey = localStorage.getItem('gemini_api_key') || "";
-            const key = prompt("Configure sua API Key do Google Gemini:", currentKey);
+            const key = prompt("Insira sua API Key do Google Gemini:", currentKey);
             if (key) {
                 localStorage.setItem('gemini_api_key', key.trim());
-                document.getElementById('status-dot').classList.add('active');
-                alert("Chave salva e pronta para uso!");
+                checkKey();
+                alert("Chave salva!");
             }
         }
 
-        // --- 2. RECONHECIMENTO DE VOZ (Web Speech API) ---
+        function resetKey() {
+            localStorage.removeItem('gemini_api_key');
+            document.getElementById('status-dot').classList.remove('active');
+            configureKey();
+        }
+
+        // Verifica ao carregar
+        checkKey();
+
+        // --- 2. RECONHECIMENTO DE VOZ ---
         let recognition;
         let isListening = false;
 
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.lang = 'pt-BR'; // Português do Brasil
-            recognition.continuous = false; // Para ao terminar de falar
+            recognition.lang = 'pt-BR';
+            recognition.continuous = false;
             recognition.interimResults = false;
 
             recognition.onstart = function() {
@@ -236,23 +250,14 @@
                 input.value += (input.value ? ' ' : '') + transcript;
                 input.focus();
             };
-
-            recognition.onerror = function(event) {
-                console.error("Erro no reconhecimento de voz:", event.error);
-                isListening = false;
-                document.getElementById('btn-mic').classList.remove('listening');
-            };
         } else {
             document.getElementById('btn-mic').style.display = 'none';
         }
 
         function toggleVoice() {
             if (!recognition) return;
-            if (isListening) {
-                recognition.stop();
-            } else {
-                recognition.start();
-            }
+            if (isListening) recognition.stop();
+            else recognition.start();
         }
 
         // --- 3. CHAT LOGIC ---
@@ -274,8 +279,7 @@
             const API_KEY = localStorage.getItem('gemini_api_key');
             
             if (!API_KEY) {
-                alert("Por favor, configure sua API Key primeiro clicando no botão 'Configurar IA'.");
-                configureKey();
+                alert("Por favor, clique em 'Configurar IA' e insira sua chave primeiro.");
                 return;
             }
 
@@ -286,30 +290,21 @@
 
             if (!message) return;
 
-            // Mostrar mensagem do usuário
+            // UI Usuário
             historyDiv.innerHTML += `<div class="message msg-user">${message.replace(/\n/g, '<br>')}</div>`;
             input.value = '';
             historyDiv.scrollTop = historyDiv.scrollHeight;
 
-            // Mostrar Loading
+            // UI Loading
             const loadingId = 'load-' + Date.now();
             historyDiv.innerHTML += `<div class="message msg-ai" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Pensando...</div>`;
             historyDiv.scrollTop = historyDiv.scrollHeight;
 
-            // Montar Prompt
             const fullPrompt = `
                 SISTEMA: Você é um Supervisor Clínico Sênior em Psicologia (TCC e Terapia do Esquema).
-                Seu objetivo é ajudar o psicólogo Bruno de Souza Gonçalves (CRP 07/44472) a planejar sessões e discutir casos.
-                Seja técnico, ético, direto e prático. Use formatação (negrito, listas) para facilitar a leitura.
-                
-                CONTEXTO DO PACIENTE ATUAL:
-                "${context ? context : 'Nenhum contexto específico fornecido ainda.'}"
-
-                HISTÓRICO DA CONVERSA:
-                ${conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n')}
-
-                PERGUNTA ATUAL DO PSICÓLOGO:
-                ${message}
+                CONTEXTO: "${context ? context : 'Sem contexto'}"
+                HISTÓRICO: ${conversationHistory.map(m => m.role + ": " + m.content).join(' | ')}
+                PERGUNTA: ${message}
             `;
 
             try {
@@ -320,8 +315,19 @@
                 });
 
                 const data = await response.json();
-                const aiResponse = data.candidates[0].content.parts[0].text;
 
+                // TRATAMENTO DE ERROS DETALHADO
+                if (data.error) {
+                    throw new Error(data.error.message || "Erro desconhecido na API");
+                }
+
+                if (!data.candidates || !data.candidates[0].content) {
+                    throw new Error("A IA não retornou resposta (Bloqueio de segurança ou erro interno).");
+                }
+
+                const aiResponse = data.candidates[0].content.parts[0].text;
+                
+                // Formatação
                 const formattedResponse = aiResponse
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .replace(/^\* (.*?)$/gm, '• $1<br>')
@@ -333,8 +339,16 @@
                 conversationHistory.push({ role: 'model', content: aiResponse });
 
             } catch (error) {
-                document.getElementById(loadingId).innerHTML = "Erro na conexão com a IA. Verifique sua chave ou internet.";
                 console.error(error);
+                let errorMsg = "Erro na conexão.";
+                
+                if (error.message.includes("400")) errorMsg = "Chave Inválida ou Solicitação Malformada. Tente 'Trocar Chave'.";
+                else if (error.message.includes("429")) errorMsg = "Muitas requisições (Cota Excedida). Espere um pouco.";
+                else if (error.message.includes("Failed to fetch")) errorMsg = "Erro de Conexão. Verifique sua internet.";
+                else errorMsg = `Erro: ${error.message}`;
+
+                document.getElementById(loadingId).className = "message msg-error";
+                document.getElementById(loadingId).innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${errorMsg}`;
             } finally {
                 historyDiv.scrollTop = historyDiv.scrollHeight;
             }
