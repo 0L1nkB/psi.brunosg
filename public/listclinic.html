@@ -21,6 +21,7 @@
     <style>
         :root {
             --c-clinic: #00b894; /* Verde Clínico (Saúde/Diagnóstico) */
+            --c-docs: #2d3436;   /* Cinza Oficial (Documentos) */
         }
 
         /* Container Principal */
@@ -97,13 +98,14 @@
                 <div class="card-desc">Rastreio Cognitivo</div>
             </a>
             <a href="../ferramentas/clinic/supervisor.html" class="tool-card">
-                <div class="card-icon" style="color: var(--c-clinic);"><i class="fa-solid fa-brain"></i></div>
-                <div class="card-title">Mini Mental</div>
-                <div class="card-desc">Rastreio Cognitivo</div>
+                <div class="card-icon" style="color: #6c5ce7;"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="card-title">Supervisor IA</div>
+                <div class="card-desc">Discussão de Caso</div>
             </a>
         </div>
 
-        <div class="section-label" style="color: #0984e3;"> <i class="fa-solid fa-project-diagram"></i> Conceituação de Caso
+        <div class="section-label" style="color: #0984e3;"> 
+            <i class="fa-solid fa-project-diagram"></i> Conceituação de Caso
         </div>
 
         <div class="grid">
@@ -114,27 +116,33 @@
             </a>
 
             <a href="../ferramentas/clinic/conceituacao-te.html" class="tool-card">
-                <div class="card-icon" style="color: #8e44ad;"><i class="fa-solid fa-puzzle-piece"></i></div> <div class="card-title">Conceituação de Esquemas</div>
+                <div class="card-icon" style="color: #8e44ad;"><i class="fa-solid fa-puzzle-piece"></i></div> 
+                <div class="card-title">Conceituação de Esquemas</div>
                 <div class="card-desc">Modos e Necessidades (Young)</div>
             </a>
         </div>
-         <div class="section-label" style="color: #0984e3;"> <i class="fa-solid fa-project-diagram"></i> Documentos 
+
+        <div class="section-label" style="color: var(--c-docs);"> 
+            <i class="fa-solid fa-file-contract"></i> Documentos Oficiais
         </div>
 
         <div class="grid">
             <a href="../ferramentas/clinic/docs/declaracao.html" class="tool-card">
-                <div class="card-icon" style="color: #0984e3;"><i class="fa-solid fa-sitemap"></i></div>
+                <div class="card-icon" style="color: #00b894;"><i class="fa-solid fa-file-signature"></i></div>
                 <div class="card-title">Declarações</div>
-                <div class="card-desc">Declaração de comparecimento</div>
+                <div class="card-desc">Atestado de Comparecimento</div>
             </a>
 
             <a href="../ferramentas/clinic/docs/laudo.html" class="tool-card">
-                <div class="card-icon" style="color: #8e44ad;"><i class="fa-solid fa-puzzle-piece"></i></div> <div class="card-title">Laudos</div>
-                <div class="card-desc">Laudos psicológicos</div>
+                <div class="card-icon" style="color: #0984e3;"><i class="fa-solid fa-file-medical"></i></div>
+                <div class="card-title">Laudo Psicológico</div>
+                <div class="card-desc">Avaliação Completa</div>
             </a>
+            
             <a href="../ferramentas/clinic/docs/parecer.html" class="tool-card">
-                <div class="card-icon" style="color: #8e44ad;"><i class="fa-solid fa-puzzle-piece"></i></div> <div class="card-title">Parecer</div>
-                <div class="card-desc">Pareceres psicológicos</div>
+                <div class="card-icon" style="color: #d63031;"><i class="fa-solid fa-scale-balanced"></i></div>
+                <div class="card-title">Parecer Técnico</div>
+                <div class="card-desc">Resposta à Demanda</div>
             </a>
         </div>
     </div>
