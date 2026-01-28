@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Lógica | Bruno de Souza</title>
+    
+    <script>
+        if(localStorage.getItem('logado') !== 'sim') {
+            window.location.href = "../../login.html";
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- RESET & BASES --- */
+        * { box-sizing: border-box; }
+
+        :root {
+            --bg-color: #f3f0ff; /* Fundo Lilás muito suave */
+            --primary: #6c5ce7;  /* Roxo Lógico */
+            --secondary: #a29bfe;
+            --accent: #00cec9;   /* Ciano para "Correção" */
+            --text: #2d3436;
+            --bug-color: #e17055;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#dcdde1 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 25px 40px;
+            border-radius: 20px; border-bottom: 5px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 900px; width: 100%; position: relative;
+        }
+
+        header h1 { color: var(--primary); margin: 0; font-weight: 800; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { color: #636e72; font-weight: 600; margin-top: 5px; font-size: 1rem; }
+
+        .btn-print {
+            position: absolute; top: 25px; right: 30px;
+            background: transparent; border: 2px solid var(--primary); color: var(--primary);
+            padding: 8px 20px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-print:hover { background: var(--primary); color: white; }
+
+        /* --- LOGIC LAB PANEL --- */
+        .lab-panel {
+            width: 100%; max-width: 900px;
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 40px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem;
+        }
+
+        /* STEP 1: O BUG */
+        .bug-box {
+            background: #fff5f5; padding: 20px; border-radius: 15px; border-left: 5px solid var(--bug-color); margin-bottom: 30px;
+        }
+        
+        /* STEP 2: DIAGNÓSTICO */
+        .diagnosis-box {
+            margin-bottom: 30px;
+        }
+        .chip-container {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;
+        }
+        .chip {
+            background: #f1f2f6; border: 1px solid #dfe6e9; padding: 8px 15px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 700; color: #636e72; cursor: pointer; transition: 0.2s;
+        }
+        .chip:hover { background: var(--secondary); color: white; border-color: var(--secondary); transform: translateY(-2px); }
+        .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* STEP 3: A CORREÇÃO */
+        .fix-box {
+            background: #e0fbfb; padding: 20px; border-radius: 15px; border-left: 5px solid var(--accent); margin-bottom: 30px;
+        }
+
+        /* STEP 4: RESULTADO */
+        .result-box {
+            margin-bottom: 20px;
+        }
+
+        /* Inputs */
+        textarea {
+            width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; transition: 0.3s; background: #fff; outline: none;
+            resize: vertical; min-height: 80px;
+        }
+        textarea:focus { border-color: var(--primary); }
+
+        .btn-process {
+            width: 100%; padding: 15px; border-radius: 50px; border: none;
+            background: var(--primary); color: white; font-weight: 800; font-size: 1.2rem;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-process:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3); }
+
+        /* --- LISTA DE ANÁLISES --- */
+        .analysis-list {
+            width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;
+        }
+
+        .analysis-card {
+            background: white; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); animation: slideUp 0.4s ease;
+            border: 1px solid #eee;
+        }
+
+        .card-header {
+            background: var(--primary); color: white; padding: 15px 25px;
+            display: flex; justify-content: space-between; align-items: center; font-weight: bold;
+        }
+        
+        .card-body { padding: 25px; display: grid; gap: 20px; }
+        
+        .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .card-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: #b2bec3; margin-bottom: 5px; display: block; }
+        .card-text { font-size: 1rem; color: #2d3436; line-height: 1.5; }
+        
+        .card-footer {
+            background: #f8f9fa; padding: 15px 25px; border-top: 1px solid #eee;
+            font-size: 0.95rem; color: var(--primary); font-weight: 600;
+        }
+
+        .btn-delete { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .btn-delete:hover { background: white; color: var(--primary); }
+
+        /* --- IMPRESSÃO --- */
+        #print-table { display: none; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .card-row { grid-template-columns: 1fr; }
+            .btn-print span { display: none; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            header button, .intro-card, .lab-panel, .btn-back-home, .analysis-list { display: none !important; }
+            header { border: none; box-shadow: none; margin-bottom: 20px; padding: 0; border-bottom: 2px solid #000; }
+            
+            #print-table {
+                display: table; width: 100%; border-collapse: collapse; font-family: sans-serif; margin-top: 20px;
+            }
+            #print-table th { background: #eee; padding: 10px; border: 1px solid #000; font-weight: bold; font-size: 0.9rem; text-align: left; }
+            #print-table td { padding: 10px; border: 1px solid #000; vertical-align: top; font-size: 0.9rem; }
+            
+            .print-section-title { font-weight: bold; margin-top: 5px; color: #333; text-transform: uppercase; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header data-aos="fade-down">
+        <button class="btn-print" onclick="preparePrint()"><i class="fa-solid fa-print"></i> <span>Imprimir</span></button>
+        <h1>Exame dos Erros de Lógica</h1>
+        <div class="subtitle">Laboratório de Depuração Mental</div>
+    </header>
+
+    <div class="lab-panel" data-aos="fade-up">
+        
+        <div class="bug-box">
+            <div class="section-title" style="color:var(--bug-color)">
+                <i class="fa-solid fa-bug"></i> 1. O Pensamento "Bugado" (Negativo)
+            </div>
+            <textarea id="thoughtInput" placeholder="Ex: Eu cometi um erro, logo sou um fracasso total."></textarea>
+        </div>
+
+        <div class="diagnosis-box">
+            <div class="section-title">
+                <i class="fa-solid fa-magnifying-glass-chart"></i> 2. Diagnóstico da Falha Lógica
+            </div>
+            <div class="chip-container">
+                <div class="chip" onclick="selectError(this, 'Confundir Possibilidade com Probabilidade')">Possibilidade ≠ Probabilidade</div>
+                <div class="chip" onclick="selectError(this, 'Confundir Comportamento com Pessoa')">Comportamento ≠ Pessoa</div>
+                <div class="chip" onclick="selectError(this, 'Conclusão Inválida / Salto Lógico')">Conclusão Inválida</div>
+                <div class="chip" onclick="selectError(this, 'Eventos Independentes (Falsa Correlação)')">Eventos Independentes</div>
+                <div class="chip" onclick="selectError(this, 'Afirmações Contraditórias')">Contradição</div>
+                <div class="chip" onclick="selectError(this, 'Autovalor baseado na opinião alheia')">Autovalor Externo</div>
+                <div class="chip" onclick="selectError(this, 'Pensamento Tudo ou Nada')">Tudo ou Nada</div>
+            </div>
+            <textarea id="errorInput" placeholder="Qual é o erro de lógica aqui? (Selecione acima ou escreva)"></textarea>
+        </div>
+
+        <div class="fix-box">
+            <div class="section-title" style="color:#00b894">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> 3. A Correção Lógica (Patch)
+            </div>
+            <label style="display:block; margin-bottom:5px; font-size:0.9rem; color:#006064;">Qual a maneira mais racional e factual de ver isso?</label>
+            <textarea id="rationalInput" placeholder="Ex: Cometer um erro é um comportamento, não define quem eu sou como pessoa."></textarea>
+        </div>
+
+        <div class="result-box">
+            <div class="section-title">
+                <i class="fa-solid fa-heart-pulse"></i> 4. Novo Sentimento
+            </div>
+            <textarea id="feelingInput" style="min-height:60px;" placeholder="Como você se sente pensando dessa nova forma?"></textarea>
+        </div>
+
+        <button class="btn-process" onclick="addAnalysis()">
+            <i class="fa-solid fa-check-circle"></i> Processar Análise
+        </button>
+    </div>
+
+    <div class="analysis-list" id="analysisList">
+        </div>
+
+    <table id="print-table">
+        <thead>
+            <tr>
+                <th width="25%">Pensamento Negativo</th>
+                <th width="25%">Erro de Lógica</th>
+                <th width="30%">Visão Racional (Correção)</th>
+                <th width="20%">Novo Sentimento</th>
+            </tr>
+        </thead>
+        <tbody id="printBody"></tbody>
+    </table>
+
+    <center>
+        <a href="../listaferramentas.html" style="display:inline-block; margin-top:20px; color:#b2bec3; text-decoration:none; font-weight:600;" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </a>
+    </center>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        function selectError(chip, text) {
+            // Remove active class from all
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            // Add to clicked
+            chip.classList.add('active');
+            // Fill textarea
+            const input = document.getElementById('errorInput');
+            input.value = text;
+            input.focus();
+        }
+
+        function addAnalysis() {
+            const thought = document.getElementById('thoughtInput').value.trim();
+            const error = document.getElementById('errorInput').value.trim();
+            const rational = document.getElementById('rationalInput').value.trim();
+            const feeling = document.getElementById('feelingInput').value.trim();
+
+            if (!thought || !error || !rational) {
+                alert("Preencha o Pensamento, o Erro e a Correção para processar.");
+                return;
+            }
+
+            const list = document.getElementById('analysisList');
+            const card = document.createElement('div');
+            card.className = 'analysis-card';
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <span><i class="fa-solid fa-microchip"></i> Análise Lógica</span>
+                    <button class="btn-delete" onclick="deleteCard(this)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="card-row">
+                        <div>
+                            <span class="card-label">Pensamento (Bug)</span>
+                            <div class="card-text" style="color:var(--bug-color)">"${thought}"</div>
+                        </div>
+                        <div>
+                            <span class="card-label">Erro Identificado</span>
+                            <div class="card-text"><strong>${error}</strong></div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="card-label" style="color:var(--accent)">Correção Racional (Patch)</span>
+                        <div class="card-text">${rational}</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <i class="fa-solid fa-arrow-right"></i> Resultado Emocional: <span style="font-weight:400; color:#555;">${feeling || "Não especificado"}</span>
+                </div>
+            `;
+
+            list.prepend(card);
+
+            // Limpa form
+            document.getElementById('thoughtInput').value = '';
+            document.getElementById('errorInput').value = '';
+            document.getElementById('rationalInput').value = '';
+            document.getElementById('feelingInput').value = '';
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        }
+
+        function deleteCard(btn) {
+            if(confirm("Deletar esta análise?")) {
+                btn.closest('.analysis-card').remove();
+            }
+        }
+
+        function preparePrint() {
+            const tbody = document.getElementById('printBody');
+            tbody.innerHTML = '';
+            
+            const cards = document.querySelectorAll('.analysis-card');
+            
+            if(cards.length === 0) {
+                alert("Adicione pelo menos uma análise para imprimir.");
+                return;
+            }
+
+            cards.forEach(card => {
+                const thought = card.querySelector('.card-text[style*="bug-color"]').innerText.replace(/"/g, '');
+                const error = card.querySelectorAll('.card-text strong')[0].innerText;
+                const rational = card.querySelectorAll('.card-text')[2].innerText;
+                const feeling = card.querySelector('.card-footer span').innerText;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${thought}</td>
+                    <td>${error}</td>
+                    <td>${rational}</td>
+                    <td>${feeling}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            window.print();
+        }
+    </script>
+
+</body>
+</html>

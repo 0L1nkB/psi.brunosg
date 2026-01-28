@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Visitante | TCC Animada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #2d3436;
+            --stage-bg: #f5f6fa;
+            --dialogue-bg: #ffffff;
+            --primary: #6c5ce7;
+            --host-skin: #ffcccc;
+            --visitor-skin: #ffeaa7;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0; font-family: 'Nunito', sans-serif;
+            background: var(--bg-color); display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+        }
+
+        /* O CONTAINER PRINCIPAL (TELA DO CELULAR/PC) */
+        #app-container {
+            width: 900px;
+            height: 600px;
+            background: var(--stage-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Isso separa o Palco do Texto verticalmente */
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        /* --- 1. O PALCO (CENÁRIO E PERSONAGENS) --- */
+        #stage {
+            flex: 1; /* Ocupa todo o espaço disponível acima do texto */
+            position: relative;
+            overflow: hidden;
+            transition: background 1s;
+            background: #f5f6fa; /* Cor da parede do escritório */
+        }
+
+        /* Elementos do Cenário */
+        .floor {
+            position: absolute; bottom: 0; width: 100%; height: 20%; background: #dfe6e9; z-index: 1;
+        }
+        
+        .window {
+            position: absolute; top: 15%; left: 10%; width: 150px; height: 150px;
+            background: #b2ebf2; border: 8px solid #636e72; border-radius: 10px;
+            box-shadow: inset 10px 10px 0 rgba(255,255,255,0.3);
+        }
+        
+        .door {
+            position: absolute; bottom: 20%; right: 10%; width: 120px; height: 220px;
+            background: #a29bfe; border: 6px solid #6c5ce7; border-radius: 5px;
+            transform-origin: right; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+        .door::after { content:''; position:absolute; top:50%; left:10px; width:15px; height:15px; background:gold; border-radius:50%; }
+
+        /* Plantinha para dar vida */
+        .decor-plant {
+            position: absolute; bottom: 15%; left: 5%; width: 80px; z-index: 2;
+        }
+
+        /* Cenário Terraço (Oculto por padrão) */
+        .rooftop-bg {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(180deg, #ff9f43, #ff6b6b);
+            opacity: 0; transition: opacity 1s; pointer-events: none; z-index: 0;
+        }
+        .clouds { position: absolute; top: 20px; left: 20px; font-size: 3rem; color: rgba(255,255,255,0.5); }
+
+        /* --- PERSONAGENS (SVG) --- */
+        .character-wrapper {
+            position: absolute;
+            bottom: 10%; /* Fica no chão, mas acima da borda inferior do palco */
+            width: 180px;
+            height: 250px;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        /* Animação de respiração (Idle) */
+        .idle-anim { animation: breathe 3s infinite ease-in-out; }
+        @keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.03); } }
+
+        /* HOSPEDEIRO */
+        #host { left: 20%; }
+        
+        /* VISITANTE */
+        #visitor { 
+            right: -30%; /* Começa fora da tela */
+            filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2));
+        }
+
+        /* Estados de Animação do Visitante */
+        .visitor-enter { right: 20% !important; }
+        .visitor-angry { transform: scale(1.2) !important; filter: drop-shadow(0 0 15px rgba(231, 76, 60, 0.8)) !important; }
+        .visitor-sad { transform: scale(0.8) !important; filter: grayscale(0.8) !important; }
+        .visitor-gone { opacity: 0; transform: translateY(-50px) scale(0.5) !important; }
+
+        /* --- 2. O DIÁLOGO (SEPARADO) --- */
+        #dialogue-section {
+            height: 160px; /* Altura fixa */
+            background: var(--dialogue-bg);
+            border-top: 4px solid var(--primary);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 20;
+            position: relative;
+        }
+
+        .avatar-circle {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: #eee; border: 3px solid var(--primary);
+            overflow: hidden; flex-shrink: 0;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .avatar-circle svg { width: 80%; height: 80%; }
+
+        .text-content { flex: 1; }
+        .speaker-label {
+            font-size: 0.85rem; font-weight: 900; text-transform: uppercase;
+            color: #b2bec3; margin-bottom: 5px; display: block;
+        }
+        .dialogue-line {
+            font-size: 1.2rem; font-weight: 700; color: #2d3436; line-height: 1.4;
+        }
+
+        .next-btn {
+            background: var(--primary); color: white; border: none;
+            width: 60px; height: 60px; border-radius: 50%;
+            cursor: pointer; font-size: 1.5rem; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        .next-btn:hover { transform: scale(1.1); background: #5649c0; }
+
+        /* EFEITOS GERAIS */
+        .shake-screen { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+
+        /* TELA FINAL */
+        #final-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(45, 52, 54, 0.95); z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; opacity: 0; pointer-events: none; transition: 1s; text-align: center;
+        }
+        .show-final { opacity: 1 !important; pointer-events: auto !important; }
+
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    
+    <div id="stage">
+        
+        <div class="window"></div>
+        <div class="door" id="door"></div>
+        <div class="floor"></div>
+        <div class="decor-plant">🌱</div>
+
+        <div class="rooftop-bg" id="rooftop">
+            <div class="clouds">☁️ ☁️</div>
+        </div>
+
+        <div class="character-wrapper idle-anim" id="host">
+            <svg viewBox="0 0 100 200">
+                <path d="M20,200 L20,100 Q20,80 50,80 Q80,80 80,100 L80,200" fill="#74b9ff"/>
+                <circle cx="50" cy="50" r="35" fill="#fab1a0"/>
+                <path d="M15,50 Q15,10 50,10 Q85,10 85,50 Q85,30 75,25 Q50,20 25,25 Q15,30 15,50" fill="#2d3436"/>
+                <g id="host-face">
+                    <circle cx="40" cy="50" r="3" fill="#333"/>
+                    <circle cx="60" cy="50" r="3" fill="#333"/>
+                    <path d="M40,65 Q50,75 60,65" stroke="#333" stroke-width="2" fill="none"/> <path d="M30,50 L70,50" stroke="#333" stroke-width="2" fill="none"/> <circle cx="40" cy="50" r="10" stroke="#333" stroke-width="2" fill="none"/> <circle cx="60" cy="50" r="10" stroke="#333" stroke-width="2" fill="none"/> </g>
+            </svg>
+        </div>
+
+        <div class="character-wrapper idle-anim" id="visitor">
+            <svg viewBox="0 0 100 200">
+                <path d="M15,200 L10,110 L15,90 L85,90 L90,110 L85,200 Z" fill="#636e72"/>
+                <path d="M10,130 L25,140 L10,150" stroke="#b2bec3" stroke-width="2" fill="none"/> <path d="M45,90 L55,90 L60,140 L40,130 Z" fill="#e17055"/>
+                <circle cx="50" cy="60" r="30" fill="#ffeaa7"/>
+                <path d="M20,40 L30,20 L40,40 L50,10 L60,40 L70,20 L80,40" fill="none" stroke="#2d3436" stroke-width="3"/>
+                <g id="visitor-face">
+                    <circle cx="38" cy="55" r="2" fill="#333"/>
+                    <circle cx="62" cy="55" r="2" fill="#333"/>
+                    <path d="M35,45 L45,50" stroke="#333" stroke-width="2"/> <path d="M65,45 L55,50" stroke="#333" stroke-width="2"/>
+                    <circle cx="50" cy="70" r="6" fill="#333"/> </g>
+            </svg>
+        </div>
+
+    </div>
+
+    <div id="dialogue-section">
+        <div class="avatar-circle" id="ui-avatar">
+            </div>
+        <div class="text-content">
+            <span class="speaker-label" id="ui-label">Narrador</span>
+            <div class="dialogue-line" id="ui-text">Clique na seta para começar a história.</div>
+        </div>
+        <button class="next-btn" onclick="nextScene()"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <div id="final-overlay">
+        <h1 style="font-size:3rem; margin-bottom:10px;">Fim.</h1>
+        <p style="font-size:1.5rem; max-width:600px; line-height:1.5;">"Você não é seus pensamentos. Você é a casa onde eles visitam."</p>
+        <button class="next-btn" style="width:auto; padding:0 30px; margin-top:30px; border-radius:30px; font-size:1rem;" onclick="location.reload()">Reassistir</button>
+    </div>
+
+</div>
+
+<script>
+    // Referências DOM
+    const host = document.getElementById('host');
+    const visitor = document.getElementById('visitor');
+    const stage = document.getElementById('stage');
+    const door = document.getElementById('door');
+    const rooftop = document.getElementById('rooftop');
+    
+    // UI References
+    const uiLabel = document.getElementById('ui-label');
+    const uiText = document.getElementById('ui-text');
+    const uiAvatar = document.getElementById('ui-avatar');
+
+    // SVG Faces (para expressões)
+    const visitorFace = document.getElementById('visitor-face');
+    const hostFace = document.getElementById('host-face');
+
+    let currentStep = -1;
+
+    // Roteiro
+    const script = [
+        {
+            label: "Narrador", text: "Imagine que sua mente é este escritório. Você está focado, cuidando da sua vida...",
+            action: () => {
+                // Estado inicial
+                uiAvatar.innerHTML = '<i class="fa-solid fa-book-open" style="font-size:30px; color:#636e72;"></i>';
+            }
+        },
+        {
+            label: "Narrador", text: "De repente... UM GRITO NA SALA DE ESPERA! [Tremor]",
+            action: () => {
+                document.getElementById('app-container').classList.add('shake-screen');
+                setTimeout(() => document.getElementById('app-container').classList.remove('shake-screen'), 500);
+            }
+        },
+        {
+            label: "Visitante", text: "ABRE ISSO! É UMA EMERGÊNCIA! O MUNDO VAI ACABAR!",
+            action: () => {
+                door.style.transform = "rotateY(90deg)"; // Abre porta
+                visitor.classList.add('visitor-enter'); // Entra
+                // Avatar do Visitante
+                uiAvatar.innerHTML = visitor.innerHTML; 
+            }
+        },
+        {
+            label: "Hospedeiro", text: "Mas... eu não marquei hora. Quem é você?",
+            action: () => {
+                uiAvatar.innerHTML = host.innerHTML; 
+            }
+        },
+        {
+            label: "Visitante", text: "Eu sou o PENSAMENTO INTRUSIVO! O terrível! Olhe para o meu terno amassado de preocupação!",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+                visitor.classList.add('visitor-angry'); // Fica grande e vermelho (via filtro CSS no JS seria melhor, mas aqui uso classe)
+                // Mudança de cor visual via JS para garantir o efeito "Angry"
+                visitor.querySelector('path[fill="#636e72"]').setAttribute('fill', '#e74c3c'); 
+            }
+        },
+        {
+            label: "Narrador", text: "Antigamente, eu tentava brigar com ele. Gritava 'Saia daqui!'. Mas ele só crescia.",
+            action: () => {
+                uiAvatar.innerHTML = '<i class="fa-solid fa-comment-slash" style="font-size:30px; color:#636e72;"></i>';
+            }
+        },
+        {
+            label: "Hospedeiro", text: "Sabe de uma coisa? Eu tenho que ver o pôr do sol no terraço. Você pode vir, se quiser.",
+            action: () => {
+                uiAvatar.innerHTML = host.innerHTML;
+                visitor.classList.remove('visitor-angry');
+                // Volta cor original
+                visitor.querySelector('path[fill="#e74c3c"]').setAttribute('fill', '#636e72');
+                // Muda rosto para confuso
+                visitorFace.innerHTML = `<circle cx="38" cy="55" r="2" fill="#333"/><circle cx="62" cy="55" r="2" fill="#333"/><path d="M40,70 Q50,65 60,70" stroke="#333" stroke-width="2" fill="none"/>`;
+            }
+        },
+        {
+            label: "Visitante", text: "Hã? Mas... você não vai discutir comigo? Não vai pedir provas lógicas?",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+            }
+        },
+        {
+            label: "Narrador", text: "Eles sobem para o terraço da mente...",
+            action: () => {
+                uiAvatar.innerHTML = '<i class="fa-solid fa-cloud-sun" style="font-size:30px; color:#e67e22;"></i>';
+                // Troca cenário
+                rooftop.style.opacity = 1;
+                document.querySelector('.window').style.opacity = 0;
+                document.querySelector('.door').style.opacity = 0;
+            }
+        },
+        {
+            label: "Visitante", text: "Ei! Olha essa altura! É perigoso! Vamos cair! Olha pra mim!",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+                // Tremendo
+                visitor.style.transform = "translateX(5px)";
+                setTimeout(() => visitor.style.transform = "translateX(0)", 100);
+            }
+        },
+        {
+            label: "Hospedeiro", text: "A vista é linda, não é? (Focando no momento presente)",
+            action: () => {
+                uiAvatar.innerHTML = host.innerHTML;
+                // Rosto Feliz
+                hostFace.innerHTML = `<circle cx="40" cy="50" r="3" fill="#333"/><circle cx="60" cy="50" r="3" fill="#333"/><path d="M40,65 Q50,75 60,65" stroke="#333" stroke-width="2" fill="none"/>`;
+            }
+        },
+        {
+            label: "Visitante", text: "É... bom... se você não vai brigar comigo... eu vou indo.",
+            action: () => {
+                uiAvatar.innerHTML = visitor.innerHTML;
+                visitor.classList.add('visitor-sad');
+                setTimeout(() => visitor.classList.add('visitor-gone'), 500);
+            }
+        },
+        {
+            label: "Narrador", text: "E assim ele se foi. Pensamentos são apenas visitantes.",
+            action: () => {
+                uiAvatar.innerHTML = '<i class="fa-solid fa-heart" style="font-size:30px; color:#e74c3c;"></i>';
+                setTimeout(() => {
+                    document.getElementById('final-overlay').classList.add('show-final');
+                }, 1500);
+            }
+        }
+    ];
+
+    function nextScene() {
+        currentStep++;
+        if(currentStep < script.length) {
+            const s = script[currentStep];
+            uiLabel.innerText = s.label;
+            uiText.innerText = s.text;
+            
+            // Define cor do label
+            if(s.label === "Hospedeiro") uiLabel.style.color = "#0984e3";
+            else if(s.label === "Visitante") uiLabel.style.color = "#d63031";
+            else uiLabel.style.color = "#b2bec3";
+
+            if(s.action) s.action();
+        }
+    }
+
+</script>
+
+</body>
+</html>
