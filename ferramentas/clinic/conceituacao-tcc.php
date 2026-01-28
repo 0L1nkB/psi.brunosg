@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conceituação Cognitiva | Caderno Incrível + IA</title>
+    <title>Conceituação Cognitiva</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             /* Paleta Lúdica */
             --bg-color: #f0f8ff;
             --paper: #ffffff;
-            --primary: #6c5ce7; /* Roxo */
-            --secondary: #00b894; /* Verde */
-            --accent: #fdcb6e; /* Amarelo */
+            --primary: #6c5ce7;
+            --secondary: #00b894;
+            --accent: #fdcb6e;
             --text: #2d3436;
             --ai-btn: #a29bfe;
             --box-border: #b2bec3;
@@ -35,10 +35,11 @@
             border: 3px solid var(--text); position: relative;
         }
 
+        /* --- CABEÇALHO DE IMPRESSÃO (NOVO) --- */
+        #print-header { display: none; } /* Escondido na tela normal */
+
         /* CONFIG IA */
-        .ai-config {
-            position: absolute; top: 20px; right: 20px;
-        }
+        .ai-config { position: absolute; top: 20px; right: 20px; }
         .btn-config {
             background: #2d3436; color: white; border: none; padding: 8px 15px;
             border-radius: 20px; cursor: pointer; font-size: 0.9rem; font-family: inherit;
@@ -47,9 +48,9 @@
         .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff7675; }
         .status-dot.active { background: #55efc4; box-shadow: 0 0 8px #55efc4; }
 
-        /* CABEÇALHO */
-        header { text-align: center; margin-bottom: 40px; position: relative; }
-        header::before {
+        /* CABEÇALHO DA TELA */
+        header.screen-header { text-align: center; margin-bottom: 40px; position: relative; }
+        header.screen-header::before {
             content: ""; position: absolute; top: -55px; left: 50%; transform: translateX(-50%) rotate(-1deg);
             width: 350px; height: 50px; background-color: rgba(108, 92, 231, 0.8);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -57,9 +58,8 @@
         h1 { margin: 0; color: var(--primary); font-size: 2.2rem; text-transform: uppercase; }
         .subtitle { font-size: 1.1rem; color: #636e72; margin-top: 10px; }
 
-        /* CAIXAS DE TEXTO COM BOTÃO MÁGICO */
+        /* INPUTS */
         .input-wrapper { position: relative; width: 100%; }
-        
         .btn-magic {
             position: absolute; bottom: 10px; right: 10px;
             background: var(--ai-btn); color: white; border: none;
@@ -69,38 +69,32 @@
         }
         .btn-magic:hover { opacity: 1; transform: scale(1.1) rotate(15deg); background: var(--primary); }
         .btn-magic.loading { animation: pulse 1s infinite; cursor: wait; background: #b2bec3; }
-
         @keyframes pulse { 0% {transform: scale(0.9);} 50% {transform: scale(1.1);} 100% {transform: scale(0.9);} }
 
-        /* BOXES DO DIAGRAMA */
+        /* BOXES */
         .flow-section { margin-bottom: 30px; position: relative; }
-        
         .box-container {
             background: #fff; border: 2px solid var(--primary); border-radius: 15px; padding: 20px;
             box-shadow: 5px 5px 0 rgba(0,0,0,0.05); position: relative;
         }
-        
         .box-title {
             position: absolute; top: -15px; left: 20px;
             background: var(--secondary); color: white; padding: 5px 15px;
             border-radius: 20px; font-weight: bold; font-size: 0.9rem; text-transform: uppercase;
             box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
         }
-
         .arrow-down { text-align: center; font-size: 2rem; color: var(--text); margin: 10px 0; opacity: 0.5; }
-
         textarea {
             width: 100%; border: none; background: transparent; font-family: inherit; font-size: 1rem;
             resize: vertical; outline: none; min-height: 90px; color: #2d3436;
             background-image: linear-gradient(#dfe6e9 1px, transparent 1px);
-            background-size: 100% 30px; line-height: 30px; padding-bottom: 30px; /* Espaço pro botão */
+            background-size: 100% 30px; line-height: 30px; padding-bottom: 30px;
         }
 
         /* GRIDS */
         .beliefs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .post-it { background: #fffce0; padding: 15px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); transform: rotate(-1deg); border: 1px solid #e6e6e6; }
         .post-it:nth-child(2) { transform: rotate(1deg); background: #e0f7fa; }
-
         .cycle-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px; }
         .cycle-col { background: #f1f2f6; padding: 15px; border-radius: 10px; border: 1px dashed #ccc; }
         .cycle-col h4 { margin: 0 0 10px 0; color: var(--primary); font-size: 0.9rem; text-align: center; }
@@ -113,9 +107,52 @@
         }
         .btn-action:hover { transform: translateY(-3px); }
 
+        /* --- ESTILOS DE IMPRESSÃO --- */
         @media print {
-            .btn-magic, .ai-config, .btn-action { display: none !important; }
-            .container { box-shadow: none; border: none; }
+            /* Esconde elementos interativos */
+            .btn-magic, .ai-config, .btn-action, header.screen-header { display: none !important; }
+            
+            /* Remove estilos de "container" da tela (sombras, bordas) */
+            body { background: white; margin: 0; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; margin: 0; }
+
+            /* Mostra e estiliza o Cabeçalho Profissional */
+            #print-header {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #2d3436;
+                font-family: 'Arial', sans-serif; /* Fonte mais séria para o cabeçalho */
+                color: #2d3436;
+            }
+
+            .ph-logo img {
+                height: 80px; /* Ajuste o tamanho da logo aqui */
+                width: auto;
+            }
+
+            .ph-info h2 {
+                margin: 0; font-size: 1rem; font-weight: normal; color: #555;
+            }
+            .ph-info h1 {
+                margin: 0; font-size: 1.8rem; font-weight: 800; color: #2d3436;
+                text-transform: none; /* Reseta o uppercase do tema */
+            }
+            .ph-details {
+                margin-top: 10px;
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+            .ph-details strong { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+
+            /* Ajustes para economizar tinta e ficar sóbrio */
+            .box-container { border: 1px solid #000; box-shadow: none; }
+            .box-title { border: 1px solid #000; color: #000; background: #fff; top: -10px; box-shadow: none; }
+            .post-it { background: #fff; border: 1px solid #ccc; transform: none !important; box-shadow: none; }
+            .cycle-col { background: #fff; border: 1px solid #ccc; }
+            textarea { color: #000; }
         }
     </style>
 </head>
@@ -129,7 +166,23 @@
             </button>
         </div>
 
-        <header>
+        <div id="print-header">
+            <div class="ph-logo">
+                <img src="../../img/logo.png" alt="Logo BS"> 
+            </div>
+            <div class="ph-info">
+                <h2>Psicólogo Clínico</h2>
+                <h1>Bruno de Souza</h1>
+                <div class="ph-details">
+                    <strong>Psicoterapia Cognitivo Comportamental</strong>
+                    R. Félix Xavier da Cunha, 705 - Sala 402, Pelotas, RS<br>
+                    (53) 9 91898309<br>
+                    @psi.brunosg | https://psibrunosg.github.io/site/
+                </div>
+            </div>
+        </div>
+
+        <header class="screen-header">
             <h1>Conceituação Cognitiva</h1>
             <p class="subtitle">O mapa para entender como sua mente funciona.</p>
         </header>
@@ -235,13 +288,10 @@
 
     <script>
         // --- LÓGICA DA IA (GEMINI) ---
-        
-        // Verificar chave ao carregar
         if (localStorage.getItem('gemini_api_key')) {
             document.getElementById('status-dot').classList.add('active');
         }
 
-        // Configurar Chave
         function configureKey() {
             const key = prompt("Cole sua API Key do Google Gemini aqui:\n(Ela será salva no seu navegador)");
             if (key) {
@@ -251,17 +301,15 @@
             }
         }
 
-        // Função Mágica
         async function improveText(elementId) {
             const textarea = document.getElementById(elementId);
             const originalText = textarea.value;
             const apiKey = localStorage.getItem('gemini_api_key');
-            const btn = textarea.nextElementSibling; // O botão mágico
+            const btn = textarea.nextElementSibling;
 
             if (!originalText) { alert("Escreva algo primeiro!"); return; }
             if (!apiKey) { alert("Configure a IA primeiro no botão do topo!"); configureKey(); return; }
 
-            // UI Loading
             const originalContent = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             btn.classList.add('loading');
